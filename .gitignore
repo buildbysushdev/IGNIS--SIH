@@ -37,6 +37,8 @@ cache/*.json
 cache/*.pkl
 backend/cache/*.json
 backend/cache/*.pkl
+!cache/industrial_zones.json
+!backend/cache/industrial_zones.json
 
 # Node.js & Next.js
 node_modules/

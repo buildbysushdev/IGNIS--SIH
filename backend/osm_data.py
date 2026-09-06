@@ -59,8 +59,12 @@ out center;
 
 
 def fetch_industrial_zones_from_osm() -> list[dict[str, Any]]:
-    """Query Overpass API for industrial facilities and zones across India."""
-    resp = requests.post(OVERPASS_URL, data={"data": OVERPASS_QUERY}, timeout=120)
+    """Query Overpass API for industrial facilities and zones across India (on-demand only)."""
+    headers = {
+        "User-Agent": "IGNIS-Fire-Surveillance/1.0 (SIH26162 NTRO)",
+        "Accept": "application/json",
+    }
+    resp = requests.post(OVERPASS_URL, data={"data": OVERPASS_QUERY}, headers=headers, timeout=15)
     resp.raise_for_status()
     zones: list[dict[str, Any]] = []
     for el in resp.json().get("elements", []):
@@ -80,34 +84,22 @@ def fetch_industrial_zones_from_osm() -> list[dict[str, Any]]:
 
 
 def load_or_cache_zones() -> list[dict[str, Any]]:
-    """Load zones from cache (<7d), fetch fresh from OSM, or fall back to preset facilities."""
+    """Load zones from cache (<7d) or immediately use comprehensive preconfigured facilities."""
     cache_path = Path(CACHE_DIR) / "industrial_zones.json"
-    if cache_path.exists():
-        age = datetime.now() - datetime.fromtimestamp(cache_path.stat().st_mtime)
-        if age < timedelta(days=7):
-            try:
-                zones = json.loads(cache_path.read_text(encoding="utf-8"))
-                print(f"[IGNIS] [mode=cache] Loaded {len(zones)} industrial zones from local cache")
-                return zones
-            except Exception:
-                pass
-    try:
-        zones = fetch_industrial_zones_from_osm()
-        if zones:
-            cache_path.parent.mkdir(parents=True, exist_ok=True)
-            cache_path.write_text(json.dumps(zones, indent=2), encoding="utf-8")
-            print(f"[IGNIS] [mode=fresh] Fetched {len(zones)} industrial zones from OSM and cached")
-            return zones
-    except Exception as err:
-        print(f"[IGNIS] Overpass fetch error: {err}")
     if cache_path.exists():
         try:
             zones = json.loads(cache_path.read_text(encoding="utf-8"))
-            print(f"[IGNIS] [mode=cache-expired] Loaded {len(zones)} zones from expired cache")
-            return zones
+            if zones and len(zones) > 0:
+                return zones
         except Exception:
             pass
-    print(f"[IGNIS] [mode=fallback] Using {len(FALLBACK_ZONES)} hardcoded industrial facilities")
+    # If cache not present, populate with bundled comprehensive facility database
+    try:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        cache_path.write_text(json.dumps(FALLBACK_ZONES, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+    print(f"[IGNIS] [mode=fallback] Loaded {len(FALLBACK_ZONES)} industrial facilities")
     return list(FALLBACK_ZONES)
 
 

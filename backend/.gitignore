@@ -4,5 +4,6 @@ __pycache__/
 *.db
 cache/*.json
 cache/*.pkl
+!cache/industrial_zones.json
 venv/
 .venv/

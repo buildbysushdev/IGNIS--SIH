@@ -15,12 +15,13 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy backend source
 COPY backend/ ./backend/
+COPY run.py ./
 
 WORKDIR /app/backend
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-EXPOSE 8080 8000
+EXPOSE 8080 8000 3000
 
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+CMD ["python", "run.py"]

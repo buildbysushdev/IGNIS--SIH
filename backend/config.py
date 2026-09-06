@@ -16,7 +16,7 @@ FIRMS_BASE_URL: str = os.getenv(
 INDIA_BBOX: str = os.getenv("INDIA_BBOX", "68.7,8.4,97.25,35.5").strip()
 
 # Environment-aware paths for local development and cloud platforms (Railway, Render, etc.)
-CACHE_DIR: str = os.environ.get("CACHE_DIR", "./cache")
+CACHE_DIR: str = os.environ.get("CACHE_DIR", str((BASE_DIR / "cache").resolve()))
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 DB_PATH: str = os.environ.get("DB_PATH", os.environ.get("DATABASE_PATH", "./ignis.db")).strip()
