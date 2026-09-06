@@ -73,14 +73,19 @@ export default function DashboardPage() {
           axios.get(alertsUrl).catch(() => ({ data: { alerts: [] } })),
         ]);
 
-        const fetchedFires: Fire[] = firesRes.data.fires || [];
+        const fetchedFires: Fire[] = Array.isArray(firesRes.data?.fires)
+          ? firesRes.data.fires
+          : [];
         setFires(fetchedFires);
-        setStats(firesRes.data.summary || null);
-        setAlerts(alertsRes.data.alerts || []);
+        setStats(firesRes.data?.summary || null);
+        const fetchedAlerts = Array.isArray(alertsRes.data?.alerts)
+          ? alertsRes.data.alerts
+          : [];
+        setAlerts(fetchedAlerts);
 
-        const backendStatus = firesRes.data.ignis_status === "live" ? "live" : "cached_fallback";
+        const backendStatus = firesRes.data?.ignis_status === "live" ? "live" : "cached_fallback";
         setIgnisStatus(backendStatus);
-        setStatusMessage(firesRes.data.message || "");
+        setStatusMessage(firesRes.data?.message || "");
         setLastRefreshed(getFormattedTime());
 
         if (forceRefresh) {
@@ -108,10 +113,11 @@ export default function DashboardPage() {
 
   // Client-side category filtering
   useEffect(() => {
+    const safe = Array.isArray(fires) ? fires : [];
     if (category === "all") {
-      setFilteredFires(fires);
+      setFilteredFires(safe);
     } else {
-      setFilteredFires(fires.filter((f) => f.category === category));
+      setFilteredFires(safe.filter((f) => (f?.category || "UNKNOWN") === category));
     }
   }, [category, fires]);
 
@@ -125,12 +131,12 @@ export default function DashboardPage() {
 
   // Calculate data freshness based on latest satellite acquisition date/time
   const dataFreshness = useMemo(() => {
-    if (!fires.length) return "Awaiting pass";
+    if (!Array.isArray(fires) || fires.length === 0) return "Awaiting pass";
     let latestMs = 0;
     for (const f of fires) {
-      if (!f.acq_date) continue;
+      if (!f?.acq_date || typeof f.acq_date !== "string") continue;
       const parts = f.acq_date.split("-").map(Number);
-      if (parts.length !== 3) continue;
+      if (!parts || parts.length !== 3) continue;
       let hours = 0;
       let mins = 0;
       if (f.acq_time) {
@@ -148,7 +154,9 @@ export default function DashboardPage() {
 
   // Export current active fires to CSV report
   const handleDownloadReport = () => {
-    const recordsToExport = filteredFires.length > 0 ? filteredFires : fires;
+    const safeFiltered = Array.isArray(filteredFires) ? filteredFires : [];
+    const safeFires = Array.isArray(fires) ? fires : [];
+    const recordsToExport = safeFiltered.length > 0 ? safeFiltered : safeFires;
     if (!recordsToExport.length) return;
 
     const headers = [
@@ -325,7 +333,7 @@ export default function DashboardPage() {
             )}
 
             {/* Empty State Overlay */}
-            {!loading && filteredFires.length === 0 && (
+            {!loading && (!Array.isArray(filteredFires) || filteredFires.length === 0) && (
               <div className="absolute inset-0 z-[999] pointer-events-none flex flex-col items-center justify-center text-center p-6 bg-slate-950/60 backdrop-blur-[2px]">
                 <div className="bg-slate-900 border border-slate-700 p-6 rounded-2xl max-w-sm pointer-events-auto">
                   <div className="text-3xl mb-2">🔍</div>

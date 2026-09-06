@@ -74,10 +74,11 @@ const LEGEND_ITEMS = [
   { label: "Unclassified / Low FRP", color: "#94a3b8" },
 ];
 
-export default function FireMap({ fires }: { fires: Fire[] }) {
+export default function FireMap({ fires = [] }: { fires?: Fire[] }) {
+  const safeFires = Array.isArray(fires) ? fires : [];
   const [activeLayer, setActiveLayer] = useState<keyof typeof TILE_PRESETS>("esri_dark");
-  const isCapped = fires.length > 1000;
-  const renderedFires = isCapped ? fires.slice(0, 1000) : fires;
+  const isCapped = safeFires.length > 1000;
+  const renderedFires = isCapped ? safeFires.slice(0, 1000) : safeFires;
 
   const currentTile = TILE_PRESETS[activeLayer];
 
@@ -86,7 +87,7 @@ export default function FireMap({ fires }: { fires: Fire[] }) {
       {/* 1000 Fires Performance Cap Warning */}
       {isCapped && (
         <div className="absolute top-3 left-14 z-[1000] bg-amber-950/90 border border-amber-500/80 text-amber-200 text-xs font-mono px-3 py-1.5 rounded-lg shadow-xl backdrop-blur-md pointer-events-auto">
-          ⚠️ Displaying top 1,000 thermal hotspots for high frame-rate rendering ({fires.length.toLocaleString()} total)
+          ⚠️ Displaying top 1,000 thermal hotspots for high frame-rate rendering ({safeFires.length.toLocaleString()} total)
         </div>
       )}
 

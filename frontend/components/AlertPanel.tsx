@@ -12,11 +12,12 @@ export interface AlertItem {
 }
 
 interface AlertPanelProps {
-  alerts: AlertItem[];
+  alerts?: AlertItem[];
 }
 
-export default function AlertPanel({ alerts }: AlertPanelProps) {
-  const count = alerts.length;
+export default function AlertPanel({ alerts = [] }: AlertPanelProps) {
+  const safeAlerts = Array.isArray(alerts) ? alerts : [];
+  const count = safeAlerts.length;
 
   return (
     <div className="bg-[#0f172a] border border-slate-700/80 rounded-2xl p-5 shadow-2xl flex flex-col gap-3.5">
@@ -51,7 +52,7 @@ export default function AlertPanel({ alerts }: AlertPanelProps) {
         </div>
       ) : (
         <div className="max-h-[240px] overflow-y-auto space-y-2 pr-1">
-          {alerts.map((alert, idx) => {
+          {safeAlerts.map((alert, idx) => {
             const isCritical = alert.severity === "CRITICAL";
             const timeStr = alert.timestamp || alert.created_at;
             const formattedTime = (() => {
