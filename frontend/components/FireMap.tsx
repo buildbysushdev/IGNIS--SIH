@@ -50,7 +50,7 @@ const TILE_PRESETS = {
     name: "Tactical Dark (Esri)",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     attribution: "&copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors",
-    subdomains: "",
+    subdomains: "abc",
   },
   osm_standard: {
     name: "OpenStreetMap",
@@ -119,7 +119,7 @@ export default function FireMap({ fires = [] }: { fires?: Fire[] }) {
           key={activeLayer}
           url={currentTile.url}
           attribution={currentTile.attribution}
-          subdomains={currentTile.subdomains || undefined}
+          subdomains={currentTile.subdomains || "abc"}
         />
 
         {renderedFires.map((fire, idx) => {
