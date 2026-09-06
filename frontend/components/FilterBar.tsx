@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 interface FilterBarProps {
   days: number;
   category: string;
@@ -11,24 +13,30 @@ interface FilterBarProps {
   onSourceChange: (source: string) => void;
   onRefresh: () => void;
   onDownload?: () => void;
+  onTrainModel?: () => void;
 }
 
 const CATEGORIES = [
-  { value: "all", label: "All Categories (Unfiltered)" },
-  { value: "EMERGENCY_INDUSTRIAL", label: "🚨 Emergency Industrial" },
-  { value: "PERSISTENT_INDUSTRIAL", label: "🏭 Persistent Industrial" },
-  { value: "AGRICULTURAL_BURNING", label: "🌾 Agricultural Burning" },
-  { value: "FOREST_FIRE", label: "🌲 Forest Fire" },
-  { value: "UNKNOWN", label: "🔘 Unclassified Anomaly" },
+  { value: "all", label: "ALL CATEGORIES" },
+  { value: "EMERGENCY_INDUSTRIAL", label: "EMERGENCY INDUSTRIAL" },
+  { value: "PERSISTENT_INDUSTRIAL", label: "PERSISTENT INDUSTRIAL" },
+  { value: "AGRICULTURAL_BURNING", label: "AGRICULTURAL BURNING" },
+  { value: "FOREST_FIRE", label: "FOREST BIOMASS" },
+  { value: "UNKNOWN", label: "UNCLASSIFIED" },
 ];
 
 const SOURCES = [
-  { value: "all", label: "VIIRS Merged (SNPP + NOAA-20)" },
-  { value: "VIIRS_SNPP_NRT", label: "Suomi NPP (VIIRS 375m)" },
-  { value: "VIIRS_NOAA20_NRT", label: "NOAA-20 (VIIRS 375m)" },
+  { value: "all", label: "MERGED (SNPP + NOAA20)" },
+  { value: "VIIRS_SNPP_NRT", label: "VIIRS-SNPP (375M)" },
+  { value: "VIIRS_NOAA20_NRT", label: "VIIRS-NOAA20 (375M)" },
 ];
 
-const DAY_OPTIONS = [1, 3, 7, 10];
+const DAY_OPTIONS = [
+  { value: 1, label: "1D" },
+  { value: 3, label: "3D" },
+  { value: 7, label: "7D" },
+  { value: 10, label: "10D" },
+];
 
 export default function FilterBar({
   days,
@@ -41,97 +49,139 @@ export default function FilterBar({
   onSourceChange,
   onRefresh,
   onDownload,
+  onTrainModel,
 }: FilterBarProps) {
+  const [countdown, setCountdown] = useState(180);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((c) => (c <= 1 ? 180 : c - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatCountdown = (secs: number) => {
+    const m = String(Math.floor(secs / 60)).padStart(2, "0");
+    const s = String(secs % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
   return (
-    <div className="glass-card rounded-2xl p-3 md:px-5 md:py-3.5 shadow-2xl flex flex-wrap items-center justify-between gap-3.5 border border-white/10">
-      {/* Floating Filter Selects */}
-      <div className="flex flex-wrap items-center gap-3 text-xs">
-        {/* Days Select */}
-        <div className="flex items-center gap-2">
-          <label className="font-mono text-slate-400 uppercase tracking-[0.2em] text-[10px] font-bold">
-            WINDOW
-          </label>
-          <select
-            value={days}
-            onChange={(e) => onDaysChange(Number(e.target.value))}
-            className="bg-[#0b1220] text-slate-200 border border-white/10 rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition cursor-pointer font-mono text-xs shadow-inner"
-          >
-            {DAY_OPTIONS.map((d) => (
-              <option key={d} value={d} className="bg-[#020617] text-white">
-                {d} {d === 1 ? "Day" : "Days"}
-              </option>
-            ))}
-          </select>
+    <div className="panel border border-[#1f2933] bg-[#0f141b] p-3 font-mono corner-brackets">
+      {/* Top Deck: Grid of Parameter Selectors & Operational Triggers */}
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#1f2933] pb-3">
+        {/* Controls Layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          {/* TIME WINDOW */}
+          <div>
+            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
+              [ TIME WINDOW ]
+            </label>
+            <select
+              value={days}
+              onChange={(e) => onDaysChange(Number(e.target.value))}
+              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
+            >
+              {DAY_OPTIONS.map((d) => (
+                <option key={d.value} value={d.value} className="bg-[#0f141b] text-[#d0d8e0]">
+                  {d.label} ▾
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* CATEGORY FILTER */}
+          <div>
+            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
+              [ CATEGORY FILTER ]
+            </label>
+            <select
+              value={category}
+              onChange={(e) => onCategoryChange(e.target.value)}
+              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c.value} value={c.value} className="bg-[#0f141b] text-[#d0d8e0]">
+                  {c.label} ▾
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* DATA SOURCE */}
+          <div>
+            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
+              [ DATA SOURCE ]
+            </label>
+            <select
+              value={source}
+              onChange={(e) => onSourceChange(e.target.value)}
+              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
+            >
+              {SOURCES.map((s) => (
+                <option key={s.value} value={s.value} className="bg-[#0f141b] text-[#d0d8e0]">
+                  {s.label} ▾
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* REGION MASK */}
+          <div>
+            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
+              [ REGION MASK ]
+            </label>
+            <select
+              defaultValue="INDIA"
+              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
+            >
+              <option value="INDIA" className="bg-[#0f141b] text-[#d0d8e0]">INDIA ▾</option>
+              <option value="NORTH" className="bg-[#0f141b] text-[#d0d8e0]">IND-NORTH ▾</option>
+              <option value="EAST" className="bg-[#0f141b] text-[#d0d8e0]">IND-EAST ▾</option>
+            </select>
+          </div>
         </div>
 
-        {/* Category Select */}
+        {/* Right Action Buttons */}
         <div className="flex items-center gap-2">
-          <label className="font-mono text-slate-400 uppercase tracking-[0.2em] text-[10px] font-bold">
-            CATEGORY
-          </label>
-          <select
-            value={category}
-            onChange={(e) => onCategoryChange(e.target.value)}
-            className="bg-[#0b1220] text-slate-200 border border-white/10 rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition cursor-pointer font-sans text-xs shadow-inner"
+          {/* REFRESH */}
+          <button
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#00ff9c] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer disabled:opacity-50"
           >
-            {CATEGORIES.map((cat) => (
-              <option key={cat.value} value={cat.value} className="bg-[#020617] text-white">
-                {cat.label}
-              </option>
-            ))}
-          </select>
-        </div>
+            {isRefreshing ? "[ SYNCING... ]" : "[ REFRESH ▷ ]"}
+          </button>
 
-        {/* Source Select */}
-        <div className="flex items-center gap-2">
-          <label className="font-mono text-slate-400 uppercase tracking-[0.2em] text-[10px] font-bold">
-            SENSOR
-          </label>
-          <select
-            value={source}
-            onChange={(e) => onSourceChange(e.target.value)}
-            className="bg-[#0b1220] text-slate-200 border border-white/10 rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition cursor-pointer font-sans text-xs shadow-inner"
+          {/* EXPORT CSV */}
+          {onDownload && (
+            <button
+              onClick={onDownload}
+              className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#00d4ff] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer"
+            >
+              [ EXPORT CSV ↓ ]
+            </button>
+          )}
+
+          {/* TRAIN MODEL */}
+          <button
+            onClick={onTrainModel}
+            className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#ffb800] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer hidden md:inline-block"
           >
-            {SOURCES.map((src) => (
-              <option key={src.value} value={src.value} className="bg-[#020617] text-white">
-                {src.label}
-              </option>
-            ))}
-          </select>
+            [ TRAIN MODEL ⚙ ]
+          </button>
         </div>
       </div>
 
-      {/* Action Controls & Auto-refresh status */}
-      <div className="flex items-center gap-3 ml-auto flex-wrap">
-        {/* Tiny Auto-refresh Indicator */}
-        <div className="hidden lg:flex items-center gap-1.5 text-[10px] font-mono text-slate-400 bg-white/[0.02] border border-white/5 px-2.5 py-1 rounded-lg">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span>Auto-refresh 3 min</span>
+      {/* Bottom of Deck: Synchronization Heartbeat */}
+      <div className="flex items-center justify-between pt-2 text-[10px] font-mono text-[#6b7785] select-none">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff9c] status-dot-green" />
+          <span>AUTO-SYNC: 180s :: NEXT REFRESH IN {formatCountdown(countdown)}</span>
         </div>
-
-        {/* Download Report Button */}
-        {onDownload && (
-          <button
-            onClick={onDownload}
-            className="glass-card hover:border-cyan-500/40 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl shadow-sm transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
-            title="Download full surveillance telemetry as CSV"
-          >
-            <span className="text-cyan-400 text-sm">📥</span>
-            <span>Download Report</span>
-          </button>
-        )}
-
-        {/* Solid Molten-Red Refresh Button with Glow */}
-        <button
-          onClick={onRefresh}
-          disabled={isRefreshing}
-          className="relative group bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-500 hover:to-rose-500 active:scale-[0.98] text-white text-xs font-bold px-4 py-1.5 rounded-xl shadow-lg shadow-red-600/30 glow-red transition-all duration-200 flex items-center gap-2 cursor-pointer disabled:opacity-60"
-        >
-          <span className={`text-sm ${isRefreshing ? "animate-spin" : "group-hover:rotate-12 transition-transform"}`}>
-            🔥
-          </span>
-          <span className="tracking-wide">{isRefreshing ? "Syncing..." : "Refresh Feed"}</span>
-        </button>
+        <div>
+          <span>PACKET PROTOCOL: HTTPS/REST :: FIRMS-MAP-KEY: VERIFIED</span>
+        </div>
       </div>
     </div>
   );

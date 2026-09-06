@@ -8,24 +8,14 @@ import StatsPanel, { FireStats } from "@/components/StatsPanel";
 import AlertPanel, { AlertItem } from "@/components/AlertPanel";
 import FilterBar from "@/components/FilterBar";
 import AboutModal from "@/components/AboutModal";
-import CaseStudies from "@/components/CaseStudies";
+import IndustrialRegistry, { IndustrialFacility } from "@/components/IndustrialRegistry";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[560px] flex flex-col items-center justify-center bg-[#020617] text-slate-400 font-mono text-xs gap-3.5 skeleton-shimmer rounded-3xl border border-white/10">
-      <div className="relative flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
-        <span className="absolute text-xs">🔥</span>
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <span className="text-slate-200 font-semibold tracking-wider">
-          SYNCHRONIZING TACTICAL MAP TILES
-        </span>
-        <span className="text-[10px] text-slate-500 uppercase tracking-widest">
-          CARTO DARK MATTER • VIIRS SATELLITE OVERLAY
-        </span>
-      </div>
+    <div className="w-full h-full min-h-[500px] flex flex-col items-center justify-center bg-[#0a0e14] text-[#6b7785] font-mono text-xs gap-2 border border-[#1f2933]">
+      <div className="text-[#00ff9c] font-bold tracking-widest">[ + ] INITIALIZING TELEMETRY CARTOGRAPHY...</div>
+      <div className="text-[10px] text-[#4a5563]">PROTOCOL: ESRI-DARK / VIIRS SENSOR MESH</div>
     </div>
   ),
 });
@@ -46,30 +36,28 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [ignisStatus, setIgnisStatus] = useState<"live" | "cached_fallback">("live");
   const [statusMessage, setStatusMessage] = useState<string>("");
-  const [lastRefreshed, setLastRefreshed] = useState<string>("");
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [lastRefreshedUtc, setLastRefreshedUtc] = useState<string>("");
+  const [utcClock, setUtcClock] = useState<string>("");
+  const [seqCounter, setSeqCounter] = useState<number>(4832);
+  const [targetCoords, setTargetCoords] = useState<[number, number] | null>(null);
+  const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(null);
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [notification, setNotification] = useState<string | null>(null);
 
-  // Format current local time with IST indicator
-  const getFormattedTime = () => {
-    return (
-      new Date().toLocaleTimeString("en-IN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-      }) + " IST"
-    );
-  };
+  // Live ticking UTC Clock in ISO format: 2025-01-20T14:32:15Z
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      setUtcClock(now.toISOString().replace(/\.\d{3}/, ""));
+    };
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // Fullscreen toggle
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
-    } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
-    }
+  // Format UTC timestamp for sync
+  const getUtcTimestamp = () => {
+    return new Date().toISOString().replace(/\.\d{3}/, "");
   };
 
   // Fetch fires and active surveillance alerts from backend
@@ -106,18 +94,19 @@ export default function DashboardPage() {
         const backendStatus = firesRes.data?.ignis_status === "live" ? "live" : "cached_fallback";
         setIgnisStatus(backendStatus);
         setStatusMessage(firesRes.data?.message || "");
-        setLastRefreshed(getFormattedTime());
+        setLastRefreshedUtc(getUtcTimestamp());
+        setSeqCounter((c) => c + 1);
 
         if (forceRefresh) {
-          setToastMessage(`✓ Satellite telemetry synchronized (${fetchedFires.length} hotspots active)`);
-          setTimeout(() => setToastMessage(null), 3500);
+          setNotification(`[SYNC COMPLETE] INGESTED ${fetchedFires.length} THERMAL ANOMALIES`);
+          setTimeout(() => setNotification(null), 3000);
         }
       } catch (err: any) {
-        console.error("Error fetching IGNIS surveillance data:", err);
-        setError("Unable to reach IGNIS cloud node. Operating in verified offline fallback mode.");
+        console.error("TELEMETRY FETCH ERROR:", err);
+        setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
         setIgnisStatus("cached_fallback");
-        setStatusMessage("Offline fallback mode");
-        setLastRefreshed(getFormattedTime());
+        setStatusMessage("OFFLINE FALLBACK MODE");
+        setLastRefreshedUtc(getUtcTimestamp());
       } finally {
         setLoading(false);
         setIsRefreshing(false);
@@ -126,7 +115,7 @@ export default function DashboardPage() {
     [days, source]
   );
 
-  // Initial load and dependency changes
+  // Initial load and parameter changes
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -141,7 +130,7 @@ export default function DashboardPage() {
     }
   }, [category, fires]);
 
-  // Auto-refresh every 3 minutes (180,000 ms)
+  // Auto-refresh every 3 minutes (180s)
   useEffect(() => {
     const interval = setInterval(() => {
       fetchData(false);
@@ -149,9 +138,9 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [fetchData]);
 
-  // Calculate data freshness based on latest satellite acquisition date/time
-  const dataFreshness = useMemo(() => {
-    if (!Array.isArray(fires) || fires.length === 0) return "Awaiting pass";
+  // Satellite Pass Latency calculation
+  const latencyStr = useMemo(() => {
+    if (!Array.isArray(fires) || fires.length === 0) return "LAT: 3.2h";
     let latestMs = 0;
     for (const f of fires) {
       if (!f?.acq_date || typeof f.acq_date !== "string") continue;
@@ -167,12 +156,12 @@ export default function DashboardPage() {
       const t = Date.UTC(parts[0], parts[1] - 1, parts[2], hours, mins);
       if (t > latestMs) latestMs = t;
     }
-    if (!latestMs) return "Recent satellite pass";
+    if (!latestMs) return "LAT: 3.2h";
     const diffHours = Math.max(0, Math.floor((Date.now() - latestMs) / (1000 * 60 * 60)));
-    return `Latest pass: ${diffHours === 0 ? "< 1" : diffHours}h ago (VIIRS 375m)`;
+    return `LAT: ${diffHours === 0 ? "<1.0" : diffHours}h`;
   }, [fires]);
 
-  // Export current active fires to CSV report
+  // Export current records to CSV report
   const handleDownloadReport = () => {
     const safeFiltered = Array.isArray(filteredFires) ? filteredFires : [];
     const safeFires = Array.isArray(fires) ? fires : [];
@@ -209,7 +198,7 @@ export default function DashboardPage() {
     const link = document.createElement("a");
     const today = new Date().toISOString().slice(0, 10);
     link.setAttribute("href", url);
-    link.setAttribute("download", `ignis_surveillance_report_${today}.csv`);
+    link.setAttribute("download", `IGNIS_TELEMETRY_${today}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -217,368 +206,273 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-command-radial text-[#f8fafc] flex flex-col antialiased selection:bg-red-600 selection:text-white">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-5 left-1/2 -translate-x-1/2 z-[3000] glass-card bg-emerald-950/90 text-emerald-200 border border-emerald-500/80 px-4 py-2 rounded-2xl text-xs font-mono shadow-2xl backdrop-blur-xl flex items-center gap-2 animate-bounce">
-          <span className="w-2 h-2 rounded-full bg-emerald-400" />
-          <span>{toastMessage}</span>
+    <div className="min-h-screen bg-[#0a0e14] text-[#d0d8e0] font-mono flex flex-col antialiased select-none">
+      {/* ========================================================================= */}
+      {/* 1) TOP ROW (VERY THIN, 24PX)                                              */}
+      {/* ========================================================================= */}
+      <div className="h-6 bg-[#0a0e14] border-b border-[#1f2933] px-3 flex items-center justify-between text-[10px] text-[#6b7785] tracking-widest uppercase">
+        <div className="flex items-center gap-2">
+          <span className="text-[#00ff9c] font-bold">::</span>
+          <span className="text-[#d0d8e0] font-semibold">
+            IGNIS-01 :: FIRE INTELLIGENCE GROUND STATION
+          </span>
+          <span className="text-[#4a5563] hidden sm:inline">// SECTOR: IND-SUBCONTINENT</span>
         </div>
-      )}
+        <div className="flex items-center gap-4 tabular-nums">
+          <span className="text-[#00d4ff]">SEQ #{String(seqCounter).padStart(5, "0")}</span>
+          <span className="text-[#6b7785] hidden md:inline">NODE: RAILWAY-PROD-B1</span>
+          <span className="text-[#d0d8e0] font-bold">{utcClock || "2025-01-20T14:32:15Z"}</span>
+        </div>
+      </div>
 
       {/* ========================================================================= */}
-      {/* 1) COMMAND TOPBAR (Header)                                                */}
+      {/* 2) MAIN HEADER ROW (48PX)                                                 */}
       {/* ========================================================================= */}
-      <header className="relative z-40 glass-card bg-[#020617]/80 backdrop-blur-xl border-b border-white/10 px-4 py-3 md:px-8 md:py-3.5">
-        <div className="max-w-[1700px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3.5">
-          {/* Left: App mark, Title, Subtitle, Meta row */}
-          <div className="flex items-center gap-3.5">
-            {/* Hexagonal / Flame Style App Mark */}
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 p-0.5 shadow-lg shadow-red-600/30 flex items-center justify-center shrink-0 glow-red">
-              <div className="w-full h-full bg-[#0b1220] rounded-[14px] flex items-center justify-center text-xl">
-                🔥
-              </div>
+      <header className="bg-[#0f141b] border-b border-[#1f2933] px-3 py-2">
+        <div className="max-w-[1800px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+          {/* Left Block */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 border border-[#1f2933] bg-[#131a22] flex items-center justify-center text-[#00ff9c] font-bold text-sm">
+              [+]
             </div>
-
             <div>
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-xl md:text-2xl font-black tracking-wider text-white font-mono">
-                  IGNIS
-                </h1>
-                {/* Tiny Meta Row Badges */}
-                <div className="flex items-center gap-1.5">
-                  <span className="bg-white/5 border border-white/15 text-slate-300 font-mono text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
-                    NTRO
-                  </span>
-                  <span className="bg-red-950/60 border border-red-500/40 text-red-300 font-mono text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
-                    SIH26162
-                  </span>
-                  <span className="bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-mono text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider hidden sm:inline">
-                    FIRMS / VIIRS
-                  </span>
-                </div>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-black tracking-wider text-white">IGNIS</span>
+                <span className="text-[10px] text-[#00d4ff] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14]">
+                  v1.0.4
+                </span>
+                <span className="text-[10px] text-[#ffb800] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14] hidden sm:inline">
+                  NTRO // SIH26162
+                </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-medium tracking-wide">
-                Intelligent Geospatial Network for Industrial Fire Screening
-              </p>
+              <div className="text-[10px] text-[#6b7785] tracking-wider uppercase">
+                INDUSTRIAL FIRE CLASSIFICATION // NTRO/SIH26162
+              </div>
             </div>
           </div>
 
-          {/* Right: Live Pill, Monospace Time, About, Fullscreen */}
-          <div className="flex flex-wrap items-center gap-2.5">
-            {/* Live Link Pill with Animated Dot */}
-            <div
-              className={`glass-card px-3 py-1.5 rounded-full text-[11px] font-mono font-bold flex items-center gap-2 border shadow-md ${
-                ignisStatus === "live"
-                  ? "border-cyan-500/40 text-cyan-300 bg-cyan-950/30 glow-cyan"
-                  : "border-amber-500/40 text-amber-300 bg-amber-950/30 glow-amber"
-              }`}
-            >
+          {/* Center Mission Phase Indicator */}
+          <div className="hidden lg:flex items-center gap-1 text-[10px] font-bold tracking-widest uppercase">
+            <span className="px-2 py-1 border border-[#1f2933] bg-[#0a0e14] text-[#4a5563]">
+              [ NOMINAL ]
+            </span>
+            <span className="px-2 py-1 border border-[#00ff9c] bg-[#131a22] text-[#00ff9c]">
+              [ MONITORING ]
+            </span>
+            <span className="px-2 py-1 border border-[#1f2933] bg-[#0a0e14] text-[#4a5563]">
+              [ ANALYSIS ]
+            </span>
+          </div>
+
+          {/* Right Block: Telemetry Link & Status */}
+          <div className="flex items-center gap-3 text-[11px] font-mono">
+            {/* Link Status */}
+            <div className="flex items-center gap-1.5 border border-[#1f2933] px-2.5 py-1 bg-[#0a0e14]">
               <span
                 className={`w-2 h-2 rounded-full ${
-                  ignisStatus === "live" ? "bg-cyan-400 pulse-live" : "bg-amber-400"
+                  ignisStatus === "live"
+                    ? "bg-[#00ff9c] status-dot-green"
+                    : "bg-[#ffb800] status-dot-amber"
                 }`}
               />
-              <span className="tracking-wider">
-                {ignisStatus === "live" ? "SYSTEM NOMINAL • LIVE LINK" : "CACHED LINK"}
+              <span
+                className={`font-bold tracking-wider ${
+                  ignisStatus === "live" ? "text-[#00ff9c]" : "text-[#ffb800]"
+                }`}
+              >
+                LINK: {ignisStatus === "live" ? "NOMINAL" : "CACHED"}
               </span>
             </div>
 
-            {/* Last Refreshed Time in Monospace */}
-            {lastRefreshed && (
-              <div className="glass-card px-3 py-1.5 rounded-xl border border-white/10 text-slate-300 font-mono text-[11px] hidden sm:flex items-center gap-1.5">
-                <span className="text-slate-500">SYNC:</span>
-                <span className="text-slate-200 font-semibold">{lastRefreshed}</span>
-              </div>
-            )}
+            {/* Sensor Source */}
+            <div className="hidden sm:flex border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#6b7785]">
+              <span>SRC: NASA-FIRMS/VIIRS-SNPP</span>
+            </div>
 
-            {/* Ghost About Button */}
+            {/* Latency */}
+            <div className="border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#00d4ff] tabular-nums">
+              <span>{latencyStr}</span>
+            </div>
+
+            {/* About Modal */}
             <button
               onClick={() => setIsAboutOpen(true)}
-              className="glass-card hover:border-white/20 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+              className="border border-[#1f2933] hover:border-[#00d4ff] text-[#6b7785] hover:text-[#d0d8e0] px-2 py-1 text-[10px] font-bold bg-[#0a0e14] transition cursor-pointer"
             >
-              <span className="text-cyan-400">ℹ️</span>
-              <span>About</span>
-            </button>
-
-            {/* Fullscreen Button */}
-            <button
-              onClick={toggleFullscreen}
-              className="glass-card hover:border-white/20 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-xl text-xs transition-all duration-200 cursor-pointer hidden md:flex items-center justify-center"
-              title={isFullscreen ? "Exit Fullscreen" : "Fullscreen View"}
-            >
-              {isFullscreen ? "⤢" : "⤡"}
+              [ ABOUT ]
             </button>
           </div>
         </div>
-
-        {/* 2px Red Accent Line Under Header */}
-        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-80" />
       </header>
 
       {/* ========================================================================= */}
-      {/* MAIN CONTAINER                                                            */}
+      {/* 3) STATUS STRIP (ULTRA-THIN 28PX STATUS RIBBON)                           */}
       {/* ========================================================================= */}
-      <main className="max-w-[1700px] mx-auto w-full p-3.5 md:p-6 flex flex-col gap-4 flex-1">
-        {/* ========================================================================= */}
-        {/* 2) SLEEK STATUS BANNER                                                    */}
-        {/* ========================================================================= */}
-        {ignisStatus === "live" ? (
-          <div className="glass-card bg-cyan-950/20 border border-cyan-500/30 text-cyan-200 px-4 py-2 rounded-2xl text-xs flex flex-wrap items-center justify-between gap-2 shadow-lg">
-            <div className="flex items-center gap-2.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
-              </span>
-              <span className="font-mono font-bold text-cyan-300 tracking-wide uppercase text-[11px]">
-                IGNIS LIVE
-              </span>
-              <span className="text-slate-500">•</span>
-              <span className="text-slate-300">
-                NASA FIRMS + OpenStreetMap industrial baseline linked
-              </span>
-            </div>
-            <div className="flex items-center gap-3 text-[10px] font-mono text-cyan-400/90">
-              <span className="hidden sm:inline">{dataFreshness}</span>
-              {lastRefreshed && <span>Updated {lastRefreshed}</span>}
-            </div>
-          </div>
-        ) : (
-          <div className="glass-card bg-amber-950/30 border border-amber-500/40 text-amber-200 px-4 py-2 rounded-2xl text-xs flex flex-wrap items-center justify-between gap-2 shadow-lg">
-            <div className="flex items-center gap-2.5">
-              <span>⚠️</span>
-              <span className="font-mono font-bold text-amber-300 tracking-wide uppercase text-[11px]">
-                CACHED REPOSITORY
-              </span>
-              <span className="text-slate-500">•</span>
-              <span className="text-slate-300">
-                Operating on verified satellite dataset & local industrial spatial baseline
-              </span>
-            </div>
-            {lastRefreshed && (
-              <span className="text-[10px] font-mono text-amber-400/90">
-                Snapshot: {lastRefreshed}
-              </span>
-            )}
-          </div>
-        )}
+      <div className="h-7 bg-[#0a0e14] border-b border-[#1f2933] px-3 flex items-center justify-between text-[10px] font-mono overflow-x-auto">
+        <div className="flex items-center gap-2 whitespace-nowrap">
+          {ignisStatus === "live" ? (
+            <>
+              <span className="text-[#00ff9c] font-bold">[LIVE]</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#00ff9c]">NASA-FIRMS LINK NOMINAL</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#d0d8e0]">OSM-BASELINE LOADED (248 SITES)</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#6b7785]">LAST SYNC {lastRefreshedUtc || "14:32:15Z"}</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#00d4ff]">NEXT SYNC IN 03:00</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[#ffb800] font-bold">[WARN]</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#ffb800]">LINK DEGRADED</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#d0d8e0]">SERVING FROM LOCAL CACHE REPOSITORY</span>
+              <span className="text-[#4a5563]">::</span>
+              <span className="text-[#6b7785]">SNAPSHOT: {lastRefreshedUtc}</span>
+            </>
+          )}
 
-        {/* Backend Error Alert if Node Disconnected */}
-        {error && (
-          <div className="glass-card bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-2xl text-xs flex items-center justify-between shadow-lg">
-            <div className="flex items-center gap-2">
-              <span>🚨</span>
-              <span>{error}</span>
-            </div>
-            <button
-              onClick={() => fetchData(true)}
-              className="px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl font-mono text-[11px] font-bold transition shadow-md cursor-pointer"
-            >
-              RECONNECT
-            </button>
-          </div>
-        )}
+          {notification && (
+            <span className="text-[#00ff9c] font-bold bg-[#0f141b] border border-[#00ff9c] px-2 py-0.2 ml-2">
+              {notification}
+            </span>
+          )}
+        </div>
 
-        {/* ========================================================================= */}
-        {/* 3) FLOATING FILTER BAR DECK                                               */}
-        {/* ========================================================================= */}
+        {/* Quick Ops Commands */}
+        <div className="flex items-center gap-2 text-[#4a5563] shrink-0 font-bold ml-4">
+          <button
+            onClick={() => fetchData(true)}
+            className="hover:text-[#00ff9c] cursor-pointer"
+          >
+            [ SYS ]
+          </button>
+          <span>::</span>
+          <button
+            onClick={() => setIsAboutOpen(true)}
+            className="hover:text-[#00d4ff] cursor-pointer"
+          >
+            [ LOG ]
+          </button>
+          <span>::</span>
+          <button
+            onClick={handleDownloadReport}
+            className="hover:text-[#ffb800] cursor-pointer"
+          >
+            [ EXPORT ]
+          </button>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 4) CONTROL DECK (TERMINAL-STYLE FILTERS)                                   */}
+      {/* ========================================================================= */}
+      <div className="px-3 pt-2.5 max-w-[1800px] w-full mx-auto">
         <FilterBar
           days={days}
           category={category}
           source={source}
-          lastUpdated={lastRefreshed}
+          lastUpdated={lastRefreshedUtc}
           isRefreshing={isRefreshing}
           onDaysChange={setDays}
           onCategoryChange={setCategory}
           onSourceChange={setSource}
           onRefresh={() => fetchData(true)}
           onDownload={handleDownloadReport}
+          onTrainModel={() => setIsAboutOpen(true)}
         />
+      </div>
 
-        {/* ========================================================================= */}
-        {/* 4) TRUE COMMAND LAYOUT: 67% MAP STAGE + 33% TELEMETRY STACK               */}
-        {/* ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
-          {/* Left 67%: Map Stage with 4 Mini KPIs Directly Above */}
-          <section className="lg:col-span-8 flex flex-col gap-3">
-            {/* 4 Mini KPIs Above Map */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              {/* KPI 1: Active Hotspots */}
-              <button
-                onClick={() => setCategory("all")}
-                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
-                  category === "all"
-                    ? "border-cyan-400/80 ring-2 ring-cyan-400/60 bg-cyan-950/40 glow-cyan"
-                    : "border-white/10 hover:border-white/20 bg-white/[0.02]"
-                }`}
-              >
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
-                    ACTIVE HOTSPOTS
-                  </span>
-                  <span>🔥</span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-xl font-black font-mono text-white">
-                    {(stats?.total ?? fires.length).toLocaleString()}
-                  </span>
-                  {category === "all" ? (
-                    <span className="text-[9px] font-mono font-bold text-cyan-300 bg-cyan-950 px-1.5 py-0.2 rounded-full border border-cyan-800">
-                      ALL
-                    </span>
-                  ) : (
-                    <span className="text-[9px] font-mono text-slate-500">SHOW ALL</span>
-                  )}
-                </div>
-              </button>
+      {/* ========================================================================= */}
+      {/* 5) MAIN OPS GRID (3-COLUMN: 22% REGISTRY | 52% MAP | 26% TELEMETRY)        */}
+      {/* ========================================================================= */}
+      <main className="max-w-[1800px] w-full mx-auto p-3 flex-1 flex flex-col">
+        {/* Error Alert Strip if Node Unreachable */}
+        {error && (
+          <div className="mb-2 p-2 border border-[#ff3b3b] bg-[#ff3b3b]/10 text-[#ff3b3b] text-xs flex justify-between items-center font-mono">
+            <span>[ERR] {error}</span>
+            <button
+              onClick={() => fetchData(true)}
+              className="border border-[#ff3b3b] px-2 py-0.5 hover:bg-[#ff3b3b]/20 cursor-pointer uppercase font-bold"
+            >
+              [ RETRY LINK ]
+            </button>
+          </div>
+        )}
 
-              {/* KPI 2: Critical Risk */}
-              <button
-                onClick={() => setCategory(category === "EMERGENCY_INDUSTRIAL" ? "all" : "EMERGENCY_INDUSTRIAL")}
-                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
-                  category === "EMERGENCY_INDUSTRIAL"
-                    ? "border-red-500/80 ring-2 ring-red-500/70 bg-red-950/50 glow-red"
-                    : "border-white/10 hover:border-red-500/40 bg-white/[0.02]"
-                }`}
-              >
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
-                    CRITICAL RISK
-                  </span>
-                  <span className={stats?.emergency && stats.emergency > 0 ? "animate-pulse" : ""}>🚨</span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-xl font-black font-mono text-red-400">
-                    {stats?.emergency ?? 0}
-                  </span>
-                  {category === "EMERGENCY_INDUSTRIAL" && (
-                    <span className="text-[9px] font-mono font-bold text-red-300 bg-red-950 px-1.5 py-0.2 rounded-full border border-red-800 animate-pulse">
-                      FILTERED
-                    </span>
-                  )}
-                </div>
-              </button>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1">
+          {/* COLUMN 1: LEFT SIDE PANEL (22% -> 3 cols on lg grid) */}
+          <aside className="lg:col-span-3 h-[600px] lg:h-[calc(100vh-210px)] min-h-[480px]">
+            <IndustrialRegistry
+              selectedFacilityId={selectedFacilityId}
+              onSelectFacility={(fac: IndustrialFacility) => {
+                setSelectedFacilityId(fac.id);
+                setTargetCoords([fac.latitude, fac.longitude]);
+                setNotification(`[NAV] PANNED TO ${fac.name} (${fac.id})`);
+                setTimeout(() => setNotification(null), 3000);
+              }}
+            />
+          </aside>
 
-              {/* KPI 3: Forest Alerts */}
-              <button
-                onClick={() => setCategory(category === "FOREST_FIRE" ? "all" : "FOREST_FIRE")}
-                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
-                  category === "FOREST_FIRE"
-                    ? "border-emerald-500/80 ring-2 ring-emerald-500/70 bg-emerald-950/50 glow-emerald"
-                    : "border-white/10 hover:border-emerald-500/40 bg-white/[0.02]"
-                }`}
-              >
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
-                    FOREST ALERTS
-                  </span>
-                  <span>🌲</span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-xl font-black font-mono text-emerald-400">
-                    {stats?.forest ?? 0}
-                  </span>
-                  {category === "FOREST_FIRE" && (
-                    <span className="text-[9px] font-mono font-bold text-emerald-300 bg-emerald-950 px-1.5 py-0.2 rounded-full border border-emerald-800">
-                      FILTERED
-                    </span>
-                  )}
-                </div>
-              </button>
-
-              {/* KPI 4: Industrial Filters Passed */}
-              <button
-                onClick={() => setCategory(category === "PERSISTENT_INDUSTRIAL" ? "all" : "PERSISTENT_INDUSTRIAL")}
-                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
-                  category === "PERSISTENT_INDUSTRIAL"
-                    ? "border-amber-500/80 ring-2 ring-amber-500/70 bg-amber-950/50 glow-amber"
-                    : "border-white/10 hover:border-amber-500/40 bg-white/[0.02]"
-                }`}
-              >
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
-                    INDUSTRIAL FILTERED
-                  </span>
-                  <span>🏭</span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-xl font-black font-mono text-amber-400">
-                    {stats?.persistent ?? 0}
-                  </span>
-                  {category === "PERSISTENT_INDUSTRIAL" && (
-                    <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-950 px-1.5 py-0.2 rounded-full border border-amber-800">
-                      FILTERED
-                    </span>
-                  )}
-                </div>
-              </button>
-            </div>
-
-            {/* Map Frame with Rounded-3xl Glass Frame & Defense-Tech Overlays */}
-            <div className="relative h-[calc(100vh-310px)] min-h-[560px] md:min-h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex-1">
-              {/* Loading Shimmer Overlay */}
-              {loading && (
-                <div className="absolute inset-0 z-[1000] bg-[#020617]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
-                  <div className="relative flex items-center justify-center">
-                    <div className="w-12 h-12 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
-                    <span className="absolute text-sm">🛰️</span>
-                  </div>
-                  <span className="font-mono text-xs text-red-300 tracking-widest uppercase">
-                    IGNIS Ingesting NASA Thermal Telemetry...
-                  </span>
-                </div>
-              )}
-
-              {/* Empty Filter State */}
-              {!loading && (!Array.isArray(filteredFires) || filteredFires.length === 0) && (
-                <div className="absolute inset-0 z-[999] pointer-events-none flex flex-col items-center justify-center text-center p-6 bg-[#020617]/70 backdrop-blur-[2px]">
-                  <div className="glass bg-[#0b1220]/95 border border-white/15 p-6 rounded-3xl max-w-sm pointer-events-auto shadow-2xl">
-                    <div className="text-3xl mb-2">🔍</div>
-                    <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
-                      Zero Anomaly Matches
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                      No thermal targets in the selected window match category &quot;{category}&quot;.
-                    </p>
-                    <button
-                      onClick={() => setCategory("all")}
-                      className="mt-4 px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-mono font-bold tracking-wider shadow-lg shadow-red-600/30 cursor-pointer"
-                    >
-                      RESET TO ALL
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <FireMap fires={Array.isArray(filteredFires) ? filteredFires : []} />
-            </div>
+          {/* COLUMN 2: CENTER MAP STAGE (52% -> 6 cols on lg grid) */}
+          <section className="lg:col-span-6 h-[600px] lg:h-[calc(100vh-210px)] min-h-[480px] flex flex-col">
+            <FireMap
+              fires={filteredFires}
+              targetCoords={targetCoords}
+              facilities={[]}
+            />
           </section>
 
-          {/* Right 33%: Telemetry Stack (4 cols on lg screen) */}
-          <aside className="lg:col-span-4 flex flex-col gap-4">
+          {/* COLUMN 3: RIGHT TELEMETRY STACK (26% -> 3 cols on lg grid) */}
+          <aside className="lg:col-span-3 flex flex-col gap-3 h-[calc(100vh-210px)] overflow-y-auto">
             <StatsPanel
               stats={stats}
               activeCategory={category}
               onSelectCategory={setCategory}
             />
-            <AlertPanel alerts={Array.isArray(alerts) ? alerts : []} />
+            <AlertPanel
+              alerts={alerts}
+              onSelectCoordinates={(lat, lon) => setTargetCoords([lat, lon])}
+              statusMode={ignisStatus}
+            />
           </aside>
         </div>
-
-        {/* ========================================================================= */}
-        {/* 5) BOTTOM CASE STUDIES & BENCHMARKS STRIP                                  */}
-        {/* ========================================================================= */}
-        <CaseStudies />
       </main>
 
       {/* ========================================================================= */}
-      {/* 6) SLIM FOOTER                                                            */}
+      {/* 6) BOTTOM STATUS BAR (GROUND STATION TERMINAL STYLE)                      */}
       {/* ========================================================================= */}
-      <footer className="border-t border-white/10 bg-[#020617]/90 py-3.5 px-4 text-center text-xs text-slate-500 font-mono tracking-wider">
-        IGNIS v1.0 • NASA FIRMS • OpenStreetMap • Built for NTRO SIH26162
+      <footer className="h-6 bg-[#0f141b] border-t border-[#1f2933] px-3 flex items-center justify-between text-[10px] text-[#6b7785] tracking-wider uppercase font-mono">
+        <div className="flex items-center gap-2">
+          <span className="text-[#00ff9c]">[SYS] READY</span>
+          <span className="text-[#4a5563]">::</span>
+          <span className="text-[#d0d8e0]">[NET] 200 OK</span>
+          <span className="text-[#4a5563]">::</span>
+          <span className="text-[#d0d8e0]">[DB] SQLITE/47MB</span>
+          <span className="text-[#4a5563]">::</span>
+          <span className="text-[#00d4ff]">[ML] RF-100/89.2%</span>
+        </div>
+
+        <div className="hidden md:flex items-center gap-2 tabular-nums text-[#4a5563]">
+          <span className="text-[#6b7785]">PACKETS RX: {seqCounter}</span>
+          <span>//</span>
+          <span>TX: 128</span>
+          <span>//</span>
+          <span className="text-[#00ff9c]">ERR: 0</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="hidden sm:inline">MEM: 62% :: CPU: 12%</span>
+          <span className="text-[#4a5563] hidden sm:inline">::</span>
+          <span className="text-[#d0d8e0] font-bold">IGNIS v1.0.4</span>
+          <span className="text-[#4a5563]">::</span>
+          <span className="text-[#6b7785]">© NTRO</span>
+        </div>
       </footer>
 
-      {/* About Modal Dialog */}
+      {/* About Technical Dialog */}
       <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );

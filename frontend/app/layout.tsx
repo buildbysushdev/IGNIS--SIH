@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "IGNIS — Fire Intelligence Command",
-  description: "AI-powered real-time satellite fire surveillance and industrial anomaly classification for NTRO (SIH26162)",
+  title: "IGNIS-01 :: FIRE INTELLIGENCE GROUND STATION",
+  description: "Mission Control Ground Station Terminal for Industrial Fire Classification (NTRO / SIH26162)",
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>",
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0e14'/><rect x='20' y='20' width='60' height='60' fill='none' stroke='%2300ff9c' stroke-width='8'/><rect x='42' y='42' width='16' height='16' fill='%2300d4ff'/></svg>",
   },
 };
 
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-command-radial text-[#f8fafc] antialiased selection:bg-red-600 selection:text-white">
+      <body className="min-h-screen bg-[#0a0e14] text-[#d0d8e0] font-mono antialiased selection:bg-[#00d4ff] selection:text-[#0a0e14]">
         {children}
       </body>
     </html>
