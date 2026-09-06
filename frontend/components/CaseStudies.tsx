@@ -3,98 +3,102 @@
 import { useState } from "react";
 
 export default function CaseStudies() {
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="bg-[#1e293b] border border-slate-700/60 rounded-xl p-5 shadow-xl">
-      {/* Header with toggle */}
+    <div className="glass-card rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-2xl border border-white/10 transition-all">
+      {/* Header Bar */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-            📚 Case Studies & Benchmark Patterns
-          </h2>
-          <span className="text-[11px] font-mono text-slate-400 hidden sm:inline">
-            (Ground Truth Validation)
+        <div className="flex items-center gap-2.5">
+          <span className="text-amber-400 text-sm">💡</span>
+          <h3 className="text-xs md:text-sm font-extrabold text-white tracking-wide uppercase font-mono">
+            Ground Truth & Intelligence Benchmarks
+          </h3>
+          <span className="text-[10px] font-mono text-slate-400 hidden sm:inline">
+            • Validation Case Profiles
           </span>
         </div>
         <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-xs font-mono px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition flex items-center gap-1.5 cursor-pointer"
         >
-          <span>{expanded ? "Collapse" : "Expand"}</span>
-          <span>{expanded ? "▲" : "▼"}</span>
+          <span>{isOpen ? "MINIMIZE" : "EXPAND"}</span>
+          <span>{isOpen ? "▲" : "▼"}</span>
         </button>
       </div>
 
-      {/* Expanded Content: 3 Cards */}
-      {expanded && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          {/* Card 1: Bhilai Steel Plant (Yellow) */}
-          <div className="border-l-4 border-yellow-500 bg-slate-900/80 p-4 rounded-r-xl border border-l-0 border-slate-800 flex flex-col justify-between gap-3 shadow-md">
+      {/* 3 Compact Glass Insight Cards */}
+      {isOpen && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-3.5 pt-3 border-t border-white/10">
+          {/* Card 1: Bhilai Steel Plant */}
+          <div className="glass-card rounded-xl p-3.5 border border-white/10 flex flex-col justify-between gap-2.5 hover:border-amber-500/30 transition-all">
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="text-yellow-400 font-mono font-bold text-[10px] uppercase tracking-wider bg-yellow-950/60 border border-yellow-800 px-2 py-0.5 rounded">
-                  PERSISTENT_INDUSTRIAL
+                <span className="text-amber-400 font-mono font-bold text-[9px] uppercase tracking-widest bg-amber-950/60 border border-amber-800/60 px-2 py-0.5 rounded-full">
+                  INDUSTRIAL PERSISTENCE
                 </span>
-                <span className="text-slate-500 font-mono text-[11px]">
-                  21.20°N, 81.38°E
+                <span className="text-slate-500 font-mono text-[10px]">
+                  21.2°N, 81.4°E
                 </span>
               </div>
-              <h3 className="text-sm font-bold text-white mt-1">
-                🏭 Bhilai Steel Plant
-              </h3>
-              <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
-                Hot 28/30 days. FRP 120-180MW. Normal blast furnace operations. NOT an emergency.
+              <h4 className="text-xs font-bold text-white mt-1 flex items-center gap-1.5">
+                <span>🏭</span> Bhilai Steel Complex
+              </h4>
+              <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
+                Active &gt;25 days/month with 120-180MW FRP. Classified as routine flare stacks.
               </p>
             </div>
-            <div className="text-[11px] font-mono text-yellow-300/80 bg-yellow-950/30 p-1.5 rounded border border-yellow-900/40">
-              System Action: Suppress alert; track baseline
+            <div className="text-[10px] font-mono text-amber-300/90 bg-amber-950/30 px-2 py-1 rounded-lg border border-amber-900/40">
+              <span className="text-slate-400 font-sans">Why this matters: </span>
+              Prevents dispatch false-alarms at known steelworks.
             </div>
           </div>
 
-          {/* Card 2: Punjab Stubble Burning (Orange) */}
-          <div className="border-l-4 border-orange-500 bg-slate-900/80 p-4 rounded-r-xl border border-l-0 border-slate-800 flex flex-col justify-between gap-3 shadow-md">
+          {/* Card 2: Agricultural Burning Belt */}
+          <div className="glass-card rounded-xl p-3.5 border border-white/10 flex flex-col justify-between gap-2.5 hover:border-orange-500/30 transition-all">
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="text-orange-400 font-mono font-bold text-[10px] uppercase tracking-wider bg-orange-950/60 border border-orange-800 px-2 py-0.5 rounded">
-                  AGRICULTURAL_BURNING
+                <span className="text-orange-400 font-mono font-bold text-[9px] uppercase tracking-widest bg-orange-950/60 border border-orange-800/60 px-2 py-0.5 rounded-full">
+                  SEASONAL CROP BELT
                 </span>
-                <span className="text-slate-500 font-mono text-[11px]">
+                <span className="text-slate-500 font-mono text-[10px]">
                   30.5°N, 75.5°E
                 </span>
               </div>
-              <h3 className="text-sm font-bold text-white mt-1">
-                🌾 Punjab Stubble Burning
-              </h3>
-              <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
-                Oct-Nov spike. Low FRP &lt; 30MW. Indo-Gangetic plain. Seasonal crop residue burning.
+              <h4 className="text-xs font-bold text-white mt-1 flex items-center gap-1.5">
+                <span>🌾</span> Punjab Stubble Grid
+              </h4>
+              <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
+                High-density clustering in post-monsoon harvest window with low FRP (&lt;30MW).
               </p>
             </div>
-            <div className="text-[11px] font-mono text-orange-300/80 bg-orange-950/30 p-1.5 rounded border border-orange-900/40">
-              System Action: Flag for state pollution registry
+            <div className="text-[10px] font-mono text-orange-300/90 bg-orange-950/30 px-2 py-1 rounded-lg border border-orange-900/40">
+              <span className="text-slate-400 font-sans">Why this matters: </span>
+              Feeds environmental air-quality compliance registries.
             </div>
           </div>
 
-          {/* Card 3: Emergency Industrial Fire (Red) */}
-          <div className="border-l-4 border-red-500 bg-slate-900/80 p-4 rounded-r-xl border border-l-0 border-slate-800 flex flex-col justify-between gap-3 shadow-md">
+          {/* Card 3: Forest Anomaly Response */}
+          <div className="glass-card rounded-xl p-3.5 border border-white/10 flex flex-col justify-between gap-2.5 hover:border-emerald-500/30 transition-all">
             <div>
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="text-red-400 font-mono font-bold text-[10px] uppercase tracking-wider bg-red-950/60 border border-red-800 px-2 py-0.5 rounded">
-                  EMERGENCY_INDUSTRIAL
+                <span className="text-emerald-400 font-mono font-bold text-[9px] uppercase tracking-widest bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded-full">
+                  WILDLAND BIOMASS
                 </span>
-                <span className="text-slate-500 font-mono text-[11px]">
-                  Varies
+                <span className="text-slate-500 font-mono text-[10px]">
+                  Dynamic Canopy
                 </span>
               </div>
-              <h3 className="text-sm font-bold text-white mt-1">
-                🚨 Emergency Industrial Fire (Example)
-              </h3>
-              <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
-                Sudden thermal spike at previously cold location near industrial zone. High FRP. Immediate dispatch required.
+              <h4 className="text-xs font-bold text-white mt-1 flex items-center gap-1.5">
+                <span>🌲</span> Forest Anomaly Response
+              </h4>
+              <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
+                Spatiotemporal clustering in protected reserves outside industrial baselines.
               </p>
             </div>
-            <div className="text-[11px] font-mono text-red-300/80 bg-red-950/30 p-1.5 rounded border border-red-900/40">
-              System Action: Broadcast critical alarm to authorities
+            <div className="text-[10px] font-mono text-emerald-300/90 bg-emerald-950/30 px-2 py-1 rounded-lg border border-emerald-900/40">
+              <span className="text-slate-400 font-sans">Why this matters: </span>
+              Routes instant perimeter alerts to forest rangers.
             </div>
           </div>
         </div>

@@ -13,45 +13,58 @@ export interface AlertItem {
 
 interface AlertPanelProps {
   alerts?: AlertItem[];
+  onSelectCoordinates?: (lat: number, lon: number) => void;
 }
 
-export default function AlertPanel({ alerts = [] }: AlertPanelProps) {
+export default function AlertPanel({ alerts = [], onSelectCoordinates }: AlertPanelProps) {
   const safeAlerts = Array.isArray(alerts) ? alerts : [];
   const count = safeAlerts.length;
 
   return (
-    <div className="bg-[#0f172a] border border-slate-700/80 rounded-2xl p-5 shadow-2xl flex flex-col gap-3.5">
+    <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-2xl flex flex-col gap-3.5 border border-white/10">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
-        <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2 tracking-tight">
-          🚨 Critical Threat Feed
-        </h2>
+      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2.5 w-2.5">
+            {count > 0 ? (
+              <>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+              </>
+            ) : (
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+            )}
+          </span>
+          <h2 className="text-base font-extrabold text-white tracking-tight uppercase font-mono">
+            Surveillance Alerts
+          </h2>
+        </div>
         <span
-          className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold ${
+          className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider ${
             count > 0
-              ? "bg-red-950/80 text-red-300 border border-red-700 animate-pulse"
+              ? "bg-red-950/80 text-red-300 border border-red-700 animate-pulse glow-red"
               : "bg-emerald-950/80 text-emerald-300 border border-emerald-800"
           }`}
         >
-          {count} {count === 1 ? "Active Alert" : "Active Alerts"}
+          {count > 0 ? `${count} CRITICAL THREATS` : "GRID SECURE"}
         </span>
       </div>
 
       {/* Content */}
       {count === 0 ? (
-        <div className="py-7 text-center rounded-xl bg-slate-900/40 border border-slate-800/80 flex flex-col items-center justify-center gap-1.5 px-4">
-          <div className="w-9 h-9 rounded-full bg-emerald-950/70 border border-emerald-800 flex items-center justify-center text-emerald-400 text-base">
-            ✓
+        <div className="py-8 px-4 text-center rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col items-center justify-center gap-2">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-950/40 border border-emerald-800/60 flex items-center justify-center text-xl text-emerald-400 shadow-inner">
+            🛡️
           </div>
-          <span className="text-emerald-300 font-semibold text-xs mt-1">
-            No Critical Industrial Threats
+          <span className="text-emerald-300 font-bold text-sm tracking-tight mt-1">
+            No critical industrial emergencies in this window
           </span>
           <span className="text-[11px] text-slate-400 font-mono">
-            Surveillance grid is calm and within operational baseline
+            Persistent industrial sources filtered • Automated baseline active
           </span>
         </div>
       ) : (
-        <div className="max-h-[240px] overflow-y-auto space-y-2 pr-1">
+        <div className="max-h-[260px] overflow-y-auto space-y-2.5 pr-1">
           {safeAlerts.map((alert, idx) => {
             const isCritical = alert.severity === "CRITICAL";
             const timeStr = alert.timestamp || alert.created_at;
@@ -76,31 +89,36 @@ export default function AlertPanel({ alerts = [] }: AlertPanelProps) {
             return (
               <div
                 key={alert.id ?? idx}
-                className="border-l-4 border-red-500 bg-slate-900/90 p-3 rounded-r-xl border border-l-0 border-slate-800 flex flex-col gap-1 shadow-sm transition hover:bg-slate-850"
+                className="relative overflow-hidden rounded-xl bg-red-950/20 border border-red-900/40 p-3 flex flex-col gap-1.5 transition hover:border-red-500/50 hover:bg-red-950/30"
               >
-                <div className="flex items-center justify-between text-xs">
+                {/* Left Red Neon Border */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500 glow-red" />
+
+                <div className="flex items-center justify-between text-xs pl-1">
                   <div className="flex items-center gap-2">
-                    {isCritical && (
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                      </span>
-                    )}
-                    <span className="font-mono font-bold text-red-400 text-[11px] uppercase tracking-wider">
+                    <span className="font-mono font-extrabold text-red-400 text-[10px] uppercase tracking-wider bg-red-950 px-2 py-0.5 rounded border border-red-800">
                       {alert.severity}
                     </span>
                     {hasCoords && (
-                      <span className="text-slate-400 font-mono text-[11px]">
-                        [{Number(alert.latitude).toFixed(2)}, {Number(alert.longitude).toFixed(2)}]
+                      <span
+                        onClick={() =>
+                          onSelectCoordinates &&
+                          onSelectCoordinates(alert.latitude!, alert.longitude!)
+                        }
+                        className="text-slate-400 font-mono text-[10px] hover:text-cyan-300 cursor-pointer transition flex items-center gap-1"
+                        title="Jump to location"
+                      >
+                        <span>📍</span>
+                        <span>[{Number(alert.latitude).toFixed(2)}°, {Number(alert.longitude).toFixed(2)}°]</span>
                       </span>
                     )}
                   </div>
-                  <span className="text-slate-500 font-mono text-[11px]">
+                  <span className="text-slate-500 font-mono text-[10px]">
                     {formattedTime}
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-200 leading-relaxed font-sans mt-0.5">
+                <p className="text-xs text-slate-200 leading-relaxed font-sans pl-1">
                   {alert.message}
                 </p>
               </div>

@@ -14,16 +14,16 @@ interface FilterBarProps {
 }
 
 const CATEGORIES = [
-  { value: "all", label: "All Categories" },
+  { value: "all", label: "All Categories (Unfiltered)" },
   { value: "EMERGENCY_INDUSTRIAL", label: "🚨 Emergency Industrial" },
   { value: "PERSISTENT_INDUSTRIAL", label: "🏭 Persistent Industrial" },
   { value: "AGRICULTURAL_BURNING", label: "🌾 Agricultural Burning" },
   { value: "FOREST_FIRE", label: "🌲 Forest Fire" },
-  { value: "UNKNOWN", label: "🔘 Unclassified" },
+  { value: "UNKNOWN", label: "🔘 Unclassified Anomaly" },
 ];
 
 const SOURCES = [
-  { value: "all", label: "Merged Satellites (SNPP + NOAA)" },
+  { value: "all", label: "VIIRS Merged (SNPP + NOAA-20)" },
   { value: "VIIRS_SNPP_NRT", label: "Suomi NPP (VIIRS 375m)" },
   { value: "VIIRS_NOAA20_NRT", label: "NOAA-20 (VIIRS 375m)" },
 ];
@@ -43,21 +43,21 @@ export default function FilterBar({
   onDownload,
 }: FilterBarProps) {
   return (
-    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-3.5 shadow-xl flex flex-wrap items-center justify-between gap-3">
-      {/* Select Filters */}
+    <div className="glass-card rounded-2xl p-3 md:px-5 md:py-3.5 shadow-2xl flex flex-wrap items-center justify-between gap-3.5 border border-white/10">
+      {/* Floating Filter Selects */}
       <div className="flex flex-wrap items-center gap-3 text-xs">
         {/* Days Select */}
-        <div className="flex items-center gap-1.5">
-          <label className="font-mono text-slate-400 uppercase tracking-wider text-[11px] font-semibold">
-            Days:
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-slate-400 uppercase tracking-[0.2em] text-[10px] font-bold">
+            WINDOW
           </label>
           <select
             value={days}
             onChange={(e) => onDaysChange(Number(e.target.value))}
-            className="bg-slate-800 text-white border border-slate-700 rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer font-sans"
+            className="bg-[#0b1220] text-slate-200 border border-white/10 rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition cursor-pointer font-mono text-xs shadow-inner"
           >
             {DAY_OPTIONS.map((d) => (
-              <option key={d} value={d} className="bg-slate-900 text-white">
+              <option key={d} value={d} className="bg-[#020617] text-white">
                 {d} {d === 1 ? "Day" : "Days"}
               </option>
             ))}
@@ -65,17 +65,17 @@ export default function FilterBar({
         </div>
 
         {/* Category Select */}
-        <div className="flex items-center gap-1.5">
-          <label className="font-mono text-slate-400 uppercase tracking-wider text-[11px] font-semibold">
-            Category:
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-slate-400 uppercase tracking-[0.2em] text-[10px] font-bold">
+            CATEGORY
           </label>
           <select
             value={category}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="bg-slate-800 text-white border border-slate-700 rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer font-sans"
+            className="bg-[#0b1220] text-slate-200 border border-white/10 rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition cursor-pointer font-sans text-xs shadow-inner"
           >
             {CATEGORIES.map((cat) => (
-              <option key={cat.value} value={cat.value} className="bg-slate-900 text-white">
+              <option key={cat.value} value={cat.value} className="bg-[#020617] text-white">
                 {cat.label}
               </option>
             ))}
@@ -83,17 +83,17 @@ export default function FilterBar({
         </div>
 
         {/* Source Select */}
-        <div className="flex items-center gap-1.5">
-          <label className="font-mono text-slate-400 uppercase tracking-wider text-[11px] font-semibold">
-            Source:
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-slate-400 uppercase tracking-[0.2em] text-[10px] font-bold">
+            SENSOR
           </label>
           <select
             value={source}
             onChange={(e) => onSourceChange(e.target.value)}
-            className="bg-slate-800 text-white border border-slate-700 rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer font-sans"
+            className="bg-[#0b1220] text-slate-200 border border-white/10 rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition cursor-pointer font-sans text-xs shadow-inner"
           >
             {SOURCES.map((src) => (
-              <option key={src.value} value={src.value} className="bg-slate-900 text-white">
+              <option key={src.value} value={src.value} className="bg-[#020617] text-white">
                 {src.label}
               </option>
             ))}
@@ -101,35 +101,36 @@ export default function FilterBar({
         </div>
       </div>
 
-      {/* Action Controls + Timestamp */}
-      <div className="flex items-center gap-2.5 ml-auto flex-wrap">
-        {/* Last Updated Label */}
-        {lastUpdated && (
-          <span className="font-mono text-[11px] text-slate-400 hidden sm:inline">
-            Last updated: <span className="text-slate-200 font-semibold">{lastUpdated}</span>
-          </span>
-        )}
+      {/* Action Controls & Auto-refresh status */}
+      <div className="flex items-center gap-3 ml-auto flex-wrap">
+        {/* Tiny Auto-refresh Indicator */}
+        <div className="hidden lg:flex items-center gap-1.5 text-[10px] font-mono text-slate-400 bg-white/[0.02] border border-white/5 px-2.5 py-1 rounded-lg">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span>Auto-refresh 3 min</span>
+        </div>
 
-        {/* Outline Download Report Button */}
+        {/* Download Report Button */}
         {onDownload && (
           <button
             onClick={onDownload}
-            className="border border-slate-700 hover:border-slate-500 bg-slate-800/60 hover:bg-slate-800 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer"
-            title="Download full surveillance report as CSV"
+            className="glass-card hover:border-cyan-500/40 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl shadow-sm transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+            title="Download full surveillance telemetry as CSV"
           >
-            <span>📥</span>
+            <span className="text-cyan-400 text-sm">📥</span>
             <span>Download Report</span>
           </button>
         )}
 
-        {/* Solid Red Refresh Button */}
+        {/* Solid Molten-Red Refresh Button with Glow */}
         <button
           onClick={onRefresh}
           disabled={isRefreshing}
-          className="bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+          className="relative group bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-500 hover:to-rose-500 active:scale-[0.98] text-white text-xs font-bold px-4 py-1.5 rounded-xl shadow-lg shadow-red-600/30 glow-red transition-all duration-200 flex items-center gap-2 cursor-pointer disabled:opacity-60"
         >
-          <span className={isRefreshing ? "animate-spin" : ""}>🔥</span>
-          <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
+          <span className={`text-sm ${isRefreshing ? "animate-spin" : "group-hover:rotate-12 transition-transform"}`}>
+            🔥
+          </span>
+          <span className="tracking-wide">{isRefreshing ? "Syncing..." : "Refresh Feed"}</span>
         </button>
       </div>
     </div>
