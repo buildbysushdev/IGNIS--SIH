@@ -1,0 +1,249 @@
+import os
+import json
+import time
+from datetime import datetime, timedelta
+from io import StringIO
+from pathlib import Path
+from typing import Any
+import pandas as pd
+import requests
+from geopy.distance import geodesic
+
+from config import FIRMS_MAP_KEY, FIRMS_BASE_URL, CACHE_DIR, INDIA_BBOX
+from database import insert_fires, get_fires_by_date
+
+# Ensure cache directory exists on module load
+Path(CACHE_DIR).mkdir(parents=True, exist_ok=True)
+
+_data_status: dict[str, Any] = {
+    "mode": "empty",
+    "count": 0,
+    "message": "No operations performed yet",
+}
+
+
+def _update_status(mode: str, count: int, message: str) -> None:
+    _data_status["mode"] = mode
+    _data_status["count"] = count
+    _data_status["message"] = message
+
+
+def _get_map_key() -> str:
+    key = (FIRMS_MAP_KEY or os.getenv("FIRMS_MAP_KEY", "")).strip()
+    if not key:
+        raise Exception("FIRMS_MAP_KEY not found in .env")
+    return key
+
+
+def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
+    """Fetch fire telemetry from NASA FIRMS API and normalize columns."""
+    map_key = _get_map_key()
+    if not map_key or not map_key.strip():
+        raise Exception("FIRMS_MAP_KEY not found in .env")
+    url = f"{FIRMS_BASE_URL}/{map_key}/{source}/{INDIA_BBOX}/{days}"
+    print(f"[IGNIS] Requesting NASA URL: {url}")
+
+    response = requests.get(url, timeout=30)
+
+    if response.status_code == 429:
+        raise Exception("FIRMS rate limited")
+    if response.status_code in (401, 403):
+        raise Exception("Invalid FIRMS API key")
+
+    text = response.text.strip()
+    if "invalid" in text.lower() and "key" in text.lower():
+        raise Exception("Invalid FIRMS API key")
+
+    response.raise_for_status()
+
+    if not text or text.lower().startswith("no data"):
+        print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires=0")
+        return []
+
+    try:
+        df = pd.read_csv(StringIO(text))
+    except Exception:
+        return []
+
+    if df.empty:
+        print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires=0")
+        return []
+
+    # Column normalization: VIIRS bright_ti4 -> brightness; MODIS stays brightness
+    if "bright_ti4" in df.columns and "brightness" not in df.columns:
+        df.rename(columns={"bright_ti4": "brightness"}, inplace=True)
+    elif "bright_ti4" in df.columns and "brightness" in df.columns:
+        df["brightness"] = df["brightness"].fillna(df["bright_ti4"])
+
+    records: list[dict[str, Any]] = []
+    for row in df.to_dict(orient="records"):
+        try:
+            lat = float(row.get("latitude", 0.0))
+            lon = float(row.get("longitude", 0.0))
+            brightness = float(row.get("brightness", 0.0))
+            frp = float(row.get("frp", 0.0))
+        except (ValueError, TypeError):
+            continue
+
+        raw_time = row.get("acq_time", "")
+        if pd.isna(raw_time) or raw_time == "":
+            acq_time = ""
+        elif isinstance(raw_time, (int, float)):
+            acq_time = f"{int(raw_time):04d}"
+        else:
+            acq_time = str(raw_time).strip()
+
+        raw_date = row.get("acq_date", "")
+        acq_date = "" if pd.isna(raw_date) else str(raw_date).strip()
+
+        raw_conf = row.get("confidence", "")
+        confidence = "" if pd.isna(raw_conf) else str(raw_conf).strip()
+
+        raw_sat = row.get("satellite", "")
+        satellite = "" if pd.isna(raw_sat) else str(raw_sat).strip()
+
+        raw_dn = row.get("daynight", "")
+        daynight = "" if pd.isna(raw_dn) else str(raw_dn).strip()
+
+        records.append({
+            "latitude": lat,
+            "longitude": lon,
+            "brightness": brightness,
+            "frp": frp,
+            "confidence": confidence,
+            "satellite": satellite,
+            "acq_date": acq_date,
+            "acq_time": acq_time,
+            "daynight": daynight,
+        })
+
+    print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires={len(records)}")
+    return records
+
+
+def _get_cache_path(days: int, source: str) -> str:
+    """Return cache file path and ensure parent cache directory exists."""
+    cache_dir = Path(CACHE_DIR)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    return str(cache_dir / f"firms_{source}_{days}d.json")
+
+
+def _is_cache_valid(path: str, max_age_hours: int = 3) -> bool:
+    """Check if cache file exists and was modified within max_age_hours."""
+    if not os.path.exists(path):
+        return False
+    try:
+        mtime = os.path.getmtime(path)
+        file_time = datetime.fromtimestamp(mtime)
+        age = datetime.now() - file_time
+        return age < timedelta(hours=max_age_hours)
+    except OSError:
+        return False
+
+
+def _load_cache(path: str) -> list[dict[str, Any]]:
+    """Load and parse cached fire records from JSON."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, list) else []
+    except Exception as exc:
+        print(f"[IGNIS] Error loading cache {path}: {exc}")
+        return []
+
+
+def _save_cache(path: str, data: list[dict[str, Any]]) -> None:
+    """Persist fire records to cache as JSON."""
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        print(f"[IGNIS] Cached {len(data)} fires -> {path}")
+    except Exception as exc:
+        print(f"[IGNIS] Error saving cache {path}: {exc}")
+
+
+def fetch_fires(days: int = 1, source: str = "VIIRS_SNPP_NRT") -> list[dict[str, Any]]:
+    """Cache-first fetcher: checks cache (3h TTL), calls API on miss, falls back to cache/DB."""
+    cache_path = _get_cache_path(days, source)
+
+    if _is_cache_valid(cache_path):
+        data = _load_cache(cache_path)
+        print(f"[IGNIS] Cache HIT (0 API calls) | source={source} | days={days}")
+        _update_status("cache", len(data), f"Cache HIT (0 API calls) for {source}")
+        return data
+
+    try:
+        fires = _call_firms_api(days, source)
+        _save_cache(cache_path, fires)
+        try:
+            insert_fires(fires)
+        except Exception as db_err:
+            print(f"[IGNIS] SQLite cache insert notice: {db_err}")
+        _update_status("live", len(fires), f"Live NASA FIRMS fetch | source={source} | days={days}")
+        return fires
+    except Exception as e:
+        print(f"[IGNIS] Error fetching fires: {e}")
+        if os.path.exists(cache_path):
+            cached = _load_cache(cache_path)
+            if cached:
+                print(f"[IGNIS] Falling back to expired cache: {cache_path}")
+                _update_status("cache", len(cached), f"Fallback to expired cache ({e})")
+                return cached
+        try:
+            today = datetime.now().strftime("%Y-%m-%d")
+            db_fires = get_fires_by_date(today)
+            if not db_fires:
+                db_fires = get_fires_by_date(days)
+            if db_fires:
+                print(f"[IGNIS] Falling back to SQLite database ({len(db_fires)} fires found)")
+                _update_status("cache", len(db_fires), f"Fallback to SQLite database ({e})")
+                return db_fires
+        except Exception as db_err:
+            print(f"[IGNIS] SQLite fallback notice: {db_err}")
+
+        _update_status("empty", 0, f"No fires available: {e}")
+        return []
+
+
+def fetch_all_sources(days: int = 1) -> list[dict[str, Any]]:
+    """Fetch from VIIRS_SNPP_NRT and VIIRS_NOAA20_NRT, merge, and deduplicate within 1km."""
+    fires_snpp = fetch_fires(days, "VIIRS_SNPP_NRT")
+    fires_noaa = fetch_fires(days, "VIIRS_NOAA20_NRT")
+    combined = fires_snpp + fires_noaa
+
+    if not combined:
+        print(f"[IGNIS] fetch_all_sources | merged=0 | deduped=0")
+        return []
+
+    # Sort descending by FRP to ensure points with higher FRP are preserved
+    sorted_fires = sorted(combined, key=lambda f: float(f.get("frp", 0.0)), reverse=True)
+    deduped: list[dict[str, Any]] = []
+
+    for fire in sorted_fires:
+        lat1, lon1 = float(fire["latitude"]), float(fire["longitude"])
+        is_dup = False
+        for kept in deduped:
+            lat2, lon2 = float(kept["latitude"]), float(kept["longitude"])
+            # Quick bounding box filter (~2.2km) before geodesic call
+            if abs(lat1 - lat2) < 0.02 and abs(lon1 - lon2) < 0.02:
+                if geodesic((lat1, lon1), (lat2, lon2)).km <= 1.0:
+                    is_dup = True
+                    break
+        if not is_dup:
+            deduped.append(fire)
+
+    print(
+        f"[IGNIS] Merged {len(combined)} fires from all sources -> "
+        f"{len(deduped)} fires after 1km deduplication"
+    )
+    return deduped
+
+
+def get_data_status() -> dict[str, Any]:
+    """Return status summary of the last fire data retrieval."""
+    return dict(_data_status)
+
+
+# Compatibility aliases
+get_cached_fires = fetch_all_sources
+fetch_firms_data = fetch_all_sources
