@@ -29,9 +29,12 @@ class FireClassifier:
 
         persistence = get_persistence(lat, lon, self.persistence_cache)
 
-        # Agricultural belt check (Punjab, Haryana, Indo-Gangetic & Central plains)
-        is_agri = (28.0 <= lat <= 32.0 and 74.0 <= lon <= 80.0) or (
-            24.0 <= lat <= 28.0 and 78.0 <= lon <= 84.0
+        # Agricultural belt check (Punjab, Haryana, Indo-Gangetic, Deccan & Kaveri delta plains)
+        is_agri = (
+            (28.0 <= lat <= 32.5 and 74.0 <= lon <= 80.0) or
+            (24.0 <= lat <= 28.5 and 77.0 <= lon <= 88.5) or
+            (17.5 <= lat <= 23.5 and 73.5 <= lon <= 82.5) or
+            (9.5 <= lat <= 16.5 and 75.5 <= lon <= 81.0)
         )
 
         # Post-harvest burning season check
@@ -40,7 +43,7 @@ class FireClassifier:
             month = int(date_val.split("-")[1])
         except Exception:
             month = 1
-        is_burning_season = month in [4, 5, 10, 11]
+        is_burning_season = month in [3, 4, 5, 9, 10, 11, 12]
 
         # Cremation ground proximity (e.g. Varanasi Manikarnika & Haridwar approximate corridors)
         is_cremation = (25.20 < lat < 25.40 and 82.90 < lon < 83.10) or (
@@ -68,7 +71,7 @@ class FireClassifier:
         lon = float(fire["longitude"])
 
         # EDGE CASE 1: Cremation grounds with persistent thermal signatures
-        if ctx["is_cremation"] and persistence > 50.0:
+        if ctx["is_cremation"] and persistence > 40.0:
             return {
                 "category": "PERSISTENT_INDUSTRIAL",
                 "confidence": 88,
@@ -82,59 +85,59 @@ class FireClassifier:
             }
 
         # RULE 1: Persistent Industrial (steel plant, refinery, flare, or kiln)
-        if dist < 5.0 and persistence > 60.0:
+        if (dist < 6.0 and persistence > 35.0) or (dist < 3.0 and frp > 30.0):
             return {
                 "category": "PERSISTENT_INDUSTRIAL",
                 "confidence": 92,
                 "risk_level": "LOW",
                 "color": "yellow",
                 "reason": (
-                    f"Within {dist}km of {ctx['nearest_name']}. Hot {persistence:.0f}% of past days. "
+                    f"Within {dist:.1f}km of {ctx['nearest_name']}. Hot {persistence:.0f}% of past days. "
                     "Likely furnace/flare/kiln."
                 ),
-                "action": "No emergency action needed. Monitor for anomalies.",
+                "action": "No emergency action needed. Normal industrial operational thermal source.",
             }
 
         # RULE 2: Emergency Industrial Fire (sudden intense spike in/near industrial zone)
-        if dist < 10.0 and persistence < 20.0 and frp > 50.0:
+        if dist < 12.0 and persistence < 25.0 and frp > 45.0:
             return {
                 "category": "EMERGENCY_INDUSTRIAL",
-                "confidence": 87,
+                "confidence": 89,
                 "risk_level": "CRITICAL",
                 "color": "red",
                 "reason": (
-                    f"Near {ctx['nearest_name']} ({dist}km) but NOT persistent. "
-                    f"High FRP ({frp:.1f}MW). Unexpected industrial fire!"
+                    f"Near {ctx['nearest_name']} ({dist:.1f}km) with NO recurring baseline. "
+                    f"High FRP ({frp:.1f}MW). Unexpected industrial fire spike!"
                 ),
-                "action": "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Notify district authorities.",
+                "action": "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Notify district disaster cell.",
             }
 
-        # RULE 3: Agricultural Burning (crop stubble burning in agrarian regions during season)
-        if ctx["is_agri"] and ctx["is_burning_season"] and frp < 50.0:
+        # RULE 3: Agricultural Burning (crop stubble burning in agrarian regions)
+        if ctx["is_agri"] and frp < 55.0 and dist > 5.0:
             return {
                 "category": "AGRICULTURAL_BURNING",
-                "confidence": 85,
+                "confidence": 86,
                 "risk_level": "MODERATE",
                 "color": "orange",
                 "reason": (
-                    f"Agricultural belt + burning season ({fire.get('acq_date')}). "
-                    f"FRP {frp:.1f}MW indicates crop stubble burning."
+                    f"Agrarian corridor at {lat:.2f},{lon:.2f}. "
+                    f"FRP {frp:.1f}MW consistent with open biomass / crop residue burning."
                 ),
-                "action": "Monitor air quality. Alert if fire spreads to residential zones.",
+                "action": "Log in state pollution registry. Monitor for potential spread.",
             }
 
-        # RULE 4: Forest Fire (remote non-agricultural wilderness)
-        if frp > 10.0 and dist > 15.0 and not ctx["is_agri"]:
+        # RULE 4: Forest Fire (remote non-industrial wilderness / vegetation canopy)
+        if dist > 15.0 and frp >= 5.0 and not ctx["is_agri"]:
             return {
                 "category": "FOREST_FIRE",
-                "confidence": 78,
+                "confidence": 81,
                 "risk_level": "HIGH",
                 "color": "green",
                 "reason": (
-                    f"No industry within 15km. Not agricultural region. "
-                    f"FRP {frp:.1f}MW. Likely forest/wildfire."
+                    f"Remote wildland zone ({dist:.1f}km from nearest facility). "
+                    f"FRP {frp:.1f}MW indicating forest/brush combustion."
                 ),
-                "action": "🚨 Notify Forest Department + NDRF. Deploy ground verification team.",
+                "action": "🚨 Notify Forest Department & NDRF regional response unit.",
             }
 
         # Optional ML Fallback Enhancement

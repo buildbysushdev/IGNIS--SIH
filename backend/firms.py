@@ -18,7 +18,7 @@ Path(CACHE_DIR).mkdir(parents=True, exist_ok=True)
 _data_status: dict[str, Any] = {
     "mode": "empty",
     "count": 0,
-    "message": "No operations performed yet",
+    "message": "Initializing NASA FIRMS ingestion...",
 }
 
 
@@ -29,30 +29,31 @@ def _update_status(mode: str, count: int, message: str) -> None:
 
 
 def _get_map_key() -> str:
-    key = (FIRMS_MAP_KEY or os.getenv("FIRMS_MAP_KEY", "")).strip()
+    key = (os.getenv("FIRMS_MAP_KEY", "") or FIRMS_MAP_KEY).strip()
     if not key:
-        raise Exception("FIRMS_MAP_KEY not found in .env")
+        print("[IGNIS] WARNING: FIRMS_MAP_KEY missing from environment variables!")
+        raise Exception("missing_api_key")
     return key
 
 
 def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
     """Fetch fire telemetry from NASA FIRMS API and normalize columns."""
     map_key = _get_map_key()
-    if not map_key or not map_key.strip():
-        raise Exception("FIRMS_MAP_KEY not found in .env")
     url = f"{FIRMS_BASE_URL}/{map_key}/{source}/{INDIA_BBOX}/{days}"
-    print(f"[IGNIS] Requesting NASA URL: {url}")
+    masked_key = f"{map_key[:4]}***{map_key[-4:]}" if len(map_key) > 8 else "***"
+    print(f"[IGNIS] Requesting NASA URL: {FIRMS_BASE_URL}/{masked_key}/{source}/{INDIA_BBOX}/{days}")
 
     response = requests.get(url, timeout=30)
+    print(f"[IGNIS] NASA FIRMS response status: {response.status_code}")
 
     if response.status_code == 429:
-        raise Exception("FIRMS rate limited")
+        raise Exception("FIRMS rate limited (HTTP 429)")
     if response.status_code in (401, 403):
-        raise Exception("Invalid FIRMS API key")
+        raise Exception("Invalid or unauthorized FIRMS API key (HTTP 401/403)")
 
     text = response.text.strip()
     if "invalid" in text.lower() and "key" in text.lower():
-        raise Exception("Invalid FIRMS API key")
+        raise Exception("Invalid FIRMS API key returned by NASA")
 
     response.raise_for_status()
 
@@ -62,7 +63,8 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
 
     try:
         df = pd.read_csv(StringIO(text))
-    except Exception:
+    except Exception as exc:
+        print(f"[IGNIS] CSV Parse error: {exc}")
         return []
 
     if df.empty:
@@ -117,7 +119,7 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
             "daynight": daynight,
         })
 
-    print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires={len(records)}")
+    print(f"[IGNIS] FIRMS API call SUCCESS | source={source} | days={days} | fires={len(records)}")
     return records
 
 
@@ -162,33 +164,40 @@ def _save_cache(path: str, data: list[dict[str, Any]]) -> None:
         print(f"[IGNIS] Error saving cache {path}: {exc}")
 
 
-def fetch_fires(days: int = 1, source: str = "VIIRS_SNPP_NRT") -> list[dict[str, Any]]:
-    """Cache-first fetcher: checks cache (3h TTL), calls API on miss, falls back to cache/DB."""
+def fetch_fires(
+    days: int = 1, source: str = "VIIRS_SNPP_NRT", force: bool = False
+) -> list[dict[str, Any]]:
+    """Fetch active fire detections with 3-hour cache and SQLite fallback."""
     cache_path = _get_cache_path(days, source)
 
-    if _is_cache_valid(cache_path):
+    if not force and _is_cache_valid(cache_path, max_age_hours=3):
         data = _load_cache(cache_path)
-        print(f"[IGNIS] Cache HIT (0 API calls) | source={source} | days={days}")
-        _update_status("cache", len(data), f"Cache HIT (0 API calls) for {source}")
-        return data
+        if data:
+            print(f"[IGNIS] Cache HIT (active satellite cycle) | source={source} | fires={len(data)}")
+            _update_status("live", len(data), f"Connected to NASA FIRMS ({len(data)} active hotspots, <3h cache)")
+            return data
 
     try:
         fires = _call_firms_api(days, source)
-        _save_cache(cache_path, fires)
-        try:
-            insert_fires(fires)
-        except Exception as db_err:
-            print(f"[IGNIS] SQLite cache insert notice: {db_err}")
-        _update_status("live", len(fires), f"Live NASA FIRMS fetch | source={source} | days={days}")
+        if fires:
+            _save_cache(cache_path, fires)
+            try:
+                insert_fires(fires)
+            except Exception as db_err:
+                print(f"[IGNIS] SQLite cache insert notice: {db_err}")
+        _update_status("live", len(fires), f"Live NASA FIRMS satellite ingestion ({len(fires)} active hotspots)")
         return fires
     except Exception as e:
-        print(f"[IGNIS] Error fetching fires: {e}")
+        print(f"[IGNIS] NASA FIRMS API Notice: {e}")
+        # 1. Fallback to existing cache even if slightly expired
         if os.path.exists(cache_path):
             cached = _load_cache(cache_path)
             if cached:
-                print(f"[IGNIS] Falling back to expired cache: {cache_path}")
-                _update_status("cache", len(cached), f"Fallback to expired cache ({e})")
+                print(f"[IGNIS] Using cached satellite repository: {cache_path}")
+                _update_status("cached_fallback", len(cached), f"Operating on satellite cache ({e})")
                 return cached
+
+        # 2. Fallback to SQLite historical database
         try:
             today = datetime.now().strftime("%Y-%m-%d")
             db_fires = get_fires_by_date(today)
@@ -196,19 +205,19 @@ def fetch_fires(days: int = 1, source: str = "VIIRS_SNPP_NRT") -> list[dict[str,
                 db_fires = get_fires_by_date(days)
             if db_fires:
                 print(f"[IGNIS] Falling back to SQLite database ({len(db_fires)} fires found)")
-                _update_status("cache", len(db_fires), f"Fallback to SQLite database ({e})")
+                _update_status("cached_fallback", len(db_fires), f"Operating on database repository ({e})")
                 return db_fires
         except Exception as db_err:
             print(f"[IGNIS] SQLite fallback notice: {db_err}")
 
-        _update_status("empty", 0, f"No fires available: {e}")
+        _update_status("cached_fallback", 0, f"NASA FIRMS API: {e}")
         return []
 
 
-def fetch_all_sources(days: int = 1) -> list[dict[str, Any]]:
+def fetch_all_sources(days: int = 1, force: bool = False) -> list[dict[str, Any]]:
     """Fetch from VIIRS_SNPP_NRT and VIIRS_NOAA20_NRT, merge, and deduplicate within 1km."""
-    fires_snpp = fetch_fires(days, "VIIRS_SNPP_NRT")
-    fires_noaa = fetch_fires(days, "VIIRS_NOAA20_NRT")
+    fires_snpp = fetch_fires(days, "VIIRS_SNPP_NRT", force=force)
+    fires_noaa = fetch_fires(days, "VIIRS_NOAA20_NRT", force=force)
     combined = fires_snpp + fires_noaa
 
     if not combined:
@@ -224,7 +233,6 @@ def fetch_all_sources(days: int = 1) -> list[dict[str, Any]]:
         is_dup = False
         for kept in deduped:
             lat2, lon2 = float(kept["latitude"]), float(kept["longitude"])
-            # Quick bounding box filter (~2.2km) before geodesic call
             if abs(lat1 - lat2) < 0.02 and abs(lon1 - lon2) < 0.02:
                 if geodesic((lat1, lon1), (lat2, lon2)).km <= 1.0:
                     is_dup = True

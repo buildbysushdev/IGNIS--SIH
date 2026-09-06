@@ -68,13 +68,14 @@ def root() -> dict[str, str]:
 def get_fires(
     days: int = Query(default=1, ge=1, le=10),
     source: str = Query(default="all"),
+    force: bool = Query(default=False),
 ) -> dict[str, Any]:
     classifier = get_classifier()
     try:
         if source == "all":
-            raw_fires = fetch_all_sources(days=days)
+            raw_fires = fetch_all_sources(days=days, force=force)
         else:
-            raw_fires = fetch_fires(days=days, source=source)
+            raw_fires = fetch_fires(days=days, source=source, force=force)
 
         try:
             insert_fires(raw_fires)
@@ -85,8 +86,9 @@ def get_fires(
         alerts = generate_alerts(classified_fires)
         store_alerts(alerts)
 
-        mode = get_data_status().get("mode", "live")
-        ignis_status = "cached_fallback" if mode == "cache" else "live"
+        status_info = get_data_status()
+        mode = status_info.get("mode", "live")
+        ignis_status = "live" if mode == "live" else "cached_fallback"
 
         return {
             "fires": classified_fires,
@@ -95,8 +97,10 @@ def get_fires(
             "days": days,
             "source": source,
             "ignis_status": ignis_status,
+            "message": status_info.get("message", "Operational"),
+            "generated_at": datetime.now().isoformat(),
         }
-    except Exception:
+    except Exception as exc:
         today = datetime.now().strftime("%Y-%m-%d")
         fallback = get_fires_by_date(today)
         if not fallback:
@@ -111,6 +115,8 @@ def get_fires(
             "days": days,
             "source": source,
             "ignis_status": "cached_fallback",
+            "message": f"Operating on cached/database fallback: {exc}",
+            "generated_at": datetime.now().isoformat(),
         }
 
 
@@ -197,16 +203,31 @@ def train(days: int = Query(default=7, ge=1, le=30)) -> dict[str, Any]:
 
 @app.get("/api/health")
 def health() -> dict[str, Any]:
+    import os
+    from config import FIRMS_MAP_KEY
+    key = (os.getenv("FIRMS_MAP_KEY", "") or FIRMS_MAP_KEY).strip()
+    if not key:
+        return {
+            "status": "degraded",
+            "nasa_firms": "missing_api_key",
+            "error": "FIRMS_MAP_KEY environment variable is not configured",
+            "active_fires_24h": 0,
+        }
     try:
         fires = fetch_fires(days=1, source="VIIRS_SNPP_NRT")
+        status_info = get_data_status()
+        is_live = status_info.get("mode") == "live"
         return {
-            "status": "healthy",
-            "nasa_firms": "connected",
+            "status": "healthy" if is_live else "degraded",
+            "nasa_firms": "connected" if is_live else "cached_fallback",
             "active_fires_24h": len(fires),
+            "mode": status_info.get("mode", "live"),
+            "message": status_info.get("message", "Operational"),
         }
     except Exception as e:
         return {
             "status": "degraded",
-            "nasa_firms": "disconnected_or_rate_limited",
+            "nasa_firms": "disconnected",
             "error": str(e),
+            "active_fires_24h": 0,
         }

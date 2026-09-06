@@ -19,33 +19,38 @@ export default function AlertPanel({ alerts }: AlertPanelProps) {
   const count = alerts.length;
 
   return (
-    <div className="bg-[#1e293b] border border-slate-700/60 rounded-xl p-6 shadow-xl flex flex-col gap-4">
+    <div className="bg-[#0f172a] border border-slate-700/80 rounded-2xl p-5 shadow-2xl flex flex-col gap-3.5">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-700 pb-3">
-        <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-          🚨 Active Alerts
+      <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2 tracking-tight">
+          🚨 Critical Threat Feed
         </h2>
         <span
-          className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold ${
+          className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold ${
             count > 0
-              ? "bg-red-950 text-red-400 border border-red-800"
-              : "bg-emerald-950 text-emerald-400 border border-emerald-800"
+              ? "bg-red-950/80 text-red-300 border border-red-700 animate-pulse"
+              : "bg-emerald-950/80 text-emerald-300 border border-emerald-800"
           }`}
         >
-          {count} {count === 1 ? "Alert" : "Alerts"}
+          {count} {count === 1 ? "Active Alert" : "Active Alerts"}
         </span>
       </div>
 
       {/* Content */}
       {count === 0 ? (
-        <div className="py-8 text-center text-emerald-400 font-medium text-sm flex flex-col items-center justify-center gap-1">
-          <span>✅ No emergency alerts</span>
-          <span className="text-xs text-slate-400">
-            Surveillance perimeter currently stable
+        <div className="py-7 text-center rounded-xl bg-slate-900/40 border border-slate-800/80 flex flex-col items-center justify-center gap-1.5 px-4">
+          <div className="w-9 h-9 rounded-full bg-emerald-950/70 border border-emerald-800 flex items-center justify-center text-emerald-400 text-base">
+            ✓
+          </div>
+          <span className="text-emerald-300 font-semibold text-xs mt-1">
+            No Critical Industrial Threats
+          </span>
+          <span className="text-[11px] text-slate-400 font-mono">
+            Surveillance grid is calm and within operational baseline
           </span>
         </div>
       ) : (
-        <div className="max-h-[250px] overflow-y-auto space-y-2.5 pr-1">
+        <div className="max-h-[240px] overflow-y-auto space-y-2 pr-1">
           {alerts.map((alert, idx) => {
             const isCritical = alert.severity === "CRITICAL";
             const timeStr = alert.timestamp || alert.created_at;
@@ -62,7 +67,7 @@ export default function AlertPanel({ alerts }: AlertPanelProps) {
             return (
               <div
                 key={alert.id ?? idx}
-                className="border-l-4 border-red-600 bg-slate-900/80 p-3 rounded-r-lg border border-l-0 border-slate-800 flex flex-col gap-1.5 transition hover:bg-slate-900"
+                className="border-l-4 border-red-500 bg-slate-900/90 p-3 rounded-r-xl border border-l-0 border-slate-800 flex flex-col gap-1 shadow-sm transition hover:bg-slate-850"
               >
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
@@ -86,7 +91,7 @@ export default function AlertPanel({ alerts }: AlertPanelProps) {
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-200 leading-relaxed font-sans">
+                <p className="text-xs text-slate-200 leading-relaxed font-sans mt-0.5">
                   {alert.message}
                 </p>
               </div>
