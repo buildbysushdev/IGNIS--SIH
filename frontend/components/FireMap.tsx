@@ -45,27 +45,27 @@ export function getFireColor(fire: Fire): string {
   return "#64748b";
 }
 
-// 3 Segmented Basemaps - All verified free tiles with guaranteed subdomains
+// 3 Segmented Basemaps - 100% free, zero-watermark tactical tiles with guaranteed subdomains
 const TILE_PRESETS = {
   tactical_dark: {
     id: "tactical_dark",
     name: "Tactical Dark",
-    url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    attribution: '&copy; <a href="https://carto.com/">CARTO</a>, &copy; OpenStreetMap',
-    subdomains: "abcd",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    attribution: "&copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors",
+    subdomains: "abc",
+  },
+  satellite: {
+    id: "satellite",
+    name: "Satellite Recon",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    attribution: "&copy; Esri, Maxar, Earthstar Geographics",
+    subdomains: "abc",
   },
   streets: {
     id: "streets",
     name: "Streets",
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    subdomains: "abc",
-  },
-  midnight: {
-    id: "midnight",
-    name: "Midnight",
-    url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-    attribution: "&copy; Esri, HERE, Garmin, &copy; OpenStreetMap",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     subdomains: "abc",
   },
 };
