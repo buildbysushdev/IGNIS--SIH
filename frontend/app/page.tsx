@@ -351,13 +351,13 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <FireMap fires={filteredFires} />
+            <FireMap fires={Array.isArray(filteredFires) ? filteredFires : []} />
           </section>
 
           {/* Right Column (1 Col): StatsPanel + AlertPanel stacked */}
           <aside className="flex flex-col gap-3.5">
             <StatsPanel stats={stats} />
-            <AlertPanel alerts={alerts} />
+            <AlertPanel alerts={Array.isArray(alerts) ? alerts : []} />
           </aside>
         </div>
 
