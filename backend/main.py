@@ -46,8 +46,49 @@ def get_classifier() -> FireClassifier:
     return FireClassifier(_zones, _persistence)
 
 
+def _start_port_bridge():
+    """Ensure both 8080 and 8000 respond regardless of Railway port routing configuration."""
+    import os
+    import socket
+    import threading
+
+    current_port = int(os.environ.get("PORT", "8080"))
+    alt_port = 8000 if current_port == 8080 else 8080
+
+    def bridge():
+        try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.bind(("0.0.0.0", alt_port))
+            server.listen(100)
+            while True:
+                client, _ = server.accept()
+                def forward(src):
+                    try:
+                        dest = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        dest.connect(("127.0.0.1", current_port))
+                        def pipe(a, b):
+                            try:
+                                while chunk := a.recv(4096):
+                                    b.sendall(chunk)
+                            except Exception:
+                                pass
+                            finally:
+                                b.close()
+                        threading.Thread(target=pipe, args=(src, dest), daemon=True).start()
+                        threading.Thread(target=pipe, args=(dest, src), daemon=True).start()
+                    except Exception:
+                        src.close()
+                threading.Thread(target=forward, args=(client,), daemon=True).start()
+        except Exception:
+            pass
+
+    threading.Thread(target=bridge, daemon=True).start()
+
+
 @app.on_event("startup")
 def startup():
+    _start_port_bridge()
     init_db()
     get_classifier()
 
@@ -231,3 +272,11 @@ def health() -> dict[str, Any]:
             "error": str(e),
             "active_fires_24h": 0,
         }
+
+
+if __name__ == "__main__":
+    import os
+    import uvicorn
+    run_port = int(os.environ.get("PORT", "8080"))
+    uvicorn.run("main:app", host="0.0.0.0", port=run_port)
+
