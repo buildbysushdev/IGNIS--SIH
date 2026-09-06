@@ -14,6 +14,8 @@ export interface FireStats {
 
 interface StatsPanelProps {
   stats: FireStats | null | undefined;
+  activeCategory?: string;
+  onSelectCategory?: (category: string) => void;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -24,7 +26,11 @@ const CATEGORY_COLORS: Record<string, string> = {
   Unknown: "#64748b",
 };
 
-export default function StatsPanel({ stats }: StatsPanelProps) {
+export default function StatsPanel({
+  stats,
+  activeCategory = "all",
+  onSelectCategory,
+}: StatsPanelProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -53,8 +59,17 @@ export default function StatsPanel({ stats }: StatsPanelProps) {
     { name: "Unknown", value: unknown, color: "#64748b" },
   ].filter((d) => d.value > 0);
 
+  const handleCardClick = (cat: string) => {
+    if (!onSelectCategory) return;
+    if (activeCategory === cat) {
+      onSelectCategory("all");
+    } else {
+      onSelectCategory(cat);
+    }
+  };
+
   return (
-    <div className="glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-2xl flex flex-col gap-4 border border-white/10">
+    <div className="glass rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-2xl flex flex-col gap-4 border border-white/10">
       {/* Title & Total Count Header */}
       <div className="flex items-start justify-between border-b border-white/10 pb-4">
         <div>
@@ -68,96 +83,151 @@ export default function StatsPanel({ stats }: StatsPanelProps) {
             TOTAL ACTIVE HOTSPOTS
           </span>
         </div>
-        <div className="text-right">
-          <span className="text-3xl md:text-4xl font-black font-mono text-white tracking-tight">
+        <div
+          onClick={() => onSelectCategory && onSelectCategory("all")}
+          className="text-right cursor-pointer group"
+          title="Click to show all active targets"
+        >
+          <span className="text-3xl md:text-4xl font-black font-mono text-white tracking-tight group-hover:text-cyan-300 transition">
             {total.toLocaleString()}
           </span>
-          <span className="text-[10px] font-mono text-cyan-400 block tracking-widest uppercase">
-            TARGETS
+          <span className="text-[10px] font-mono text-cyan-400 block tracking-widest uppercase group-hover:underline">
+            TARGETS {activeCategory !== "all" && "(FILTERED)"}
           </span>
         </div>
       </div>
 
-      {/* 2x2 Grid of Tactical Cards with Left Color Beams */}
+      {/* 2x2 Grid of Tactical Cards with Left Color Beams & Instant Filter Toggle */}
       <div className="grid grid-cols-2 gap-3">
         {/* Emergency Card */}
         <div
-          className={`relative overflow-hidden rounded-xl p-3 border transition-all duration-300 ${
-            emergency > 0
-              ? "bg-red-950/40 border-red-500/50 glow-red"
-              : "bg-white/[0.03] border-white/10 hover:border-red-500/30"
+          onClick={() => handleCardClick("EMERGENCY_INDUSTRIAL")}
+          className={`relative overflow-hidden rounded-xl p-3 border transition-all duration-300 cursor-pointer hover:-translate-y-0.5 ${
+            activeCategory === "EMERGENCY_INDUSTRIAL"
+              ? "bg-red-950/60 border-red-500 ring-2 ring-red-500/80 glow-red shadow-lg"
+              : emergency > 0
+              ? "bg-red-950/30 border-red-500/40 glow-red"
+              : "bg-white/[0.03] border-white/10 hover:border-red-500/40"
           }`}
         >
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-red-500 to-rose-600" />
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-red-500 to-rose-600" />
+          <div className="flex items-center justify-between text-xs pl-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-300 font-bold">
               Emergency
             </span>
             <span className={emergency > 0 ? "animate-pulse" : ""}>🚨</span>
           </div>
-          <div className="text-2xl font-black font-mono text-white mt-1">
+          <div className="text-2xl font-black font-mono text-white mt-1 pl-1">
             {emergency}
           </div>
-          <div className="text-[10px] text-red-400/90 font-medium truncate mt-0.5">
-            {emergency > 0 ? "Immediate dispatch" : "Standby nominal"}
+          <div className="text-[10px] text-red-400 font-medium truncate mt-0.5 pl-1 flex items-center justify-between">
+            <span>{emergency > 0 ? "Immediate dispatch" : "Standby nominal"}</span>
+            {activeCategory === "EMERGENCY_INDUSTRIAL" && (
+              <span className="text-[9px] text-red-300 font-mono font-bold bg-red-900/80 px-1 rounded">
+                ACTIVE
+              </span>
+            )}
           </div>
         </div>
 
         {/* Industrial Card */}
-        <div className="relative overflow-hidden rounded-xl p-3 bg-white/[0.03] border border-white/10 hover:border-amber-500/30 transition-all duration-300">
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-yellow-500" />
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">
+        <div
+          onClick={() => handleCardClick("PERSISTENT_INDUSTRIAL")}
+          className={`relative overflow-hidden rounded-xl p-3 border transition-all duration-300 cursor-pointer hover:-translate-y-0.5 ${
+            activeCategory === "PERSISTENT_INDUSTRIAL"
+              ? "bg-amber-950/60 border-amber-500 ring-2 ring-amber-500/80 glow-amber shadow-lg"
+              : "bg-white/[0.03] border-white/10 hover:border-amber-500/40"
+          }`}
+        >
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-amber-400 to-yellow-500" />
+          <div className="flex items-center justify-between text-xs pl-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-300 font-bold">
               Industrial
             </span>
             <span>🏭</span>
           </div>
-          <div className="text-2xl font-black font-mono text-white mt-1">
+          <div className="text-2xl font-black font-mono text-white mt-1 pl-1">
             {persistent}
           </div>
-          <div className="text-[10px] text-amber-400/90 font-medium truncate mt-0.5">
-            Continuous flare stacks
+          <div className="text-[10px] text-amber-400 font-medium truncate mt-0.5 pl-1 flex items-center justify-between">
+            <span>Continuous flare stacks</span>
+            {activeCategory === "PERSISTENT_INDUSTRIAL" && (
+              <span className="text-[9px] text-amber-300 font-mono font-bold bg-amber-900/80 px-1 rounded">
+                ACTIVE
+              </span>
+            )}
           </div>
         </div>
 
         {/* Agricultural Card */}
-        <div className="relative overflow-hidden rounded-xl p-3 bg-white/[0.03] border border-white/10 hover:border-orange-500/30 transition-all duration-300">
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 to-amber-600" />
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">
+        <div
+          onClick={() => handleCardClick("AGRICULTURAL_BURNING")}
+          className={`relative overflow-hidden rounded-xl p-3 border transition-all duration-300 cursor-pointer hover:-translate-y-0.5 ${
+            activeCategory === "AGRICULTURAL_BURNING"
+              ? "bg-orange-950/60 border-orange-500 ring-2 ring-orange-500/80 shadow-lg"
+              : "bg-white/[0.03] border-white/10 hover:border-orange-500/40"
+          }`}
+        >
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-400 to-amber-600" />
+          <div className="flex items-center justify-between text-xs pl-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-300 font-bold">
               Agricultural
             </span>
             <span>🌾</span>
           </div>
-          <div className="text-2xl font-black font-mono text-white mt-1">
+          <div className="text-2xl font-black font-mono text-white mt-1 pl-1">
             {agricultural}
           </div>
-          <div className="text-[10px] text-orange-400/90 font-medium truncate mt-0.5">
-            Seasonal crop residue
+          <div className="text-[10px] text-orange-400 font-medium truncate mt-0.5 pl-1 flex items-center justify-between">
+            <span>Seasonal crop residue</span>
+            {activeCategory === "AGRICULTURAL_BURNING" && (
+              <span className="text-[9px] text-orange-300 font-mono font-bold bg-orange-900/80 px-1 rounded">
+                ACTIVE
+              </span>
+            )}
           </div>
         </div>
 
         {/* Forest Card */}
-        <div className="relative overflow-hidden rounded-xl p-3 bg-white/[0.03] border border-white/10 hover:border-emerald-500/30 transition-all duration-300">
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-400 to-teal-500" />
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">
+        <div
+          onClick={() => handleCardClick("FOREST_FIRE")}
+          className={`relative overflow-hidden rounded-xl p-3 border transition-all duration-300 cursor-pointer hover:-translate-y-0.5 ${
+            activeCategory === "FOREST_FIRE"
+              ? "bg-emerald-950/60 border-emerald-500 ring-2 ring-emerald-500/80 glow-emerald shadow-lg"
+              : "bg-white/[0.03] border-white/10 hover:border-emerald-500/40"
+          }`}
+        >
+          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-400 to-teal-500" />
+          <div className="flex items-center justify-between text-xs pl-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-300 font-bold">
               Forest
             </span>
             <span>🌲</span>
           </div>
-          <div className="text-2xl font-black font-mono text-white mt-1">
+          <div className="text-2xl font-black font-mono text-white mt-1 pl-1">
             {forest}
           </div>
-          <div className="text-[10px] text-emerald-400/90 font-medium truncate mt-0.5">
-            Wildland biomass burn
+          <div className="text-[10px] text-emerald-400 font-medium truncate mt-0.5 pl-1 flex items-center justify-between">
+            <span>Wildland biomass burn</span>
+            {activeCategory === "FOREST_FIRE" && (
+              <span className="text-[9px] text-emerald-300 font-mono font-bold bg-emerald-900/80 px-1 rounded">
+                ACTIVE
+              </span>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Unknown Row: Slim Bar Under Cards */}
-      <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white/[0.02] border border-white/5 text-xs font-mono">
-        <span className="text-slate-400 flex items-center gap-2">
+      {/* Unknown Row: Slim Bar Under Cards (Clickable) */}
+      <div
+        onClick={() => handleCardClick("UNKNOWN")}
+        className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-xs font-mono transition cursor-pointer ${
+          activeCategory === "UNKNOWN"
+            ? "bg-slate-800 border-slate-400 ring-1 ring-slate-400 text-white"
+            : "bg-white/[0.02] border-white/5 text-slate-400 hover:border-white/20 hover:text-slate-200"
+        }`}
+      >
+        <span className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-slate-500 inline-block" />
           <span className="text-[11px] uppercase tracking-wider">Unclassified / Low-signal:</span>
         </span>
@@ -184,12 +254,12 @@ export default function StatsPanel({ stats }: StatsPanelProps) {
                     data={chartData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={48}
-                    outerRadius={74}
+                    innerRadius={46}
+                    outerRadius={76}
                     paddingAngle={3}
                     dataKey="value"
-                    stroke="rgba(0,0,0,0.5)"
-                    strokeWidth={2}
+                    stroke="rgba(0,0,0,0.6)"
+                    strokeWidth={3}
                   >
                     {chartData.map((entry) => (
                       <Cell
@@ -250,13 +320,13 @@ export default function StatsPanel({ stats }: StatsPanelProps) {
         </div>
       </div>
 
-      {/* Reliability Strip */}
+      {/* Trust Line */}
       <div className="mt-1 pt-3 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
         <span className="flex items-center gap-1.5 text-cyan-300/80">
           <span>⚡</span>
-          <span>Classification Engine</span>
+          <span>Fusion Engine</span>
         </span>
-        <span className="text-slate-500">spatial + temporal + spectral fusion</span>
+        <span className="text-slate-500">spatial + temporal + spectral</span>
       </div>
     </div>
   );

@@ -396,51 +396,171 @@ export default function DashboardPage() {
         />
 
         {/* ========================================================================= */}
-        {/* 4) TRUE COMMAND LAYOUT: 68% MAP + 32% TELEMETRY STACK                      */}
+        {/* 4) TRUE COMMAND LAYOUT: 67% MAP STAGE + 33% TELEMETRY STACK               */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
-          {/* Left 68%: Map Stage (8 cols on lg screen) */}
-          <section className="lg:col-span-8 relative h-[calc(100vh-250px)] min-h-[580px] md:min-h-[640px] rounded-3xl overflow-hidden shadow-2xl">
-            {/* Loading Shimmer Overlay */}
-            {loading && (
-              <div className="absolute inset-0 z-[1000] bg-[#020617]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
-                <div className="relative flex items-center justify-center">
-                  <div className="w-12 h-12 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
-                  <span className="absolute text-sm">🛰️</span>
+          {/* Left 67%: Map Stage with 4 Mini KPIs Directly Above */}
+          <section className="lg:col-span-8 flex flex-col gap-3">
+            {/* 4 Mini KPIs Above Map */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {/* KPI 1: Active Hotspots */}
+              <button
+                onClick={() => setCategory("all")}
+                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
+                  category === "all"
+                    ? "border-cyan-400/80 ring-2 ring-cyan-400/60 bg-cyan-950/40 glow-cyan"
+                    : "border-white/10 hover:border-white/20 bg-white/[0.02]"
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
+                    ACTIVE HOTSPOTS
+                  </span>
+                  <span>🔥</span>
                 </div>
-                <span className="font-mono text-xs text-red-300 tracking-widest uppercase">
-                  IGNIS Ingesting NASA Thermal Telemetry...
-                </span>
-              </div>
-            )}
-
-            {/* Empty Filter State */}
-            {!loading && (!Array.isArray(filteredFires) || filteredFires.length === 0) && (
-              <div className="absolute inset-0 z-[999] pointer-events-none flex flex-col items-center justify-center text-center p-6 bg-[#020617]/70 backdrop-blur-[2px]">
-                <div className="glass-card bg-[#0b1220]/95 border border-white/15 p-6 rounded-3xl max-w-sm pointer-events-auto shadow-2xl">
-                  <div className="text-3xl mb-2">🔍</div>
-                  <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
-                    Zero Anomaly Matches
-                  </h3>
-                  <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                    No thermal targets in the selected window match category &quot;{category}&quot;.
-                  </p>
-                  <button
-                    onClick={() => setCategory("all")}
-                    className="mt-4 px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-mono font-bold tracking-wider shadow-lg shadow-red-600/30 cursor-pointer"
-                  >
-                    RESET TO ALL
-                  </button>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-xl font-black font-mono text-white">
+                    {(stats?.total ?? fires.length).toLocaleString()}
+                  </span>
+                  {category === "all" ? (
+                    <span className="text-[9px] font-mono font-bold text-cyan-300 bg-cyan-950 px-1.5 py-0.2 rounded-full border border-cyan-800">
+                      ALL
+                    </span>
+                  ) : (
+                    <span className="text-[9px] font-mono text-slate-500">SHOW ALL</span>
+                  )}
                 </div>
-              </div>
-            )}
+              </button>
 
-            <FireMap fires={Array.isArray(filteredFires) ? filteredFires : []} />
+              {/* KPI 2: Critical Risk */}
+              <button
+                onClick={() => setCategory(category === "EMERGENCY_INDUSTRIAL" ? "all" : "EMERGENCY_INDUSTRIAL")}
+                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
+                  category === "EMERGENCY_INDUSTRIAL"
+                    ? "border-red-500/80 ring-2 ring-red-500/70 bg-red-950/50 glow-red"
+                    : "border-white/10 hover:border-red-500/40 bg-white/[0.02]"
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
+                    CRITICAL RISK
+                  </span>
+                  <span className={stats?.emergency && stats.emergency > 0 ? "animate-pulse" : ""}>🚨</span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-xl font-black font-mono text-red-400">
+                    {stats?.emergency ?? 0}
+                  </span>
+                  {category === "EMERGENCY_INDUSTRIAL" && (
+                    <span className="text-[9px] font-mono font-bold text-red-300 bg-red-950 px-1.5 py-0.2 rounded-full border border-red-800 animate-pulse">
+                      FILTERED
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              {/* KPI 3: Forest Alerts */}
+              <button
+                onClick={() => setCategory(category === "FOREST_FIRE" ? "all" : "FOREST_FIRE")}
+                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
+                  category === "FOREST_FIRE"
+                    ? "border-emerald-500/80 ring-2 ring-emerald-500/70 bg-emerald-950/50 glow-emerald"
+                    : "border-white/10 hover:border-emerald-500/40 bg-white/[0.02]"
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
+                    FOREST ALERTS
+                  </span>
+                  <span>🌲</span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-xl font-black font-mono text-emerald-400">
+                    {stats?.forest ?? 0}
+                  </span>
+                  {category === "FOREST_FIRE" && (
+                    <span className="text-[9px] font-mono font-bold text-emerald-300 bg-emerald-950 px-1.5 py-0.2 rounded-full border border-emerald-800">
+                      FILTERED
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              {/* KPI 4: Industrial Filters Passed */}
+              <button
+                onClick={() => setCategory(category === "PERSISTENT_INDUSTRIAL" ? "all" : "PERSISTENT_INDUSTRIAL")}
+                className={`glass p-2.5 rounded-2xl border text-left transition-all cursor-pointer group flex flex-col justify-between hover:-translate-y-0.5 ${
+                  category === "PERSISTENT_INDUSTRIAL"
+                    ? "border-amber-500/80 ring-2 ring-amber-500/70 bg-amber-950/50 glow-amber"
+                    : "border-white/10 hover:border-amber-500/40 bg-white/[0.02]"
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-400 uppercase">
+                    INDUSTRIAL FILTERED
+                  </span>
+                  <span>🏭</span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-xl font-black font-mono text-amber-400">
+                    {stats?.persistent ?? 0}
+                  </span>
+                  {category === "PERSISTENT_INDUSTRIAL" && (
+                    <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-950 px-1.5 py-0.2 rounded-full border border-amber-800">
+                      FILTERED
+                    </span>
+                  )}
+                </div>
+              </button>
+            </div>
+
+            {/* Map Frame with Rounded-3xl Glass Frame & Defense-Tech Overlays */}
+            <div className="relative h-[calc(100vh-310px)] min-h-[560px] md:min-h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex-1">
+              {/* Loading Shimmer Overlay */}
+              {loading && (
+                <div className="absolute inset-0 z-[1000] bg-[#020617]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
+                  <div className="relative flex items-center justify-center">
+                    <div className="w-12 h-12 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
+                    <span className="absolute text-sm">🛰️</span>
+                  </div>
+                  <span className="font-mono text-xs text-red-300 tracking-widest uppercase">
+                    IGNIS Ingesting NASA Thermal Telemetry...
+                  </span>
+                </div>
+              )}
+
+              {/* Empty Filter State */}
+              {!loading && (!Array.isArray(filteredFires) || filteredFires.length === 0) && (
+                <div className="absolute inset-0 z-[999] pointer-events-none flex flex-col items-center justify-center text-center p-6 bg-[#020617]/70 backdrop-blur-[2px]">
+                  <div className="glass bg-[#0b1220]/95 border border-white/15 p-6 rounded-3xl max-w-sm pointer-events-auto shadow-2xl">
+                    <div className="text-3xl mb-2">🔍</div>
+                    <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
+                      Zero Anomaly Matches
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                      No thermal targets in the selected window match category &quot;{category}&quot;.
+                    </p>
+                    <button
+                      onClick={() => setCategory("all")}
+                      className="mt-4 px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-mono font-bold tracking-wider shadow-lg shadow-red-600/30 cursor-pointer"
+                    >
+                      RESET TO ALL
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <FireMap fires={Array.isArray(filteredFires) ? filteredFires : []} />
+            </div>
           </section>
 
-          {/* Right 32%: Telemetry Stack (4 cols on lg screen) */}
+          {/* Right 33%: Telemetry Stack (4 cols on lg screen) */}
           <aside className="lg:col-span-4 flex flex-col gap-4">
-            <StatsPanel stats={stats} />
+            <StatsPanel
+              stats={stats}
+              activeCategory={category}
+              onSelectCategory={setCategory}
+            />
             <AlertPanel alerts={Array.isArray(alerts) ? alerts : []} />
           </aside>
         </div>

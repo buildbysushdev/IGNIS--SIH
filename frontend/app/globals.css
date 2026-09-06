@@ -6,13 +6,15 @@
 
 /* Smooth Font Rendering & Base Theme */
 html, body {
-  background-color: #020617;
+  background-color: #000000;
+  background: radial-gradient(ellipse at top, #0b1220 0%, #020617 45%, #000000 100%);
   color: #f8fafc;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 /* Background Radial Military Grid Overlay */
@@ -21,7 +23,7 @@ html, body {
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(225, 29, 72, 0.12), transparent),
     radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.05), transparent 40%),
     radial-gradient(circle at 0% 50%, rgba(30, 41, 59, 0.5), transparent 60%),
-    #020617;
+    radial-gradient(ellipse at top, #0b1220 0%, #020617 45%, #000000 100%);
 }
 
 /* Faint Tech Coordinate Grid */
@@ -32,9 +34,19 @@ html, body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
 }
 
+/* Specific Glass Utility */
+.glass {
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Premium Glassmorphism Cards */
 .glass-card {
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(15, 23, 42, 0.68);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -50,11 +62,11 @@ html, body {
 
 /* Glow Utilities */
 .glow-red {
-  box-shadow: 0 0 24px -2px rgba(255, 45, 45, 0.45);
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.25);
 }
 
 .glow-cyan {
-  box-shadow: 0 0 20px -2px rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.2);
 }
 
 .glow-amber {
@@ -63,6 +75,26 @@ html, body {
 
 .glow-emerald {
   box-shadow: 0 0 20px -2px rgba(16, 185, 129, 0.3);
+}
+
+/* Scan-line overlay & map vignette for instant defense-tech aesthetic */
+.scanline-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.22) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+.map-vignette {
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.85), inset 0 0 30px rgba(255, 45, 45, 0.08);
+  pointer-events: none;
 }
 
 /* Status Pulse Animations */
@@ -146,61 +178,61 @@ html, body {
   -webkit-backdrop-filter: blur(16px) !important;
   color: #f8fafc !important;
   border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 16px !important;
+  border-radius: 18px !important;
   box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.85), 0 0 20px rgba(239, 68, 68, 0.15) !important;
-  padding: 0 !important;
-  overflow: hidden;
+  padding: 8px !important;
 }
 
 .leaflet-popup-content {
-  margin: 0 !important;
-  line-height: inherit;
+  margin: 8px 10px !important;
+  line-height: 1.5 !important;
 }
 
 .leaflet-popup-tip-container {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .leaflet-popup-tip {
   background: rgba(15, 23, 42, 0.95) !important;
   border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
 }
 
-.leaflet-container a.leaflet-popup-close-button {
-  top: 8px;
-  right: 8px;
+.leaflet-control-zoom {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background-color: rgba(15, 23, 42, 0.85) !important;
   color: #94a3b8 !important;
-  font-size: 16px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
+  border: none !important;
+  backdrop-filter: blur(8px) !important;
 }
 
-.leaflet-container a.leaflet-popup-close-button:hover {
-  color: #ffffff !important;
-  background: #dc2626 !important;
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #f8fafc !important;
 }
 
 /* Custom Tactical Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: #020617;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
+  background: #dc2626;
+  border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff2d2d;
-  box-shadow: 0 0 8px rgba(255, 45, 45, 0.6);
+  background: #ef4444;
 }

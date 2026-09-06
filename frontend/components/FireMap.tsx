@@ -47,18 +47,11 @@ export function getFireColor(fire: Fire): string {
 
 // 3 Segmented Basemaps - 100% free, zero-watermark tactical tiles with guaranteed subdomains
 const TILE_PRESETS = {
-  tactical_dark: {
-    id: "tactical_dark",
-    name: "Tactical Dark",
+  midnight: {
+    id: "midnight",
+    name: "Midnight",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     attribution: "&copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors",
-    subdomains: "abc",
-  },
-  satellite: {
-    id: "satellite",
-    name: "Satellite Recon",
-    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    attribution: "&copy; Esri, Maxar, Earthstar Geographics",
     subdomains: "abc",
   },
   streets: {
@@ -66,6 +59,13 @@ const TILE_PRESETS = {
     name: "Streets",
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: "abc",
+  },
+  tactical: {
+    id: "tactical",
+    name: "Tactical",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    attribution: "&copy; Esri, Maxar, Earthstar Geographics",
     subdomains: "abc",
   },
 };
@@ -80,21 +80,21 @@ const LEGEND_ITEMS = [
 
 export default function FireMap({ fires = [] }: { fires?: Fire[] }) {
   const safeFires = Array.isArray(fires) ? fires : [];
-  // Default to Carto Dark Matter as requested
-  const [activeLayer, setActiveLayer] = useState<keyof typeof TILE_PRESETS>("tactical_dark");
+  const [activeLayer, setActiveLayer] = useState<keyof typeof TILE_PRESETS>("midnight");
   const isCapped = safeFires.length > 1000;
   const renderedFires = isCapped ? safeFires.slice(0, 1000) : safeFires;
 
-  const currentTile = TILE_PRESETS[activeLayer] || TILE_PRESETS.tactical_dark;
+  const currentTile = TILE_PRESETS[activeLayer] || TILE_PRESETS.midnight;
 
   return (
     <div className="relative w-full h-full min-h-[560px] overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 shadow-2xl shadow-red-950/20 bg-[#020617] group">
-      {/* Subtle Vignette & Screen Line Accent */}
-      <div className="absolute inset-0 pointer-events-none z-[400] shadow-[inset_0_0_80px_rgba(0,0,0,0.85)]" />
+      {/* Defense-Tech Scanline & Soft Vignette Overlays */}
+      <div className="absolute inset-0 pointer-events-none z-[400] scanline-overlay opacity-30" />
+      <div className="absolute inset-0 pointer-events-none z-[401] map-vignette" />
 
       {/* Corner Badge: Top-Left GEO VIEW */}
       <div className="absolute top-3.5 left-3.5 z-[1000] flex items-center gap-2 pointer-events-none">
-        <div className="glass-card px-3 py-1.5 rounded-xl border border-white/10 shadow-xl flex items-center gap-2 pointer-events-auto">
+        <div className="glass px-3 py-1.5 rounded-xl border border-white/10 shadow-xl flex items-center gap-2 pointer-events-auto">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
@@ -108,7 +108,7 @@ export default function FireMap({ fires = [] }: { fires?: Fire[] }) {
         </div>
 
         {isCapped && (
-          <div className="glass-card px-2.5 py-1 rounded-xl border border-amber-500/40 text-amber-300 text-[10px] font-mono shadow-xl hidden md:flex items-center gap-1.5">
+          <div className="glass px-2.5 py-1 rounded-xl border border-amber-500/40 text-amber-300 text-[10px] font-mono shadow-xl hidden md:flex items-center gap-1.5">
             <span>⚠️</span>
             <span>Displaying top 1,000 for 60fps</span>
           </div>
