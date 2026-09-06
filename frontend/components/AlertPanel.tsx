@@ -54,13 +54,21 @@ export default function AlertPanel({ alerts }: AlertPanelProps) {
           {alerts.map((alert, idx) => {
             const isCritical = alert.severity === "CRITICAL";
             const timeStr = alert.timestamp || alert.created_at;
-            const formattedTime = timeStr
-              ? new Date(timeStr).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                })
-              : "LIVE";
+            const formattedTime = (() => {
+              if (!timeStr) return "LIVE";
+              try {
+                const d = new Date(timeStr);
+                return isNaN(d.getTime())
+                  ? timeStr
+                  : d.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    });
+              } catch {
+                return String(timeStr);
+              }
+            })();
 
             const hasCoords = alert.latitude != null && alert.longitude != null;
 

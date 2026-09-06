@@ -144,7 +144,7 @@ export default function FireMap({ fires }: { fires: Fire[] }) {
                       className="font-bold text-sm tracking-wide flex items-center gap-1.5"
                       style={{ color: markerColor }}
                     >
-                      {isCritical && "🚨"} {fire.category.replace("_", " ")}
+                      {isCritical && "🚨"} {String(fire.category || "UNKNOWN").replace(/_/g, " ")}
                     </span>
                     <span
                       className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase ${
@@ -153,38 +153,38 @@ export default function FireMap({ fires }: { fires: Fire[] }) {
                           : "bg-slate-800 text-slate-300"
                       }`}
                     >
-                      {fire.risk_level}
+                      {fire.risk_level || "MODERATE"}
                     </span>
                   </div>
 
                   <p className="text-slate-200 text-xs leading-relaxed font-medium">
-                    {fire.reason}
+                    {fire.reason || "Thermal signature detected by NASA satellite sensors."}
                   </p>
 
                   <div className="grid grid-cols-2 gap-1.5 py-1 text-[11px] text-slate-300 border-t border-slate-700/80 font-mono">
                     <div>
                       <span className="text-slate-400 font-sans">FRP: </span>
                       <span className="font-bold text-amber-400">
-                        {Number(fire.frp).toFixed(1)} MW
+                        {Number(fire.frp || 0).toFixed(1)} MW
                       </span>
                     </div>
                     <div>
                       <span className="text-slate-400 font-sans">Brightness: </span>
                       <span className="font-bold text-slate-100">
-                        {Number(fire.brightness).toFixed(1)} K
+                        {Number(fire.brightness || 0).toFixed(1)} K
                       </span>
                     </div>
                     <div>
                       <span className="text-slate-400 font-sans">Date: </span>
-                      <span>{fire.acq_date}</span>
+                      <span>{fire.acq_date || "N/A"}</span>
                     </div>
                     <div>
                       <span className="text-slate-400 font-sans">Time: </span>
-                      <span>{fire.acq_time} UTC</span>
+                      <span>{fire.acq_time || "N/A"} UTC</span>
                     </div>
                     <div className="col-span-2">
                       <span className="text-slate-400 font-sans">Confidence: </span>
-                      <span className="capitalize">{fire.confidence}</span>
+                      <span className="capitalize">{String(fire.confidence ?? "N/A")}</span>
                     </div>
                   </div>
 
@@ -199,7 +199,7 @@ export default function FireMap({ fires }: { fires: Fire[] }) {
                           : "text-slate-300 text-xs"
                       }
                     >
-                      {fire.action}
+                      {fire.action || "Active monitoring and verification."}
                     </span>
                   </div>
                 </div>

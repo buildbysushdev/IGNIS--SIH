@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 export interface FireStats {
@@ -24,6 +25,12 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export default function StatsPanel({ stats }: StatsPanelProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const total = stats?.total ?? 0;
   const emergency = stats?.emergency ?? 0;
   const persistent = stats?.persistent ?? 0;
@@ -130,7 +137,7 @@ export default function StatsPanel({ stats }: StatsPanelProps) {
           </span>
         </div>
         <div className="h-[180px] w-full">
-          {chartData.length === 0 ? (
+          {!mounted || chartData.length === 0 ? (
             <div className="h-full flex items-center justify-center text-xs text-slate-500 font-mono">
               Awaiting satellite pass telemetry...
             </div>

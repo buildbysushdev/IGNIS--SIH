@@ -20,7 +20,8 @@ const FireMap = dynamic(() => import("@/components/FireMap"), {
   ),
 });
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
 
 export default function DashboardPage() {
   const [fires, setFires] = useState<Fire[]>([]);
