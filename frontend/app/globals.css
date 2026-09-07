@@ -214,3 +214,41 @@ html, body {
   background-color: #131a22 !important;
   color: #00d4ff !important;
 }
+
+/* ========================================================================= */
+/* MODE SPECIFIC STYLING (LIVE / CACHED / DEMO)                             */
+/* ========================================================================= */
+
+.mode-live { border-left: 2px solid #22c55e; }
+.mode-cached { border-left: 2px solid #eab308; }
+.mode-demo { border-left: 2px solid #a855f7; }
+
+.mode-bg-live {
+  background-color: #0a0e14;
+}
+
+.mode-bg-cached {
+  background-color: #0c0e12;
+  box-shadow: inset 0 0 100px rgba(234, 179, 8, 0.05);
+}
+
+.mode-bg-demo {
+  background-color: #0c0d16;
+  box-shadow: inset 0 0 120px rgba(168, 85, 247, 0.07);
+}
+
+.demo-watermark {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid #a855f7;
+  color: #a855f7;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  z-index: 999;
+  pointer-events: none;
+}
+

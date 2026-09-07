@@ -16,6 +16,7 @@ import { DEMO_TELEMETRY_DATA } from "@/data/demoFires";
 import { SIMULATION_SCENARIOS, SimulationScenario } from "@/data/scenarios";
 import EmergencyPanel, { playTacticalAlertSound } from "@/components/EmergencyPanel";
 import DispatchSimulator from "@/components/DispatchSimulator";
+import Header from "@/components/Header";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -63,8 +64,19 @@ export default function DashboardPage() {
   const [verifyFire, setVerifyFire] = useState<Fire | null>(null);
   const [activeBasemap, setActiveBasemap] = useState<keyof typeof TILE_PRESETS>("ops_dark");
 
-  // Global MODE State: LIVE | CACHED | DEMO
-  const [globalMode, setGlobalMode] = useState<"live" | "cached" | "demo">("live");
+  // Operational Mode State: "LIVE" | "CACHED" | "DEMO"
+  const [mode, setMode] = useState<"LIVE" | "CACHED" | "DEMO">("LIVE");
+  const [modeInfo, setModeInfo] = useState<{
+    mode?: string;
+    since?: string;
+    reason?: string;
+    data_source?: string;
+    is_manual?: boolean;
+  }>({
+    mode: "LIVE",
+    data_source: "NASA FIRMS Real-Time",
+    reason: "System boot default",
+  });
 
   // Simulation Scenarios State
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>("live");
@@ -91,6 +103,23 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Fetch initial mode state on mount
+  useEffect(() => {
+    const baseUrl = getApiBaseUrl();
+    axios
+      .get(`${baseUrl}/api/mode`)
+      .then((res) => {
+        if (res.data?.mode) {
+          const m = res.data.mode.toUpperCase() as "LIVE" | "CACHED" | "DEMO";
+          setMode(m);
+          setModeInfo(res.data);
+        }
+      })
+      .catch((err) => {
+        console.warn("[IGNIS] Could not fetch mode status:", err);
+      });
+  }, []);
+
   // Format UTC timestamp for sync
   const getUtcTimestamp = () => {
     return new Date().toISOString().replace(/\.\d{3}/, "");
@@ -98,7 +127,8 @@ export default function DashboardPage() {
 
   // Fetch fires and active surveillance alerts with multi-tier failover
   const fetchData = useCallback(
-    async (forceRefresh = false) => {
+    async (forceRefresh = false, modeOverride?: "LIVE" | "CACHED" | "DEMO") => {
+      const activeQueryMode = modeOverride || mode;
       try {
         if (forceRefresh) {
           setIsRefreshing(true);
@@ -107,8 +137,21 @@ export default function DashboardPage() {
         }
         setError(null);
 
+        // Immediate DEMO mode short-circuit
+        if (activeQueryMode === "DEMO") {
+          const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
+          setFires(demoFires);
+          setStats(DEMO_TELEMETRY_DATA.summary);
+          setIgnisStatus("live");
+          setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
+          setLastRefreshedUtc(getUtcTimestamp());
+          setLoading(false);
+          setIsRefreshing(false);
+          return;
+        }
+
         const baseUrl = getApiBaseUrl();
-        const firesUrl = `${baseUrl}/api/fires?days=${days}&source=${source}${
+        const firesUrl = `${baseUrl}/api/fires?days=${days}&source=${source}&mode=${activeQueryMode}${
           forceRefresh ? "&force=true" : ""
         }`;
         const alertsUrl = `${baseUrl}/api/alerts?hours=24`;
@@ -128,7 +171,7 @@ export default function DashboardPage() {
           console.warn("[IGNIS] Primary proxy link unavailable, attempting direct node call...", proxyErr);
           // Tier 2: Direct Railway call fallback
           try {
-            const directFiresUrl = `https://web-production-b1e6a.up.railway.app/api/fires?days=${days}&source=${source}${
+            const directFiresUrl = `https://web-production-b1e6a.up.railway.app/api/fires?days=${days}&source=${source}&mode=${activeQueryMode}${
               forceRefresh ? "&force=true" : ""
             }`;
             const [directRes, directAlerts] = await Promise.all([
@@ -159,7 +202,8 @@ export default function DashboardPage() {
 
         const backendStatus = firesData?.ignis_status === "live" ? "live" : "cached_fallback";
         setIgnisStatus(backendStatus);
-        setGlobalMode(backendStatus === "live" ? "live" : "cached");
+        const resolvedMode = (firesData?.mode || (backendStatus === "live" ? "LIVE" : "CACHED")).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
+        setMode(resolvedMode);
         setStatusMessage(firesData?.message || (backendStatus === "live" ? "NASA-FIRMS LINK NOMINAL" : "SERVING LOCAL CACHE REPOSITORY"));
         setLastRefreshedUtc(getUtcTimestamp());
         setSeqCounter((c) => c + 1);
@@ -174,7 +218,7 @@ export default function DashboardPage() {
         setStats(FALLBACK_TELEMETRY_DATA.summary);
         setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
         setIgnisStatus("cached_fallback");
-        setGlobalMode("cached");
+        setMode("CACHED");
         setStatusMessage("OFFLINE FALLBACK MODE");
         setLastRefreshedUtc(getUtcTimestamp());
       } finally {
@@ -182,30 +226,32 @@ export default function DashboardPage() {
         setIsRefreshing(false);
       }
     },
-    [days, source]
+    [days, source, mode]
   );
 
-  // Global Mode Switcher: LIVE <-> DEMO
-  const handleSwitchMode = useCallback(
-    (targetMode: "live" | "demo") => {
-      if (targetMode === "demo") {
-        setGlobalMode("demo");
-        const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
-        setFires(demoFires);
-        setStats(DEMO_TELEMETRY_DATA.summary);
-        setIgnisStatus("live");
-        setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
-        setLastRefreshedUtc(getUtcTimestamp());
-        setNotification("[MODE CHANGED] DEMO MODE LOADED (250 TACTICAL HOTSPOTS)");
+  // Operational Mode Switcher: LIVE | CACHED | DEMO | AUTO
+  const handleSelectMode = useCallback(
+    async (targetMode: "LIVE" | "CACHED" | "DEMO" | "AUTO") => {
+      try {
+        const baseUrl = getApiBaseUrl();
+        const res = await axios.post(`${baseUrl}/api/mode/set?mode=${targetMode}`, { mode: targetMode });
+        const newMode = (res.data?.new_mode || (targetMode === "AUTO" ? "LIVE" : targetMode)).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
+        setMode(newMode);
+        setNotification(`Mode switched to ${newMode}`);
         setTimeout(() => setNotification(null), 3500);
-      } else {
-        setGlobalMode("live");
-        setSelectedScenarioId("live");
-        setIsScenarioPlaying(false);
-        setScenarioNarration(null);
-        fetchData(true);
-        setNotification("[MODE CHANGED] LIVE NASA-FIRMS TELEMETRY LINK ENGAGED");
+
+        axios
+          .get(`${baseUrl}/api/mode`)
+          .then((r) => setModeInfo(r.data))
+          .catch(() => {});
+
+        fetchData(true, newMode);
+      } catch {
+        const fallbackMode = (targetMode === "AUTO" ? "LIVE" : targetMode).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
+        setMode(fallbackMode);
+        setNotification(`Mode switched to ${fallbackMode}`);
         setTimeout(() => setNotification(null), 3500);
+        fetchData(true, fallbackMode);
       }
     },
     [fetchData]
@@ -219,13 +265,13 @@ export default function DashboardPage() {
         setIsScenarioPlaying(false);
         setScenarioNarration(null);
         setTargetCoords([22.5432, 78.9012]);
-        handleSwitchMode("live");
+        handleSelectMode("LIVE");
         return;
       }
 
       const scen = SIMULATION_SCENARIOS.find((s) => s.id === scenId);
       if (scen) {
-        setGlobalMode("demo");
+        setMode("DEMO");
         setTargetCoords(scen.target_center);
         setScenarioElapsedSec(0);
         setIsScenarioPlaying(true);
@@ -235,7 +281,7 @@ export default function DashboardPage() {
         }
       }
     },
-    [handleSwitchMode]
+    [handleSelectMode]
   );
 
   const togglePlayScenario = useCallback(() => {
@@ -385,7 +431,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0e14] text-[#d0d8e0] font-mono flex flex-col antialiased select-none">
+    <div
+      className={`min-h-screen text-[#d0d8e0] font-mono flex flex-col antialiased select-none transition-colors duration-500 ${
+        mode === "LIVE" ? "mode-bg-live" : mode === "CACHED" ? "mode-bg-cached" : "mode-bg-demo"
+      }`}
+    >
       {/* ========================================================================= */}
       {/* 1) TOP ROW (VERY THIN, 24PX)                                              */}
       {/* ========================================================================= */}
@@ -405,149 +455,22 @@ export default function DashboardPage() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 2) MAIN HEADER ROW (48PX)                                                 */}
+      {/* 2) MAIN HEADER ROW WITH OPERATIONAL MODE PILL & DROPDOWN                  */}
       {/* ========================================================================= */}
-      <header className="bg-[#0f141b] border-b border-[#1f2933] px-3 py-2">
-        <div className="max-w-[1800px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5">
-          {/* Left Block */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 border border-[#1f2933] bg-[#131a22] flex items-center justify-center text-[#00ff9c] font-bold text-sm">
-              [+]
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-base font-black tracking-wider text-white">IGNIS</span>
-                <span className="text-[10px] text-[#00d4ff] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14]">
-                  v1.0.4
-                </span>
-                <span className="text-[10px] text-[#ffb800] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14] hidden sm:inline">
-                  NTRO // SIH26162
-                </span>
-              </div>
-              <div className="text-[10px] text-[#6b7785] tracking-wider uppercase">
-                INDUSTRIAL FIRE CLASSIFICATION // NTRO/SIH26162
-              </div>
-            </div>
-          </div>
-
-          {/* Center: Mode Indicator & Toggle & Scenarios */}
-          <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
-            {/* Mode Pill */}
-            <div className="flex items-center gap-1.5 border border-[#1f2933] px-2 py-1 bg-[#0a0e14]">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  globalMode === "live"
-                    ? "bg-[#00ff9c] status-dot-green animate-pulse"
-                    : globalMode === "cached"
-                    ? "bg-[#ffb800] status-dot-amber"
-                    : "bg-[#c084fc] shadow-[0_0_8px_#c084fc] animate-pulse"
-                }`}
-              />
-              <span
-                className={`font-black tracking-wider text-[10px] uppercase ${
-                  globalMode === "live"
-                    ? "text-[#00ff9c]"
-                    : globalMode === "cached"
-                    ? "text-[#ffb800]"
-                    : "text-[#c084fc]"
-                }`}
-              >
-                MODE: {globalMode.toUpperCase()}
-              </span>
-            </div>
-
-            {/* Mode Switcher: [LIVE] [DEMO] */}
-            <div className="flex items-center border border-[#1f2933] bg-[#0a0e14] text-[10px] font-bold">
-              <button
-                onClick={() => handleSwitchMode("live")}
-                className={`px-2 py-1 cursor-pointer transition ${
-                  globalMode === "live"
-                    ? "bg-[#00ff9c]/20 text-[#00ff9c] border-r border-[#00ff9c]"
-                    : "text-[#6b7785] hover:text-[#d0d8e0] border-r border-[#1f2933]"
-                }`}
-              >
-                [LIVE]
-              </button>
-              <button
-                onClick={() => handleSwitchMode("demo")}
-                className={`px-2 py-1 cursor-pointer transition ${
-                  globalMode === "demo"
-                    ? "bg-[#c084fc]/20 text-[#c084fc]"
-                    : "text-[#6b7785] hover:text-[#d0d8e0]"
-                }`}
-              >
-                [DEMO]
-              </button>
-            </div>
-
-            {/* Scenarios Selector Dropdown */}
-            <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] px-2 py-0.5 text-[10px]">
-              <span className="text-[#6b7785] font-bold hidden sm:inline">SCENARIO:</span>
-              <select
-                value={selectedScenarioId}
-                onChange={(e) => handleSelectScenario(e.target.value)}
-                className="bg-[#0f141b] border border-[#1f2933] text-[#00d4ff] px-1 py-0.5 font-mono text-[10px] cursor-pointer"
-              >
-                <option value="live">LIVE DATA (DEFAULT)</option>
-                <option value="surat_emergency">1: SURAT FACTORY EMERGENCY</option>
-                <option value="punjab_stubble">2: PUNJAB STUBBLE PEAK</option>
-                <option value="uttarakhand_forest">3: UTTARAKHAND FOREST FIRE</option>
-              </select>
-              {selectedScenarioId !== "live" && (
-                <button
-                  onClick={togglePlayScenario}
-                  className={`px-1.5 py-0.5 text-[9px] font-bold uppercase cursor-pointer border transition ${
-                    isScenarioPlaying
-                      ? "border-[#ffb800] bg-[#ffb800]/20 text-[#ffb800]"
-                      : "border-[#00ff9c] bg-[#00ff9c]/20 text-[#00ff9c] hover:bg-[#00ff9c]/30"
-                  }`}
-                >
-                  {isScenarioPlaying ? "[ PAUSE ]" : "[ PLAY SCENARIO ]"}
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Right Block: Telemetry Link & Status */}
-          <div className="flex items-center gap-3 text-[11px] font-mono">
-            {/* Link Status */}
-            <div className="flex items-center gap-1.5 border border-[#1f2933] px-2.5 py-1 bg-[#0a0e14]">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  ignisStatus === "live"
-                    ? "bg-[#00ff9c] status-dot-green"
-                    : "bg-[#ffb800] status-dot-amber"
-                }`}
-              />
-              <span
-                className={`font-bold tracking-wider ${
-                  ignisStatus === "live" ? "text-[#00ff9c]" : "text-[#ffb800]"
-                }`}
-              >
-                LINK: {ignisStatus === "live" ? "NOMINAL" : "CACHED"}
-              </span>
-            </div>
-
-            {/* Sensor Source */}
-            <div className="hidden sm:flex border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#6b7785]">
-              <span>SRC: NASA-FIRMS/VIIRS-SNPP</span>
-            </div>
-
-            {/* Latency */}
-            <div className="border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#00d4ff] tabular-nums">
-              <span>{latencyStr}</span>
-            </div>
-
-            {/* About Modal */}
-            <button
-              onClick={() => setIsAboutOpen(true)}
-              className="border border-[#1f2933] hover:border-[#00d4ff] text-[#6b7785] hover:text-[#d0d8e0] px-2 py-1 text-[10px] font-bold bg-[#0a0e14] transition cursor-pointer"
-            >
-              [ ABOUT ]
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header
+        currentMode={mode}
+        modeInfo={modeInfo}
+        onSelectMode={handleSelectMode}
+        selectedScenarioId={selectedScenarioId}
+        onSelectScenario={handleSelectScenario}
+        isScenarioPlaying={isScenarioPlaying}
+        onTogglePlayScenario={togglePlayScenario}
+        seqCounter={seqCounter}
+        utcClock={utcClock}
+        latencyStr={latencyStr}
+        onOpenAbout={() => setIsAboutOpen(true)}
+        onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
+      />
 
       {/* ========================================================================= */}
       {/* 3) STATUS STRIP (ULTRA-THIN 28PX STATUS RIBBON)                           */}
@@ -781,6 +704,13 @@ export default function DashboardPage() {
           setTimeout(() => setNotification(null), 4000);
         }}
       />
+
+      {/* Demo Mode Watermark */}
+      {mode === "DEMO" && (
+        <div className="demo-watermark">
+          DEMO MODE // SIMULATED TELEMETRY
+        </div>
+      )}
     </div>
   );
 }

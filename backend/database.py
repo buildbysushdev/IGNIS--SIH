@@ -288,3 +288,52 @@ def get_recent_dispatches(limit: int = 50) -> list[dict[str, Any]]:
     except sqlite3.Error:
         return []
 
+
+def check_db_health() -> str:
+    """Check if SQLite database is responsive and accessible."""
+    try:
+        with get_connection() as conn:
+            conn.execute("SELECT 1").fetchone()
+            return "healthy"
+    except Exception:
+        return "error"
+
+
+def get_cache_status() -> dict[str, Any]:
+    """Inspect SQLite detection cache existence, record count, and age in hours."""
+    from datetime import datetime
+
+    try:
+        with get_connection() as conn:
+            row = conn.execute(
+                "SELECT COUNT(*) as cnt, MAX(created_at) as latest_created, MAX(acq_date) as latest_acq FROM detections"
+            ).fetchone()
+            cnt = int(row["cnt"]) if row and row["cnt"] else 0
+            if cnt == 0:
+                return {"exists": False, "count": 0, "age_hours": 999.0}
+
+            latest_str = row["latest_created"] or row["latest_acq"]
+            age_hours = 0.5
+            if latest_str:
+                try:
+                    cleaned = str(latest_str).replace("Z", "").split(".")[0]
+                    if "T" in cleaned:
+                        dt = datetime.fromisoformat(cleaned)
+                    elif " " in cleaned:
+                        dt = datetime.strptime(cleaned, "%Y-%m-%d %H:%M:%S")
+                    else:
+                        dt = datetime.strptime(cleaned, "%Y-%m-%d")
+                    age_hours = max(0.1, round((datetime.utcnow() - dt).total_seconds() / 3600.0, 1))
+                except Exception:
+                    age_hours = 1.0
+
+            return {
+                "exists": True,
+                "count": cnt,
+                "age_hours": age_hours,
+                "latest_date": str(row["latest_acq"] or ""),
+            }
+    except Exception:
+        return {"exists": False, "count": 0, "age_hours": 999.0}
+
+

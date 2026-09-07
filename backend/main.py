@@ -34,8 +34,10 @@ from classifier import FireClassifier
 from osm_data import load_or_cache_zones
 from ml_model import load_persistence_cache
 from alerts import generate_alerts, store_alerts, get_active_alerts
-from database import init_db, insert_fires, get_fires_by_date
+from database import init_db, insert_fires, get_fires_by_date, get_cache_status
 from firms import fetch_fires, fetch_all_sources, get_data_status
+from mode_manager import mode_manager
+from demo_data import load_demo_fires
 
 # ==============================================================================
 # 1) STRUCTURED JSON LOGGING SETUP
@@ -240,36 +242,42 @@ def root() -> dict[str, str]:
     }
 
 
-# Global IGNIS Operational Mode State ("live", "demo", "cached")
-_current_mode: str = "live"
-
-
 class ModeSetRequest(BaseModel):
-    mode: str
+    mode: Optional[str] = None
 
 
 @app.get("/api/mode")
-def get_mode() -> dict[str, str]:
+def get_mode() -> dict[str, Any]:
     """Query current operational mode of IGNIS node."""
-    return {
-        "mode": _current_mode,
-        "description": "LIVE: NASA FIRMS Satellite | DEMO: 250+ Scripted Anomalies | CACHED: Local SQLite Cache",
-    }
+    return mode_manager.get_current_mode()
 
 
 @app.post("/api/mode/set")
-def set_mode(payload: ModeSetRequest) -> dict[str, Any]:
-    """Change global operational mode to 'live', 'demo', or 'cached'."""
-    global _current_mode
-    target = payload.mode.lower().strip()
-    if target not in {"live", "demo", "cached"}:
+def set_mode(
+    payload: Optional[ModeSetRequest] = None,
+    mode: Optional[str] = Query(default=None),
+) -> dict[str, Any]:
+    """Change global operational mode to 'LIVE', 'CACHED', 'DEMO', or 'AUTO'."""
+    target_mode = (mode or (payload.mode if payload else None) or "").strip().upper()
+    if not target_mode:
         raise HTTPException(
             status_code=400,
-            detail="Invalid mode. Must be one of: ['live', 'demo', 'cached']",
+            detail="Missing 'mode' parameter. Must be one of: ['LIVE', 'CACHED', 'DEMO', 'AUTO']",
         )
-    _current_mode = target
-    logger.info(f"IGNIS mode set to {_current_mode}", extra={"event": "mode_switch", "mode": _current_mode})
-    return {"status": "success", "mode": _current_mode}
+    success = mode_manager.set_mode(target_mode, reason=f"API switch: {target_mode}")
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid mode '{target_mode}'. Must be one of: ['LIVE', 'CACHED', 'DEMO', 'AUTO']",
+        )
+    logger.info(f"IGNIS mode set to {mode_manager.current_mode}", extra={"event": "mode_switch", "mode": mode_manager.current_mode})
+    return {"success": True, "new_mode": mode_manager.current_mode}
+
+
+@app.get("/api/mode/health")
+def get_mode_health() -> dict[str, Any]:
+    """Return detailed health check and recommended operational mode."""
+    return mode_manager.get_health()
 
 
 @app.get("/api/fire-stations/nearest")
@@ -324,6 +332,7 @@ def get_fires(
     days: int = Query(default=1, ge=1, le=10),
     source: str = Query(default="all"),
     force: bool = Query(default=False),
+    mode: Optional[str] = Query(default=None),
 ) -> dict[str, Any]:
     if source not in ALLOWED_SOURCES:
         raise HTTPException(
@@ -331,17 +340,51 @@ def get_fires(
             detail=f"Invalid source '{source}'. Must be one of: {sorted(list(ALLOWED_SOURCES))}",
         )
 
-    # 1) If in DEMO mode, return pre-classified realistic scenario dataset immediately
-    if _current_mode == "demo":
-        demo_path = Path(__file__).parent / "cache" / "demo_fires.json"
-        if demo_path.exists():
-            try:
-                with open(demo_path, "r", encoding="utf-8") as f:
-                    return json.load(f)
-            except Exception as e:
-                logger.warning(f"Failed reading demo_fires.json: {e}")
-
     classifier = get_classifier()
+    active_mode = (mode or mode_manager.current_mode).upper().strip()
+
+    # 1) DEMO MODE: load 250 realistic pre-classified fires instantly
+    if active_mode == "DEMO":
+        demo_fires = load_demo_fires()
+        return {
+            "fires": demo_fires,
+            "total": len(demo_fires),
+            "summary": classifier.get_summary(demo_fires),
+            "days": days,
+            "source": source,
+            "mode": "DEMO",
+            "ignis_status": "demo",
+            "data_source": "Simulated Data for Demonstration",
+            "message": "Serving 250 realistic pre-classified demo anomalies",
+            "generated_at": datetime.utcnow().isoformat() + "Z",
+        }
+
+    # 2) CACHED MODE: load explicitly from local SQLite cache
+    if active_mode == "CACHED":
+        today = datetime.utcnow().strftime("%Y-%m-%d")
+        fallback = get_fires_by_date(today)
+        if not fallback:
+            fallback = get_fires_by_date(days)
+        classified_cached = classifier.classify_batch(fallback)[:5000]
+        alerts = generate_alerts(classified_cached)
+        store_alerts(alerts)
+        c_status = get_cache_status()
+        age = c_status.get("age_hours", 0)
+        ds = f"Local Cache (last sync: {int(age)} hours ago)" if age >= 1.0 else "Local Cache (last sync: <1 hour ago)"
+        return {
+            "fires": classified_cached,
+            "total": len(classified_cached),
+            "summary": classifier.get_summary(classified_cached),
+            "days": days,
+            "source": source,
+            "mode": "CACHED",
+            "ignis_status": "cached_fallback",
+            "data_source": ds,
+            "message": "Serving local SQLite cache",
+            "generated_at": datetime.utcnow().isoformat() + "Z",
+        }
+
+    # 3) LIVE MODE: try NASA FIRMS API with automatic failover to SQLite
     try:
         if source == "all":
             raw_fires = fetch_all_sources(days=days, force=force)
@@ -358,8 +401,8 @@ def get_fires(
         store_alerts(alerts)
 
         status_info = get_data_status()
-        mode = status_info.get("mode", "live")
-        ignis_status = "live" if mode == "live" else "cached_fallback"
+        mode_str = status_info.get("mode", "live")
+        ignis_status = "live" if mode_str == "live" else "cached_fallback"
 
         # DoS Prevention: cap response records to 5000 and truncate text
         capped_fires = classified_fires[:5000]
@@ -380,7 +423,9 @@ def get_fires(
             "summary": classifier.get_summary(classified_fires),
             "days": days,
             "source": source,
+            "mode": "LIVE" if ignis_status == "live" else "CACHED",
             "ignis_status": ignis_status,
+            "data_source": "NASA FIRMS Real-Time" if ignis_status == "live" else "Local Cache (fallback)",
             "message": status_info.get("message", "Operational"),
             "generated_at": datetime.utcnow().isoformat() + "Z",
         }
@@ -393,14 +438,19 @@ def get_fires(
         classified_fallback = classifier.classify_batch(fallback)[:5000]
         alerts = generate_alerts(classified_fallback)
         store_alerts(alerts)
+        c_status = get_cache_status()
+        age = c_status.get("age_hours", 0)
+        ds = f"Local Cache (last sync: {int(age)} hours ago)" if age >= 1.0 else "Local Cache (last sync: <1 hour ago)"
         return {
             "fires": classified_fallback,
             "total": len(classified_fallback),
             "summary": classifier.get_summary(classified_fallback),
             "days": days,
             "source": source,
+            "mode": "CACHED",
             "ignis_status": "cached_fallback",
-            "message": "Operating on cached/database fallback",
+            "data_source": ds,
+            "message": "FIRMS unavailable, auto-failed over to cached telemetry",
             "generated_at": datetime.utcnow().isoformat() + "Z",
         }
 
