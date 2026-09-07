@@ -274,6 +274,45 @@ def health() -> dict[str, Any]:
         }
 
 
+@app.get("/api/verify")
+def verify_scene(
+    lat: float = Query(...),
+    lon: float = Query(...),
+    date: Optional[str] = Query(default=None),
+) -> dict[str, Any]:
+    from osm_data import find_nearest_industry
+    classifier = get_classifier()
+    nearest = find_nearest_industry(lat, lon, classifier.zones)
+    acq_date = date or datetime.utcnow().strftime("%Y-%m-%d")
+
+    worldview_url = (
+        f"https://worldview.earthdata.nasa.gov/?v={lon-1.5:.4f},{lat-1.5:.4f},{lon+1.5:.4f},{lat+1.5:.4f}&t={acq_date}"
+    )
+    gmaps_url = f"https://www.google.com/maps/@{lat:.4f},{lon:.4f},15z/data=!3m1!1e3"
+    osm_url = f"https://www.openstreetmap.org/#map=16/{lat:.4f}/{lon:.4f}"
+    copernicus_url = f"https://browser.dataspace.copernicus.eu/?zoom=14&lat={lat:.4f}&lng={lon:.4f}"
+
+    dist_km = float(nearest.get("distance_km", 999.0)) if nearest else 999.0
+    within_5km = dist_km <= 5.0
+
+    return {
+        "location": {"lat": lat, "lon": lon, "acq_date": acq_date},
+        "nearest_industry": nearest,
+        "within_5km_industry": within_5km,
+        "links": {
+            "worldview": worldview_url,
+            "google_maps": gmaps_url,
+            "osm": osm_url,
+            "copernicus": copernicus_url,
+        },
+        "notes": [
+            "FIRMS provides near-real-time thermal detection from VIIRS 375m sensor suite",
+            "Optical imagery revisit may range from hours to days depending on orbital swath and cloud cover",
+            "Cross-sensor verification workspace: combine thermal FRP with optical texture and access routes",
+        ],
+    }
+
+
 if __name__ == "__main__":
     import os
     import uvicorn

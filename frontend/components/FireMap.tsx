@@ -39,22 +39,22 @@ export function getMarkerColor(category: string): string {
   return TERMINAL_COLORS[category] || "#4a5563";
 }
 
-const TILE_PRESETS = {
-  tactical_dark: {
-    id: "tactical_dark",
-    name: "TACTICAL-DARK",
+export const TILE_PRESETS = {
+  ops_dark: {
+    id: "ops_dark",
+    name: "OPS DARK",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     subdomains: "abc",
   },
-  satellite_recon: {
-    id: "satellite_recon",
-    name: "SATELLITE-RECON",
+  satellite: {
+    id: "satellite",
+    name: "SATELLITE",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     subdomains: "abc",
   },
-  osm_grid: {
-    id: "osm_grid",
-    name: "OSM-GRID",
+  hybrid: {
+    id: "hybrid",
+    name: "HYBRID",
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     subdomains: "abc",
   },
@@ -92,15 +92,28 @@ interface FireMapProps {
   fires?: Fire[];
   targetCoords?: [number, number] | null;
   facilities?: FacilityMarker[];
+  onOpenVerify?: (fire: Fire) => void;
+  activeLayer?: keyof typeof TILE_PRESETS;
+  onLayerChange?: (layer: keyof typeof TILE_PRESETS) => void;
 }
 
 export default function FireMap({
   fires = [],
   targetCoords,
   facilities = [],
+  onOpenVerify,
+  activeLayer: externalActiveLayer,
+  onLayerChange,
 }: FireMapProps) {
   const safeFires = Array.isArray(fires) ? fires : [];
-  const [activeLayer, setActiveLayer] = useState<keyof typeof TILE_PRESETS>("tactical_dark");
+  const [internalLayer, setInternalLayer] = useState<keyof typeof TILE_PRESETS>("ops_dark");
+  const activeLayer = externalActiveLayer || internalLayer;
+
+  const handleSelectLayer = (key: keyof typeof TILE_PRESETS) => {
+    setInternalLayer(key);
+    if (onLayerChange) onLayerChange(key);
+  };
+
   const [currentCenter, setCurrentCenter] = useState<{ lat: number; lon: number; zoom: number }>({
     lat: 22.5432,
     lon: 78.9012,
@@ -109,7 +122,7 @@ export default function FireMap({
 
   const isCapped = safeFires.length > 1000;
   const renderedFires = isCapped ? safeFires.slice(0, 1000) : safeFires;
-  const currentTile = TILE_PRESETS[activeLayer] || TILE_PRESETS.tactical_dark;
+  const currentTile = TILE_PRESETS[activeLayer] || TILE_PRESETS.ops_dark;
 
   return (
     <div className="panel flex flex-col h-full w-full overflow-hidden border border-[#1f2933] bg-[#0a0e14] corner-brackets relative">
@@ -125,14 +138,14 @@ export default function FireMap({
           </span>
         </div>
 
-        {/* Top-Right Basemap / Sensor Layer Chips */}
+        {/* Top-Right Basemap / Sensor Layer Chips: [ OPS DARK ] [ SATELLITE ] [ HYBRID ] */}
         <div className="flex items-center gap-1 font-mono text-[10px]">
           {(Object.keys(TILE_PRESETS) as Array<keyof typeof TILE_PRESETS>).map((key) => {
             const isActive = activeLayer === key;
             return (
               <button
                 key={key}
-                onClick={() => setActiveLayer(key)}
+                onClick={() => handleSelectLayer(key)}
                 className={`px-2 py-0.5 border uppercase font-bold tracking-wider transition cursor-pointer ${
                   isActive
                     ? "bg-[#131a22] border-[#00d4ff] text-[#00d4ff]"
@@ -163,7 +176,7 @@ export default function FireMap({
           <TileLayer
             key={activeLayer}
             url={currentTile.url}
-            attribution="&copy; USGS/NASA FIRMS &copy; Esri &copy; OpenStreetMap"
+            attribution="&copy; NASA FIRMS &copy; Esri &copy; OpenStreetMap"
             subdomains={currentTile.subdomains || "abc"}
           />
 
@@ -208,6 +221,14 @@ export default function FireMap({
             const radius = isCritical ? (fire.frp > 50 ? 9 : 7) : fire.frp > 80 ? 6.5 : fire.frp > 30 ? 5 : 4;
             const seqId = `ANOM-${String(idx + 1).padStart(4, "0")}`;
 
+            // Clean reason and action to ensure strict ASCII
+            const cleanReason = (fire.reason || "Satellite active thermal detection.")
+              .replace(/[^\x20-\x7E]/g, "")
+              .trim();
+            const cleanAction = (fire.action || "Active continuous tracking.")
+              .replace(/[^\x20-\x7E]/g, "")
+              .trim();
+
             return (
               <CircleMarker
                 key={`${fire.latitude}-${fire.longitude}-${idx}`}
@@ -218,6 +239,11 @@ export default function FireMap({
                 color={isCritical ? "#ffffff" : "#1f2933"}
                 weight={1}
                 className={isCritical ? "status-dot-red" : undefined}
+                eventHandlers={{
+                  click: () => {
+                    if (onOpenVerify) onOpenVerify(fire);
+                  },
+                }}
               >
                 <Popup>
                   <div className="font-mono text-xs text-[#d0d8e0] p-1.5 space-y-2 min-w-[260px]">
@@ -281,23 +307,32 @@ export default function FireMap({
                         </span>
                       </div>
                       <div className="text-[10px] text-[#6b7785] mt-1 leading-snug">
-                        {fire.reason || "Satellite active thermal detection."}
+                        {cleanReason}
                       </div>
                     </div>
 
-                    {/* Nearest Facility & Gmaps Nav */}
-                    <div className="border-t border-[#1f2933] pt-1.5 flex items-center justify-between">
-                      <span className="text-[10px] text-[#6b7785] uppercase">
-                        ACT: {fire.action ? fire.action.slice(0, 24) : "TRACKING"}
-                      </span>
-                      <a
-                        href={`https://www.google.com/maps?q=${fire.latitude},${fire.longitude}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[9px] border border-[#00d4ff] text-[#00d4ff] px-1.5 py-0.5 hover:bg-[#00d4ff]/10 uppercase font-bold"
+                    {/* Verification Actions */}
+                    <div className="border-t border-[#1f2933] pt-1.5 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] text-[#6b7785] uppercase truncate max-w-[150px]">
+                          ACT: {cleanAction.slice(0, 20)}
+                        </span>
+                        <a
+                          href={`https://www.google.com/maps?q=${fire.latitude},${fire.longitude}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[9px] border border-[#1f2933] text-[#00d4ff] px-1.5 py-0.5 hover:bg-[#00d4ff]/10 uppercase font-bold"
+                        >
+                          [ GMAPS ↗ ]
+                        </a>
+                      </div>
+
+                      <button
+                        onClick={() => onOpenVerify && onOpenVerify(fire)}
+                        className="w-full text-[10px] border border-[#00d4ff] bg-[#00d4ff]/10 text-[#00d4ff] hover:bg-[#00d4ff]/20 py-1 uppercase font-bold text-center cursor-pointer tracking-wider transition"
                       >
-                        [ NAV → GMAPS ]
-                      </a>
+                        [ VERIFY SCENE & ROAD CONTEXT &gt;&gt; ]
+                      </button>
                     </div>
                   </div>
                 </Popup>

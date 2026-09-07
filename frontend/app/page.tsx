@@ -4,11 +4,13 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import type { Fire } from "@/components/FireMap";
+import { TILE_PRESETS } from "@/components/FireMap";
 import StatsPanel, { FireStats } from "@/components/StatsPanel";
 import AlertPanel, { AlertItem } from "@/components/AlertPanel";
 import FilterBar from "@/components/FilterBar";
 import AboutModal from "@/components/AboutModal";
 import IndustrialRegistry, { IndustrialFacility } from "@/components/IndustrialRegistry";
+import VerifyPanel from "@/components/VerifyPanel";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -43,6 +45,8 @@ export default function DashboardPage() {
   const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(null);
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
   const [notification, setNotification] = useState<string | null>(null);
+  const [verifyFire, setVerifyFire] = useState<Fire | null>(null);
+  const [activeBasemap, setActiveBasemap] = useState<keyof typeof TILE_PRESETS>("ops_dark");
 
   // Live ticking UTC Clock in ISO format: 2025-01-20T14:32:15Z
   useEffect(() => {
@@ -422,6 +426,9 @@ export default function DashboardPage() {
               fires={filteredFires}
               targetCoords={targetCoords}
               facilities={[]}
+              onOpenVerify={(fire) => setVerifyFire(fire)}
+              activeLayer={activeBasemap}
+              onLayerChange={setActiveBasemap}
             />
           </section>
 
@@ -471,6 +478,13 @@ export default function DashboardPage() {
           <span className="text-[#6b7785]">© NTRO</span>
         </div>
       </footer>
+
+      {/* Cross-Sensor Verification & Road Context Workspace Dialog */}
+      <VerifyPanel
+        fire={verifyFire}
+        onClose={() => setVerifyFire(null)}
+        onSwitchBasemap={(layer) => setActiveBasemap(layer)}
+      />
 
       {/* About Technical Dialog */}
       <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
