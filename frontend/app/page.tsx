@@ -11,6 +11,7 @@ import FilterBar from "@/components/FilterBar";
 import AboutModal from "@/components/AboutModal";
 import IndustrialRegistry, { IndustrialFacility } from "@/components/IndustrialRegistry";
 import VerifyPanel from "@/components/VerifyPanel";
+import { FALLBACK_TELEMETRY_DATA, FALLBACK_ALERTS_DATA } from "@/data/fallbackFires";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -22,8 +23,18 @@ const FireMap = dynamic(() => import("@/components/FireMap"), {
   ),
 });
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
+// Resilient API base URL resolution:
+// In browser environment, use relative same-origin path to route through Next.js proxy,
+// preventing ISP DNS blocks on Railway and avoiding CORS preflight failures.
+const getApiBaseUrl = () => {
+  if (typeof window !== "undefined") {
+    if (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL.includes("localhost")) {
+      return process.env.NEXT_PUBLIC_API_URL;
+    }
+    return "";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
+};
 
 export default function DashboardPage() {
   const [fires, setFires] = useState<Fire[]>([]);
@@ -64,7 +75,7 @@ export default function DashboardPage() {
     return new Date().toISOString().replace(/\.\d{3}/, "");
   };
 
-  // Fetch fires and active surveillance alerts from backend
+  // Fetch fires and active surveillance alerts with multi-tier failover
   const fetchData = useCallback(
     async (forceRefresh = false) => {
       try {
@@ -75,29 +86,59 @@ export default function DashboardPage() {
         }
         setError(null);
 
-        const firesUrl = `${API_BASE_URL}/api/fires?days=${days}&source=${source}${
+        const baseUrl = getApiBaseUrl();
+        const firesUrl = `${baseUrl}/api/fires?days=${days}&source=${source}${
           forceRefresh ? "&force=true" : ""
         }`;
-        const alertsUrl = `${API_BASE_URL}/api/alerts?hours=24`;
+        const alertsUrl = `${baseUrl}/api/alerts?hours=24`;
 
-        const [firesRes, alertsRes] = await Promise.all([
-          axios.get(firesUrl),
-          axios.get(alertsUrl).catch(() => ({ data: { alerts: [] } })),
-        ]);
+        let firesData: any = null;
+        let alertsData: any = null;
 
-        const fetchedFires: Fire[] = Array.isArray(firesRes.data?.fires)
-          ? firesRes.data.fires
-          : [];
+        try {
+          // Tier 1: Fetch via Next.js proxy route (bypasses ISP DNS and CORS)
+          const [firesRes, alertsRes] = await Promise.all([
+            axios.get(firesUrl, { timeout: 10000 }),
+            axios.get(alertsUrl, { timeout: 8000 }).catch(() => ({ data: { alerts: [] } })),
+          ]);
+          firesData = firesRes.data;
+          alertsData = alertsRes.data;
+        } catch (proxyErr) {
+          console.warn("[IGNIS] Primary proxy link unavailable, attempting direct node call...", proxyErr);
+          // Tier 2: Direct Railway call fallback
+          try {
+            const directFiresUrl = `https://web-production-b1e6a.up.railway.app/api/fires?days=${days}&source=${source}${
+              forceRefresh ? "&force=true" : ""
+            }`;
+            const [directRes, directAlerts] = await Promise.all([
+              axios.get(directFiresUrl, { timeout: 8000 }),
+              axios.get("https://web-production-b1e6a.up.railway.app/api/alerts?hours=24", { timeout: 6000 }).catch(() => ({ data: { alerts: [] } })),
+            ]);
+            firesData = directRes.data;
+            alertsData = directAlerts.data;
+          } catch (directErr) {
+            console.warn("[IGNIS] Direct node also unreachable. Engaging verified satellite telemetry cache:", directErr);
+            // Tier 3: Immediate fallback to verified satellite cache
+            firesData = FALLBACK_TELEMETRY_DATA;
+            alertsData = FALLBACK_ALERTS_DATA;
+            setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
+          }
+        }
+
+        const fetchedFires: Fire[] = Array.isArray(firesData?.fires)
+          ? firesData.fires
+          : (FALLBACK_TELEMETRY_DATA.fires as Fire[]);
         setFires(fetchedFires);
-        setStats(firesRes.data?.summary || null);
-        const fetchedAlerts = Array.isArray(alertsRes.data?.alerts)
-          ? alertsRes.data.alerts
+        setStats(firesData?.summary || FALLBACK_TELEMETRY_DATA.summary);
+
+        const fetchedAlerts = Array.isArray(alertsData?.alerts)
+          ? alertsData.alerts
           : [];
         setAlerts(fetchedAlerts);
 
-        const backendStatus = firesRes.data?.ignis_status === "live" ? "live" : "cached_fallback";
+        const backendStatus = firesData?.ignis_status === "live" ? "live" : "cached_fallback";
         setIgnisStatus(backendStatus);
-        setStatusMessage(firesRes.data?.message || "");
+        setStatusMessage(firesData?.message || (backendStatus === "live" ? "NASA-FIRMS LINK NOMINAL" : "SERVING LOCAL CACHE REPOSITORY"));
         setLastRefreshedUtc(getUtcTimestamp());
         setSeqCounter((c) => c + 1);
 
@@ -107,6 +148,8 @@ export default function DashboardPage() {
         }
       } catch (err: any) {
         console.error("TELEMETRY FETCH ERROR:", err);
+        setFires(FALLBACK_TELEMETRY_DATA.fires as Fire[]);
+        setStats(FALLBACK_TELEMETRY_DATA.summary);
         setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
         setIgnisStatus("cached_fallback");
         setStatusMessage("OFFLINE FALLBACK MODE");

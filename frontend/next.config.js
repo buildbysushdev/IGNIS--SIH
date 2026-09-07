@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async rewrites() {
+    return [
+      {
+        source: '/api/backend/:path*',
+        destination: 'https://web-production-b1e6a.up.railway.app/api/:path*',
+      },
+    ];
+  },
   async headers() {
     return [
       {
