@@ -893,6 +893,76 @@ def get_nearest_hospital_endpoint(
     return find_nearest_hospital(lat=lat, lon=lon)
 
 
+# ==============================================================================
+# 10) HISTORICAL FIRE INCIDENT ANALYSIS & RISK PREDICTION ENDPOINTS
+# ==============================================================================
+@app.get("/api/history")
+@limiter.limit("60/minute")
+def get_location_history_endpoint(
+    request: Request,
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lon: float = Query(..., ge=-180.0, le=180.0),
+    radius: float = Query(default=5.0, ge=0.5, le=100.0),
+) -> dict[str, Any]:
+    """Return 5-year spatial fire history, seasonal breakdown, and recurrence probability."""
+    from historical import get_location_history
+
+    return get_location_history(lat=lat, lon=lon, radius_km=radius)
+
+
+@app.get("/api/history/risk")
+@limiter.limit("60/minute")
+def get_location_risk_endpoint(
+    request: Request,
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lon: float = Query(..., ge=-180.0, le=180.0),
+) -> dict[str, Any]:
+    """Calculate composite future fire recurrence risk score (0-100) and tactical factors."""
+    from historical import calculate_risk_score
+
+    return calculate_risk_score(lat=lat, lon=lon)
+
+
+@app.get("/api/history/similar")
+@limiter.limit("60/minute")
+def get_similar_incidents_endpoint(
+    request: Request,
+    category: Optional[str] = Query(default="EMERGENCY_INDUSTRIAL"),
+    frp: Optional[float] = Query(default=120.0),
+    lat: Optional[float] = Query(default=None),
+    lon: Optional[float] = Query(default=None),
+    limit: int = Query(default=5, ge=1, le=20),
+) -> list[dict[str, Any]]:
+    """Retrieve top matched historical Indian emergencies with casualties and outcomes."""
+    from historical import get_similar_incidents
+
+    return get_similar_incidents(category=category, frp=frp, lat=lat, lon=lon, limit=limit)
+
+
+@app.get("/api/history/density")
+@limiter.limit("60/minute")
+def get_historical_density_endpoint(
+    request: Request,
+    limit: int = Query(default=400, ge=50, le=2000),
+) -> list[dict[str, Any]]:
+    """Return weighted multi-year thermal points for historical heatmap visualization."""
+    from historical import get_historical_density
+
+    return get_historical_density(limit=limit)
+
+
+@app.get("/api/incidents/notable")
+@limiter.limit("60/minute")
+def get_notable_incidents_endpoint(
+    request: Request,
+    limit: int = Query(default=50, ge=1, le=100),
+) -> list[dict[str, Any]]:
+    """Retrieve curated database of landmark Indian fire and chemical disaster case studies."""
+    from incident_reports import get_notable_incidents
+
+    return get_notable_incidents(limit=limit)
+
+
 if __name__ == "__main__":
     import uvicorn
 

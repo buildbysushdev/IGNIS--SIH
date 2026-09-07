@@ -133,6 +133,9 @@ interface FireMapProps {
   facilities?: FacilityMarker[];
   onOpenVerify?: (fire: Fire) => void;
   onOpenDispatch?: (fire: Fire) => void;
+  onOpenHistory?: (fire: Fire) => void;
+  showHistoricalHeatmap?: boolean;
+  onToggleHistoricalHeatmap?: () => void;
   activeLayer?: keyof typeof TILE_PRESETS;
   onLayerChange?: (layer: keyof typeof TILE_PRESETS) => void;
   scenarioOverlay?: ScenarioOverlayState | null;
@@ -145,6 +148,9 @@ export default function FireMap({
   facilities = [],
   onOpenVerify,
   onOpenDispatch,
+  onOpenHistory,
+  showHistoricalHeatmap: externalShowHeatmap,
+  onToggleHistoricalHeatmap,
   activeLayer: externalActiveLayer,
   onLayerChange,
   scenarioOverlay,
@@ -157,6 +163,43 @@ export default function FireMap({
     setInternalLayer(key);
     if (onLayerChange) onLayerChange(key);
   };
+
+  const [internalShowHeatmap, setInternalShowHeatmap] = useState<boolean>(false);
+  const isHeatmapActive = externalShowHeatmap !== undefined ? externalShowHeatmap : internalShowHeatmap;
+
+  const handleToggleHeatmap = () => {
+    if (onToggleHistoricalHeatmap) {
+      onToggleHistoricalHeatmap();
+    } else {
+      setInternalShowHeatmap((prev) => !prev);
+    }
+  };
+
+  const [historicalDensity, setHistoricalDensity] = useState<any[]>([]);
+  const [loadingDensity, setLoadingDensity] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isHeatmapActive || historicalDensity.length > 0) return;
+    let isMounted = true;
+    setLoadingDensity(true);
+    fetch("/api/history/density?limit=400")
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && Array.isArray(data)) {
+          setHistoricalDensity(data);
+        }
+      })
+      .catch((err) => {
+        console.warn("[IGNIS] Failed to load historical density layer:", err);
+      })
+      .finally(() => {
+        if (isMounted) setLoadingDensity(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isHeatmapActive, historicalDensity.length]);
 
   const [currentCenter, setCurrentCenter] = useState<{ lat: number; lon: number; zoom: number }>({
     lat: 22.5432,
@@ -185,7 +228,7 @@ export default function FireMap({
           </span>
         </div>
 
-        {/* Top-Right Basemap / Sensor Layer Chips: [ OPS DARK ] [ SATELLITE ] [ HYBRID ] */}
+        {/* Top-Right Basemap / Sensor Layer Chips & Historical Heatmap Toggle */}
         <div className="flex items-center gap-1 font-mono text-[10px]">
           {(Object.keys(TILE_PRESETS) as Array<keyof typeof TILE_PRESETS>).map((key) => {
             const isActive = activeLayer === key;
@@ -203,6 +246,23 @@ export default function FireMap({
               </button>
             );
           })}
+
+          <div className="w-[1px] h-3 bg-[#1f2933] mx-0.5" />
+
+          {/* Historical Heatmap Layer Toggle */}
+          <button
+            onClick={handleToggleHeatmap}
+            className={`px-2 py-0.5 border uppercase font-bold tracking-wider transition cursor-pointer flex items-center gap-1 ${
+              isHeatmapActive
+                ? "bg-[#ffb800]/20 border-[#ffb800] text-[#ffb800] shadow-[0_0_10px_rgba(255,184,0,0.3)]"
+                : "bg-[#0f141b] border-[#1f2933] text-[#6b7785] hover:text-[#ffb800] hover:border-[#ffb800]/50"
+            }`}
+            title="Toggle 5-Year Historical Fire Density Heatmap Layer (2021-2025)"
+          >
+            <span>{isHeatmapActive ? "🔥" : "◒"}</span>
+            <span>{isHeatmapActive ? "[ 5Y HEATMAP: ON ]" : "[ HISTORICAL HEATMAP ]"}</span>
+            {loadingDensity && <span className="animate-spin text-[9px]">◌</span>}
+          </button>
         </div>
       </div>
 
@@ -261,6 +321,93 @@ export default function FireMap({
               </Rectangle>
             );
           })}
+
+          {/* 5-Year Historical Fire Density Heatmap Layer (2021-2025) */}
+          {isHeatmapActive &&
+            historicalDensity.map((pt, idx) => {
+              const intensity = Number(pt.intensity ?? 0.6);
+              const color =
+                intensity >= 0.85
+                  ? "#ff3b3b"
+                  : intensity >= 0.65
+                  ? "#ff9500"
+                  : intensity >= 0.45
+                  ? "#ffb800"
+                  : "#00d4ff";
+              const markerRadius = Math.max(9, Math.min(24, Math.round(intensity * 20)));
+
+              return (
+                <CircleMarker
+                  key={`hist-density-${pt.lat}-${pt.lon}-${idx}`}
+                  center={[pt.lat, pt.lon]}
+                  radius={markerRadius}
+                  fillColor={color}
+                  fillOpacity={Math.min(0.42, Math.max(0.18, intensity * 0.4))}
+                  color={color}
+                  weight={1}
+                  opacity={0.65}
+                >
+                  <Popup>
+                    <div className="font-mono text-xs text-[#d0d8e0] p-1.5 space-y-1.5 min-w-[230px]">
+                      <div className="text-[10px] text-[#ffb800] border-b border-[#1f2933] pb-1 font-bold flex justify-between">
+                        <span>// 5-YR HISTORIC DENSITY CELL</span>
+                        <span className="text-[#00d4ff]">{pt.year || "2021-2025"}</span>
+                      </div>
+                      <div className="space-y-0.5 text-[10px] tabular-nums">
+                        <div className="flex justify-between">
+                          <span className="text-[#6b7785]">CELL COORDS:</span>
+                          <span className="text-[#00d4ff]">
+                            {Number(pt.lat).toFixed(4)}°N, {Number(pt.lon).toFixed(4)}°E
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[#6b7785]">HISTORIC FRP:</span>
+                          <span className="text-[#ffb800] font-bold">
+                            {Number(pt.frp || 0).toFixed(1)} MW
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[#6b7785]">RECURRENCE WEIGHT:</span>
+                          <span className="text-[#00ff9c] font-bold">
+                            {Math.round(intensity * 100)}%
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[#6b7785]">PREDOMINANT TYPE:</span>
+                          <span className="text-[#d0d8e0] uppercase">
+                            {String(pt.category || "INDUSTRIAL").replace(/_/g, " ")}
+                          </span>
+                        </div>
+                      </div>
+
+                      {onOpenHistory && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onOpenHistory({
+                              latitude: pt.lat,
+                              longitude: pt.lon,
+                              brightness: 345,
+                              frp: pt.frp || 110,
+                              confidence: "HISTORICAL",
+                              acq_date: `${pt.year || 2024}-04-15`,
+                              acq_time: "1130",
+                              category: pt.category || "PERSISTENT_INDUSTRIAL",
+                              risk_level: intensity >= 0.8 ? "CRITICAL" : "HIGH",
+                              reason: "Historical multi-year cluster hotspot",
+                              action: "Recurrence frequency audit",
+                            });
+                          }}
+                          className="w-full mt-1 py-1 px-2 border border-[#00d4ff] bg-[#00d4ff]/15 hover:bg-[#00d4ff]/30 text-[#00d4ff] hover:text-white text-[10px] font-bold uppercase tracking-wider text-center cursor-pointer transition"
+                        >
+                          [ 📊 LAUNCH CELL HISTORY ]
+                        </button>
+                      )}
+                    </div>
+                  </Popup>
+                </CircleMarker>
+              );
+            })}
 
           {/* Render Fire Hotspots */}
           {renderedFires.map((fire, idx) => {
@@ -436,6 +583,17 @@ export default function FireMap({
                         }`}
                       >
                         <span>🚒 SIMULATE DISPATCH</span>
+                      </button>
+
+                      {/* Prominent Historical Analysis Trigger Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (onOpenHistory) onOpenHistory(fire);
+                        }}
+                        className="w-full text-[10px] border border-[#ffb800] bg-[#ffb800]/15 hover:bg-[#ffb800]/25 text-[#ffb800] hover:text-white py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5"
+                      >
+                        <span>📊 VIEW HISTORY</span>
                       </button>
 
                       <div className="flex items-center justify-between">

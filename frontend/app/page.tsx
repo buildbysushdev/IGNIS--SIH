@@ -19,6 +19,7 @@ import DispatchSimulator from "@/components/DispatchSimulator";
 import DispatchHistory from "@/components/DispatchHistory";
 import Header from "@/components/Header";
 import ScenarioPlayer from "@/components/ScenarioPlayer";
+import HistoricalAnalysis from "@/components/HistoricalAnalysis";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -94,6 +95,11 @@ export default function DashboardPage() {
   const [dispatchTargetFire, setDispatchTargetFire] = useState<Fire | null>(null);
   const [dispatchTargetStation, setDispatchTargetStation] = useState<any | null>(null);
   const [isDispatchHistoryOpen, setIsDispatchHistoryOpen] = useState<boolean>(false);
+  
+  // Historical Analysis & 5-Year Recurrence State
+  const [isHistoricalOpen, setIsHistoricalOpen] = useState<boolean>(false);
+  const [historicalTargetFire, setHistoricalTargetFire] = useState<Fire | null>(null);
+  const [showHistoricalHeatmap, setShowHistoricalHeatmap] = useState<boolean>(false);
 
   // Live ticking UTC Clock in ISO format: 2025-01-20T14:32:15Z
   useEffect(() => {
@@ -509,6 +515,16 @@ export default function DashboardPage() {
           >
             [ EXPORT ]
           </button>
+          <span>::</span>
+          <button
+            onClick={() => setShowHistoricalHeatmap((prev) => !prev)}
+            className={`cursor-pointer transition ${
+              showHistoricalHeatmap ? "text-[#ffb800] font-bold" : "hover:text-[#ffb800]"
+            }`}
+            title="Toggle 5-Year Historical Fire Density Heatmap Layer"
+          >
+            [ {showHistoricalHeatmap ? "🔥 5Y HEATMAP ON" : "HISTORICAL HEATMAP"} ]
+          </button>
         </div>
       </div>
 
@@ -571,6 +587,12 @@ export default function DashboardPage() {
               facilities={[]}
               onOpenVerify={(fire) => setVerifyFire(fire)}
               onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
+              onOpenHistory={(fire) => {
+                setHistoricalTargetFire(fire);
+                setIsHistoricalOpen(true);
+              }}
+              showHistoricalHeatmap={showHistoricalHeatmap}
+              onToggleHistoricalHeatmap={() => setShowHistoricalHeatmap((prev) => !prev)}
               activeLayer={activeBasemap}
               onLayerChange={setActiveBasemap}
               scenarioOverlay={scenarioOverlay}
@@ -661,6 +683,14 @@ export default function DashboardPage() {
       <DispatchHistory
         isOpen={isDispatchHistoryOpen}
         onClose={() => setIsDispatchHistoryOpen(false)}
+        onPanToCoords={(coords) => setTargetCoords(coords)}
+      />
+
+      {/* Feature 7: Historical Fire Incident Analysis & Recurrence Prediction Modal */}
+      <HistoricalAnalysis
+        isOpen={isHistoricalOpen}
+        onClose={() => setIsHistoricalOpen(false)}
+        fire={historicalTargetFire}
         onPanToCoords={(coords) => setTargetCoords(coords)}
       />
 
