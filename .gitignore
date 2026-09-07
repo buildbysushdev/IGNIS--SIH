@@ -39,6 +39,12 @@ backend/cache/*.json
 backend/cache/*.pkl
 !cache/industrial_zones.json
 !backend/cache/industrial_zones.json
+!cache/demo_fires.json
+!backend/cache/demo_fires.json
+!cache/fire_stations.json
+!backend/cache/fire_stations.json
+!cache/scenarios/**
+!backend/cache/scenarios/**
 
 # Node.js & Next.js
 node_modules/

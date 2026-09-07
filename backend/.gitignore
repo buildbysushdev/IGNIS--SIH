@@ -9,6 +9,9 @@ __pycache__/
 cache/*.json
 cache/*.pkl
 !cache/industrial_zones.json
+!cache/demo_fires.json
+!cache/fire_stations.json
+!cache/scenarios/**
 venv/
 .venv/
 *.log

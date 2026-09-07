@@ -1,0 +1,302 @@
+{
+  "id": "punjab_stubble",
+  "title": "Scenario 2: Punjab Stubble Burning Peak",
+  "target_center": [
+    30.45,
+    75.85
+  ],
+  "target_zoom": 10,
+  "description": "Widespread post-harvest residue burns across Sangrur and Patiala farmlands.",
+  "total_duration_sec": 30,
+  "steps": [
+    {
+      "time_sec": 0,
+      "narration": "[T+00s] MONITORING PUNJAB HARVEST BELT. 4 baseline crop residue fires recorded.",
+      "alert_level": "NOMINAL",
+      "active_fires": [
+        {
+          "id": "PUN-AG-01",
+          "latitude": 30.245,
+          "longitude": 75.842,
+          "frp": 6.2,
+          "brightness": 324.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "0900",
+          "reason": "Crop burn.",
+          "action": "Log for audit."
+        }
+      ]
+    },
+    {
+      "time_sec": 10,
+      "narration": "[T+10s] \ud83c\udf3e SIMULTANEOUS IGNITION DETECTED. 18 new agricultural hotspots observed along Sangrur-Patiala corridor.",
+      "alert_level": "WARNING",
+      "active_fires": [
+        {
+          "id": "PUN-AG-00",
+          "latitude": 30.2,
+          "longitude": 75.6,
+          "frp": 8.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-01",
+          "latitude": 30.24,
+          "longitude": 75.63,
+          "frp": 9.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-02",
+          "latitude": 30.279999999999998,
+          "longitude": 75.66,
+          "frp": 10.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-03",
+          "latitude": 30.32,
+          "longitude": 75.69,
+          "frp": 11.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-04",
+          "latitude": 30.36,
+          "longitude": 75.72,
+          "frp": 12.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-05",
+          "latitude": 30.4,
+          "longitude": 75.75,
+          "frp": 8.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-06",
+          "latitude": 30.439999999999998,
+          "longitude": 75.78,
+          "frp": 9.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-07",
+          "latitude": 30.48,
+          "longitude": 75.80999999999999,
+          "frp": 10.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-08",
+          "latitude": 30.52,
+          "longitude": 75.83999999999999,
+          "frp": 11.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-09",
+          "latitude": 30.56,
+          "longitude": 75.86999999999999,
+          "frp": 12.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-10",
+          "latitude": 30.599999999999998,
+          "longitude": 75.89999999999999,
+          "frp": 8.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-11",
+          "latitude": 30.64,
+          "longitude": 75.92999999999999,
+          "frp": 9.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-12",
+          "latitude": 30.68,
+          "longitude": 75.96,
+          "frp": 10.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-13",
+          "latitude": 30.72,
+          "longitude": 75.99,
+          "frp": 11.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-14",
+          "latitude": 30.759999999999998,
+          "longitude": 76.02,
+          "frp": 12.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-15",
+          "latitude": 30.8,
+          "longitude": 76.05,
+          "frp": 8.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-16",
+          "latitude": 30.84,
+          "longitude": 76.08,
+          "frp": 9.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        },
+        {
+          "id": "PUN-AG-17",
+          "latitude": 30.88,
+          "longitude": 76.11,
+          "frp": 10.5,
+          "brightness": 328.0,
+          "category": "AGRICULTURAL_BURNING",
+          "risk_level": "LOW",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Post-paddy residue burning.",
+          "action": "Deploy agricultural inspection patrol."
+        }
+      ]
+    },
+    {
+      "time_sec": 15,
+      "narration": "[T+15s] \u26a0\ufe0f AIR QUALITY ADVISORY: Downwind particulate plume detected moving towards National Capital Region.",
+      "alert_level": "WARNING"
+    },
+    {
+      "time_sec": 20,
+      "narration": "[T+20s] \ud83d\ude9c REGIONAL OUTPOST MOBILIZED: Sangrur District Agricultural Outpost dispatched with containment tractors.",
+      "alert_level": "WARNING",
+      "station_identified": {
+        "name": "Sangrur District Fire Station",
+        "distance_km": 6.8,
+        "eta_minutes": 14,
+        "phone": "+91-1672-231101"
+      }
+    },
+    {
+      "time_sec": 25,
+      "narration": "[T+25s] \ud83d\udccb RESPONSE PROTOCOL: Class A fire. Water bowsers and tractor plows for perimeter fire-breaks. Chemicals prohibited.",
+      "alert_level": "WARNING",
+      "protocol_active": "AGRICULTURAL_BURNING"
+    },
+    {
+      "time_sec": 30,
+      "narration": "[T+30s] \ud83d\udfe2 CONTAINMENT COORDINATION COMPLETE. Satellite cluster log forwarded to State Pollution Control Board.",
+      "alert_level": "DISPATCHED",
+      "dispatch_complete": true
+    }
+  ]
+}

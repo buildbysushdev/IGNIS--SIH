@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, useMapEvents } from "react-leaflet";
+import ResponseProtocol from "./ResponseProtocol";
+import { FIRE_STATIONS } from "@/data/fireStations";
 
 export interface Fire {
   id?: string;
@@ -23,6 +25,9 @@ export interface Fire {
   facility_type?: string;
   facility_dist?: number;
   distance_km?: number;
+  station_name?: string;
+  station_distance_km?: number;
+  station_eta_minutes?: number;
 }
 
 export interface FacilityMarker {
@@ -95,11 +100,28 @@ function MapTelemetryController({
   return null;
 }
 
+export function findLocalNearestStation(lat: number, lon: number) {
+  let nearest = FIRE_STATIONS[0];
+  let minD = 999999;
+  for (let i = 0; i < FIRE_STATIONS.length; i++) {
+    const s = FIRE_STATIONS[i];
+    const d = Math.hypot(s.lat - lat, (s.lon - lon) * Math.cos((lat * Math.PI) / 180)) * 111;
+    if (d < minD) {
+      minD = d;
+      nearest = s;
+    }
+  }
+  const distKm = Math.round(minD * 10) / 10;
+  const eta = Math.max(3, Math.round(2 + (distKm / 45) * 60));
+  return { ...nearest, distance_km: distKm, eta_minutes: eta };
+}
+
 interface FireMapProps {
   fires?: Fire[];
   targetCoords?: [number, number] | null;
   facilities?: FacilityMarker[];
   onOpenVerify?: (fire: Fire) => void;
+  onOpenDispatch?: (fire: Fire) => void;
   activeLayer?: keyof typeof TILE_PRESETS;
   onLayerChange?: (layer: keyof typeof TILE_PRESETS) => void;
 }
@@ -109,6 +131,7 @@ export default function FireMap({
   targetCoords,
   facilities = [],
   onOpenVerify,
+  onOpenDispatch,
   activeLayer: externalActiveLayer,
   onLayerChange,
 }: FireMapProps) {
@@ -318,11 +341,51 @@ export default function FireMap({
                       </div>
                     </div>
 
-                    {/* Verification Actions */}
-                    <div className="border-t border-[#1f2933] pt-1.5 space-y-1">
+                    {/* Nearest Fire Station Card */}
+                    {(() => {
+                      const nearestSt = findLocalNearestStation(fire.latitude, fire.longitude);
+                      return (
+                        <div className="border border-[#1f2933] bg-[#0c1017] p-1.5 text-[10px] space-y-0.5">
+                          <div className="text-[#00d4ff] font-bold text-[9px] flex justify-between">
+                            <span>// NEAREST RESPONSE UNIT</span>
+                            <span className="text-[#00ff9c] font-bold">ETA: {nearestSt.eta_minutes} MIN</span>
+                          </div>
+                          <div className="text-white font-bold text-[10px] truncate">
+                            {nearestSt.name}
+                          </div>
+                          <div className="flex justify-between text-[#6b7785] text-[9px] tabular-nums">
+                            <span>DIST: {nearestSt.distance_km} KM</span>
+                            <span>TEL: {nearestSt.phone}</span>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* Material Response Protocol */}
+                    <ResponseProtocol category={fire.category} compact={true} />
+
+                    {/* Actions & Dispatch */}
+                    <div className="border-t border-[#1f2933] pt-1.5 space-y-1.5">
+                      {/* Dispatch Simulation Button */}
+                      <button
+                        onClick={() => {
+                          const nearestSt = findLocalNearestStation(fire.latitude, fire.longitude);
+                          const fireWithStation = {
+                            ...fire,
+                            station_name: nearestSt.name,
+                            station_distance_km: nearestSt.distance_km,
+                            station_eta_minutes: nearestSt.eta_minutes,
+                          };
+                          if (onOpenDispatch) onOpenDispatch(fireWithStation);
+                        }}
+                        className="w-full text-[10px] border border-[#ff3b3b] bg-[#ff3b3b]/15 hover:bg-[#ff3b3b]/25 text-[#ff8080] hover:text-white py-1 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1"
+                      >
+                        <span>[ 🚒 DISPATCH SIMULATION &gt;&gt; ]</span>
+                      </button>
+
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] text-[#6b7785] uppercase truncate max-w-[150px]">
-                          ACT: {cleanAction.slice(0, 20)}
+                        <span className="text-[10px] text-[#6b7785] uppercase truncate max-w-[140px]">
+                          ACT: {cleanAction.slice(0, 18)}
                         </span>
                         <a
                           href={`https://www.google.com/maps?q=${fire.latitude},${fire.longitude}`}

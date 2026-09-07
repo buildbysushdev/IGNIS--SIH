@@ -15,10 +15,21 @@ from fastapi import FastAPI, Query, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
-from slowapi import Limiter
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
+from pydantic import BaseModel
+try:
+    from slowapi import Limiter
+    from slowapi.util import get_remote_address
+    from slowapi.errors import RateLimitExceeded
+except ImportError:
+    class Limiter:
+        def __init__(self, *args, **kwargs): pass
+        def limit(self, *args, **kwargs):
+            return lambda f: f
+    def get_remote_address(r): return "127.0.0.1"
+    class RateLimitExceeded(Exception): pass
 
+import json
+import dispatch
 from classifier import FireClassifier
 from osm_data import load_or_cache_zones
 from ml_model import load_persistence_cache
@@ -229,6 +240,79 @@ def root() -> dict[str, str]:
     }
 
 
+# Global IGNIS Operational Mode State ("live", "demo", "cached")
+_current_mode: str = "live"
+
+
+class ModeSetRequest(BaseModel):
+    mode: str
+
+
+@app.get("/api/mode")
+def get_mode() -> dict[str, str]:
+    """Query current operational mode of IGNIS node."""
+    return {
+        "mode": _current_mode,
+        "description": "LIVE: NASA FIRMS Satellite | DEMO: 250+ Scripted Anomalies | CACHED: Local SQLite Cache",
+    }
+
+
+@app.post("/api/mode/set")
+def set_mode(payload: ModeSetRequest) -> dict[str, Any]:
+    """Change global operational mode to 'live', 'demo', or 'cached'."""
+    global _current_mode
+    target = payload.mode.lower().strip()
+    if target not in {"live", "demo", "cached"}:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid mode. Must be one of: ['live', 'demo', 'cached']",
+        )
+    _current_mode = target
+    logger.info(f"IGNIS mode set to {_current_mode}", extra={"event": "mode_switch", "mode": _current_mode})
+    return {"status": "success", "mode": _current_mode}
+
+
+@app.get("/api/fire-stations/nearest")
+@limiter.limit("60/minute")
+def get_nearest_station(
+    request: Request,
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lon: float = Query(..., ge=-180.0, le=180.0),
+) -> dict[str, Any]:
+    """Identify nearest fire station with Haversine distance, ETA, and emergency contact."""
+    station = dispatch.find_nearest_fire_station(lat, lon)
+    return {"station": station}
+
+
+@app.post("/api/dispatch")
+@limiter.limit("30/minute")
+def execute_dispatch(
+    request: Request,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    """Execute simulated emergency dispatch to nearest station and store in database dispatch_log."""
+    lat = float(payload.get("latitude") or payload.get("fire_location", {}).get("lat", 0.0))
+    lon = float(payload.get("longitude") or payload.get("fire_location", {}).get("lon", 0.0))
+    category = payload.get("category") or payload.get("fire_category", "UNKNOWN")
+    fire_data = {"latitude": lat, "longitude": lon, "category": category}
+    station_data = payload.get("fire_station")
+
+    record = dispatch.simulate_dispatch(fire_data, station_data)
+    return record
+
+
+@app.get("/api/dispatches")
+@limiter.limit("60/minute")
+def get_dispatch_logs(
+    request: Request,
+    limit: int = Query(default=50, ge=1, le=200),
+) -> dict[str, Any]:
+    """Query recent emergency dispatch records."""
+    from database import get_recent_dispatches
+    logs = get_recent_dispatches(limit)
+    return {"dispatches": logs, "count": len(logs)}
+
+
 # ==============================================================================
 # 5) SECURE API ENDPOINTS WITH RATE LIMITING & QUERY VALIDATION
 # ==============================================================================
@@ -246,6 +330,16 @@ def get_fires(
             status_code=400,
             detail=f"Invalid source '{source}'. Must be one of: {sorted(list(ALLOWED_SOURCES))}",
         )
+
+    # 1) If in DEMO mode, return pre-classified realistic scenario dataset immediately
+    if _current_mode == "demo":
+        demo_path = Path(__file__).parent / "cache" / "demo_fires.json"
+        if demo_path.exists():
+            try:
+                with open(demo_path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                logger.warning(f"Failed reading demo_fires.json: {e}")
 
     classifier = get_classifier()
     try:

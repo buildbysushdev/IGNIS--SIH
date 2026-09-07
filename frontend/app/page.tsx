@@ -12,6 +12,10 @@ import AboutModal from "@/components/AboutModal";
 import IndustrialRegistry, { IndustrialFacility } from "@/components/IndustrialRegistry";
 import VerifyPanel from "@/components/VerifyPanel";
 import { FALLBACK_TELEMETRY_DATA, FALLBACK_ALERTS_DATA } from "@/data/fallbackFires";
+import { DEMO_TELEMETRY_DATA } from "@/data/demoFires";
+import { SIMULATION_SCENARIOS, SimulationScenario } from "@/data/scenarios";
+import EmergencyPanel, { playTacticalAlertSound } from "@/components/EmergencyPanel";
+import DispatchSimulator from "@/components/DispatchSimulator";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -58,6 +62,23 @@ export default function DashboardPage() {
   const [notification, setNotification] = useState<string | null>(null);
   const [verifyFire, setVerifyFire] = useState<Fire | null>(null);
   const [activeBasemap, setActiveBasemap] = useState<keyof typeof TILE_PRESETS>("ops_dark");
+
+  // Global MODE State: LIVE | CACHED | DEMO
+  const [globalMode, setGlobalMode] = useState<"live" | "cached" | "demo">("live");
+
+  // Simulation Scenarios State
+  const [selectedScenarioId, setSelectedScenarioId] = useState<string>("live");
+  const [isScenarioPlaying, setIsScenarioPlaying] = useState<boolean>(false);
+  const [scenarioElapsedSec, setScenarioElapsedSec] = useState<number>(0);
+  const [scenarioNarration, setScenarioNarration] = useState<string | null>(null);
+
+  // Emergency Panel & Dispatch Simulator State
+  const [isEmergencyPanelOpen, setIsEmergencyPanelOpen] = useState<boolean>(false);
+  const [emergencyActiveFire, setEmergencyActiveFire] = useState<Fire | null>(null);
+
+  const [isDispatchModalOpen, setIsDispatchModalOpen] = useState<boolean>(false);
+  const [dispatchTargetFire, setDispatchTargetFire] = useState<Fire | null>(null);
+  const [dispatchTargetStation, setDispatchTargetStation] = useState<any | null>(null);
 
   // Live ticking UTC Clock in ISO format: 2025-01-20T14:32:15Z
   useEffect(() => {
@@ -138,6 +159,7 @@ export default function DashboardPage() {
 
         const backendStatus = firesData?.ignis_status === "live" ? "live" : "cached_fallback";
         setIgnisStatus(backendStatus);
+        setGlobalMode(backendStatus === "live" ? "live" : "cached");
         setStatusMessage(firesData?.message || (backendStatus === "live" ? "NASA-FIRMS LINK NOMINAL" : "SERVING LOCAL CACHE REPOSITORY"));
         setLastRefreshedUtc(getUtcTimestamp());
         setSeqCounter((c) => c + 1);
@@ -152,6 +174,7 @@ export default function DashboardPage() {
         setStats(FALLBACK_TELEMETRY_DATA.summary);
         setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
         setIgnisStatus("cached_fallback");
+        setGlobalMode("cached");
         setStatusMessage("OFFLINE FALLBACK MODE");
         setLastRefreshedUtc(getUtcTimestamp());
       } finally {
@@ -161,6 +184,115 @@ export default function DashboardPage() {
     },
     [days, source]
   );
+
+  // Global Mode Switcher: LIVE <-> DEMO
+  const handleSwitchMode = useCallback(
+    (targetMode: "live" | "demo") => {
+      if (targetMode === "demo") {
+        setGlobalMode("demo");
+        const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
+        setFires(demoFires);
+        setStats(DEMO_TELEMETRY_DATA.summary);
+        setIgnisStatus("live");
+        setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
+        setLastRefreshedUtc(getUtcTimestamp());
+        setNotification("[MODE CHANGED] DEMO MODE LOADED (250 TACTICAL HOTSPOTS)");
+        setTimeout(() => setNotification(null), 3500);
+      } else {
+        setGlobalMode("live");
+        setSelectedScenarioId("live");
+        setIsScenarioPlaying(false);
+        setScenarioNarration(null);
+        fetchData(true);
+        setNotification("[MODE CHANGED] LIVE NASA-FIRMS TELEMETRY LINK ENGAGED");
+        setTimeout(() => setNotification(null), 3500);
+      }
+    },
+    [fetchData]
+  );
+
+  // Scenario Selector & Animated Playback Control
+  const handleSelectScenario = useCallback(
+    (scenId: string) => {
+      setSelectedScenarioId(scenId);
+      if (scenId === "live") {
+        setIsScenarioPlaying(false);
+        setScenarioNarration(null);
+        setTargetCoords([22.5432, 78.9012]);
+        handleSwitchMode("live");
+        return;
+      }
+
+      const scen = SIMULATION_SCENARIOS.find((s) => s.id === scenId);
+      if (scen) {
+        setGlobalMode("demo");
+        setTargetCoords(scen.target_center);
+        setScenarioElapsedSec(0);
+        setIsScenarioPlaying(true);
+        setScenarioNarration(scen.steps[0]?.narration || null);
+        if (scen.steps[0]?.active_fires) {
+          setFires(scen.steps[0].active_fires as Fire[]);
+        }
+      }
+    },
+    [handleSwitchMode]
+  );
+
+  const togglePlayScenario = useCallback(() => {
+    if (selectedScenarioId === "live") return;
+    setIsScenarioPlaying((prev) => !prev);
+  }, [selectedScenarioId]);
+
+  // Scenario 30-Second Animated Timeline Engine
+  useEffect(() => {
+    if (!isScenarioPlaying || selectedScenarioId === "live") return;
+    const scen = SIMULATION_SCENARIOS.find((s) => s.id === selectedScenarioId);
+    if (!scen) return;
+
+    const timer = setInterval(() => {
+      setScenarioElapsedSec((sec) => {
+        const nextSec = sec + 1;
+        if (nextSec > scen.total_duration_sec) {
+          setIsScenarioPlaying(false);
+          return scen.total_duration_sec;
+        }
+
+        const currentStep = scen.steps.find((st) => st.time_sec === nextSec);
+        if (currentStep) {
+          setScenarioNarration(currentStep.narration);
+          if (currentStep.active_fires && currentStep.active_fires.length > 0) {
+            setFires(currentStep.active_fires as Fire[]);
+          }
+          if (currentStep.trigger_panel && currentStep.active_fires && currentStep.active_fires.length > 0) {
+            playTacticalAlertSound();
+            setEmergencyActiveFire(currentStep.active_fires[0] as Fire);
+            setIsEmergencyPanelOpen(true);
+          } else if (currentStep.trigger_siren) {
+            playTacticalAlertSound();
+          }
+          if (currentStep.dispatch_complete) {
+            setNotification("[SCENARIO COMPLETE] DISPATCH WORKFLOW LOGGED");
+            setTimeout(() => setNotification(null), 4000);
+          }
+        }
+        return nextSec;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isScenarioPlaying, selectedScenarioId]);
+
+  // Dispatch Trigger Helper
+  const handleOpenDispatchModal = useCallback((fire: Fire) => {
+    setDispatchTargetFire(fire);
+    setDispatchTargetStation({
+      name: (fire as any).station_name || "Surat Central Fire Station",
+      distance_km: (fire as any).station_distance_km || 2.3,
+      eta_minutes: (fire as any).station_eta_minutes || 6,
+      phone: "+91-261-2422222",
+    });
+    setIsDispatchModalOpen(true);
+  }, []);
 
   // Initial load and parameter changes
   useEffect(() => {
@@ -298,17 +430,82 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Center Mission Phase Indicator */}
-          <div className="hidden lg:flex items-center gap-1 text-[10px] font-bold tracking-widest uppercase">
-            <span className="px-2 py-1 border border-[#1f2933] bg-[#0a0e14] text-[#4a5563]">
-              [ NOMINAL ]
-            </span>
-            <span className="px-2 py-1 border border-[#00ff9c] bg-[#131a22] text-[#00ff9c]">
-              [ MONITORING ]
-            </span>
-            <span className="px-2 py-1 border border-[#1f2933] bg-[#0a0e14] text-[#4a5563]">
-              [ ANALYSIS ]
-            </span>
+          {/* Center: Mode Indicator & Toggle & Scenarios */}
+          <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
+            {/* Mode Pill */}
+            <div className="flex items-center gap-1.5 border border-[#1f2933] px-2 py-1 bg-[#0a0e14]">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  globalMode === "live"
+                    ? "bg-[#00ff9c] status-dot-green animate-pulse"
+                    : globalMode === "cached"
+                    ? "bg-[#ffb800] status-dot-amber"
+                    : "bg-[#c084fc] shadow-[0_0_8px_#c084fc] animate-pulse"
+                }`}
+              />
+              <span
+                className={`font-black tracking-wider text-[10px] uppercase ${
+                  globalMode === "live"
+                    ? "text-[#00ff9c]"
+                    : globalMode === "cached"
+                    ? "text-[#ffb800]"
+                    : "text-[#c084fc]"
+                }`}
+              >
+                MODE: {globalMode.toUpperCase()}
+              </span>
+            </div>
+
+            {/* Mode Switcher: [LIVE] [DEMO] */}
+            <div className="flex items-center border border-[#1f2933] bg-[#0a0e14] text-[10px] font-bold">
+              <button
+                onClick={() => handleSwitchMode("live")}
+                className={`px-2 py-1 cursor-pointer transition ${
+                  globalMode === "live"
+                    ? "bg-[#00ff9c]/20 text-[#00ff9c] border-r border-[#00ff9c]"
+                    : "text-[#6b7785] hover:text-[#d0d8e0] border-r border-[#1f2933]"
+                }`}
+              >
+                [LIVE]
+              </button>
+              <button
+                onClick={() => handleSwitchMode("demo")}
+                className={`px-2 py-1 cursor-pointer transition ${
+                  globalMode === "demo"
+                    ? "bg-[#c084fc]/20 text-[#c084fc]"
+                    : "text-[#6b7785] hover:text-[#d0d8e0]"
+                }`}
+              >
+                [DEMO]
+              </button>
+            </div>
+
+            {/* Scenarios Selector Dropdown */}
+            <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] px-2 py-0.5 text-[10px]">
+              <span className="text-[#6b7785] font-bold hidden sm:inline">SCENARIO:</span>
+              <select
+                value={selectedScenarioId}
+                onChange={(e) => handleSelectScenario(e.target.value)}
+                className="bg-[#0f141b] border border-[#1f2933] text-[#00d4ff] px-1 py-0.5 font-mono text-[10px] cursor-pointer"
+              >
+                <option value="live">LIVE DATA (DEFAULT)</option>
+                <option value="surat_emergency">1: SURAT FACTORY EMERGENCY</option>
+                <option value="punjab_stubble">2: PUNJAB STUBBLE PEAK</option>
+                <option value="uttarakhand_forest">3: UTTARAKHAND FOREST FIRE</option>
+              </select>
+              {selectedScenarioId !== "live" && (
+                <button
+                  onClick={togglePlayScenario}
+                  className={`px-1.5 py-0.5 text-[9px] font-bold uppercase cursor-pointer border transition ${
+                    isScenarioPlaying
+                      ? "border-[#ffb800] bg-[#ffb800]/20 text-[#ffb800]"
+                      : "border-[#00ff9c] bg-[#00ff9c]/20 text-[#00ff9c] hover:bg-[#00ff9c]/30"
+                  }`}
+                >
+                  {isScenarioPlaying ? "[ PAUSE ]" : "[ PLAY SCENARIO ]"}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Right Block: Telemetry Link & Status */}
@@ -390,6 +587,21 @@ export default function DashboardPage() {
 
         {/* Quick Ops Commands */}
         <div className="flex items-center gap-2 text-[#4a5563] shrink-0 font-bold ml-4">
+          {/* Quick Trigger Emergency Panel Button */}
+          <button
+            onClick={() => {
+              const crit = filteredFires.find(
+                (f) => f.risk_level === "CRITICAL" || f.category === "EMERGENCY_INDUSTRIAL"
+              );
+              if (crit) setEmergencyActiveFire(crit);
+              setIsEmergencyPanelOpen((prev) => !prev);
+            }}
+            className="border border-[#ff3b3b] bg-[#ff3b3b]/15 px-2 py-0.5 text-[#ff8080] hover:bg-[#ff3b3b]/30 cursor-pointer text-[10px] font-bold flex items-center gap-1.5 transition"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
+            <span>[ 🚨 EMERGENCY PANEL ]</span>
+          </button>
+          <span>::</span>
           <button
             onClick={() => fetchData(true)}
             className="hover:text-[#00ff9c] cursor-pointer"
@@ -436,6 +648,22 @@ export default function DashboardPage() {
       {/* 5) MAIN OPS GRID (3-COLUMN: 22% REGISTRY | 52% MAP | 26% TELEMETRY)        */}
       {/* ========================================================================= */}
       <main className="max-w-[1800px] w-full mx-auto p-3 flex-1 flex flex-col">
+        {/* Scenario Animated Narration Ticker Overlay */}
+        {scenarioNarration && (
+          <div className="mb-2 p-2.5 border border-[#00d4ff] bg-[#00d4ff]/10 text-[#00d4ff] text-xs flex items-center justify-between font-mono animate-pulse shadow-[0_0_15px_rgba(0,212,255,0.2)]">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#00d4ff] animate-ping shrink-0" />
+              <span className="text-[#00ff9c] font-bold tracking-wider">
+                :: SCENARIO TELEMETRY NARRATION ::
+              </span>
+              <span className="text-white font-medium">{scenarioNarration}</span>
+            </div>
+            <div className="text-[10px] text-[#ffb800] font-bold shrink-0 ml-4 border border-[#ffb800]/40 px-2 py-0.5 bg-[#0a0e14]">
+              T+{scenarioElapsedSec}s / 30s
+            </div>
+          </div>
+        )}
+
         {/* Error Alert Strip if Node Unreachable */}
         {error && (
           <div className="mb-2 p-2 border border-[#ff3b3b] bg-[#ff3b3b]/10 text-[#ff3b3b] text-xs flex justify-between items-center font-mono">
@@ -470,6 +698,7 @@ export default function DashboardPage() {
               targetCoords={targetCoords}
               facilities={[]}
               onOpenVerify={(fire) => setVerifyFire(fire)}
+              onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
               activeLayer={activeBasemap}
               onLayerChange={setActiveBasemap}
             />
@@ -531,6 +760,27 @@ export default function DashboardPage() {
 
       {/* About Technical Dialog */}
       <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+
+      {/* Feature 4: Emergency Notification Panel (Slide-in right) */}
+      <EmergencyPanel
+        isOpen={isEmergencyPanelOpen}
+        onClose={() => setIsEmergencyPanelOpen(false)}
+        activeFire={emergencyActiveFire}
+        onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
+        onPanToFire={(coords) => setTargetCoords(coords)}
+      />
+
+      {/* Feature 5: Nearest Fire Station & Dispatch Simulation Modal */}
+      <DispatchSimulator
+        isOpen={isDispatchModalOpen}
+        onClose={() => setIsDispatchModalOpen(false)}
+        fire={dispatchTargetFire}
+        station={dispatchTargetStation}
+        onDispatchComplete={(rec) => {
+          setNotification(`[DISPATCH RECORDED] REF #${rec.dispatch_id}`);
+          setTimeout(() => setNotification(null), 4000);
+        }}
+      />
     </div>
   );
 }

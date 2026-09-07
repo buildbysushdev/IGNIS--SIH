@@ -1,0 +1,90 @@
+{
+  "id": "uttarakhand_forest",
+  "title": "Scenario 3: Uttarakhand Forest Fire",
+  "target_center": [
+    30.4042,
+    79.3308
+  ],
+  "target_zoom": 11,
+  "description": "High-intensity wildfire in dense pine canopy across steep Himalayan terrain in Chamoli.",
+  "total_duration_sec": 30,
+  "steps": [
+    {
+      "time_sec": 0,
+      "narration": "[T+00s] CLEAR CANOPY OVERVIEW. Garhwal Himalayan forest reserves baseline stable.",
+      "alert_level": "NOMINAL",
+      "active_fires": []
+    },
+    {
+      "time_sec": 10,
+      "narration": "[T+10s] \ud83d\udd25 CANOPY INFERNO DETECTED! High-intensity thermal plume (FRP 36.8MW) in Chamoli pine forest.",
+      "alert_level": "CRITICAL",
+      "trigger_siren": true,
+      "trigger_panel": true,
+      "active_fires": [
+        {
+          "id": "UK-FOR-01",
+          "latitude": 30.4042,
+          "longitude": 79.3308,
+          "frp": 36.8,
+          "brightness": 361.2,
+          "category": "FOREST_FIRE",
+          "risk_level": "HIGH",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Fast-moving crown fire in Chir Pine forest. Wind spread vector active.",
+          "action": "Mobilize SDRF / Forest fire crews. Establish aerial suppression.",
+          "facility_name": "Nanda Devi Biosphere Buffer",
+          "nearest_facility": "Forest Outpost Gopeshwar",
+          "facility_dist": 18.5
+        },
+        {
+          "id": "UK-FOR-02",
+          "latitude": 30.421,
+          "longitude": 79.345,
+          "frp": 24.5,
+          "brightness": 348.0,
+          "category": "FOREST_FIRE",
+          "risk_level": "HIGH",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Secondary spotting fire across ridgeline.",
+          "action": "Create counter-fire break.",
+          "facility_name": "Chamoli Ridge Reserve",
+          "nearest_facility": "Forest Outpost Gopeshwar",
+          "facility_dist": 20.1
+        }
+      ]
+    },
+    {
+      "time_sec": 15,
+      "narration": "[T+15s] \u26a0\ufe0f HIGH WIND VECTOR DETECTED: 24 km/h NW wind driving fire front toward inhabited village valley.",
+      "alert_level": "CRITICAL",
+      "trigger_siren": true,
+      "trigger_panel": true
+    },
+    {
+      "time_sec": 20,
+      "narration": "[T+20s] \ud83d\ude92 RAPID RESPONSE POST NOTIFIED: Chamoli Rapid Wildfire Response Post (7.4km, ETA 16m) alerted.",
+      "alert_level": "CRITICAL",
+      "station_identified": {
+        "name": "Chamoli Rapid Wildfire Response Post",
+        "distance_km": 7.4,
+        "eta_minutes": 16,
+        "phone": "+91-1372-252101"
+      }
+    },
+    {
+      "time_sec": 25,
+      "narration": "[T+25s] \ud83d\udccb FOREST PROTOCOL: Class A wildfire. USE: Water tankers, fire lines, helicopter bambi bucket. AVOID driving in.",
+      "alert_level": "CRITICAL",
+      "protocol_active": "FOREST_FIRE"
+    },
+    {
+      "time_sec": 30,
+      "narration": "[T+30s] \ud83d\udfe2 EMERGENCY DISPATCH RECORDED. Aerial support requisition transmitted to Indian Air Force / NDRF.",
+      "alert_level": "DISPATCHED",
+      "dispatch_complete": true
+    }
+  ]
+}

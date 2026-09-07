@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { FALLBACK_TELEMETRY_DATA } from "@/data/fallbackFires";
+import { DEMO_TELEMETRY_DATA } from "@/data/demoFires";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,17 @@ const BACKEND_URL =
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const mode = searchParams.get("mode");
+
+  if (mode === "demo") {
+    return NextResponse.json(DEMO_TELEMETRY_DATA, {
+      headers: {
+        "Cache-Control": "public, s-maxage=60",
+        "X-Ignis-Mode": "demo",
+      },
+    });
+  }
+
   const days = searchParams.get("days") || "1";
   const source = searchParams.get("source") || "all";
   const force = searchParams.get("force") === "true";

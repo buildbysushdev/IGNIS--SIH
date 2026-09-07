@@ -20,6 +20,19 @@ CREATE TABLE IF NOT EXISTS alerts (
     message TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(detection_id) REFERENCES detections(id)
 );
+CREATE TABLE IF NOT EXISTS dispatch_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    dispatch_id TEXT UNIQUE NOT NULL,
+    fire_lat REAL, fire_lon REAL,
+    fire_category TEXT,
+    station_name TEXT,
+    station_dist_km REAL,
+    eta_minutes REAL,
+    recommended_equipment TEXT,
+    sent_to TEXT,
+    status TEXT DEFAULT 'DISPATCHED',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 INSERT_SQL = """
@@ -237,3 +250,41 @@ def get_persistence_count(lat: float, lon: float, tolerance: float = 0.05) -> in
             return int(row["cnt"]) if row else 0
     except sqlite3.Error:
         return 0
+
+
+def insert_dispatch_log(record: dict[str, Any]) -> int:
+    """Insert a simulated emergency dispatch record into dispatch_log."""
+    try:
+        with get_connection() as conn:
+            cursor = conn.execute(
+                """INSERT OR REPLACE INTO dispatch_log
+                   (dispatch_id, fire_lat, fire_lon, fire_category, station_name,
+                    station_dist_km, eta_minutes, recommended_equipment, sent_to, status)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    str(record.get("dispatch_id", "")),
+                    float(record.get("fire_lat", 0.0)),
+                    float(record.get("fire_lon", 0.0)),
+                    str(record.get("fire_category", "UNKNOWN")),
+                    str(record.get("station_name", "")),
+                    float(record.get("station_dist_km", 0.0)),
+                    float(record.get("eta_minutes", 0.0)),
+                    str(record.get("recommended_equipment", "")),
+                    str(record.get("sent_to", "")),
+                    str(record.get("status", "DISPATCHED")),
+                ),
+            )
+            return cursor.lastrowid or 0
+    except sqlite3.Error as exc:
+        raise RuntimeError(f"Failed to log dispatch: {exc}") from exc
+
+
+def get_recent_dispatches(limit: int = 50) -> list[dict[str, Any]]:
+    """Retrieve recent dispatch records sorted descending by creation time."""
+    try:
+        with get_connection() as conn:
+            q = "SELECT * FROM dispatch_log ORDER BY id DESC LIMIT ?"
+            return [dict(r) for r in conn.execute(q, (limit,)).fetchall()]
+    except sqlite3.Error:
+        return []
+

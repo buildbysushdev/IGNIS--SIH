@@ -1,0 +1,105 @@
+{
+  "id": "surat_emergency",
+  "title": "Scenario 1: Surat Factory Fire Emergency",
+  "target_center": [
+    21.1925,
+    72.8258
+  ],
+  "target_zoom": 13,
+  "description": "Rapid chemical tank farm failure at Surat GIDC with hazardous vapor release.",
+  "total_duration_sec": 30,
+  "steps": [
+    {
+      "time_sec": 0,
+      "narration": "[T+00s] SYSTEM MONITORING NOMINAL. Surat industrial corridor thermal baseline within standard parameters.",
+      "alert_level": "NOMINAL",
+      "active_fires": [
+        {
+          "id": "SURAT-BASE-01",
+          "latitude": 21.185,
+          "longitude": 72.841,
+          "frp": 14.2,
+          "brightness": 342.1,
+          "category": "PERSISTENT_INDUSTRIAL",
+          "risk_level": "MEDIUM",
+          "acq_date": "2026-09-07",
+          "acq_time": "1000",
+          "reason": "Surat Textile Dyeing Boiler operational thermal baseline.",
+          "action": "Routine monitoring.",
+          "nearest_facility": "Surat Textile Works",
+          "facility_dist": 0.8
+        }
+      ]
+    },
+    {
+      "time_sec": 10,
+      "narration": "[T+10s] \ud83d\udea8 CRITICAL ANOMALY DETECTED! Massive FRP surge (48.6MW) at Surat Chemical Cluster GIDC.",
+      "alert_level": "CRITICAL",
+      "trigger_siren": true,
+      "trigger_panel": true,
+      "active_fires": [
+        {
+          "id": "SURAT-EM-01",
+          "latitude": 21.1925,
+          "longitude": 72.8258,
+          "frp": 48.6,
+          "brightness": 382.4,
+          "category": "EMERGENCY_INDUSTRIAL",
+          "risk_level": "CRITICAL",
+          "acq_date": "2026-09-07",
+          "acq_time": "1010",
+          "reason": "Major chemical tank farm rupture with volatile solvent combustion (48.6MW). Multi-tender hazmat containment required.",
+          "action": "DISPATCH Class B/C Foam units + hazmat suppression team. Evacuate 500m radius.",
+          "nearest_facility": "Surat Chemical Cluster GIDC",
+          "facility_dist": 0.25,
+          "facility_name": "Surat Chemical Works Tank Farm"
+        },
+        {
+          "id": "SURAT-BASE-01",
+          "latitude": 21.185,
+          "longitude": 72.841,
+          "frp": 14.2,
+          "brightness": 342.1,
+          "category": "PERSISTENT_INDUSTRIAL",
+          "risk_level": "MEDIUM",
+          "acq_date": "2026-09-07",
+          "acq_time": "1000",
+          "reason": "Surat Textile Dyeing Boiler operational baseline.",
+          "action": "Routine monitoring.",
+          "nearest_facility": "Surat Textile Works",
+          "facility_dist": 0.8
+        }
+      ]
+    },
+    {
+      "time_sec": 15,
+      "narration": "[T+15s] \u26a0\ufe0f SATELLITE PLUME CONFIRMATION. Alert panel armed. Optical smoke dispersion vector detected heading SE.",
+      "alert_level": "CRITICAL",
+      "trigger_siren": true,
+      "trigger_panel": true
+    },
+    {
+      "time_sec": 20,
+      "narration": "[T+20s] \ud83d\ude92 NEAREST FIRE STATION IDENTIFIED: Surat Central Fire Station (2.3 km, ETA: 6 mins). Route cleared via Ring Road.",
+      "alert_level": "CRITICAL",
+      "station_identified": {
+        "name": "Surat Central Fire Station",
+        "distance_km": 2.3,
+        "eta_minutes": 6,
+        "phone": "+91-261-2422222"
+      }
+    },
+    {
+      "time_sec": 25,
+      "narration": "[T+25s] \ud83d\udccb HAZMAT PROTOCOL ENGAGED: Class B/C chemical fire. USE: Alcohol-resistant foam, CO2, dry powder. STRICTLY AVOID DIRECT WATER.",
+      "alert_level": "CRITICAL",
+      "protocol_active": "EMERGENCY_INDUSTRIAL"
+    },
+    {
+      "time_sec": 30,
+      "narration": "[T+30s] \ud83d\udfe2 DISPATCH SIMULATION COMPLETE. Encrypted alert transmitted to Fire Department, District Collector & NDMA.",
+      "alert_level": "DISPATCHED",
+      "dispatch_complete": true
+    }
+  ]
+}

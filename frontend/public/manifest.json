@@ -1,0 +1,16 @@
+{
+  "name": "IGNIS Fire Intelligence Ground Station",
+  "short_name": "IGNIS-01",
+  "description": "Tactical Fire Screening and Disaster Response Terminal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e14",
+  "theme_color": "#0a0e14",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
