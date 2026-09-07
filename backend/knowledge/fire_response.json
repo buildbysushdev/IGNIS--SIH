@@ -1,52 +1,146 @@
 {
   "PERSISTENT_INDUSTRIAL": {
-    "typical_materials": ["steel", "coal", "coke"],
-    "fire_class": "A/B mixed",
-    "USE": ["water spray", "foam"],
-    "AVOID": ["direct water on molten metal"],
-    "equipment": ["fire tenders", "foam units"],
+    "fire_class": "Class A/B mixed",
+    "typical_materials": ["Steel", "Coal", "Coke", "Iron"],
+    "use_agents": {
+      "primary": ["Water spray (cooling)", "Foam"],
+      "secondary": ["Dry chemical powder"]
+    },
+    "avoid": [
+      "Direct water on molten metal (explosion risk)",
+      "Class D materials without special powder"
+    ],
+    "equipment_required": [
+      "Fire tenders (2+)",
+      "Foam units",
+      "Heat-resistant suits",
+      "Thermal imaging cameras"
+    ],
     "safety_distance_m": 200,
     "response_time_target_min": 10,
-    "special_notes": "Coordinate with plant safety officer"
+    "personnel_required": 8,
+    "coordination": [
+      "Plant Safety Officer",
+      "District Fire Officer"
+    ],
+    "special_notes": "Coordinate with plant safety officer for shutdown procedures. Check for pressurized systems.",
+    "evacuation_radius_m": 500,
+    "hospital_notification": true
   },
   "EMERGENCY_INDUSTRIAL": {
-    "typical_materials": ["chemicals", "petroleum", "gases"],
-    "fire_class": "B/C likely",
-    "USE": ["foam", "CO2", "dry chemical"],
-    "AVOID": ["water on petroleum/electrical"],
-    "equipment": ["foam tenders", "hazmat suits", "CO2 units"],
+    "fire_class": "Class B/C likely",
+    "typical_materials": ["Chemicals", "Petroleum", "Solvents", "Gases", "Plastics"],
+    "use_agents": {
+      "primary": ["Foam (AFFF)", "CO2", "Dry chemical"],
+      "secondary": ["Halon (if available)"]
+    },
+    "avoid": [
+      "Water on petroleum/electrical fires",
+      "Water on chemical fires (can spread/react)"
+    ],
+    "equipment_required": [
+      "Foam tenders (3+)",
+      "Hazmat suits (Level A)",
+      "CO2 units",
+      "SCBA breathing apparatus",
+      "Chemical detection kits",
+      "Decontamination trailer"
+    ],
     "safety_distance_m": 500,
     "response_time_target_min": 5,
-    "special_notes": "Evacuate 500m radius. Check for toxic release."
+    "personnel_required": 15,
+    "coordination": [
+      "NDRF",
+      "District Collector",
+      "Pollution Control Board",
+      "Nearest Hospital"
+    ],
+    "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+    "evacuation_radius_m": 1000,
+    "hospital_notification": true,
+    "aerial_support": "Consider helicopter if fire >500m"
   },
   "AGRICULTURAL_BURNING": {
-    "typical_materials": ["crop residue", "biomass"],
-    "fire_class": "A",
-    "USE": ["water", "controlled containment"],
-    "AVOID": ["chemicals"],
-    "equipment": ["water bowsers", "tractors with plows"],
+    "fire_class": "Class A",
+    "typical_materials": ["Crop residue", "Biomass", "Stubble"],
+    "use_agents": {
+      "primary": ["Water", "Containment (fire breaks)"],
+      "secondary": ["Controlled backburn"]
+    },
+    "avoid": [
+      "Overreaction (often planned)",
+      "Chemical suppressants (contaminates soil)"
+    ],
+    "equipment_required": [
+      "Water bowsers",
+      "Tractors with plows",
+      "Basic firefighting gear"
+    ],
     "safety_distance_m": 100,
     "response_time_target_min": 30,
-    "special_notes": "Often planned. Monitor spread to non-farm areas."
+    "personnel_required": 4,
+    "coordination": [
+      "Local Panchayat",
+      "Agriculture Department",
+      "Pollution Control Board"
+    ],
+    "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+    "evacuation_radius_m": 0,
+    "hospital_notification": false,
+    "aqi_alert": true
   },
   "FOREST_FIRE": {
-    "typical_materials": ["vegetation", "trees"],
-    "fire_class": "A",
-    "USE": ["water", "fire breaks", "aerial suppression"],
-    "AVOID": ["driving into fire zone"],
-    "equipment": ["fire crews", "water tankers", "helicopters"],
+    "fire_class": "Class A",
+    "typical_materials": ["Vegetation", "Trees", "Underbrush", "Dead leaves"],
+    "use_agents": {
+      "primary": ["Water (aerial)", "Fire breaks", "Backburning"],
+      "secondary": ["Foam retardant"]
+    },
+    "avoid": [
+      "Driving into fire zone",
+      "Standing downwind of active fire"
+    ],
+    "equipment_required": [
+      "Fire crews (10+)",
+      "Water tankers",
+      "Helicopters with water buckets",
+      "Chainsaws",
+      "Fire beaters",
+      "GPS radios"
+    ],
     "safety_distance_m": 1000,
     "response_time_target_min": 60,
-    "special_notes": "Wind direction critical. Establish fire breaks."
+    "personnel_required": 20,
+    "coordination": [
+      "Forest Department",
+      "NDRF",
+      "IAF (aerial support)",
+      "Village councils in fire path"
+    ],
+    "special_notes": "WIND DIRECTION IS CRITICAL. Establish fire breaks perpendicular to wind. Aerial suppression for large fires.",
+    "evacuation_radius_m": 3000,
+    "hospital_notification": true,
+    "aerial_support": "Mandatory for fires >2 hectares",
+    "wildlife_protocol": true
   },
   "UNKNOWN": {
-    "typical_materials": ["unidentified substrate"],
-    "fire_class": "Unclassified",
-    "USE": ["reconnaissance drone", "multi-purpose dry chemical"],
-    "AVOID": ["unplanned direct intervention"],
-    "equipment": ["thermal scout drone", "rapid intervention vehicle"],
-    "safety_distance_m": 250,
-    "response_time_target_min": 15,
-    "special_notes": "Perform optical verification prior to full tender deployment."
+    "fire_class": "Unknown - requires verification",
+    "typical_materials": ["Unknown"],
+    "use_agents": {
+      "primary": ["Verify before action"],
+      "secondary": []
+    },
+    "avoid": ["Approach without verification"],
+    "equipment_required": [
+      "Reconnaissance drone",
+      "Fire officer for assessment"
+    ],
+    "safety_distance_m": 500,
+    "response_time_target_min": 20,
+    "personnel_required": 3,
+    "coordination": ["Local authorities for ground truth"],
+    "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+    "evacuation_radius_m": 500,
+    "hospital_notification": false
   }
 }

@@ -753,6 +753,23 @@ def stop_scenario_endpoint(request: Request) -> dict[str, Any]:
     return scenario_engine.stop_scenario()
 
 
+# ==============================================================================
+# 10) MATERIAL-BASED FIRE RESPONSE PROTOCOL API
+# ==============================================================================
+
+@app.get("/api/protocol/{category}")
+@limiter.limit("60/minute")
+def get_fire_protocol(request: Request, category: str) -> dict[str, Any]:
+    """Returns material-based firefighting response protocol for a given category."""
+    from response_engine import get_response_protocol
+
+    protocol = get_response_protocol(category)
+    return {
+        "category": category.upper(),
+        **protocol,
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
 

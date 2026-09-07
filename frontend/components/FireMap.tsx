@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, Circle, Polygon, useMapEvents } from "react-leaflet";
 import ResponseProtocol from "./ResponseProtocol";
+import ProtocolModal from "./ProtocolModal";
 import { FIRE_STATIONS } from "@/data/fireStations";
 
 export interface Fire {
@@ -162,6 +163,9 @@ export default function FireMap({
     lon: 78.9012,
     zoom: 5,
   });
+
+  const [expandedProtocolFireId, setExpandedProtocolFireId] = useState<string | null>(null);
+  const [modalProtocolFire, setModalProtocolFire] = useState<Fire | null>(null);
 
   const isCapped = safeFires.length > 1000;
   const renderedFires = isCapped ? safeFires.slice(0, 1000) : safeFires;
@@ -375,8 +379,41 @@ export default function FireMap({
                       );
                     })()}
 
-                    {/* Material Response Protocol */}
-                    <ResponseProtocol category={fire.category} compact={true} />
+                    {/* Collapsible Material Response Protocol Section */}
+                    {(() => {
+                      const fKey = `${fire.latitude}_${fire.longitude}`;
+                      const isExpanded = expandedProtocolFireId === fKey;
+                      return (
+                        <div className="border border-[#1f2933] bg-[#0c1017] overflow-hidden">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedProtocolFireId(isExpanded ? null : fKey);
+                            }}
+                            className="w-full px-2 py-1 flex items-center justify-between text-[10px] font-bold text-[#00d4ff] bg-[#101721] hover:bg-[#15202c] cursor-pointer transition border-b border-[#1f2933]"
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span>{isExpanded ? "▲" : "▼"}</span>
+                              <span>RESPONSE PROTOCOL</span>
+                            </span>
+                            <span className="text-[9px] text-[#ffb800]">
+                              {isExpanded ? "[COLLAPSE]" : "[EXPAND]"}
+                            </span>
+                          </button>
+
+                          {isExpanded && (
+                            <div className="p-1.5 space-y-1.5">
+                              <ResponseProtocol
+                                category={fire.category}
+                                compact={true}
+                                onViewFull={() => setModalProtocolFire(fire)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                     {/* Actions & Dispatch */}
                     <div className="border-t border-[#1f2933] pt-1.5 space-y-1.5">
@@ -547,6 +584,14 @@ export default function FireMap({
           </div>
         </div>
       </div>
+
+      {/* Material-Based Fire Response Protocol Directive Modal */}
+      <ProtocolModal
+        isOpen={modalProtocolFire !== null}
+        onClose={() => setModalProtocolFire(null)}
+        category={modalProtocolFire?.category || "UNKNOWN"}
+        fire={modalProtocolFire}
+      />
     </div>
   );
 }

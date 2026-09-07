@@ -207,16 +207,19 @@ class FireClassifier:
         }
 
     def classify_batch(self, fires: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        """Classify multiple fires and return enriched detection list."""
+        """Classify multiple fires and return enriched detection list with material response protocols."""
+        from response_engine import enrich_fire_with_protocol
+
         results = []
         for fire in fires:
             res = self.classify(fire)
-            results.append({
+            classified_item = {
                 **fire,
                 **res,
                 "classification": res["category"],
                 "confidence_score": round(float(res["confidence"]) / 100.0, 2),
-            })
+            }
+            results.append(enrich_fire_with_protocol(classified_item))
         return results
 
     def get_summary(self, classified_fires: list[dict[str, Any]]) -> dict[str, int]:
@@ -249,17 +252,19 @@ def classify_single_detection(record: dict[str, Any]) -> dict[str, Any]:
     """Module-level helper to classify a single fire record with cached context."""
     from ml_model import load_persistence_cache
     from osm_data import load_or_cache_zones
+    from response_engine import enrich_fire_with_protocol
 
     zones = load_or_cache_zones()
     cache = load_persistence_cache()
     classifier = FireClassifier(zones, cache)
     res = classifier.classify(record)
-    return {
+    classified_item = {
         **record,
         **res,
         "classification": res["category"],
         "confidence_score": round(float(res["confidence"]) / 100.0, 2),
     }
+    return enrich_fire_with_protocol(classified_item)
 
 
 def classify_batch(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
