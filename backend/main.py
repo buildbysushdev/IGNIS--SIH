@@ -770,6 +770,67 @@ def get_fire_protocol(request: Request, category: str) -> dict[str, Any]:
     }
 
 
+# ==============================================================================
+# 11) EMERGENCY NOTIFICATION QUEUE & TIMELINE API
+# ==============================================================================
+
+class AlertAcknowledgeRequest(BaseModel):
+    action: str = "ACKNOWLEDGED"
+
+
+class AlertEscalateRequest(BaseModel):
+    level: str = "DISTRICT"
+
+
+@app.get("/api/notifications")
+@limiter.limit("60/minute")
+def get_notifications_endpoint(request: Request) -> list[dict[str, Any]]:
+    """Returns unacknowledged CRITICAL alerts for the emergency panel queue."""
+    from alerts import get_notification_queue
+
+    return get_notification_queue()
+
+
+@app.post("/api/notifications/{alert_id}/acknowledge")
+@limiter.limit("60/minute")
+def acknowledge_notification_endpoint(
+    request: Request,
+    alert_id: int,
+    payload: Optional[AlertAcknowledgeRequest] = None,
+) -> dict[str, Any]:
+    """Acknowledge or dispatch an active alert."""
+    from alerts import acknowledge_alert
+
+    action = payload.action if payload else "ACKNOWLEDGED"
+    return acknowledge_alert(alert_id, action)
+
+
+@app.post("/api/notifications/{alert_id}/escalate")
+@limiter.limit("60/minute")
+def escalate_notification_endpoint(
+    request: Request,
+    alert_id: int,
+    payload: Optional[AlertEscalateRequest] = None,
+) -> dict[str, Any]:
+    """Escalate an active alert to higher disaster authority."""
+    from alerts import escalate_alert
+
+    level = payload.level if payload else "DISTRICT"
+    return escalate_alert(alert_id, level)
+
+
+@app.get("/api/notifications/timeline")
+@limiter.limit("60/minute")
+def get_notifications_timeline_endpoint(
+    request: Request,
+    hours: int = Query(default=24, ge=1, le=168),
+) -> list[dict[str, Any]]:
+    """Returns historical alerts in chronological timeline format."""
+    from database import get_alerts_timeline
+
+    return get_alerts_timeline(hours=hours)
+
+
 if __name__ == "__main__":
     import uvicorn
 

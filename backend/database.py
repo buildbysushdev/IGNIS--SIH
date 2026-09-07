@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS alerts (
     id INTEGER PRIMARY KEY AUTOINCREMENT, detection_id INTEGER,
     alert_type TEXT NOT NULL, severity TEXT NOT NULL,
     message TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status TEXT DEFAULT 'NEW',
+    acknowledged_at TEXT,
+    action_taken TEXT,
+    response_time_seconds INTEGER,
     FOREIGN KEY(detection_id) REFERENCES detections(id)
 );
 CREATE TABLE IF NOT EXISTS dispatch_log (
@@ -65,10 +69,20 @@ def get_connection() -> sqlite3.Connection:
 
 
 def init_db() -> None:
-    """Initialize SQLite tables for detections and alerts using precompiled schema."""
+    """Initialize SQLite tables for detections and alerts using precompiled schema and migrations."""
     try:
         with get_connection() as conn:
             conn.executescript(INIT_SQL)
+            # Safe schema migrations for existing database files
+            cols = {row["name"] for row in conn.execute("PRAGMA table_info(alerts)").fetchall()}
+            if "status" not in cols:
+                conn.execute("ALTER TABLE alerts ADD COLUMN status TEXT DEFAULT 'NEW'")
+            if "acknowledged_at" not in cols:
+                conn.execute("ALTER TABLE alerts ADD COLUMN acknowledged_at TEXT")
+            if "action_taken" not in cols:
+                conn.execute("ALTER TABLE alerts ADD COLUMN action_taken TEXT")
+            if "response_time_seconds" not in cols:
+                conn.execute("ALTER TABLE alerts ADD COLUMN response_time_seconds INTEGER")
     except sqlite3.Error as exc:
         raise RuntimeError(f"Failed to initialize database: {exc}") from exc
 
@@ -166,17 +180,103 @@ def get_fires_by_date(days_or_date: int | str = 1, limit: int = 500) -> list[dic
         return []
 
 
-def insert_alert(detection_id: int | None, alert_type: str, severity: str, message: str) -> int:
+def insert_alert(
+    detection_id: int | None,
+    alert_type: str,
+    severity: str,
+    message: str,
+    status: str = "NEW",
+    acknowledged_at: str | None = None,
+    action_taken: str | None = None,
+    response_time_seconds: int | None = None,
+) -> int:
     """Insert a surveillance intelligence alert record into the database."""
     try:
         with get_connection() as conn:
             cursor = conn.execute(
-                "INSERT INTO alerts (detection_id, alert_type, severity, message) VALUES (?, ?, ?, ?)",
-                (detection_id, alert_type, severity, message),
+                """INSERT INTO alerts (
+                    detection_id, alert_type, severity, message,
+                    status, acknowledged_at, action_taken, response_time_seconds
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    detection_id,
+                    alert_type,
+                    severity,
+                    message,
+                    status,
+                    acknowledged_at,
+                    action_taken,
+                    response_time_seconds,
+                ),
             )
             return cursor.lastrowid or 0
     except sqlite3.Error as exc:
         raise RuntimeError(f"Failed to insert alert: {exc}") from exc
+
+
+def update_alert_status(
+    alert_id: int,
+    status: str,
+    action_taken: str,
+    response_time_seconds: int | None = None,
+    acknowledged_at: str | None = None,
+) -> bool:
+    """Update alert status, action taken, and response timing in SQLite."""
+    from datetime import datetime
+
+    ack_time = acknowledged_at or (datetime.utcnow().isoformat() + "Z")
+    try:
+        with get_connection() as conn:
+            cur = conn.execute(
+                """UPDATE alerts
+                   SET status = ?, action_taken = ?, acknowledged_at = ?, response_time_seconds = ?
+                   WHERE id = ?""",
+                (status, action_taken, ack_time, response_time_seconds, alert_id),
+            )
+            return cur.rowcount > 0
+    except sqlite3.Error as exc:
+        raise RuntimeError(f"Failed to update alert: {exc}") from exc
+
+
+def get_alert_by_id(alert_id: int) -> dict[str, Any] | None:
+    """Fetch single alert record joined with coordinate and classification data."""
+    try:
+        with get_connection() as conn:
+            q = """
+                SELECT a.id, a.detection_id, a.alert_type, a.severity, a.message, a.created_at,
+                       COALESCE(a.status, 'NEW') as status, a.acknowledged_at, a.action_taken, a.response_time_seconds,
+                       d.latitude, d.longitude, d.frp, d.classification
+                FROM alerts a LEFT JOIN detections d ON a.detection_id = d.id
+                WHERE a.id = ?
+            """
+            row = conn.execute(q, (alert_id,)).fetchone()
+            return dict(row) if row else None
+    except sqlite3.Error:
+        return None
+
+
+def get_unacknowledged_alerts(limit: int = 50) -> list[dict[str, Any]]:
+    """Retrieve unacknowledged CRITICAL and active alerts for the emergency panel queue."""
+    try:
+        with get_connection() as conn:
+            q = """
+                SELECT a.id, a.detection_id, a.alert_type, a.severity, a.message, a.created_at,
+                       COALESCE(a.status, 'NEW') as status, a.acknowledged_at, a.action_taken, a.response_time_seconds,
+                       d.latitude, d.longitude, d.frp, d.classification
+                FROM alerts a LEFT JOIN detections d ON a.detection_id = d.id
+                WHERE COALESCE(a.status, 'NEW') IN ('NEW', 'ACTIVE')
+                ORDER BY
+                    CASE WHEN a.severity = 'CRITICAL' THEN 0
+                         WHEN a.severity = 'HIGH' THEN 1
+                         WHEN a.severity = 'MODERATE' THEN 2
+                         ELSE 3 END ASC,
+                    a.created_at DESC, a.id DESC
+                LIMIT ?
+            """
+            rows = conn.execute(q, (limit,)).fetchall()
+            return [dict(r) for r in rows]
+    except sqlite3.Error:
+        return []
 
 
 def get_alerts(limit: int = 50) -> list[dict[str, Any]]:
@@ -185,6 +285,7 @@ def get_alerts(limit: int = 50) -> list[dict[str, Any]]:
         with get_connection() as conn:
             q = """
                 SELECT a.id, a.detection_id, a.alert_type, a.severity, a.message, a.created_at,
+                       COALESCE(a.status, 'NEW') as status, a.acknowledged_at, a.action_taken, a.response_time_seconds,
                        d.latitude, d.longitude, d.frp, d.classification
                 FROM alerts a LEFT JOIN detections d ON a.detection_id = d.id
                 ORDER BY a.id DESC LIMIT ?
@@ -200,6 +301,7 @@ def get_recent_alerts(hours: int = 24, limit: int = 100) -> list[dict[str, Any]]
         with get_connection() as conn:
             q = """
                 SELECT a.id, a.detection_id, a.alert_type, a.severity, a.message, a.created_at,
+                       COALESCE(a.status, 'NEW') as status, a.acknowledged_at, a.action_taken, a.response_time_seconds,
                        d.latitude, d.longitude, d.frp, d.classification
                 FROM alerts a LEFT JOIN detections d ON a.detection_id = d.id
                 WHERE datetime(a.created_at) >= datetime('now', ?)
@@ -209,6 +311,7 @@ def get_recent_alerts(hours: int = 24, limit: int = 100) -> list[dict[str, Any]]
             if not rows:
                 q = """
                     SELECT a.id, a.detection_id, a.alert_type, a.severity, a.message, a.created_at,
+                           COALESCE(a.status, 'NEW') as status, a.acknowledged_at, a.action_taken, a.response_time_seconds,
                            d.latitude, d.longitude, d.frp, d.classification
                     FROM alerts a LEFT JOIN detections d ON a.detection_id = d.id
                     ORDER BY a.created_at DESC, a.id DESC LIMIT ?
@@ -217,6 +320,11 @@ def get_recent_alerts(hours: int = 24, limit: int = 100) -> list[dict[str, Any]]
             return [dict(r) for r in rows]
     except sqlite3.Error:
         return []
+
+
+def get_alerts_timeline(hours: int = 24, limit: int = 150) -> list[dict[str, Any]]:
+    """Retrieve all alerts in chronological timeline format for historical logging."""
+    return get_recent_alerts(hours=hours, limit=limit)
 
 
 def get_stats() -> dict[str, Any]:

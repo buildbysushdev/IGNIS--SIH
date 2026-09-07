@@ -579,6 +579,7 @@ export default function DashboardPage() {
               alerts={alerts}
               onSelectCoordinates={(lat, lon) => setTargetCoords([lat, lon])}
               statusMode={ignisStatus}
+              onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
             />
           </aside>
         </div>

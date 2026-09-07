@@ -17,12 +17,14 @@ interface AlertPanelProps {
   alerts?: AlertItem[];
   onSelectCoordinates?: (lat: number, lon: number) => void;
   statusMode?: "live" | "cached_fallback";
+  onOpenEmergencyPanel?: () => void;
 }
 
 export default function AlertPanel({
   alerts = [],
   onSelectCoordinates,
   statusMode = "live",
+  onOpenEmergencyPanel,
 }: AlertPanelProps) {
   const safeAlerts = Array.isArray(alerts) ? alerts : [];
   const count = safeAlerts.length;
@@ -107,6 +109,16 @@ export default function AlertPanel({
                 </tbody>
               </table>
             </div>
+          )}
+
+          {onOpenEmergencyPanel && (
+            <button
+              onClick={onOpenEmergencyPanel}
+              className="w-full mt-2.5 py-1.5 px-2 text-[10px] font-bold uppercase border border-[#ff3b3b] bg-[#ff3b3b]/15 text-[#ff8080] hover:bg-[#ff3b3b]/30 cursor-pointer transition flex items-center justify-center gap-1.5"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
+              <span>[ OPEN EMERGENCY NOTIFICATION PANEL ]</span>
+            </button>
           )}
         </div>
       </div>
