@@ -831,6 +831,68 @@ def get_notifications_timeline_endpoint(
     return get_alerts_timeline(hours=hours)
 
 
+# ==============================================================================
+# 9) AUTOMATED FIRE STATION DISPATCH & MULTI-CHANNEL TELEMETRY ENDPOINTS
+# ==============================================================================
+class DispatchSimulateRequest(BaseModel):
+    fire_id: Optional[Any] = None
+    fire_data: Optional[dict[str, Any]] = None
+
+
+@app.post("/api/dispatch/simulate")
+@limiter.limit("30/minute")
+def simulate_dispatch_endpoint(
+    request: Request,
+    fire_id: Optional[str] = Query(default=None),
+    payload: Optional[DispatchSimulateRequest] = None,
+) -> dict[str, Any]:
+    """Execute end-to-end automated emergency dispatch workflow and multi-channel telemetry."""
+    from dispatch import simulate_dispatch
+
+    target_id = (payload.fire_id if payload and payload.fire_id is not None else None) or fire_id
+    target_data = payload.fire_data if payload else None
+
+    return simulate_dispatch(fire_id=target_id, fire_data=target_data)
+
+
+@app.get("/api/dispatch/history")
+@limiter.limit("60/minute")
+def get_dispatch_history_endpoint(
+    request: Request,
+    hours: int = Query(default=24, ge=1, le=168),
+) -> list[dict[str, Any]]:
+    """Query chronological emergency dispatch logs."""
+    from dispatch import get_dispatch_history
+
+    return get_dispatch_history(hours=hours)
+
+
+@app.get("/api/fire-stations/nearest")
+@limiter.limit("60/minute")
+def get_nearest_fire_station_endpoint(
+    request: Request,
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lon: float = Query(..., ge=-180.0, le=180.0),
+) -> dict[str, Any]:
+    """Identify nearest fire station with travel ETA, capabilities, and contact lines."""
+    from dispatch import find_nearest_fire_station
+
+    return find_nearest_fire_station(lat=lat, lon=lon)
+
+
+@app.get("/api/hospitals/nearest")
+@limiter.limit("60/minute")
+def get_nearest_hospital_endpoint(
+    request: Request,
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lon: float = Query(..., ge=-180.0, le=180.0),
+) -> dict[str, Any]:
+    """Identify nearest hospital / trauma center with capacity and burn unit readiness."""
+    from dispatch import find_nearest_hospital
+
+    return find_nearest_hospital(lat=lat, lon=lon)
+
+
 if __name__ == "__main__":
     import uvicorn
 

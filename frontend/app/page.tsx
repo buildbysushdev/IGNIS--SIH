@@ -16,6 +16,7 @@ import { DEMO_TELEMETRY_DATA } from "@/data/demoFires";
 import { SIMULATION_SCENARIOS, SimulationScenario } from "@/data/scenarios";
 import EmergencyPanel, { playTacticalAlertSound } from "@/components/EmergencyPanel";
 import DispatchSimulator from "@/components/DispatchSimulator";
+import DispatchHistory from "@/components/DispatchHistory";
 import Header from "@/components/Header";
 import ScenarioPlayer from "@/components/ScenarioPlayer";
 
@@ -92,6 +93,7 @@ export default function DashboardPage() {
   const [isDispatchModalOpen, setIsDispatchModalOpen] = useState<boolean>(false);
   const [dispatchTargetFire, setDispatchTargetFire] = useState<Fire | null>(null);
   const [dispatchTargetStation, setDispatchTargetStation] = useState<any | null>(null);
+  const [isDispatchHistoryOpen, setIsDispatchHistoryOpen] = useState<boolean>(false);
 
   // Live ticking UTC Clock in ISO format: 2025-01-20T14:32:15Z
   useEffect(() => {
@@ -425,6 +427,7 @@ export default function DashboardPage() {
         latencyStr={latencyStr}
         onOpenAbout={() => setIsAboutOpen(true)}
         onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
+        onOpenDispatchHistory={() => setIsDispatchHistoryOpen(true)}
       />
 
       {/* ========================================================================= */}
@@ -478,6 +481,12 @@ export default function DashboardPage() {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
             <span>[ 🚨 EMERGENCY PANEL ]</span>
+          </button>
+          <button
+            onClick={() => setIsDispatchHistoryOpen(true)}
+            className="border border-[#00d4ff]/60 bg-[#00d4ff]/10 px-2 py-0.5 text-[#00d4ff] hover:bg-[#00d4ff]/25 cursor-pointer text-[10px] font-bold flex items-center gap-1 transition"
+          >
+            <span>[ 📋 DISPATCH LOG ]</span>
           </button>
           <span>::</span>
           <button
@@ -641,10 +650,18 @@ export default function DashboardPage() {
         onClose={() => setIsDispatchModalOpen(false)}
         fire={dispatchTargetFire}
         station={dispatchTargetStation}
+        onOpenHistory={() => setIsDispatchHistoryOpen(true)}
         onDispatchComplete={(rec) => {
           setNotification(`[DISPATCH RECORDED] REF #${rec.dispatch_id}`);
           setTimeout(() => setNotification(null), 4000);
         }}
+      />
+
+      {/* Feature 5B: Dispatch Telemetry History Modal */}
+      <DispatchHistory
+        isOpen={isDispatchHistoryOpen}
+        onClose={() => setIsDispatchHistoryOpen(false)}
+        onPanToCoords={(coords) => setTargetCoords(coords)}
       />
 
       {/* Feature 6: Simulation Scenario Playback Controller & Narration Overlay */}

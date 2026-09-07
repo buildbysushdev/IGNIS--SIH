@@ -21,6 +21,7 @@ export interface HeaderProps {
   latencyStr: string;
   onOpenAbout: () => void;
   onOpenEmergencyPanel?: () => void;
+  onOpenDispatchHistory?: () => void;
 }
 
 export default function Header({
@@ -36,6 +37,7 @@ export default function Header({
   latencyStr,
   onOpenAbout,
   onOpenEmergencyPanel,
+  onOpenDispatchHistory,
 }: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -134,6 +136,16 @@ export default function Header({
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
             [ EMERGENCY PANEL ]
+          </button>
+        )}
+
+        {onOpenDispatchHistory && (
+          <button
+            onClick={onOpenDispatchHistory}
+            className="px-2 py-1 text-[10px] font-bold uppercase border border-[#00d4ff]/60 bg-[#00d4ff]/10 text-[#00d4ff] hover:bg-[#00d4ff]/25 cursor-pointer transition hidden lg:inline-flex items-center gap-1"
+          >
+            <span>📋</span>
+            [ DISPATCH LOG ]
           </button>
         )}
       </div>

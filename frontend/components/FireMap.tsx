@@ -417,7 +417,7 @@ export default function FireMap({
 
                     {/* Actions & Dispatch */}
                     <div className="border-t border-[#1f2933] pt-1.5 space-y-1.5">
-                      {/* Dispatch Simulation Button */}
+                      {/* Prominent Dispatch Simulation Button */}
                       <button
                         onClick={() => {
                           const nearestSt = findLocalNearestStation(fire.latitude, fire.longitude);
@@ -429,9 +429,13 @@ export default function FireMap({
                           };
                           if (onOpenDispatch) onOpenDispatch(fireWithStation);
                         }}
-                        className="w-full text-[10px] border border-[#ff3b3b] bg-[#ff3b3b]/15 hover:bg-[#ff3b3b]/25 text-[#ff8080] hover:text-white py-1 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1"
+                        className={`w-full text-[10px] border py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5 ${
+                          fire.risk_level === "CRITICAL" || fire.category === "EMERGENCY_INDUSTRIAL"
+                            ? "border-[#ff3b3b] bg-[#ff3b3b] text-black font-black hover:bg-[#ff5252] shadow-[0_0_12px_rgba(255,59,59,0.4)]"
+                            : "border-[#ff3b3b] bg-[#ff3b3b]/15 hover:bg-[#ff3b3b]/25 text-[#ff8080] hover:text-white"
+                        }`}
                       >
-                        <span>[ 🚒 DISPATCH SIMULATION &gt;&gt; ]</span>
+                        <span>🚒 SIMULATE DISPATCH</span>
                       </button>
 
                       <div className="flex items-center justify-between">
