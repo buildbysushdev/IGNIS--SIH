@@ -327,7 +327,7 @@ export default function FireMap({
                         <a
                           href={`https://www.google.com/maps?q=${fire.latitude},${fire.longitude}`}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                           className="text-[9px] border border-[#1f2933] text-[#00d4ff] px-1.5 py-0.5 hover:bg-[#00d4ff]/10 uppercase font-bold"
                         >
                           [ GMAPS ↗ ]

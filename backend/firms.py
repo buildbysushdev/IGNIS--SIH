@@ -37,26 +37,41 @@ def _get_map_key() -> str:
 
 
 def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
-    """Fetch fire telemetry from NASA FIRMS API and normalize columns."""
+    """Fetch fire telemetry from NASA FIRMS API with retry logic and column normalization."""
     map_key = _get_map_key()
     url = f"{FIRMS_BASE_URL}/{map_key}/{source}/{INDIA_BBOX}/{days}"
     masked_key = f"{map_key[:4]}***{map_key[-4:]}" if len(map_key) > 8 else "***"
-    print(f"[IGNIS] Requesting NASA URL: {FIRMS_BASE_URL}/{masked_key}/{source}/{INDIA_BBOX}/{days}")
 
-    response = requests.get(url, timeout=30)
-    print(f"[IGNIS] NASA FIRMS response status: {response.status_code}")
+    last_err: Exception | None = None
+    response = None
+    for attempt in range(3):
+        try:
+            print(f"[IGNIS] Requesting NASA URL (attempt {attempt + 1}/3): {FIRMS_BASE_URL}/{masked_key}/{source}/{INDIA_BBOX}/{days}")
+            response = requests.get(url, timeout=30)
+            print(f"[IGNIS] NASA FIRMS response status: {response.status_code}")
 
-    if response.status_code == 429:
-        raise Exception("FIRMS rate limited (HTTP 429)")
-    if response.status_code in (401, 403):
-        raise Exception("Invalid or unauthorized FIRMS API key (HTTP 401/403)")
+            if response.status_code == 429:
+                raise Exception("FIRMS rate limited (HTTP 429)")
+            if response.status_code in (401, 403):
+                raise Exception("Invalid or unauthorized FIRMS API key (HTTP 401/403)")
+
+            text = response.text.strip()
+            if "invalid" in text.lower() and "key" in text.lower():
+                raise Exception("Invalid FIRMS API key returned by NASA")
+
+            response.raise_for_status()
+            break
+        except Exception as exc:
+            last_err = exc
+            if attempt < 2:
+                time.sleep(1.0 * (2 ** attempt))
+            else:
+                raise last_err
+
+    if response is None:
+        return []
 
     text = response.text.strip()
-    if "invalid" in text.lower() and "key" in text.lower():
-        raise Exception("Invalid FIRMS API key returned by NASA")
-
-    response.raise_for_status()
-
     if not text or text.lower().startswith("no data"):
         print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires=0")
         return []
@@ -82,8 +97,12 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
         try:
             lat = float(row.get("latitude", 0.0))
             lon = float(row.get("longitude", 0.0))
+            if not (-90.0 <= lat <= 90.0 and -180.0 <= lon <= 180.0):
+                continue
             brightness = float(row.get("brightness", 0.0))
             frp = float(row.get("frp", 0.0))
+            if frp < 0.0 or frp > 5000.0:
+                frp = max(0.0, min(frp, 5000.0))
         except (ValueError, TypeError):
             continue
 
@@ -155,13 +174,20 @@ def _load_cache(path: str) -> list[dict[str, Any]]:
 
 
 def _save_cache(path: str, data: list[dict[str, Any]]) -> None:
-    """Persist fire records to cache as JSON."""
+    """Persist fire records to cache atomically as JSON to prevent file corruption."""
+    tmp_path = f"{path}.tmp"
     try:
-        with open(path, "w", encoding="utf-8") as f:
+        with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        os.replace(tmp_path, path)
         print(f"[IGNIS] Cached {len(data)} fires -> {path}")
-    except Exception as exc:
+    except (OSError, PermissionError) as exc:
         print(f"[IGNIS] Error saving cache {path}: {exc}")
+        if os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except OSError:
+                pass
 
 
 def fetch_fires(

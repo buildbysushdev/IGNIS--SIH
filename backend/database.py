@@ -38,10 +38,14 @@ INSERT OR IGNORE INTO detections (
 
 
 def get_connection() -> sqlite3.Connection:
-    """Create and return a configured SQLite connection with row factory."""
+    """Create and return a configured SQLite connection with row factory and safety pragmas."""
     try:
-        conn: sqlite3.Connection = sqlite3.connect(get_db_path())
+        conn: sqlite3.Connection = sqlite3.connect(get_db_path(), timeout=10.0)
         conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA foreign_keys=ON")
+        conn.execute("PRAGMA busy_timeout=5000")
+        conn.execute("PRAGMA synchronous=NORMAL")
         return conn
     except sqlite3.Error as exc:
         raise RuntimeError(f"Database connection failed: {exc}") from exc

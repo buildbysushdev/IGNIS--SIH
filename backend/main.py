@@ -1,37 +1,158 @@
 import sys
+import os
+import re
+import logging
 from pathlib import Path
+from datetime import datetime
+from typing import Any, Optional
 
 # Ensure backend directory is in sys.path regardless of execution working directory
 _backend_dir = str(Path(__file__).resolve().parent)
 if _backend_dir not in sys.path:
     sys.path.insert(0, _backend_dir)
 
-from datetime import datetime
-from typing import Any, Optional
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from classifier import FireClassifier
 from osm_data import load_or_cache_zones
 from ml_model import load_persistence_cache
 from alerts import generate_alerts, store_alerts, get_active_alerts
-
 from database import init_db, insert_fires, get_fires_by_date
 from firms import fetch_fires, fetch_all_sources, get_data_status
 
-app = FastAPI(title="IGNIS", version="1.0")
+# ==============================================================================
+# 1) STRUCTURED JSON LOGGING SETUP
+# ==============================================================================
+logger = logging.getLogger("ignis_telemetry")
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stdout)
+
+try:
+    from pythonjsonlogger import jsonlogger
+
+    formatter = jsonlogger.JsonFormatter(
+        fmt="%(asctime)s %(levelname)s %(name)s %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%SZ",
+    )
+    handler.setFormatter(formatter)
+except Exception:
+    handler.setFormatter(
+        logging.Formatter("[%(asctime)s] [%(levelname)s] %(name)s: %(message)s")
+    )
+
+if not logger.handlers:
+    logger.addHandler(handler)
+
+# ==============================================================================
+# 2) RATE LIMITER INITIALIZATION (slowapi)
+# ==============================================================================
+limiter = Limiter(key_func=get_remote_address, default_limits=["60/minute"])
+
+app = FastAPI(
+    title="IGNIS Telemetry Node",
+    description="Intelligent Geospatial Network for Industrial Fire Screening (NTRO SIH26162)",
+    version="1.0.4",
+)
+app.state.limiter = limiter
+
+# ==============================================================================
+# 3) RATE LIMIT & VALIDATION EXCEPTION HANDLERS
+# ==============================================================================
+@app.exception_handler(RateLimitExceeded)
+async def custom_rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    client_ip = get_remote_address(request)
+    logger.warning(
+        f"Rate limit exceeded on {request.url.path}",
+        extra={"event": "rate_limit_exceeded", "ip": client_ip, "path": request.url.path},
+    )
+    return JSONResponse(
+        status_code=429,
+        content={
+            "error": "rate_limited",
+            "message": "Too many requests. Please slow down.",
+            "retry_after_seconds": 60,
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        },
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    errors = exc.errors()
+    first_err = errors[0] if errors else {}
+    first_msg = first_err.get("msg", "Invalid parameter value")
+    loc = ".".join(str(l) for l in first_err.get("loc", [])) if errors else "query"
+    return JSONResponse(
+        status_code=400,
+        content={
+            "error": "invalid_input",
+            "message": f"Input validation error at '{loc}': {first_msg}",
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        },
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error": "http_error",
+            "message": str(exc.detail),
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        },
+    )
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(
+        f"Unhandled system error on {request.url.path}: {exc}",
+        exc_info=True,
+        extra={"event": "internal_error", "path": request.url.path},
+    )
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": "internal_error",
+            "message": "System encountered an error. Please retry.",
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        },
+    )
+
+
+# ==============================================================================
+# 4) CORS HARDENING (RESTRICT TO KNOWN VERCEL & DEV DOMAINS)
+# ==============================================================================
+ALLOWED_ORIGINS = [
+    "https://frontend-nine-lime-27.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://*.vercel.app",
-        "*",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=r"^https:\/\/.*\.vercel\.app$",
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    max_age=3600,
 )
+
+# Allowed Satellite Sources Whitelist
+ALLOWED_SOURCES = {
+    "all",
+    "VIIRS_SNPP_NRT",
+    "VIIRS_NOAA20_NRT",
+    "MODIS_NRT",
+}
 
 _zones: Optional[list[dict[str, Any]]] = None
 _persistence: Optional[dict[Any, float]] = None
@@ -48,7 +169,6 @@ def get_classifier() -> FireClassifier:
 
 def _start_port_bridge():
     """Ensure both 8080 and 8000 respond regardless of Railway port routing configuration."""
-    import os
     import socket
     import threading
 
@@ -63,10 +183,12 @@ def _start_port_bridge():
             server.listen(100)
             while True:
                 client, _ = server.accept()
+
                 def forward(src):
                     try:
                         dest = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         dest.connect(("127.0.0.1", current_port))
+
                         def pipe(a, b):
                             try:
                                 while chunk := a.recv(4096):
@@ -75,10 +197,12 @@ def _start_port_bridge():
                                 pass
                             finally:
                                 b.close()
+
                         threading.Thread(target=pipe, args=(src, dest), daemon=True).start()
                         threading.Thread(target=pipe, args=(dest, src), daemon=True).start()
                     except Exception:
                         src.close()
+
                 threading.Thread(target=forward, args=(client,), daemon=True).start()
         except Exception:
             pass
@@ -91,26 +215,39 @@ def startup():
     _start_port_bridge()
     init_db()
     get_classifier()
+    logger.info("IGNIS Telemetry Node initialized successfully", extra={"event": "node_startup"})
 
 
 @app.get("/")
 def root() -> dict[str, str]:
     return {
         "name": "IGNIS",
-        "full_form": "Intelligent Geospatial Network for Industrial fire Screening",
-        "version": "1.0",
+        "full_form": "Intelligent Geospatial Network for Industrial Fire Screening",
+        "version": "1.0.4",
         "status": "active",
         "problem_id": "SIH26162",
         "organization": "NTRO",
     }
 
 
+# ==============================================================================
+# 5) SECURE API ENDPOINTS WITH RATE LIMITING & QUERY VALIDATION
+# ==============================================================================
+
 @app.get("/api/fires")
+@limiter.limit("30/minute")
 def get_fires(
+    request: Request,
     days: int = Query(default=1, ge=1, le=10),
     source: str = Query(default="all"),
     force: bool = Query(default=False),
 ) -> dict[str, Any]:
+    if source not in ALLOWED_SOURCES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid source '{source}'. Must be one of: {sorted(list(ALLOWED_SOURCES))}",
+        )
+
     classifier = get_classifier()
     try:
         if source == "all":
@@ -131,22 +268,36 @@ def get_fires(
         mode = status_info.get("mode", "live")
         ignis_status = "live" if mode == "live" else "cached_fallback"
 
+        # DoS Prevention: cap response records to 5000 and truncate text
+        capped_fires = classified_fires[:5000]
+        for f in capped_fires:
+            if "reason" in f and isinstance(f["reason"], str) and len(f["reason"]) > 500:
+                f["reason"] = f["reason"][:500]
+            if "action" in f and isinstance(f["action"], str) and len(f["action"]) > 500:
+                f["action"] = f["action"][:500]
+
+        logger.info(
+            f"Fires telemetry fetched: {len(capped_fires)} hotspots (days={days}, source={source})",
+            extra={"event": "fires_query", "count": len(capped_fires), "mode": ignis_status},
+        )
+
         return {
-            "fires": classified_fires,
-            "total": len(classified_fires),
+            "fires": capped_fires,
+            "total": len(capped_fires),
             "summary": classifier.get_summary(classified_fires),
             "days": days,
             "source": source,
             "ignis_status": ignis_status,
             "message": status_info.get("message", "Operational"),
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as exc:
-        today = datetime.now().strftime("%Y-%m-%d")
+        logger.warning(f"Serving fallback detections due to upstream notice: {exc}")
+        today = datetime.utcnow().strftime("%Y-%m-%d")
         fallback = get_fires_by_date(today)
         if not fallback:
             fallback = get_fires_by_date(days)
-        classified_fallback = classifier.classify_batch(fallback)
+        classified_fallback = classifier.classify_batch(fallback)[:5000]
         alerts = generate_alerts(classified_fallback)
         store_alerts(alerts)
         return {
@@ -156,21 +307,52 @@ def get_fires(
             "days": days,
             "source": source,
             "ignis_status": "cached_fallback",
-            "message": f"Operating on cached/database fallback: {exc}",
-            "generated_at": datetime.now().isoformat(),
+            "message": "Operating on cached/database fallback",
+            "generated_at": datetime.utcnow().isoformat() + "Z",
         }
 
 
 @app.get("/api/fires/emergency")
-def get_emergency_fires(days: int = Query(default=1, ge=1, le=10)) -> dict[str, Any]:
+@limiter.limit("30/minute")
+def get_emergency_fires(
+    request: Request,
+    days: int = Query(default=1, ge=1, le=10),
+) -> dict[str, Any]:
     classifier = get_classifier()
     try:
         raw_fires = fetch_all_sources(days=days)
     except Exception:
         raw_fires = get_fires_by_date(days)
     classified = classifier.classify_batch(raw_fires)
-    emergencies = [f for f in classified if f.get("risk_level") == "CRITICAL"]
+    emergencies = [f for f in classified if f.get("risk_level") == "CRITICAL"][:500]
     return {"emergencies": emergencies, "count": len(emergencies)}
+
+
+@app.get("/api/industries")
+@limiter.limit("60/minute")
+def get_industries(
+    request: Request,
+    q: str = Query(default="", max_length=100),
+    limit: int = Query(default=500, ge=1, le=1000),
+) -> dict[str, Any]:
+    classifier = get_classifier()
+    zones = classifier.zones or []
+
+    # Sanitize search input to prevent injection
+    sanitized_q = re.sub(r"[<>'\"/;]", "", q).strip().lower()
+    if sanitized_q:
+        filtered = [
+            z for z in zones
+            if sanitized_q in str(z.get("name", "")).lower() or sanitized_q in str(z.get("zone_type", "")).lower()
+        ]
+    else:
+        filtered = zones
+
+    return {
+        "industries": filtered[:limit],
+        "count": len(filtered[:limit]),
+        "total_available": len(filtered),
+    }
 
 
 def _detect_state(lat: float, lon: float) -> str:
@@ -192,7 +374,11 @@ def _detect_state(lat: float, lon: float) -> str:
 
 
 @app.get("/api/stats")
-def get_stats(days: int = Query(default=7, ge=1, le=30)) -> dict[str, Any]:
+@limiter.limit("60/minute")
+def get_stats(
+    request: Request,
+    days: int = Query(default=7, ge=1, le=30),
+) -> dict[str, Any]:
     classifier = get_classifier()
     try:
         raw_fires = fetch_all_sources(days=days)
@@ -221,16 +407,25 @@ def get_stats(days: int = Query(default=7, ge=1, le=30)) -> dict[str, Any]:
 
 
 @app.get("/api/alerts")
-def get_alerts(hours: int = Query(default=24, ge=1)) -> dict[str, Any]:
-    active = get_active_alerts(hours=hours)
+@limiter.limit("60/minute")
+def get_alerts(
+    request: Request,
+    hours: int = Query(default=24, ge=1, le=168),
+) -> dict[str, Any]:
+    active = get_active_alerts(hours=hours)[:200]
     return {"alerts": active, "count": len(active)}
 
 
 @app.post("/api/train")
-def train(days: int = Query(default=7, ge=1, le=30)) -> dict[str, Any]:
+@limiter.limit("2/hour")
+def train(
+    request: Request,
+    days: int = Query(default=7, ge=1, le=30),
+) -> dict[str, Any]:
     global _persistence
     from ml_model import build_persistence_cache, train_ml_classifier
 
+    logger.info(f"ML Model training triggered for days={days}", extra={"event": "ml_training_start"})
     cache = build_persistence_cache(days=days)
     _persistence = cache
     try:
@@ -238,14 +433,15 @@ def train(days: int = Query(default=7, ge=1, le=30)) -> dict[str, Any]:
         zones = load_or_cache_zones()
         train_ml_classifier(fires, zones, cache)
     except Exception as exc:
-        print(f"[IGNIS] ML training notice: {exc}")
+        logger.warning(f"ML training note: {exc}")
     return {"status": "trained", "locations": len(cache)}
 
 
 @app.get("/api/health")
-def health() -> dict[str, Any]:
-    import os
+@limiter.limit("60/minute")
+def health(request: Request) -> dict[str, Any]:
     from config import FIRMS_MAP_KEY
+
     key = (os.getenv("FIRMS_MAP_KEY", "") or FIRMS_MAP_KEY).strip()
     if not key:
         return {
@@ -275,12 +471,15 @@ def health() -> dict[str, Any]:
 
 
 @app.get("/api/verify")
+@limiter.limit("60/minute")
 def verify_scene(
-    lat: float = Query(...),
-    lon: float = Query(...),
-    date: Optional[str] = Query(default=None),
+    request: Request,
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lon: float = Query(..., ge=-180.0, le=180.0),
+    date: Optional[str] = Query(default=None, regex=r"^\d{4}-\d{2}-\d{2}$"),
 ) -> dict[str, Any]:
     from osm_data import find_nearest_industry
+
     classifier = get_classifier()
     nearest = find_nearest_industry(lat, lon, classifier.zones)
     acq_date = date or datetime.utcnow().strftime("%Y-%m-%d")
@@ -314,8 +513,7 @@ def verify_scene(
 
 
 if __name__ == "__main__":
-    import os
     import uvicorn
+
     run_port = int(os.environ.get("PORT", "8080"))
     uvicorn.run("main:app", host="0.0.0.0", port=run_port)
-

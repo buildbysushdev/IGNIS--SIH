@@ -112,3 +112,23 @@ IGNIS connects directly to real APIs:
 
 - **Backend (Railway):** Point Railway to `ignis/backend` using Python buildpack or Docker. Expose port 8000.
 - **Frontend (Vercel):** Connect `ignis/frontend` to Vercel. Set `NEXT_PUBLIC_API_URL` to your Railway backend URL.
+
+---
+
+## 🔒 Security & Privacy
+
+- **Zero PII Collection**: IGNIS processes purely public geospatial and spaceborne radiometric observations. No personal user credentials, location tracking, or telemetry cookies are harvested.
+- **Credential Hygiene**: API keys (such as `FIRMS_MAP_KEY`) are managed strictly via environment variables and never checked into source control. All `.env` files are gitignored.
+- **Rate Limiting Protection**: The backend enforces IP-based rate limiting via `slowapi` (60 req/min global, 30 req/min for telemetry ingestion, 2 req/hour for model retraining).
+- **Injection Defenses**: 100% of database queries are parameterized; search inputs are sanitized against SQL and XSS injection vectors.
+- **Hardened HTTP Headers**: Next.js serves strict headers including `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, and `Referrer-Policy: strict-origin-when-cross-origin`.
+- **See [SECURITY.md](SECURITY.md) and [DEPLOYMENT.md](DEPLOYMENT.md) for full audit reports and setup policies.**
+
+---
+
+## ⚠️ Known Operational Limitations
+
+1. **Spaceborne Optical Revisit Latency**: Multi-spectral optical imagery (e.g. Sentinel-2, Landsat-8/9) has an orbital revisit cadence of 5 to 16 days depending on latitude and cloud occlusion. IGNIS couples high-frequency thermal passes (VIIRS: ~3–6 hours) with optical verification links for forensic validation rather than claiming real-time second-by-second video.
+2. **Thermal Sensor Latency**: Downlink and processing of NASA FIRMS NRT active fire telemetry carries an inherent orbital processing delay of approximately 1 to 3 hours from satellite overpass to API ingestion.
+3. **OSM Cadastral Completeness**: OpenStreetMap industrial zoning coverage varies across non-metro rural areas; IGNIS mitigates this by maintaining a curated fallback registry of 248 major heavy industrial complexes across India.
+

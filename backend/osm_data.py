@@ -59,28 +59,37 @@ out center;
 
 
 def fetch_industrial_zones_from_osm() -> list[dict[str, Any]]:
-    """Query Overpass API for industrial facilities and zones across India (on-demand only)."""
+    """Query Overpass API for industrial facilities and zones across India with retries and fallback."""
     headers = {
         "User-Agent": "IGNIS-Fire-Surveillance/1.0 (SIH26162 NTRO)",
         "Accept": "application/json",
     }
-    resp = requests.post(OVERPASS_URL, data={"data": OVERPASS_QUERY}, headers=headers, timeout=15)
-    resp.raise_for_status()
-    zones: list[dict[str, Any]] = []
-    for el in resp.json().get("elements", []):
-        lat = el.get("lat") or (el.get("center", {}).get("lat") if "center" in el else None)
-        lon = el.get("lon") or (el.get("center", {}).get("lon") if "center" in el else None)
-        if lat is None or lon is None:
-            continue
-        tags = el.get("tags", {})
-        z_type = tags.get("landuse") or tags.get("man_made") or tags.get("power") or "industrial"
-        zones.append({
-            "latitude": float(lat),
-            "longitude": float(lon),
-            "name": tags.get("name", "Unnamed"),
-            "zone_type": str(z_type),
-        })
-    return zones
+    for attempt in range(2):
+        try:
+            resp = requests.post(OVERPASS_URL, data={"data": OVERPASS_QUERY}, headers=headers, timeout=15)
+            resp.raise_for_status()
+            zones: list[dict[str, Any]] = []
+            for el in resp.json().get("elements", []):
+                lat = el.get("lat") or (el.get("center", {}).get("lat") if "center" in el else None)
+                lon = el.get("lon") or (el.get("center", {}).get("lon") if "center" in el else None)
+                if lat is None or lon is None:
+                    continue
+                tags = el.get("tags", {})
+                z_type = tags.get("landuse") or tags.get("man_made") or tags.get("power") or "industrial"
+                zones.append({
+                    "latitude": float(lat),
+                    "longitude": float(lon),
+                    "name": tags.get("name", "Unnamed"),
+                    "zone_type": str(z_type),
+                })
+            if zones:
+                return zones
+        except Exception as exc:
+            print(f"[IGNIS] Overpass API notice (attempt {attempt + 1}/2): {exc}")
+            time.sleep(1.0)
+
+    print(f"[IGNIS] Falling back to preconfigured industrial facility database ({len(FALLBACK_ZONES)} sites)")
+    return list(FALLBACK_ZONES)
 
 
 def load_or_cache_zones() -> list[dict[str, Any]]:
@@ -93,12 +102,21 @@ def load_or_cache_zones() -> list[dict[str, Any]]:
                 return zones
         except Exception:
             pass
-    # If cache not present, populate with bundled comprehensive facility database
+
+    # If cache not present, populate with bundled comprehensive facility database using atomic write
+    tmp_path = str(cache_path) + ".tmp"
     try:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        cache_path.write_text(json.dumps(FALLBACK_ZONES, indent=2), encoding="utf-8")
-    except Exception:
-        pass
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            json.dump(FALLBACK_ZONES, f, indent=2)
+        os.replace(tmp_path, str(cache_path))
+    except (OSError, PermissionError):
+        if os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except OSError:
+                pass
+
     print(f"[IGNIS] [mode=fallback] Loaded {len(FALLBACK_ZONES)} industrial facilities")
     return list(FALLBACK_ZONES)
 

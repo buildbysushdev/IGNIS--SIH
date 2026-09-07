@@ -172,7 +172,7 @@ export default function VerifyPanel({
             <a
               href={worldviewUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="px-3 py-1.5 border border-[#00d4ff] bg-[#0f141b] text-[#00d4ff] hover:bg-[#00d4ff]/10 font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5"
             >
               <span>[ OPEN NASA WORLDVIEW ↗ ]</span>
@@ -181,7 +181,7 @@ export default function VerifyPanel({
             <a
               href={gmapsUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00d4ff] bg-[#0f141b] text-[#d0d8e0] hover:text-[#00d4ff] font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5"
             >
               <span>[ OPEN GOOGLE MAPS SATELLITE ↗ ]</span>
@@ -190,7 +190,7 @@ export default function VerifyPanel({
             <a
               href={osmUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00d4ff] bg-[#0f141b] text-[#d0d8e0] hover:text-[#00d4ff] font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5"
             >
               <span>[ OPEN OPENSTREETMAP ↗ ]</span>
@@ -199,7 +199,7 @@ export default function VerifyPanel({
             <a
               href={copernicusUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00d4ff] bg-[#0f141b] text-[#d0d8e0] hover:text-[#00d4ff] font-bold uppercase tracking-wider transition cursor-pointer hidden md:flex items-center gap-1.5"
             >
               <span>[ OPEN COPERNICUS BROWSER ↗ ]</span>
