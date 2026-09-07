@@ -13,7 +13,7 @@ if _backend_dir not in sys.path:
 
 from fastapi import FastAPI, Query, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 try:
@@ -961,6 +961,35 @@ def get_notable_incidents_endpoint(
     from incident_reports import get_notable_incidents
 
     return get_notable_incidents(limit=limit)
+
+
+# ==============================================================================
+# 11) AGNI-AI (TACTICAL FIRE ASSISTANT) ENDPOINTS
+# ==============================================================================
+class ChatRequest(BaseModel):
+    message: str
+    context: Optional[dict[str, Any]] = None
+
+
+@app.post("/api/chat")
+@limiter.limit("60/minute")
+def chat_endpoint(request: Request, body: ChatRequest) -> dict[str, Any]:
+    """AGNI-AI context-aware fire response chat endpoint with RAG and tools."""
+    from chatbot.agni_ai import agni_ai
+
+    return agni_ai.query(user_message=body.message, context=body.context)
+
+
+@app.post("/api/chat/stream")
+@limiter.limit("60/minute")
+def chat_stream_endpoint(request: Request, body: ChatRequest) -> StreamingResponse:
+    """Streaming response for long answers using server-sent events (SSE)."""
+    from chatbot.agni_ai import agni_ai
+
+    return StreamingResponse(
+        agni_ai.query_stream(user_message=body.message, context=body.context),
+        media_type="text/event-stream",
+    )
 
 
 if __name__ == "__main__":

@@ -20,6 +20,7 @@ import DispatchHistory from "@/components/DispatchHistory";
 import Header from "@/components/Header";
 import ScenarioPlayer from "@/components/ScenarioPlayer";
 import HistoricalAnalysis from "@/components/HistoricalAnalysis";
+import AgniChatbot from "@/components/AgniChatbot";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -724,6 +725,29 @@ export default function DashboardPage() {
           setTargetZoom(5);
           handleSelectMode("LIVE");
         }}
+      />
+
+      {/* Feature 8: AGNI-AI Tactical Command Assistant (Floating Chatbot) */}
+      <AgniChatbot
+        context={{
+          active_fires_count: filteredFires.length,
+          critical_fires: filteredFires
+            .filter((f) => f.risk_level === "CRITICAL" || f.category === "EMERGENCY_INDUSTRIAL")
+            .slice(0, 5),
+          selected_fire:
+            verifyFire ||
+            emergencyActiveFire ||
+            historicalTargetFire ||
+            (filteredFires.length > 0 ? filteredFires[0] : null),
+          current_filter: { days, category, source },
+          operational_mode: mode,
+          target_coords: targetCoords,
+        }}
+        onPanToCoords={(coords, zoom) => {
+          setTargetCoords(coords);
+          if (zoom) setTargetZoom(zoom);
+        }}
+        onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
       />
 
       {/* Demo Mode Watermark */}
