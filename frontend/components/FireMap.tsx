@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, useMapEvents } from "react-leaflet";
 
 export interface Fire {
+  id?: string;
   latitude: number;
   longitude: number;
   brightness: number;
@@ -11,11 +12,17 @@ export interface Fire {
   confidence: string | number;
   acq_date: string;
   acq_time: string;
+  satellite?: string;
   category: string;
   risk_level: string;
   color?: string;
   reason: string;
   action: string;
+  facility_name?: string;
+  nearest_facility?: string;
+  facility_type?: string;
+  facility_dist?: number;
+  distance_km?: number;
 }
 
 export interface FacilityMarker {
