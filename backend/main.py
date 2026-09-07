@@ -992,6 +992,59 @@ def chat_stream_endpoint(request: Request, body: ChatRequest) -> StreamingRespon
     )
 
 
+# ==============================================================================
+# 12) AUTHORITY ANALYTICS & EXECUTIVE REPORTING ENDPOINTS
+# ==============================================================================
+@app.get("/api/analytics/regional")
+@limiter.limit("60/minute")
+def get_regional_analytics_endpoint(
+    request: Request,
+    region: str = Query(default="India"),
+    days: int = Query(default=30, ge=1, le=365),
+) -> dict[str, Any]:
+    """Return comprehensive multi-state regional analytics, charts data, and hourly heatmaps."""
+    from analytics import get_regional_analytics
+
+    return get_regional_analytics(region=region, days=days)
+
+
+@app.get("/api/analytics/comparative")
+@limiter.limit("60/minute")
+def get_comparative_analytics_endpoint(
+    request: Request,
+    p1: str = Query(default="last_30_days"),
+    p2: str = Query(default="previous_30_days"),
+) -> dict[str, Any]:
+    """Return period-over-period comparative delta metrics."""
+    from analytics import get_comparative_analysis
+
+    return get_comparative_analysis(period1=p1, period2=p2)
+
+
+@app.get("/api/analytics/report/executive")
+@limiter.limit("60/minute")
+def get_executive_report_endpoint(
+    request: Request,
+    period: str = Query(default="monthly"),
+) -> dict[str, Any]:
+    """Generate high-level executive strategic report for NDMA and State Authorities."""
+    from analytics import generate_executive_report
+
+    return generate_executive_report(period=period)
+
+
+@app.get("/api/analytics/report/district")
+@limiter.limit("60/minute")
+def get_district_report_endpoint(
+    request: Request,
+    district: str = Query(default="surat"),
+) -> dict[str, Any]:
+    """Generate localized district briefing for District Collector and Fire Chief."""
+    from analytics import generate_district_report
+
+    return generate_district_report(district=district)
+
+
 if __name__ == "__main__":
     import uvicorn
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 
 export interface HeaderProps {
   currentMode: "LIVE" | "CACHED" | "DEMO";
@@ -100,8 +101,25 @@ export default function Header({
         </div>
       </div>
 
-      {/* 2) Center: Simulation Scenarios & Quick Emergency Launch */}
+      {/* 2) Center: Navigation View Switcher, Simulation Scenarios & Quick Launch */}
       <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
+        {/* Navigation View Switcher */}
+        <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] p-0.5 text-[10px]">
+          <div className="px-2 py-0.5 bg-[#15202c] border border-[#00d4ff] text-[#00d4ff] font-bold uppercase">
+            [ OPERATIONS ]
+          </div>
+          <Link
+            href="/analytics"
+            className="px-2 py-0.5 text-[#6b7785] hover:text-[#ffb800] uppercase font-bold transition cursor-pointer"
+            title="Open Authority Analytics Dashboard"
+          >
+            [ ANALYTICS ]
+          </Link>
+          <span className="px-1.5 py-0.5 text-[#4a5563] uppercase font-bold hidden xl:inline cursor-not-allowed">
+            [ FIELD OFFICER ]
+          </span>
+        </div>
+
         {/* Scenarios Selector Dropdown */}
         <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] px-2 py-1 text-[10px]">
           <span className="text-[#6b7785] font-bold hidden sm:inline">SCENARIO:</span>
