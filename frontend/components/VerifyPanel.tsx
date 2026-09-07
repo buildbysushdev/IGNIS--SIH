@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import type { Fire } from "./FireMap";
+import { findNearestFacility } from "./IndustrialRegistry";
 
 interface VerifyPanelProps {
   fire: Fire | null;
@@ -23,6 +24,17 @@ export default function VerifyPanel({
   const lon = fire.longitude;
   const acqDate = fire.acq_date || new Date().toISOString().slice(0, 10);
   const acqTime = fire.acq_time || "0000";
+
+  // Calculate nearest facility and road proximity
+  const nearestResult = findNearestFacility(lat, lon);
+  const facilityName = fire.facility_name || fire.nearest_facility || nearestResult.facility.name;
+  const facilityType = fire.facility_type || nearestResult.facility.type;
+  const facilityDistKm =
+    fire.facility_dist ?? fire.distance_km ?? nearestResult.distanceKm;
+  const isWithin5km =
+    facilityDistKm <= 5.0 ||
+    fire.category === "PERSISTENT_INDUSTRIAL" ||
+    fire.category === "EMERGENCY_INDUSTRIAL";
 
   // Build target external URLs
   const worldviewUrl = `https://worldview.earthdata.nasa.gov/?v=${lon - 1.5},${lat - 1.5},${lon + 1.5},${lat + 1.5}&t=${acqDate}`;
@@ -81,7 +93,7 @@ export default function VerifyPanel({
         </div>
 
         {/* ========================================================================= */}
-        {/* 1) THERMAL EVENT TELEMETRY                                                */}
+        {/* 1) THERMAL EVENT                                                          */}
         {/* ========================================================================= */}
         <div className="border border-[#1f2933] bg-[#0a0e14] p-3 space-y-2">
           <div className="text-[10px] font-bold text-[#4a5563] uppercase tracking-widest flex items-center justify-between border-b border-[#1f2933] pb-1">
@@ -91,12 +103,20 @@ export default function VerifyPanel({
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs tabular-nums">
             <div>
+              <span className="text-[10px] text-[#6b7785] block uppercase">ANOMALY ID</span>
+              <span className="text-[#00d4ff] font-bold">ANOM-{lat.toFixed(2)}-{lon.toFixed(2)}</span>
+            </div>
+            <div>
               <span className="text-[10px] text-[#6b7785] block uppercase">COORDINATES</span>
               <span className="text-[#00d4ff] font-bold">{coordsText}</span>
             </div>
             <div>
-              <span className="text-[10px] text-[#6b7785] block uppercase">ACQUISITION</span>
+              <span className="text-[10px] text-[#6b7785] block uppercase">DATE / TIME (UTC)</span>
               <span className="text-[#d0d8e0]">{acqDate}T{acqTime}Z</span>
+            </div>
+            <div>
+              <span className="text-[10px] text-[#6b7785] block uppercase">SATELLITE SENSOR</span>
+              <span className="text-[#d0d8e0] font-bold">{(fire as any).satellite || "VIIRS-SNPP"}</span>
             </div>
             <div>
               <span className="text-[10px] text-[#6b7785] block uppercase">FIRE POWER (FRP)</span>
@@ -106,12 +126,9 @@ export default function VerifyPanel({
               <span className="text-[10px] text-[#6b7785] block uppercase">BRIGHTNESS TEMP</span>
               <span className="text-[#d0d8e0]">{Number(fire.brightness || 0).toFixed(1)} K</span>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-[#1f2933] text-xs">
             <div>
-              <span className="text-[10px] text-[#6b7785] block uppercase">CLASSIFICATION</span>
-              <span className="text-[#00ff9c] font-bold uppercase">{fire.category || "UNKNOWN"}</span>
+              <span className="text-[10px] text-[#6b7785] block uppercase">CONFIDENCE</span>
+              <span className="text-[#00d4ff] uppercase font-bold">{String(fire.confidence || "NOMINAL")}</span>
             </div>
             <div>
               <span className="text-[10px] text-[#6b7785] block uppercase">RISK LEVEL</span>
@@ -123,24 +140,27 @@ export default function VerifyPanel({
                 [{fire.risk_level || "NOMINAL"}]
               </span>
             </div>
+          </div>
+
+          <div className="pt-2 border-t border-[#1f2933] text-xs">
             <div>
-              <span className="text-[10px] text-[#6b7785] block uppercase">SENSOR CONFIDENCE</span>
-              <span className="text-[#00d4ff] uppercase">{String(fire.confidence || "NOMINAL")}</span>
+              <span className="text-[10px] text-[#6b7785] block uppercase">CLASSIFICATION</span>
+              <span className="text-[#00ff9c] font-bold uppercase">{fire.category || "UNKNOWN"}</span>
             </div>
           </div>
 
           <div className="text-[11px] text-[#6b7785] leading-snug pt-1 border-t border-[#1f2933]">
-            <span className="text-[#d0d8e0] font-semibold">DIAGNOSIS: </span>
+            <span className="text-[#d0d8e0] font-semibold">REASON: </span>
             {cleanReason}
           </div>
           <div className="text-[11px] text-[#ffb800] leading-snug">
-            <span className="text-[#d0d8e0] font-semibold">ACTION VECTOR: </span>
+            <span className="text-[#d0d8e0] font-semibold">ACTION: </span>
             {cleanAction}
           </div>
         </div>
 
         {/* ========================================================================= */}
-        {/* 2) VISUAL VERIFICATION TOOLS                                              */}
+        {/* 2) VISUAL VERIFICATION                                                    */}
         {/* ========================================================================= */}
         <div className="border border-[#1f2933] bg-[#0a0e14] p-3 space-y-2.5">
           <div className="text-[10px] font-bold text-[#4a5563] uppercase tracking-widest flex items-center justify-between border-b border-[#1f2933] pb-1">
@@ -155,7 +175,7 @@ export default function VerifyPanel({
               rel="noreferrer"
               className="px-3 py-1.5 border border-[#00d4ff] bg-[#0f141b] text-[#00d4ff] hover:bg-[#00d4ff]/10 font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5"
             >
-              <span>[ NASA WORLDVIEW ↗ ]</span>
+              <span>[ OPEN NASA WORLDVIEW ↗ ]</span>
             </a>
 
             <a
@@ -164,7 +184,7 @@ export default function VerifyPanel({
               rel="noreferrer"
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00d4ff] bg-[#0f141b] text-[#d0d8e0] hover:text-[#00d4ff] font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5"
             >
-              <span>[ GOOGLE MAPS SATELLITE ↗ ]</span>
+              <span>[ OPEN GOOGLE MAPS SATELLITE ↗ ]</span>
             </a>
 
             <a
@@ -173,7 +193,7 @@ export default function VerifyPanel({
               rel="noreferrer"
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00d4ff] bg-[#0f141b] text-[#d0d8e0] hover:text-[#00d4ff] font-bold uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5"
             >
-              <span>[ OPENSTREETMAP ROADS ↗ ]</span>
+              <span>[ OPEN OPENSTREETMAP ↗ ]</span>
             </a>
 
             <a
@@ -182,14 +202,14 @@ export default function VerifyPanel({
               rel="noreferrer"
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00d4ff] bg-[#0f141b] text-[#d0d8e0] hover:text-[#00d4ff] font-bold uppercase tracking-wider transition cursor-pointer hidden md:flex items-center gap-1.5"
             >
-              <span>[ COPERNICUS BROWSER ↗ ]</span>
+              <span>[ OPEN COPERNICUS BROWSER ↗ ]</span>
             </a>
 
             <button
               onClick={handleCopyCoords}
               className="px-3 py-1.5 border border-[#1f2933] hover:border-[#00ff9c] bg-[#0f141b] text-[#6b7785] hover:text-[#00ff9c] font-bold uppercase tracking-wider transition cursor-pointer"
             >
-              {copied ? "[ COPIED TO CLIPBOARD! ]" : "[ COPY COORDS ]"}
+              {copied ? "[ COPIED TO CLIPBOARD! ]" : "[ COPY COORDINATES ]"}
             </button>
           </div>
 
@@ -221,7 +241,7 @@ export default function VerifyPanel({
         </div>
 
         {/* ========================================================================= */}
-        {/* 3) AREA & ROAD ACCESS CONTEXT                                             */}
+        {/* 3) AREA / ROAD CONTEXT                                                    */}
         {/* ========================================================================= */}
         <div className="border border-[#1f2933] bg-[#0a0e14] p-3 space-y-2">
           <div className="text-[10px] font-bold text-[#4a5563] uppercase tracking-widest flex items-center justify-between border-b border-[#1f2933] pb-1">
@@ -229,32 +249,44 @@ export default function VerifyPanel({
             <span className="text-[#00ff9c]">[ACCESS ROUTES]</span>
           </div>
 
-          <div className="space-y-1.5 text-xs">
+          <div className="space-y-2 text-xs">
+            {/* Nearest Industrial Facility Telemetry Readout */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-[#0f141b] border border-[#1f2933] p-2 tabular-nums">
+              <div>
+                <span className="text-[10px] text-[#6b7785] block uppercase">NEAREST INDUSTRY</span>
+                <span className="text-[#d0d8e0] font-bold uppercase truncate block">{facilityName}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-[#6b7785] block uppercase">FACILITY TYPE</span>
+                <span className="text-[#00d4ff] font-bold uppercase">{facilityType}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-[#6b7785] block uppercase">DISTANCE</span>
+                <span className="text-[#ffb800] font-bold">{facilityDistKm.toFixed(1)} km</span>
+              </div>
+            </div>
+
             <div className="flex items-center justify-between border-b border-[#1f2933] pb-1 text-[11px]">
-              <span className="text-[#6b7785]">WITHIN 5KM INDUSTRIAL PERIMETER:</span>
+              <span className="text-[#6b7785]">WITHIN 5KM INDUSTRIAL PROXIMITY:</span>
               <span
                 className={`font-bold uppercase ${
-                  fire.category === "PERSISTENT_INDUSTRIAL" || fire.category === "EMERGENCY_INDUSTRIAL"
-                    ? "text-[#ffb800]"
-                    : "text-[#6b7785]"
+                  isWithin5km ? "text-[#ffb800]" : "text-[#6b7785]"
                 }`}
               >
-                {fire.category === "PERSISTENT_INDUSTRIAL" || fire.category === "EMERGENCY_INDUSTRIAL"
-                  ? "[ YES — KNOWN FACILITY CORRIDOR ]"
-                  : "[ NO — REMOTE/AGRICULTURAL/WILDLAND ]"}
+                {isWithin5km ? "[ YES — KNOWN FACILITY CORRIDOR ]" : "[ NO — REMOTE/AGRICULTURAL/WILDLAND ]"}
               </span>
             </div>
 
-            <div className="text-[11px] text-[#6b7785] space-y-1 pt-1">
-              <div>-- Use SATELLITE basemap to inspect terrain topology, smoke dispersal, and burn scar footprint.</div>
-              <div>-- Use OSM / Google Maps to inspect ground approach vectors, bridge crossings, and road access constraints.</div>
+            <div className="text-[11px] text-[#6b7785] space-y-1 pt-0.5">
+              <div>-- Use satellite basemap to inspect terrain/smoke/burn scar.</div>
+              <div>-- Use OSM/Google to inspect road approach and access constraints.</div>
               <div>-- Note: Optical satellite revisit latency is typically hours to days depending on sensor swath and cloud cover.</div>
             </div>
           </div>
         </div>
 
         {/* ========================================================================= */}
-        {/* 4) MULTI-SENSOR CONFIDENCE FUSION CHECKLIST                               */}
+        {/* 4) CONFIDENCE FUSION                                                      */}
         {/* ========================================================================= */}
         <div className="border border-[#1f2933] bg-[#0a0e14] p-3 space-y-2">
           <div className="text-[10px] font-bold text-[#4a5563] uppercase tracking-widest flex items-center justify-between border-b border-[#1f2933] pb-1">
@@ -265,11 +297,11 @@ export default function VerifyPanel({
           <div className="space-y-1.5 text-xs text-[#d0d8e0]">
             <div className="flex items-center gap-2">
               <span className="text-[#00ff9c] font-bold">[X]</span>
-              <span>Thermal anomaly detected (NASA FIRMS VIIRS 375m)</span>
+              <span>Thermal anomaly detected (FIRMS)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[#00ff9c] font-bold">[X]</span>
-              <span>Classification assigned (IGNIS Multi-spectral Rules Engine)</span>
+              <span>Classification assigned (IGNIS)</span>
             </div>
             <div
               onClick={() => setOpticalConfirmed(!opticalConfirmed)}
@@ -283,7 +315,7 @@ export default function VerifyPanel({
                 {opticalConfirmed ? "[X]" : "[ ]"}
               </span>
               <span>
-                Optical confirmation (Operator manual verification via Worldview/Satellite){" "}
+                Optical confirmation (operator via Worldview/Satellite){" "}
                 <span className="text-[10px] text-[#4a5563] font-bold">
                   {opticalConfirmed ? "[CONFIRMED]" : "[CLICK TO CONFIRM]"}
                 </span>
@@ -291,7 +323,7 @@ export default function VerifyPanel({
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[#00ff9c] font-bold">[X]</span>
-              <span>Infrastructure context linked (OpenStreetMap / National Registry)</span>
+              <span>Infrastructure context linked (OSM)</span>
             </div>
           </div>
         </div>

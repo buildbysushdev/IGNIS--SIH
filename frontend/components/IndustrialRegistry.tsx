@@ -55,7 +55,7 @@ const RAW_FACILITIES: Array<{ name: string; type: string; lat: number; lon: numb
 ];
 
 // Generate deterministic 248 industrial nodes across key Indian clusters
-const ALL_FACILITIES: IndustrialFacility[] = (() => {
+export const ALL_FACILITIES: IndustrialFacility[] = (() => {
   const list: IndustrialFacility[] = [];
   const baseTypes = ["WORKS", "REFINERY", "POWER", "CHEM", "SMELTER", "MINING"];
 
@@ -91,6 +91,31 @@ const ALL_FACILITIES: IndustrialFacility[] = (() => {
   }
   return list;
 })();
+
+export function findNearestFacility(lat: number, lon: number): { facility: IndustrialFacility; distanceKm: number } {
+  let nearest = ALL_FACILITIES[0];
+  let minDistance = Infinity;
+
+  for (const fac of ALL_FACILITIES) {
+    const dLat = (fac.latitude - lat) * (Math.PI / 180);
+    const dLon = (fac.longitude - lon) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat * (Math.PI / 180)) *
+        Math.cos(fac.latitude * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const dist = 6371 * c; // Earth radius in km
+
+    if (dist < minDistance) {
+      minDistance = dist;
+      nearest = fac;
+    }
+  }
+
+  return { facility: nearest, distanceKm: minDistance };
+}
 
 interface IndustrialRegistryProps {
   onSelectFacility?: (facility: IndustrialFacility) => void;
