@@ -38,6 +38,7 @@ from database import init_db, insert_fires, get_fires_by_date, get_cache_status
 from firms import fetch_fires, fetch_all_sources, get_data_status
 from mode_manager import mode_manager
 from demo_data import load_demo_fires
+from scenarios.scenario_engine import scenario_engine
 
 # ==============================================================================
 # 1) STRUCTURED JSON LOGGING SETUP
@@ -278,6 +279,52 @@ def set_mode(
 def get_mode_health() -> dict[str, Any]:
     """Return detailed health check and recommended operational mode."""
     return mode_manager.get_health()
+
+
+# ==============================================================================
+# SCENARIO SIMULATION ENGINE ENDPOINTS
+# ==============================================================================
+
+@app.get("/api/scenarios")
+def list_scenarios() -> list[dict[str, Any]]:
+    """Returns list of available simulation scenarios."""
+    return scenario_engine.list_scenarios()
+
+
+@app.get("/api/scenarios/state")
+def get_scenario_state() -> dict[str, Any]:
+    """Returns current scenario playback state."""
+    return scenario_engine.get_state()
+
+
+@app.get("/api/scenarios/{scenario_id}")
+def get_scenario(scenario_id: str) -> dict[str, Any]:
+    """Returns full scenario data by ID."""
+    scen = scenario_engine.get_scenario(scenario_id)
+    if not scen:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Scenario '{scenario_id}' not found",
+        )
+    return scen
+
+
+@app.post("/api/scenarios/{scenario_id}/play")
+def play_scenario(scenario_id: str) -> dict[str, Any]:
+    """Marks scenario as active and starts playback timer."""
+    res = scenario_engine.start_scenario(scenario_id)
+    if not res.get("success"):
+        raise HTTPException(
+            status_code=404,
+            detail=res.get("error", "Failed to start scenario"),
+        )
+    return res
+
+
+@app.post("/api/scenarios/stop")
+def stop_scenario() -> dict[str, Any]:
+    """Halts active scenario playback."""
+    return scenario_engine.stop_scenario()
 
 
 @app.get("/api/fire-stations/nearest")
@@ -653,6 +700,57 @@ def verify_scene(
             "Cross-sensor verification workspace: combine thermal FRP with optical texture and access routes",
         ],
     }
+
+
+# ==============================================================================
+# 9) SIMULATION SCENARIOS TELEMETRY API
+# ==============================================================================
+
+@app.get("/api/scenarios")
+@limiter.limit("60/minute")
+def list_scenarios(request: Request) -> list[dict[str, Any]]:
+    """Returns list of available simulation scenarios."""
+    return scenario_engine.list_scenarios()
+
+
+@app.get("/api/scenarios/state")
+@limiter.limit("60/minute")
+def get_scenario_state(request: Request) -> dict[str, Any]:
+    """Returns current scenario playback progress and active step."""
+    return scenario_engine.get_state()
+
+
+@app.get("/api/scenarios/{scenario_id}")
+@limiter.limit("60/minute")
+def get_scenario(request: Request, scenario_id: str) -> dict[str, Any]:
+    """Returns full scenario definition by ID."""
+    scen = scenario_engine.get_scenario(scenario_id)
+    if not scen:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scenario '{scenario_id}' not found",
+        )
+    return scen
+
+
+@app.post("/api/scenarios/{scenario_id}/play")
+@limiter.limit("30/minute")
+def play_scenario(request: Request, scenario_id: str) -> dict[str, Any]:
+    """Marks scenario as active and begins playback."""
+    result = scenario_engine.start_scenario(scenario_id)
+    if not result.get("success"):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=result.get("error", f"Scenario '{scenario_id}' not found"),
+        )
+    return result
+
+
+@app.post("/api/scenarios/stop")
+@limiter.limit("30/minute")
+def stop_scenario_endpoint(request: Request) -> dict[str, Any]:
+    """Halts active scenario playback."""
+    return scenario_engine.stop_scenario()
 
 
 if __name__ == "__main__":

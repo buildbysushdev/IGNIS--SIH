@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, Circle, Polygon, useMapEvents } from "react-leaflet";
 import ResponseProtocol from "./ResponseProtocol";
 import { FIRE_STATIONS } from "@/data/fireStations";
 
@@ -36,6 +36,13 @@ export interface FacilityMarker {
   type: string;
   latitude: number;
   longitude: number;
+}
+
+export interface ScenarioOverlayState {
+  evacuationCircle?: { center: [number, number]; radius_km: number } | null;
+  windCone?: [number, number][] | null;
+  stationMarker?: { name: string; lat: number; lon: number; distance_km?: number } | null;
+  pulseMarker?: [number, number] | null;
 }
 
 // Strict Ground Station Color Coding (High Contrast, Phosphor & Terminal Accents)
@@ -75,9 +82,11 @@ export const TILE_PRESETS = {
 // Map telemetry listener & pan controller
 function MapTelemetryController({
   targetCoords,
+  targetZoom = 10,
   onCoordsChange,
 }: {
   targetCoords?: [number, number] | null;
+  targetZoom?: number;
   onCoordsChange: (lat: number, lon: number, zoom: number) => void;
 }) {
   const map = useMapEvents({
@@ -93,9 +102,9 @@ function MapTelemetryController({
 
   useEffect(() => {
     if (targetCoords) {
-      map.flyTo(targetCoords, 10, { duration: 1.2 });
+      map.flyTo(targetCoords, targetZoom || 10, { duration: 1.4 });
     }
-  }, [targetCoords, map]);
+  }, [targetCoords, targetZoom, map]);
 
   return null;
 }
@@ -119,21 +128,25 @@ export function findLocalNearestStation(lat: number, lon: number) {
 interface FireMapProps {
   fires?: Fire[];
   targetCoords?: [number, number] | null;
+  targetZoom?: number;
   facilities?: FacilityMarker[];
   onOpenVerify?: (fire: Fire) => void;
   onOpenDispatch?: (fire: Fire) => void;
   activeLayer?: keyof typeof TILE_PRESETS;
   onLayerChange?: (layer: keyof typeof TILE_PRESETS) => void;
+  scenarioOverlay?: ScenarioOverlayState | null;
 }
 
 export default function FireMap({
   fires = [],
   targetCoords,
+  targetZoom,
   facilities = [],
   onOpenVerify,
   onOpenDispatch,
   activeLayer: externalActiveLayer,
   onLayerChange,
+  scenarioOverlay,
 }: FireMapProps) {
   const safeFires = Array.isArray(fires) ? fires : [];
   const [internalLayer, setInternalLayer] = useState<keyof typeof TILE_PRESETS>("ops_dark");
@@ -200,6 +213,7 @@ export default function FireMap({
         >
           <MapTelemetryController
             targetCoords={targetCoords}
+            targetZoom={targetZoom}
             onCoordsChange={(lat, lon, zoom) => setCurrentCenter({ lat, lon, zoom })}
           />
 
@@ -409,6 +423,87 @@ export default function FireMap({
               </CircleMarker>
             );
           })}
+
+          {/* Scenario Simulation Overlays */}
+          {scenarioOverlay?.evacuationCircle && (
+            <Circle
+              center={scenarioOverlay.evacuationCircle.center}
+              radius={scenarioOverlay.evacuationCircle.radius_km * 1000}
+              pathOptions={{
+                color: "#ff3b3b",
+                fillColor: "#ff3b3b",
+                fillOpacity: 0.18,
+                dashArray: "6 6",
+                weight: 2,
+              }}
+            >
+              <Popup>
+                <div className="font-mono text-xs text-[#d0d8e0] p-1">
+                  <div className="text-[#ff3b3b] font-bold">[!] EVACUATION ZONE</div>
+                  <div>Radius: {scenarioOverlay.evacuationCircle.radius_km * 1000}m</div>
+                  <div className="text-[10px] text-[#6b7785]">Mandatory civilian clearance perimeter</div>
+                </div>
+              </Popup>
+            </Circle>
+          )}
+
+          {scenarioOverlay?.windCone && (
+            <Polygon
+              positions={scenarioOverlay.windCone}
+              pathOptions={{
+                color: "#00d4ff",
+                fillColor: "#00d4ff",
+                fillOpacity: 0.22,
+                dashArray: "4 4",
+                weight: 1.5,
+              }}
+            >
+              <Popup>
+                <div className="font-mono text-xs text-[#d0d8e0] p-1">
+                  <div className="text-[#00d4ff] font-bold">[~] WIND SPREAD CONE PROJECTION</div>
+                  <div>Vector: NE corridor @ 15 km/h</div>
+                  <div className="text-[10px] text-[#6b7785]">Predicted 4-hour forward spread boundary</div>
+                </div>
+              </Popup>
+            </Polygon>
+          )}
+
+          {scenarioOverlay?.stationMarker && (
+            <CircleMarker
+              center={[scenarioOverlay.stationMarker.lat, scenarioOverlay.stationMarker.lon]}
+              radius={10}
+              pathOptions={{
+                color: "#00ff9c",
+                fillColor: "#0f141b",
+                fillOpacity: 0.95,
+                weight: 2.5,
+              }}
+            >
+              <Popup>
+                <div className="font-mono text-xs text-[#d0d8e0] p-1">
+                  <div className="text-[#00ff9c] font-bold">[ 🚒 RESPONSE STATION ]</div>
+                  <div className="text-white font-bold">{scenarioOverlay.stationMarker.name}</div>
+                  <div className="text-[10px] text-[#6b7785]">
+                    PROXIMITY: {scenarioOverlay.stationMarker.distance_km || 3.2} KM
+                  </div>
+                </div>
+              </Popup>
+            </CircleMarker>
+          )}
+
+          {scenarioOverlay?.pulseMarker && (
+            <CircleMarker
+              center={scenarioOverlay.pulseMarker}
+              radius={16}
+              pathOptions={{
+                color: "#ff3b3b",
+                fillColor: "#ff3b3b",
+                fillOpacity: 0.25,
+                weight: 2,
+              }}
+              className="status-dot-red animate-ping"
+            />
+          )}
         </MapContainer>
 
         {/* Bottom-Left Live Telemetry Overlay */}

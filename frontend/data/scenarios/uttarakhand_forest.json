@@ -1,0 +1,94 @@
+{
+  "id": "uttarakhand_forest",
+  "name": "Uttarakhand Forest Fire Response",
+  "duration_seconds": 50,
+  "description": "Summer forest fire in Himalayan region",
+  "location": {
+    "lat": 30.0,
+    "lon": 79.0,
+    "zoom": 9
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "Monitoring Uttarakhand forest belt during peak fire season."
+    },
+    {
+      "time": 5,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 30.05,
+        "longitude": 79.10,
+        "frp": 65,
+        "brightness": 348,
+        "category": "FOREST_FIRE",
+        "risk_level": "HIGH",
+        "confidence": "high",
+        "reason": "Intense canopy combustion detected on pine forest slope",
+        "action": "Dispatch forest beat rangers and aerial water drops"
+      },
+      "narration": "Forest fire detected near Chamoli district."
+    },
+    {
+      "time": 10,
+      "action": "SHOW_TERRAIN",
+      "slope": "28 deg",
+      "canopy": "Chir Pine",
+      "narration": "Analyzing terrain: dense pine forest, dry conditions, moderate slope."
+    },
+    {
+      "time": 15,
+      "action": "PREDICT_SPREAD",
+      "wind_direction": "NE",
+      "wind_speed": 15,
+      "cone": [
+        [30.05, 79.10],
+        [30.12, 79.18],
+        [30.16, 79.14],
+        [30.05, 79.10]
+      ],
+      "narration": "Wind analysis: NE direction at 15 km/h. Predicting spread cone..."
+    },
+    {
+      "time": 20,
+      "action": "SHOW_RISK",
+      "villages_at_risk": ["Rampur", "Devgram"],
+      "eta_hours": 4,
+      "narration": "2 villages within 3km spread projection. Evacuation advisory recommended."
+    },
+    {
+      "time": 25,
+      "action": "FIND_STATION",
+      "station": {
+        "name": "Chamoli Fire Station",
+        "distance_km": 12,
+        "eta_minutes": 22,
+        "phone": "+91-1372-252101",
+        "lat": 30.29,
+        "lon": 79.33
+      },
+      "narration": "Nearest fire station: Chamoli, 12km. Aerial support recommended."
+    },
+    {
+      "time": 30,
+      "action": "DISPATCH",
+      "units": ["Ground Ranger Crew", "IAF Mi-17 Bambi Bucket"],
+      "airbase": "Dehradun Air Base",
+      "status": "DISPATCHED",
+      "narration": "Coordinating ground teams + helicopter dispatch to Dehradun airbase."
+    },
+    {
+      "time": 40,
+      "action": "SHOW_HISTORY",
+      "past_fires": 12,
+      "recurrence_rate": "High (Annual)",
+      "narration": "Historical data: This location had 12 fires in past 5 years. High recurrence zone."
+    },
+    {
+      "time": 45,
+      "action": "COMPLETE",
+      "narration": "Multi-agency response coordinated. Real-time tracking active."
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "id": "surat_emergency",
+  "name": "Surat Chemical Factory Emergency",
+  "duration_seconds": 45,
+  "description": "Emergency fire at chemical processing plant",
+  "location": {
+    "lat": 21.17,
+    "lon": 72.83,
+    "zoom": 12
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "Normal operations. Monitoring 254 thermal anomalies across India."
+    },
+    {
+      "time": 5,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 21.17,
+        "longitude": 72.83,
+        "frp": 145,
+        "brightness": 380,
+        "category": "EMERGENCY_INDUSTRIAL",
+        "risk_level": "CRITICAL",
+        "confidence": "high",
+        "acq_time": "current",
+        "reason": "Sudden thermal spike detected at chemical processing zone",
+        "action": "IMMEDIATE DISPATCH REQUIRED"
+      },
+      "narration": "NEW EVENT: Emergency thermal signature detected in Surat GIDC industrial area."
+    },
+    {
+      "time": 10,
+      "action": "CLASSIFY",
+      "category": "EMERGENCY_INDUSTRIAL",
+      "confidence": "high",
+      "narration": "IGNIS classification engine analyzing... EMERGENCY_INDUSTRIAL confirmed."
+    },
+    {
+      "time": 15,
+      "action": "SHOW_PROTOCOL",
+      "protocol": {
+        "class": "Class B/C Chemical",
+        "use": ["foam", "CO2", "dry chemical"],
+        "avoid": ["water on petroleum/electrical"],
+        "safety_distance_m": 500,
+        "target_response_min": 5
+      },
+      "narration": "Retrieving fire response protocol for chemical facility..."
+    },
+    {
+      "time": 20,
+      "action": "FIND_STATION",
+      "station": {
+        "name": "Surat Fire Station HQ",
+        "distance_km": 3.2,
+        "eta_minutes": 8,
+        "phone": "+91-261-2422222",
+        "lat": 21.192,
+        "lon": 72.825
+      },
+      "narration": "Nearest fire station: Surat HQ, 3.2km away, ETA 8 minutes."
+    },
+    {
+      "time": 25,
+      "action": "DISPATCH",
+      "status": "DISPATCHED",
+      "narration": "Dispatching alert to fire services, district collector, and NDMA..."
+    },
+    {
+      "time": 30,
+      "action": "SHOW_EQUIPMENT",
+      "equipment": [
+        "Foam tenders (chemical fire)",
+        "CO2 extinguishers",
+        "Hazmat suits",
+        "Water for cooling nearby structures"
+      ],
+      "warning": "DO NOT use direct water on chemical fire",
+      "narration": "Recommended equipment and safety protocols displayed."
+    },
+    {
+      "time": 35,
+      "action": "SHOW_EVACUATION",
+      "radius_km": 0.5,
+      "affected_population": 12000,
+      "center": [21.17, 72.83],
+      "narration": "500m evacuation zone activated. 12,000 residents in affected area."
+    },
+    {
+      "time": 40,
+      "action": "COMPLETE",
+      "narration": "Full response coordinated in 40 seconds. In production, first responders would already be en route."
+    }
+  ]
+}

@@ -108,10 +108,10 @@ export default function Header({
             onChange={(e) => onSelectScenario(e.target.value)}
             className="bg-[#0f141b] border border-[#1f2933] text-[#00d4ff] px-1.5 py-0.5 font-mono text-[10px] cursor-pointer"
           >
-            <option value="live">LIVE TELEMETRY FEED (DEFAULT)</option>
-            <option value="surat_emergency">1: SURAT FACTORY FIRE EMERGENCY</option>
-            <option value="punjab_stubble">2: PUNJAB STUBBLE BURNING PEAK</option>
-            <option value="uttarakhand_forest">3: UTTARAKHAND FOREST FIRE</option>
+            <option value="live">Live Data</option>
+            <option value="surat_emergency">▶ Surat Emergency Response</option>
+            <option value="punjab_stubble">▶ Punjab Stubble Peak</option>
+            <option value="uttarakhand_forest">▶ Uttarakhand Forest Fire</option>
           </select>
           {selectedScenarioId !== "live" && (
             <button

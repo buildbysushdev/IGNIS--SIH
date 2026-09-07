@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import type { Fire } from "@/components/FireMap";
+import type { Fire, ScenarioOverlayState } from "@/components/FireMap";
 import { TILE_PRESETS } from "@/components/FireMap";
 import StatsPanel, { FireStats } from "@/components/StatsPanel";
 import AlertPanel, { AlertItem } from "@/components/AlertPanel";
@@ -17,6 +17,7 @@ import { SIMULATION_SCENARIOS, SimulationScenario } from "@/data/scenarios";
 import EmergencyPanel, { playTacticalAlertSound } from "@/components/EmergencyPanel";
 import DispatchSimulator from "@/components/DispatchSimulator";
 import Header from "@/components/Header";
+import ScenarioPlayer from "@/components/ScenarioPlayer";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -81,8 +82,8 @@ export default function DashboardPage() {
   // Simulation Scenarios State
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>("live");
   const [isScenarioPlaying, setIsScenarioPlaying] = useState<boolean>(false);
-  const [scenarioElapsedSec, setScenarioElapsedSec] = useState<number>(0);
-  const [scenarioNarration, setScenarioNarration] = useState<string | null>(null);
+  const [scenarioOverlay, setScenarioOverlay] = useState<ScenarioOverlayState | null>(null);
+  const [targetZoom, setTargetZoom] = useState<number>(5);
 
   // Emergency Panel & Dispatch Simulator State
   const [isEmergencyPanelOpen, setIsEmergencyPanelOpen] = useState<boolean>(false);
@@ -263,23 +264,16 @@ export default function DashboardPage() {
       setSelectedScenarioId(scenId);
       if (scenId === "live") {
         setIsScenarioPlaying(false);
-        setScenarioNarration(null);
+        setScenarioOverlay(null);
         setTargetCoords([22.5432, 78.9012]);
+        setTargetZoom(5);
         handleSelectMode("LIVE");
         return;
       }
 
-      const scen = SIMULATION_SCENARIOS.find((s) => s.id === scenId);
-      if (scen) {
-        setMode("DEMO");
-        setTargetCoords(scen.target_center);
-        setScenarioElapsedSec(0);
-        setIsScenarioPlaying(true);
-        setScenarioNarration(scen.steps[0]?.narration || null);
-        if (scen.steps[0]?.active_fires) {
-          setFires(scen.steps[0].active_fires as Fire[]);
-        }
-      }
+      setMode("DEMO");
+      setIsScenarioPlaying(false);
+      setScenarioOverlay(null);
     },
     [handleSelectMode]
   );
@@ -288,45 +282,6 @@ export default function DashboardPage() {
     if (selectedScenarioId === "live") return;
     setIsScenarioPlaying((prev) => !prev);
   }, [selectedScenarioId]);
-
-  // Scenario 30-Second Animated Timeline Engine
-  useEffect(() => {
-    if (!isScenarioPlaying || selectedScenarioId === "live") return;
-    const scen = SIMULATION_SCENARIOS.find((s) => s.id === selectedScenarioId);
-    if (!scen) return;
-
-    const timer = setInterval(() => {
-      setScenarioElapsedSec((sec) => {
-        const nextSec = sec + 1;
-        if (nextSec > scen.total_duration_sec) {
-          setIsScenarioPlaying(false);
-          return scen.total_duration_sec;
-        }
-
-        const currentStep = scen.steps.find((st) => st.time_sec === nextSec);
-        if (currentStep) {
-          setScenarioNarration(currentStep.narration);
-          if (currentStep.active_fires && currentStep.active_fires.length > 0) {
-            setFires(currentStep.active_fires as Fire[]);
-          }
-          if (currentStep.trigger_panel && currentStep.active_fires && currentStep.active_fires.length > 0) {
-            playTacticalAlertSound();
-            setEmergencyActiveFire(currentStep.active_fires[0] as Fire);
-            setIsEmergencyPanelOpen(true);
-          } else if (currentStep.trigger_siren) {
-            playTacticalAlertSound();
-          }
-          if (currentStep.dispatch_complete) {
-            setNotification("[SCENARIO COMPLETE] DISPATCH WORKFLOW LOGGED");
-            setTimeout(() => setNotification(null), 4000);
-          }
-        }
-        return nextSec;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isScenarioPlaying, selectedScenarioId]);
 
   // Dispatch Trigger Helper
   const handleOpenDispatchModal = useCallback((fire: Fire) => {
@@ -571,22 +526,6 @@ export default function DashboardPage() {
       {/* 5) MAIN OPS GRID (3-COLUMN: 22% REGISTRY | 52% MAP | 26% TELEMETRY)        */}
       {/* ========================================================================= */}
       <main className="max-w-[1800px] w-full mx-auto p-3 flex-1 flex flex-col">
-        {/* Scenario Animated Narration Ticker Overlay */}
-        {scenarioNarration && (
-          <div className="mb-2 p-2.5 border border-[#00d4ff] bg-[#00d4ff]/10 text-[#00d4ff] text-xs flex items-center justify-between font-mono animate-pulse shadow-[0_0_15px_rgba(0,212,255,0.2)]">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00d4ff] animate-ping shrink-0" />
-              <span className="text-[#00ff9c] font-bold tracking-wider">
-                :: SCENARIO TELEMETRY NARRATION ::
-              </span>
-              <span className="text-white font-medium">{scenarioNarration}</span>
-            </div>
-            <div className="text-[10px] text-[#ffb800] font-bold shrink-0 ml-4 border border-[#ffb800]/40 px-2 py-0.5 bg-[#0a0e14]">
-              T+{scenarioElapsedSec}s / 30s
-            </div>
-          </div>
-        )}
-
         {/* Error Alert Strip if Node Unreachable */}
         {error && (
           <div className="mb-2 p-2 border border-[#ff3b3b] bg-[#ff3b3b]/10 text-[#ff3b3b] text-xs flex justify-between items-center font-mono">
@@ -619,11 +558,13 @@ export default function DashboardPage() {
             <FireMap
               fires={filteredFires}
               targetCoords={targetCoords}
+              targetZoom={targetZoom}
               facilities={[]}
               onOpenVerify={(fire) => setVerifyFire(fire)}
               onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
               activeLayer={activeBasemap}
               onLayerChange={setActiveBasemap}
+              scenarioOverlay={scenarioOverlay}
             />
           </section>
 
@@ -702,6 +643,38 @@ export default function DashboardPage() {
         onDispatchComplete={(rec) => {
           setNotification(`[DISPATCH RECORDED] REF #${rec.dispatch_id}`);
           setTimeout(() => setNotification(null), 4000);
+        }}
+      />
+
+      {/* Feature 6: Simulation Scenario Playback Controller & Narration Overlay */}
+      <ScenarioPlayer
+        selectedScenarioId={selectedScenarioId}
+        isPlaying={isScenarioPlaying}
+        onPlayStateChange={setIsScenarioPlaying}
+        onScenarioSelect={handleSelectScenario}
+        onUpdateFires={(scenarioFires) => setFires(scenarioFires)}
+        onUpdateStats={(scenarioStats) => setStats(scenarioStats)}
+        onUpdateTargetCoords={(coords, zoom) => {
+          setTargetCoords(coords);
+          if (zoom) setTargetZoom(zoom);
+        }}
+        onTriggerEmergencyPanel={(fire) => {
+          setEmergencyActiveFire(fire);
+          setIsEmergencyPanelOpen(true);
+        }}
+        onTriggerDispatch={(fire, station) => {
+          setDispatchTargetFire(fire);
+          if (station) setDispatchTargetStation(station);
+          setIsDispatchModalOpen(true);
+        }}
+        onUpdateOverlay={(overlay) => setScenarioOverlay(overlay)}
+        onCompleteReturnToLive={() => {
+          setSelectedScenarioId("live");
+          setIsScenarioPlaying(false);
+          setScenarioOverlay(null);
+          setTargetCoords([22.5432, 78.9012]);
+          setTargetZoom(5);
+          handleSelectMode("LIVE");
         }}
       />
 

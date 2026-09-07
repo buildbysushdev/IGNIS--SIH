@@ -1,0 +1,78 @@
+{
+  "id": "punjab_stubble",
+  "name": "Punjab Stubble Burning Peak",
+  "duration_seconds": 60,
+  "description": "October-November agricultural burning demonstration",
+  "location": {
+    "lat": 30.5,
+    "lon": 75.5,
+    "zoom": 7
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "Baseline: Normal operations."
+    },
+    {
+      "time": 5,
+      "action": "TIME_ADVANCE",
+      "date": "2025-10-15",
+      "narration": "Advancing to peak burning season..."
+    },
+    {
+      "time": 10,
+      "action": "BATCH_ADD_FIRES",
+      "count": 50,
+      "region": "punjab_haryana",
+      "bounds": [29.5, 74.5, 31.5, 76.5],
+      "category": "AGRICULTURAL_BURNING",
+      "narration": "Wave 1: 50 agricultural fires detected across Punjab-Haryana border."
+    },
+    {
+      "time": 15,
+      "action": "BATCH_ADD_FIRES",
+      "count": 100,
+      "region": "punjab_haryana",
+      "bounds": [29.0, 74.0, 32.0, 77.0],
+      "category": "AGRICULTURAL_BURNING",
+      "narration": "Wave 2: 150 total fires. System filtering false alarms."
+    },
+    {
+      "time": 20,
+      "action": "CLASSIFY_ALL",
+      "category": "AGRICULTURAL_BURNING",
+      "accuracy": 0.95,
+      "narration": "IGNIS correctly classifying 95% as AGRICULTURAL_BURNING, not EMERGENCY."
+    },
+    {
+      "time": 25,
+      "action": "SHOW_STATS",
+      "stats": {
+        "total": 342,
+        "agricultural": 320,
+        "false_alarms_prevented": 320
+      },
+      "narration": "342 detections. Without IGNIS, 320 false emergency alerts. With IGNIS: 0 false dispatches."
+    },
+    {
+      "time": 30,
+      "action": "SHOW_AQI_IMPACT",
+      "delhi_aqi": 380,
+      "plume_vector": "SE",
+      "narration": "Predicted air quality impact: Delhi AQI will spike to 380 in 48 hours."
+    },
+    {
+      "time": 40,
+      "action": "SHOW_ADVISORY",
+      "target": "Delhi/NCR Authorities & CPCB",
+      "level": "SEVERE",
+      "narration": "Automated advisory sent to Delhi/NCR authorities for public health preparedness."
+    },
+    {
+      "time": 50,
+      "action": "COMPLETE",
+      "narration": "IGNIS transforms noise into intelligence. 342 fires → 1 actionable advisory."
+    }
+  ]
+}
