@@ -5,7 +5,16 @@ import axios from "axios";
 // Single Source of Truth for backend communication, timeouts, and health checks
 // ==============================================================================
 
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
+function cleanApiUrl(url?: string): string {
+  if (!url) return "";
+  let clean = url.trim().replace(/^["']|["']$/g, "").replace(/\/$/, "");
+  if (clean && !clean.startsWith("http://") && !clean.startsWith("https://") && !clean.startsWith("/")) {
+    clean = `https://${clean}`;
+  }
+  return clean;
+}
+
+export const API_URL = cleanApiUrl(process.env.NEXT_PUBLIC_API_URL);
 export const isApiConfigured = Boolean(API_URL);
 
 // Log useful debug once on startup
