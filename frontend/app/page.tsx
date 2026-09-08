@@ -21,6 +21,7 @@ import Header from "@/components/Header";
 import ScenarioPlayer from "@/components/ScenarioPlayer";
 import HistoricalAnalysis from "@/components/HistoricalAnalysis";
 import AgniChatbot from "@/components/AgniChatbot";
+import SpreadPrediction, { SpreadPredictionData } from "@/components/SpreadPrediction";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
   ssr: false,
@@ -101,6 +102,41 @@ export default function DashboardPage() {
   const [isHistoricalOpen, setIsHistoricalOpen] = useState<boolean>(false);
   const [historicalTargetFire, setHistoricalTargetFire] = useState<Fire | null>(null);
   const [showHistoricalHeatmap, setShowHistoricalHeatmap] = useState<boolean>(false);
+
+  // Fire Spread Prediction Engine State (Rothermel Model)
+  const [isSpreadDrawerOpen, setIsSpreadDrawerOpen] = useState<boolean>(false);
+  const [spreadPredictionFire, setSpreadPredictionFire] = useState<Fire | null>(null);
+  const [spreadPredictionData, setSpreadPredictionData] = useState<SpreadPredictionData | null>(null);
+  const [spreadPredictionLoading, setSpreadPredictionLoading] = useState<boolean>(false);
+  const [selectedSpreadHour, setSelectedSpreadHour] = useState<1 | 3 | 6>(6);
+
+  const handleOpenSpreadPrediction = async (fire: Fire) => {
+    setSpreadPredictionFire(fire);
+    setIsSpreadDrawerOpen(true);
+    setSpreadPredictionLoading(true);
+    setTargetCoords([fire.latitude, fire.longitude]);
+    setTargetZoom(11);
+
+    try {
+      const res = await axios.get("/api/predict-spread", {
+        params: {
+          lat: fire.latitude,
+          lon: fire.longitude,
+          frp: fire.frp || 65.0,
+          category: fire.category || "EMERGENCY_INDUSTRIAL",
+          hours: 6,
+        },
+        timeout: 8000,
+      });
+      if (res.data) {
+        setSpreadPredictionData(res.data);
+      }
+    } catch (err) {
+      console.error("[IGNIS] Spread prediction error:", err);
+    } finally {
+      setSpreadPredictionLoading(false);
+    }
+  };
 
   // Live ticking UTC Clock in ISO format: 2025-01-20T14:32:15Z
   useEffect(() => {
@@ -597,6 +633,9 @@ export default function DashboardPage() {
               activeLayer={activeBasemap}
               onLayerChange={setActiveBasemap}
               scenarioOverlay={scenarioOverlay}
+              onOpenSpreadPrediction={handleOpenSpreadPrediction}
+              spreadPredictionData={spreadPredictionData}
+              selectedSpreadHour={selectedSpreadHour}
             />
           </section>
 
@@ -749,6 +788,21 @@ export default function DashboardPage() {
         }}
         onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
       />
+
+      {/* Feature 9: Fire Spread Prediction Engine Drawer (Rothermel Model) */}
+      {isSpreadDrawerOpen && (
+        <SpreadPrediction
+          fire={spreadPredictionFire}
+          prediction={spreadPredictionData}
+          loading={spreadPredictionLoading}
+          activeHour={selectedSpreadHour}
+          onSelectHour={(h) => setSelectedSpreadHour(h)}
+          onClose={() => {
+            setIsSpreadDrawerOpen(false);
+            setSpreadPredictionData(null);
+          }}
+        />
+      )}
 
       {/* Demo Mode Watermark */}
       {mode === "DEMO" && (

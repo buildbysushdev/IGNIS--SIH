@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, Circle, Polygon, useMapEvents } from "react-leaflet";
 import ResponseProtocol from "./ResponseProtocol";
 import ProtocolModal from "./ProtocolModal";
+import WeatherWidget from "./WeatherWidget";
+import type { SpreadPredictionData } from "./SpreadPrediction";
 import { FIRE_STATIONS } from "@/data/fireStations";
 
 export interface Fire {
@@ -134,6 +136,9 @@ interface FireMapProps {
   onOpenVerify?: (fire: Fire) => void;
   onOpenDispatch?: (fire: Fire) => void;
   onOpenHistory?: (fire: Fire) => void;
+  onOpenSpreadPrediction?: (fire: Fire) => void;
+  spreadPredictionData?: SpreadPredictionData | null;
+  selectedSpreadHour?: 1 | 3 | 6;
   showHistoricalHeatmap?: boolean;
   onToggleHistoricalHeatmap?: () => void;
   activeLayer?: keyof typeof TILE_PRESETS;
@@ -149,6 +154,9 @@ export default function FireMap({
   onOpenVerify,
   onOpenDispatch,
   onOpenHistory,
+  onOpenSpreadPrediction,
+  spreadPredictionData,
+  selectedSpreadHour = 6,
   showHistoricalHeatmap: externalShowHeatmap,
   onToggleHistoricalHeatmap,
   activeLayer: externalActiveLayer,
@@ -596,6 +604,18 @@ export default function FireMap({
                         <span>📊 VIEW HISTORY</span>
                       </button>
 
+                      {/* Prominent Fire Spread Prediction Trigger Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (onOpenSpreadPrediction) onOpenSpreadPrediction(fire);
+                        }}
+                        className="w-full text-[10px] border border-[#ff9500] bg-[#ff9500]/15 hover:bg-[#ff9500]/30 text-[#ff9500] hover:text-white py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5 shadow-[0_0_8px_rgba(255,149,0,0.2)]"
+                      >
+                        <span>💨 PREDICT SPREAD</span>
+                      </button>
+
+
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] text-[#6b7785] uppercase truncate max-w-[140px]">
                           ACT: {cleanAction.slice(0, 18)}
@@ -703,7 +723,123 @@ export default function FireMap({
               className="status-dot-red animate-ping"
             />
           )}
+
+          {/* Dynamic Rothermel Fire Spread Prediction Cone & At-Risk Overlay */}
+          {spreadPredictionData && spreadPredictionData.cones_by_hour && (
+            (() => {
+              const hourKey = String(selectedSpreadHour || 6);
+              const positions =
+                spreadPredictionData.cones_by_hour[hourKey] ||
+                spreadPredictionData.spread_cone_coordinates;
+              const stepInfo = spreadPredictionData.predictions?.find(
+                (p) => p.hour === (selectedSpreadHour || 6)
+              );
+              const coneColor =
+                getMarkerColor(spreadPredictionData.category) || "#ff9500";
+
+              return (
+                <>
+                  {positions && positions.length > 0 && (
+                    <Polygon
+                      positions={positions}
+                      pathOptions={{
+                        color: coneColor,
+                        fillColor: coneColor,
+                        fillOpacity: 0.28,
+                        dashArray: "6 4",
+                        weight: 2,
+                      }}
+                    >
+                      <Popup>
+                        <div className="font-mono text-xs text-[#d0d8e0] p-1 space-y-1">
+                          <div className="text-[#ff9500] font-bold">
+                            // {selectedSpreadHour || 6}-HOUR SPREAD PROJECTION CONE
+                          </div>
+                          <div className="text-[10px] text-[#00d4ff]">
+                            PROPAGATION: {spreadPredictionData.spread_direction} ({spreadPredictionData.spread_azimuth_deg}°)
+                          </div>
+                          <div className="text-[10px] text-[#d0d8e0]">
+                            FORWARD DISTANCE: <span className="text-[#ff3b3b] font-bold">{stepInfo?.spread_distance_km || 0} KM</span>
+                          </div>
+                          <div className="text-[10px] text-[#d0d8e0]">
+                            PROJECTED AREA: <span className="text-[#ffb800] font-bold">{stepInfo?.affected_area_km2 || 0} KM²</span>
+                          </div>
+                          <div className="text-[9px] text-[#6b7785]">
+                            MODEL: Rothermel-v2 | Rate: {spreadPredictionData.rate_of_spread_kmh} km/h
+                          </div>
+                        </div>
+                      </Popup>
+                    </Polygon>
+                  )}
+
+                  {/* Render At-Risk Infrastructure & Settlement Waypoint Pins */}
+                  {spreadPredictionData.at_risk_locations?.map((loc, idx) => {
+                    if (!loc.coordinates) return null;
+                    const isCrit = loc.risk_severity === "CRITICAL";
+                    return (
+                      <CircleMarker
+                        key={`spread-at-risk-${idx}`}
+                        center={loc.coordinates}
+                        radius={6}
+                        pathOptions={{
+                          color: isCrit ? "#ff3b3b" : "#ffb800",
+                          fillColor: isCrit ? "#ff3b3b" : "#15202c",
+                          fillOpacity: 0.9,
+                          weight: 1.5,
+                        }}
+                      >
+                        <Popup>
+                          <div className="font-mono text-xs text-[#d0d8e0] p-1 space-y-0.5">
+                            <div className="font-bold text-[#ff3b3b] flex items-center gap-1">
+                              <span>⚠️ AT-RISK ASSET:</span>
+                              <span>{loc.name}</span>
+                            </div>
+                            <div className="text-[10px] text-[#00d4ff]">
+                              ARRIVAL ETA: <span className="font-bold text-white">{loc.eta_hours} HOURS</span>
+                            </div>
+                            <div className="text-[9px] text-[#6b7785]">
+                              DIST FROM GROUND ZERO: {loc.distance_km} KM
+                            </div>
+                          </div>
+                        </Popup>
+                      </CircleMarker>
+                    );
+                  })}
+
+                  {/* Tactical Fire Break Recommended Cut Line Marker */}
+                  {spreadPredictionData.fire_break && (
+                    <CircleMarker
+                      center={[
+                        spreadPredictionData.fire_break.latitude,
+                        spreadPredictionData.fire_break.longitude,
+                      ]}
+                      radius={7}
+                      pathOptions={{
+                        color: "#00ff9c",
+                        fillColor: "#0a0e14",
+                        fillOpacity: 0.95,
+                        weight: 2,
+                        dashArray: "2 2",
+                      }}
+                    >
+                      <Popup>
+                        <div className="font-mono text-xs text-[#d0d8e0] p-1">
+                          <div className="text-[#00ff9c] font-bold">[ ⛏️ TACTICAL FIRE BREAK ]</div>
+                          <div className="text-[10px] text-[#d0d8e0]">
+                            Recommended cut line barrier @ {spreadPredictionData.fire_break.distance_km} km advance
+                          </div>
+                        </div>
+                      </Popup>
+                    </CircleMarker>
+                  )}
+                </>
+              );
+            })()
+          )}
         </MapContainer>
+
+        {/* Live Weather & Atmospheric Telemetry Widget */}
+        <WeatherWidget lat={currentCenter.lat} lon={currentCenter.lon} />
 
         {/* Bottom-Left Live Telemetry Overlay */}
         <div className="absolute bottom-2 left-2 z-[1000] pointer-events-none">

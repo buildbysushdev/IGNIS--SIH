@@ -1045,8 +1045,44 @@ def get_district_report_endpoint(
     return generate_district_report(district=district)
 
 
+@app.get("/api/weather")
+@limiter.limit("60/minute")
+def get_weather_endpoint(
+    request: Request,
+    lat: float = Query(default=21.1702, ge=-90.0, le=90.0),
+    lon: float = Query(default=72.8311, ge=-180.0, le=180.0),
+) -> dict[str, Any]:
+    """Return real-time atmospheric telemetry from Open-Meteo for coordinates."""
+    from spread_prediction import get_weather_data
+
+    return get_weather_data(lat=lat, lon=lon)
+
+
+@app.get("/api/predict-spread")
+@limiter.limit("60/minute")
+def get_predict_spread_endpoint(
+    request: Request,
+    lat: float = Query(default=21.1702, ge=-90.0, le=90.0),
+    lon: float = Query(default=72.8311, ge=-180.0, le=180.0),
+    frp: float = Query(default=65.0, ge=0.0, le=5000.0),
+    category: str = Query(default="EMERGENCY_INDUSTRIAL"),
+    hours: int = Query(default=6, ge=1, le=24),
+) -> dict[str, Any]:
+    """Return Rothermel-inspired fire spread prediction, multi-hour cones, at-risk assets, and recommendations."""
+    from spread_prediction import predict_spread
+
+    fire_payload = {
+        "latitude": lat,
+        "longitude": lon,
+        "frp": frp,
+        "category": category,
+    }
+    return predict_spread(fire=fire_payload, hours=hours)
+
+
 if __name__ == "__main__":
     import uvicorn
 
     run_port = int(os.environ.get("PORT", "8080"))
     uvicorn.run("main:app", host="0.0.0.0", port=run_port)
+
