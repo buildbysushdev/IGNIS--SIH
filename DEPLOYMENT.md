@@ -68,7 +68,7 @@ Configure these in the **Vercel Project Settings > Environment Variables**:
 4. Railway will automatically build using Python 3.11/3.12 and start the service with `uvicorn main:app --host 0.0.0.0 --port $PORT`.
 5. Verify deployment:
    ```bash
-   curl -I https://web-production-b1e6a.up.railway.app/api/health
+   curl -I https://your-backend-domain.up.railway.app/api/health
    ```
    Should return `HTTP/2 200` with `status: "healthy"` or `status: "degraded"` (if cached).
 
@@ -77,7 +77,7 @@ Configure these in the **Vercel Project Settings > Environment Variables**:
 2. Set Root Directory to `frontend`.
 3. Set Framework Preset to **Next.js**.
 4. Add environment variable:
-   `NEXT_PUBLIC_API_URL` = `https://web-production-b1e6a.up.railway.app`
+   `NEXT_PUBLIC_API_URL` = `https://your-backend-domain.up.railway.app`
 5. Click **Deploy**.
 
 ---
@@ -85,9 +85,9 @@ Configure these in the **Vercel Project Settings > Environment Variables**:
 ## 4. Post-Deployment Verification Checklist
 
 1. **Health Check**:
-   Navigate to `https://web-production-b1e6a.up.railway.app/api/health` -> verify JSON status.
+   Navigate to `https://your-backend-domain.up.railway.app/api/health` -> verify JSON status.
 2. **Security Headers Verification**:
-   Inspect response headers on `https://frontend-nine-lime-27.vercel.app`:
+   Inspect response headers on `https://your-frontend-domain.vercel.app`:
    - `x-frame-options: DENY`
    - `x-content-type-options: nosniff`
    - `referrer-policy: strict-origin-when-cross-origin`

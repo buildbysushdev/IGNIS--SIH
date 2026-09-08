@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 const BACKEND_URL =
   process.env.BACKEND_INTERNAL_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://web-production-b1e6a.up.railway.app";
+  "http://127.0.0.1:8000";
 
 const FALLBACK_LOCATION_HISTORY = {
   location: { lat: 21.1702, lon: 72.8311 },

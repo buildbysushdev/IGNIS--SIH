@@ -148,6 +148,7 @@ interface FireMapProps {
   onLayerChange?: (layer: keyof typeof TILE_PRESETS) => void;
   scenarioOverlay?: ScenarioOverlayState | null;
   onTryLast3Days?: () => void;
+  onRetryLive?: () => void;
   onSwitchToDemo?: () => void;
 }
 
@@ -169,6 +170,7 @@ export default function FireMap({
   onLayerChange,
   scenarioOverlay,
   onTryLast3Days,
+  onRetryLive,
   onSwitchToDemo,
 }: FireMapProps) {
   const { t } = useI18n();
@@ -903,20 +905,31 @@ export default function FireMap({
                   Satellite orbit telemetry returned 0 thermal detections for the selected filter criteria.
                 </p>
               </div>
-              <div className="flex items-center justify-center gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={onTryLast3Days}
-                  className="px-3.5 py-1.5 bg-[#22D3EE]/20 hover:bg-[#22D3EE]/30 border border-[#22D3EE] text-[#22D3EE] text-xs font-semibold rounded-lg transition cursor-pointer"
-                >
-                  Try Last 3 Days
-                </button>
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                {onRetryLive && (
+                  <button
+                    type="button"
+                    onClick={onRetryLive}
+                    className="px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500 text-emerald-400 text-xs font-semibold rounded-lg transition cursor-pointer"
+                  >
+                    Retry Live
+                  </button>
+                )}
+                {onTryLast3Days && (
+                  <button
+                    type="button"
+                    onClick={onTryLast3Days}
+                    className="px-3.5 py-1.5 bg-[#22D3EE]/20 hover:bg-[#22D3EE]/30 border border-[#22D3EE] text-[#22D3EE] text-xs font-semibold rounded-lg transition cursor-pointer"
+                  >
+                    Try Last 3 Days
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={onSwitchToDemo}
                   className="px-3.5 py-1.5 bg-[#EF4444]/20 hover:bg-[#EF4444]/30 border border-[#EF4444] text-[#EF4444] text-xs font-semibold rounded-lg transition cursor-pointer"
                 >
-                  Switch to Demo
+                  Use Demo Mode
                 </button>
               </div>
             </div>

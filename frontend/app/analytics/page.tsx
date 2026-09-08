@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import axios from "axios";
+import { apiClient } from "@/lib/api";
 import ExecutiveSummary from "@/components/analytics/ExecutiveSummary";
 import InsightsPanel from "@/components/analytics/InsightsPanel";
 import ChartGrid from "@/components/analytics/ChartGrid";
@@ -19,7 +19,7 @@ export default function AnalyticsPage() {
   const fetchAnalytics = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/analytics/regional?region=${encodeURIComponent(region)}&days=${days}`);
+      const res = await apiClient.get(`/api/analytics/regional?region=${encodeURIComponent(region)}&days=${days}`);
       setAnalyticsData(res.data);
       setLastRefreshed(new Date().toLocaleTimeString());
     } catch (err) {

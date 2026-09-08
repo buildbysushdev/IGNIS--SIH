@@ -6,13 +6,13 @@ const CANDIDATE_URLS = [
   process.env.BACKEND_INTERNAL_URL,
   process.env.NEXT_PUBLIC_API_URL,
   "http://127.0.0.1:8000",
-  "http://127.0.0.1:8000",
+  "http://localhost:8000",
 ].filter(Boolean) as string[];
 
 export async function GET() {
   for (const baseUrl of CANDIDATE_URLS) {
     try {
-      const url = `${baseUrl.replace(/\/$/, "")}/api/debug/firms`;
+      const url = `${baseUrl.replace(/\/$/, "")}/api/health`;
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 4000);
       const res = await fetch(url, { signal: controller.signal });
@@ -26,12 +26,14 @@ export async function GET() {
     }
   }
 
-  return NextResponse.json({
-    key_present: false,
-    live_count: 0,
-    cache_count: 0,
-    mode: "offline",
-    sample: [],
-    last_error: "Could not connect to backend diagnostics service",
-  });
+  return NextResponse.json(
+    {
+      status: "degraded",
+      nasa_firms: "disconnected",
+      error: "Backend service unreachable on local or configured host",
+      active_fires_24h: 0,
+      timestamp: new Date().toISOString(),
+    },
+    { status: 503 }
+  );
 }

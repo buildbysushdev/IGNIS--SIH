@@ -9,7 +9,7 @@ import uttarakhandScen from "@/data/scenarios/uttarakhand_forest.json";
 export const dynamic = "force-dynamic";
 
 const BACKEND_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 const BUNDLED_SCENARIOS: Record<string, any> = {
   surat_emergency: suratScen,

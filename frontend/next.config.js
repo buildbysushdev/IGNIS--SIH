@@ -3,10 +3,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   async rewrites() {
+    const backendHost = (
+      process.env.BACKEND_INTERNAL_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      'http://127.0.0.1:8000'
+    ).replace(/\/$/, '');
     return [
       {
         source: '/api/backend/:path*',
-        destination: 'https://web-production-b1e6a.up.railway.app/api/:path*',
+        destination: `${backendHost}/api/:path*`,
       },
     ];
   },

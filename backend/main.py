@@ -744,6 +744,7 @@ def health(request: Request) -> dict[str, Any]:
             "active_fires_24h": len(fires),
             "mode": status_info.get("mode", "live"),
             "message": status_info.get("message", "Operational"),
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         return {
@@ -751,6 +752,7 @@ def health(request: Request) -> dict[str, Any]:
             "nasa_firms": "disconnected",
             "error": str(e),
             "active_fires_24h": 0,
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
 
 

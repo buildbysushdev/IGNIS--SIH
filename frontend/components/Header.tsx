@@ -9,6 +9,8 @@ import { useI18n } from "@/context/I18nContext";
 interface HeaderProps {
   onSelectMode: (mode: "LIVE" | "CACHED" | "DEMO" | "AUTO") => void;
   currentMode: "LIVE" | "CACHED" | "DEMO";
+  ignisStatus?: "live" | "cached" | "offline" | "demo";
+  activeHotspotsCount?: number;
   modeInfo?: {
     mode?: string;
     since?: string;
@@ -22,6 +24,8 @@ interface HeaderProps {
 export default function Header({
   onSelectMode,
   currentMode = "LIVE",
+  ignisStatus = "live",
+  activeHotspotsCount,
   modeInfo,
   onOpenHelp,
 }: HeaderProps) {
@@ -68,6 +72,12 @@ export default function Header({
               <span className="text-[10px] font-semibold bg-[#111827] text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full tracking-normal">
                 NTRO SIH26162
               </span>
+              {typeof activeHotspotsCount === "number" && (
+                <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono font-bold bg-[#082032] text-[#22D3EE] border border-[#0284C7]/50 px-2 py-0.5 rounded-full shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] animate-pulse" />
+                  {activeHotspotsCount} Active Hotspots
+                </span>
+              )}
             </div>
             <p className="text-[11px] text-[#9CA3AF] -mt-0.5 hidden sm:block">
               {t("header.subtitle", "Fire Intelligence Platform")}
@@ -120,23 +130,35 @@ export default function Header({
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
-              currentMode === "LIVE"
-                ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-400 hover:bg-emerald-950/60"
-                : currentMode === "DEMO"
+              currentMode === "DEMO" || ignisStatus === "demo"
                 ? "bg-purple-950/40 border-purple-500/50 text-purple-300 hover:bg-purple-950/60"
+                : ignisStatus === "offline"
+                ? "bg-red-950/50 border-red-500/60 text-red-400 hover:bg-red-950/70"
+                : ignisStatus === "live"
+                ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-400 hover:bg-emerald-950/60"
                 : "bg-amber-950/40 border-amber-500/50 text-amber-400 hover:bg-amber-950/60"
             }`}
           >
             <span
               className={`w-2 h-2 rounded-full ${
-                currentMode === "LIVE"
-                  ? "bg-emerald-400 animate-pulse"
-                  : currentMode === "DEMO"
+                currentMode === "DEMO" || ignisStatus === "demo"
                   ? "bg-purple-400"
+                  : ignisStatus === "offline"
+                  ? "bg-red-500 animate-ping"
+                  : ignisStatus === "live"
+                  ? "bg-emerald-400 animate-pulse"
                   : "bg-amber-400"
               }`}
             />
-            <span>{currentMode === "LIVE" ? "LIVE" : currentMode === "DEMO" ? "DEMO" : "CACHED"}</span>
+            <span>
+              {currentMode === "DEMO" || ignisStatus === "demo"
+                ? "DEMO"
+                : ignisStatus === "offline"
+                ? "OFFLINE"
+                : ignisStatus === "live"
+                ? "LIVE"
+                : "CACHED"}
+            </span>
             <span className="text-[10px] text-[#9CA3AF]">▼</span>
           </button>
 

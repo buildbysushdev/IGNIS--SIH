@@ -2,7 +2,14 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
-import axios from "axios";
+import {
+  apiClient,
+  checkBackendHealth,
+  fetchFiresTelemetry,
+  fetchAlertsTelemetry,
+  API_URL,
+  isApiConfigured,
+} from "@/lib/api";
 import type { Fire, ScenarioOverlayState } from "@/components/FireMap";
 import { TILE_PRESETS } from "@/components/FireMap";
 import StatsPanel, { FireStats } from "@/components/StatsPanel";
@@ -36,18 +43,7 @@ const FireMap = dynamic(() => import("@/components/FireMap"), {
   ),
 });
 
-// Resilient API base URL resolution:
-// In browser environment, use relative same-origin path to route through Next.js proxy,
-// preventing ISP DNS blocks on Railway and avoiding CORS preflight failures.
-const getApiBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    if (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL.includes("localhost")) {
-      return process.env.NEXT_PUBLIC_API_URL;
-    }
-    return "";
-  }
-  return process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
-};
+// All backend communication is routed via unified apiClient from @/lib/api
 
 // Compute category summary dynamically from fire detection list
 const computeSummary = (fireList: Fire[]): FireStats => {
@@ -90,7 +86,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [ignisStatus, setIgnisStatus] = useState<"live" | "cached_fallback">("live");
+  const [backendHealthError, setBackendHealthError] = useState<string | null>(null);
+  const [ignisStatus, setIgnisStatus] = useState<"live" | "cached" | "offline" | "demo">("live");
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [lastRefreshedUtc, setLastRefreshedUtc] = useState<string>("");
   const [utcClock, setUtcClock] = useState<string>("");
@@ -167,7 +164,7 @@ export default function DashboardPage() {
     setTargetZoom(11);
 
     try {
-      const res = await axios.get("/api/predict-spread", {
+      const res = await apiClient.get("/api/predict-spread", {
         params: {
           lat: fire.latitude,
           lon: fire.longitude,
@@ -200,9 +197,8 @@ export default function DashboardPage() {
 
   // Fetch initial mode state on mount
   useEffect(() => {
-    const baseUrl = getApiBaseUrl();
-    axios
-      .get(`${baseUrl}/api/mode`)
+    apiClient
+      .get("/api/mode")
       .then((res) => {
         if (res.data?.mode) {
           const m = res.data.mode.toUpperCase() as "LIVE" | "CACHED" | "DEMO";
@@ -237,7 +233,8 @@ export default function DashboardPage() {
           const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
           setFires(demoFires);
           setStats(DEMO_TELEMETRY_DATA.summary);
-          setIgnisStatus("live");
+          setIgnisStatus("demo");
+          setMode("DEMO");
           setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
           setLastRefreshedUtc(getUtcTimestamp());
           setLoading(false);
@@ -245,45 +242,35 @@ export default function DashboardPage() {
           return;
         }
 
-        const baseUrl = getApiBaseUrl();
-        const firesUrl = `${baseUrl}/api/fires?days=${days}&source=${source}&mode=${activeQueryMode}${
-          forceRefresh ? "&force=true" : ""
-        }`;
-        const alertsUrl = `${baseUrl}/api/alerts?hours=24`;
-
-        let firesData: any = null;
-        let alertsData: any = null;
-
-        try {
-          // Tier 1: Fetch via Next.js proxy route (bypasses ISP DNS and CORS)
-          const [firesRes, alertsRes] = await Promise.all([
-            axios.get(firesUrl, { timeout: 10000 }),
-            axios.get(alertsUrl, { timeout: 8000 }).catch(() => ({ data: { alerts: [] } })),
-          ]);
-          firesData = firesRes.data;
-          alertsData = alertsRes.data;
-        } catch (proxyErr) {
-          console.warn("[IGNIS] Primary proxy link unavailable, attempting direct node call...", proxyErr);
-          // Tier 2: Direct Railway call fallback
-          try {
-            const directFiresUrl = `https://web-production-b1e6a.up.railway.app/api/fires?days=${days}&source=${source}&mode=${activeQueryMode}${
-              forceRefresh ? "&force=true" : ""
-            }`;
-            const [directRes, directAlerts] = await Promise.all([
-              axios.get(directFiresUrl, { timeout: 8000 }),
-              axios.get("https://web-production-b1e6a.up.railway.app/api/alerts?hours=24", { timeout: 6000 }).catch(() => ({ data: { alerts: [] } })),
-            ]);
-            firesData = directRes.data;
-            alertsData = directAlerts.data;
-          } catch (directErr) {
-            console.warn("[IGNIS] Direct node also unreachable. Engaging verified satellite telemetry cache:", directErr);
-            // Tier 3: Immediate fallback to verified satellite cache
-            firesData = FALLBACK_TELEMETRY_DATA;
-            alertsData = FALLBACK_ALERTS_DATA;
-            setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
-          }
+        // 1) Health-First Check: verify backend is reachable before loading fires
+        const healthRes = await checkBackendHealth();
+        if (!healthRes.ok) {
+          const warn = healthRes.error || "Backend unreachable: check NEXT_PUBLIC_API_URL";
+          console.warn("[IGNIS] Health check failed:", warn);
+          setBackendHealthError("Backend unreachable: check NEXT_PUBLIC_API_URL");
+          setIgnisStatus("offline");
+        } else {
+          setBackendHealthError(null);
         }
 
+        // 2) Fetch Fires Telemetry and Alerts via unified helper
+        const [firesRes, alertsRes] = await Promise.all([
+          fetchFiresTelemetry(days, source, activeQueryMode, forceRefresh),
+          fetchAlertsTelemetry(24),
+        ]);
+
+        let firesData: any = firesRes.ok ? firesRes.data : null;
+        let alertsData: any = alertsRes.ok ? alertsRes.data : { alerts: [] };
+
+        if (!firesRes.ok) {
+          console.warn("[IGNIS] Fires telemetry fetch failed:", firesRes.error);
+          setIgnisStatus("offline");
+          setError(firesRes.error || "Backend unreachable: check NEXT_PUBLIC_API_URL");
+          firesData = FALLBACK_TELEMETRY_DATA;
+          alertsData = FALLBACK_ALERTS_DATA;
+        }
+
+        // 3) Parse response safely
         let fetchedFires: Fire[] = Array.isArray(firesData?.fires)
           ? firesData.fires
           : Array.isArray(firesData?.data)
@@ -291,17 +278,12 @@ export default function DashboardPage() {
           : [];
 
         // If returned 0 fires in live mode, auto-call fallback with days=3
-        if (fetchedFires.length === 0 && days === 1) {
+        if (fetchedFires.length === 0 && days === 1 && firesRes.ok) {
           console.warn("[IGNIS] 0 hotspots returned for 24h. Trying 3-day window fallback...");
-          try {
-            const fallback3dUrl = `${baseUrl}/api/fires?days=3&source=${source}&mode=${activeQueryMode}`;
-            const res3d = await axios.get(fallback3dUrl, { timeout: 8000 });
-            if (Array.isArray(res3d.data?.fires) && res3d.data.fires.length > 0) {
-              firesData = res3d.data;
-              fetchedFires = res3d.data.fires;
-            }
-          } catch (err3) {
-            console.warn("[IGNIS] 3-day query failed:", err3);
+          const res3d = await fetchFiresTelemetry(3, source, activeQueryMode);
+          if (res3d.ok && Array.isArray(res3d.data?.fires) && res3d.data.fires.length > 0) {
+            firesData = res3d.data;
+            fetchedFires = res3d.data.fires;
           }
         }
 
@@ -321,16 +303,21 @@ export default function DashboardPage() {
         }
         setStats(finalSummary);
 
-        const fetchedAlerts = Array.isArray(alertsData?.alerts)
-          ? alertsData.alerts
-          : [];
+        const fetchedAlerts = Array.isArray(alertsData?.alerts) ? alertsData.alerts : [];
         setAlerts(fetchedAlerts);
 
-        const backendStatus = firesData?.ignis_status === "live" ? "live" : "cached_fallback";
-        setIgnisStatus(backendStatus);
-        const resolvedMode = (firesData?.mode || (backendStatus === "live" ? "LIVE" : "CACHED")).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
-        setMode(resolvedMode);
-        setStatusMessage(firesData?.message || (backendStatus === "live" ? "NASA-FIRMS LINK NOMINAL" : "SERVING LOCAL CACHE REPOSITORY"));
+        if (firesRes.ok && healthRes.ok) {
+          const isServerLive = firesData?.ignis_status === "live";
+          setIgnisStatus(isServerLive ? "live" : "cached");
+          setMode(isServerLive ? "LIVE" : "CACHED");
+          setStatusMessage(firesData?.message || (isServerLive ? "NASA-FIRMS LINK NOMINAL" : "SERVING LOCAL CACHE REPOSITORY"));
+          setError(null);
+        } else {
+          setIgnisStatus("cached");
+          setMode("CACHED");
+          setStatusMessage("OFFLINE FALLBACK MODE");
+        }
+
         setLastRefreshedUtc(getUtcTimestamp());
         setSeqCounter((c) => c + 1);
 
@@ -344,7 +331,7 @@ export default function DashboardPage() {
         setFires(fallbackList);
         setStats(FALLBACK_TELEMETRY_DATA.summary || computeSummary(fallbackList));
         setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
-        setIgnisStatus("cached_fallback");
+        setIgnisStatus("offline");
         setMode("CACHED");
         setStatusMessage("OFFLINE FALLBACK MODE");
         setLastRefreshedUtc(getUtcTimestamp());
@@ -360,15 +347,14 @@ export default function DashboardPage() {
   const handleSelectMode = useCallback(
     async (targetMode: "LIVE" | "CACHED" | "DEMO" | "AUTO") => {
       try {
-        const baseUrl = getApiBaseUrl();
-        const res = await axios.post(`${baseUrl}/api/mode/set?mode=${targetMode}`, { mode: targetMode });
+        const res = await apiClient.post(`/api/mode/set?mode=${targetMode}`, { mode: targetMode });
         const newMode = (res.data?.new_mode || (targetMode === "AUTO" ? "LIVE" : targetMode)).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
         setMode(newMode);
         setNotification(`Mode switched to ${newMode}`);
         setTimeout(() => setNotification(null), 3500);
 
-        axios
-          .get(`${baseUrl}/api/mode`)
+        apiClient
+          .get("/api/mode")
           .then((r) => setModeInfo(r.data))
           .catch(() => {});
 
@@ -511,10 +497,48 @@ export default function DashboardPage() {
       {/* 1) TOP BAR (SINGLE CLEAN BAR, HEIGHT 64PX) */}
       <Header
         currentMode={mode}
+        ignisStatus={ignisStatus}
+        activeHotspotsCount={fires.length}
         modeInfo={modeInfo}
         onSelectMode={handleSelectMode}
         onOpenHelp={() => setIsAboutOpen(true)}
       />
+
+      {/* RUNTIME CONFIGURATION CHECK BANNER (when NEXT_PUBLIC_API_URL is missing) */}
+      {!isApiConfigured && (
+        <div className="bg-amber-950/90 border-b border-amber-500/60 px-4 py-1.5 text-xs text-amber-200 flex items-center justify-between z-30">
+          <div className="flex items-center gap-2">
+            <span className="text-amber-400 font-bold">⚙️ Configuration Notice:</span>
+            <span>NEXT_PUBLIC_API_URL is unset. Operating via same-origin relative API route proxy.</span>
+          </div>
+          <span className="text-amber-300/80 font-mono text-[10px]">NEXT_PUBLIC_API_URL=&quot;&quot;</span>
+        </div>
+      )}
+
+      {/* HEALTH CHECK FAILURE BANNER */}
+      {backendHealthError && (
+        <div className="bg-red-950/90 border-b border-red-500/60 px-4 py-2 text-xs text-red-200 flex items-center justify-between z-30">
+          <div className="flex items-center gap-2">
+            <span className="text-red-400 font-bold">⚠️ Connection Warning:</span>
+            <span>{backendHealthError}</span>
+            <span className="text-red-300/70 font-mono text-[10px]">({API_URL || "proxy"})</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => fetchData(true)}
+              className="px-2.5 py-1 bg-red-700 hover:bg-red-600 text-white rounded text-[11px] font-semibold transition cursor-pointer"
+            >
+              Retry Live
+            </button>
+            <button
+              onClick={() => handleSelectMode("DEMO")}
+              className="px-2.5 py-1 bg-[#1F2937] hover:bg-[#374151] text-cyan-300 rounded text-[11px] font-semibold transition cursor-pointer"
+            >
+              Use Demo Mode
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 2) SECOND BAR (COMPACT CONTROLS & ACTIONS) */}
       <FilterBar
@@ -552,16 +576,20 @@ export default function DashboardPage() {
           <div className="flex items-center gap-1.5 font-semibold tracking-wide">
             <span
               className={`w-2 h-2 rounded-full ${
-                mode === "DEMO"
+                mode === "DEMO" || ignisStatus === "demo"
                   ? "bg-cyan-400"
+                  : ignisStatus === "offline"
+                  ? "bg-red-500 animate-ping"
                   : ignisStatus === "live"
                   ? "bg-emerald-400 animate-pulse"
                   : "bg-amber-400"
               }`}
             />
             <span className="text-white uppercase text-[11px]">
-              {mode === "DEMO"
+              {mode === "DEMO" || ignisStatus === "demo"
                 ? "DEMO SIMULATION"
+                : ignisStatus === "offline"
+                ? "OFFLINE"
                 : ignisStatus === "live"
                 ? "LIVE DATA"
                 : "CACHED DATA"}
@@ -569,8 +597,10 @@ export default function DashboardPage() {
           </div>
           <span className="text-[#374151]">•</span>
           <span>
-            {mode === "DEMO"
+            {mode === "DEMO" || ignisStatus === "demo"
               ? "250 Pre-Classified Scenarios"
+              : ignisStatus === "offline"
+              ? "Host Unreachable / Offline"
               : ignisStatus === "live"
               ? "NASA FIRMS (VIIRS/MODIS)"
               : "Local Surveillance Cache"}
@@ -668,6 +698,7 @@ export default function DashboardPage() {
             spreadPredictionData={spreadPredictionData}
             selectedSpreadHour={selectedSpreadHour}
             onTryLast3Days={() => setDays(3)}
+            onRetryLive={() => fetchData(true)}
             onSwitchToDemo={() => handleSelectMode("DEMO")}
           />
 

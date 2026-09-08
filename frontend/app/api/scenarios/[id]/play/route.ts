@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const BACKEND_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export async function POST(
   request: Request,

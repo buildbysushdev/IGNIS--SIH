@@ -4,14 +4,32 @@
 // ==============================================================================
 
 let audioCtx: AudioContext | null = null;
+let hasUserInteracted = false;
+
+if (typeof window !== "undefined") {
+  const markInteracted = () => {
+    hasUserInteracted = true;
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume().catch(() => {});
+    }
+    window.removeEventListener("pointerdown", markInteracted);
+    window.removeEventListener("keydown", markInteracted);
+  };
+  window.addEventListener("pointerdown", markInteracted, { passive: true });
+  window.addEventListener("keydown", markInteracted, { passive: true });
+}
 
 function getAudioContext(): AudioContext | null {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined" || !hasUserInteracted) return null;
   if (!audioCtx) {
     const AudioContextClass =
       window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (AudioContextClass) {
-      audioCtx = new AudioContextClass();
+      try {
+        audioCtx = new AudioContextClass();
+      } catch {
+        return null;
+      }
     }
   }
   if (audioCtx && audioCtx.state === "suspended") {

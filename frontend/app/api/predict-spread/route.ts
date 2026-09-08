@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 const BACKEND_URL =
   process.env.BACKEND_INTERNAL_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://web-production-b1e6a.up.railway.app";
+  "http://127.0.0.1:8000";
 
 // Fallback mathematical model if backend is completely unreachable
 function computeFallbackSpread(lat: number, lon: number, frp: number, category: string, hours: number) {
