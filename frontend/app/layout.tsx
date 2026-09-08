@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { I18nProvider } from "@/context/I18nContext";
 
 export const viewport: Viewport = {
   themeColor: "#0a0e14",
@@ -29,8 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen bg-[#0a0e14] text-[#d0d8e0] font-mono antialiased selection:bg-[#00d4ff] selection:text-[#0a0e14]">
-        {children}
+        <I18nProvider>
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );
 }
+

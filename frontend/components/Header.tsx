@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useI18n } from "@/context/I18nContext";
 
 export interface HeaderProps {
   currentMode: "LIVE" | "CACHED" | "DEMO";
@@ -40,6 +42,7 @@ export default function Header({
   onOpenEmergencyPanel,
   onOpenDispatchHistory,
 }: HeaderProps) {
+  const { t } = useI18n();
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -62,13 +65,13 @@ export default function Header({
   const getPillLabel = () => {
     switch (currentMode) {
       case "LIVE":
-        return "LIVE :: NASA FIRMS";
+        return t("modes.live", "LIVE :: NASA FIRMS");
       case "CACHED":
-        return "CACHED :: LOCAL DB";
+        return t("modes.cached", "CACHED :: LOCAL DB");
       case "DEMO":
-        return "DEMO :: SIMULATED";
+        return t("modes.demo", "DEMO :: SIMULATED");
       default:
-        return "LIVE :: NASA FIRMS";
+        return t("modes.live", "LIVE :: NASA FIRMS");
     }
   };
 
@@ -80,21 +83,21 @@ export default function Header({
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <span className="text-[#00ff9c] font-black text-sm tracking-widest">
-              IGNIS-01
+              {t("header.title", "IGNIS-01")}
             </span>
             <span className="text-[#4a5563]">//</span>
             <span className="text-[#d0d8e0] font-bold">
-              FIRE INTELLIGENCE GROUND STATION
+              {t("header.subtitle", "FIRE INTELLIGENCE GROUND STATION")}
             </span>
             <span className="text-[10px] text-[#00d4ff] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14]">
               v2.0
             </span>
             <span className="text-[10px] text-[#ffb800] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14] hidden sm:inline">
-              NTRO // SIH26162
+              {t("header.mission_tag", "NTRO // SIH26162")}
             </span>
           </div>
           <div className="text-[10px] text-[#6b7785] tracking-wider uppercase flex items-center gap-2">
-            <span>DEFENSE THERMAL SURVEILLANCE NODE</span>
+            <span>{t("header.defense_node", "DEFENSE THERMAL SURVEILLANCE NODE")}</span>
             <span className="text-[#4a5563]">::</span>
             <span className="text-[#00d4ff] lowercase">{modeInfo?.data_source || "Real-time Telemetry"}</span>
           </div>
@@ -106,23 +109,23 @@ export default function Header({
         {/* Navigation View Switcher */}
         <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] p-0.5 text-[10px]">
           <div className="px-2 py-0.5 bg-[#15202c] border border-[#00d4ff] text-[#00d4ff] font-bold uppercase">
-            [ OPERATIONS ]
+            [ {t("header.operations", "OPERATIONS")} ]
           </div>
           <Link
             href="/analytics"
             className="px-2 py-0.5 text-[#6b7785] hover:text-[#ffb800] uppercase font-bold transition cursor-pointer"
             title="Open Authority Analytics Dashboard"
           >
-            [ ANALYTICS ]
+            [ {t("header.analytics", "ANALYTICS")} ]
           </Link>
           <span className="px-1.5 py-0.5 text-[#4a5563] uppercase font-bold hidden xl:inline cursor-not-allowed">
-            [ FIELD OFFICER ]
+            [ {t("header.field_officer", "FIELD OFFICER")} ]
           </span>
         </div>
 
         {/* Scenarios Selector Dropdown */}
         <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] px-2 py-1 text-[10px]">
-          <span className="text-[#6b7785] font-bold hidden sm:inline">SCENARIO:</span>
+          <span className="text-[#6b7785] font-bold hidden sm:inline">{t("header.scenario_label", "SCENARIO:")}</span>
           <select
             value={selectedScenarioId}
             onChange={(e) => onSelectScenario(e.target.value)}
@@ -142,7 +145,7 @@ export default function Header({
                   : "border-[#00ff9c] bg-[#00ff9c]/20 text-[#00ff9c] hover:bg-[#00ff9c]/30"
               }`}
             >
-              {isScenarioPlaying ? "[ PAUSE ]" : "[ PLAY SCENARIO ]"}
+              {isScenarioPlaying ? t("header.pause_scenario", "[ PAUSE ]") : t("header.play_scenario", "[ PLAY SCENARIO ]")}
             </button>
           )}
         </div>
@@ -153,7 +156,7 @@ export default function Header({
             className="px-2 py-1 text-[10px] font-bold uppercase border border-[#ff3b3b]/60 bg-[#ff3b3b]/10 text-[#ff8080] hover:bg-[#ff3b3b]/25 cursor-pointer transition hidden md:inline-flex items-center gap-1"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
-            [ EMERGENCY PANEL ]
+            {t("header.emergency_panel", "[ EMERGENCY PANEL ]")}
           </button>
         )}
 
@@ -163,19 +166,23 @@ export default function Header({
             className="px-2 py-1 text-[10px] font-bold uppercase border border-[#00d4ff]/60 bg-[#00d4ff]/10 text-[#00d4ff] hover:bg-[#00d4ff]/25 cursor-pointer transition hidden lg:inline-flex items-center gap-1"
           >
             <span>📋</span>
-            [ DISPATCH LOG ]
+            {t("header.dispatch_log", "[ DISPATCH LOG ]")}
           </button>
         )}
       </div>
 
-      {/* 3) Right: Operational Mode Dropdown Pill & Satellite Link Info */}
-      <div className="flex items-center gap-2.5 text-[11px] font-mono">
+      {/* 3) Right: Operational Mode Dropdown Pill, Satellite Link Info & Multi-Language Switcher */}
+      <div className="flex items-center gap-2 text-[11px] font-mono">
+        {/* MULTI-LANGUAGE SWITCHER DROPDOWN */}
+        <LanguageSwitcher />
+
         {/* Latency & Packets */}
         <div className="hidden xl:flex items-center gap-1.5 border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#6b7785]">
           <span className="text-[#00d4ff]">{latencyStr}</span>
           <span>::</span>
           <span>PKT #{seqCounter}</span>
         </div>
+
 
         {/* PROMINENT OPERATIONAL MODE PILL WITH DROPDOWN */}
         <div className="relative" ref={dropdownRef}>

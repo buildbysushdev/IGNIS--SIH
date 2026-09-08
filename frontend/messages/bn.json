@@ -1,0 +1,106 @@
+{
+  "header": {
+    "title": "IGNIS-01",
+    "subtitle": "অগ্নি বুদ্ধিমত্তা এবং নিয়ন্ত্রণ কেন্দ্র",
+    "mission_tag": "এনটিআরও // এসআইএইচ২৬১৬২",
+    "defense_node": "প্রতিরক্ষা তাপীয় নজরদারি নোড",
+    "operations": "অপারেশনস",
+    "analytics": "অ্যানালিটিক্স",
+    "field_officer": "ফিল্ড অফিসার",
+    "scenario_label": "পরিস্থিতি:",
+    "live_data": "লাইভ টেলিমেট্রি",
+    "play_scenario": "[ পরিস্থিতি চালান ]",
+    "pause_scenario": "[ থামান ]",
+    "emergency_panel": "[ জরুরি প্যানেল ]",
+    "dispatch_log": "[ ডিসপ্যাচ লগ ]"
+  },
+  "categories": {
+    "EMERGENCY_INDUSTRIAL": "জরুরি শিল্প কারখানার আগুন",
+    "PERSISTENT_INDUSTRIAL": "স্থায়ী শিল্প তাপ উৎস",
+    "AGRICULTURAL_BURNING": "কৃষি ফসলের অবশিষ্টাংশ পোড়ানো",
+    "FOREST_FIRE": "দাবানল (বনের আগুন)",
+    "UNKNOWN": "অজানা / শ্রেণীবিহীন"
+  },
+  "modes": {
+    "live": "লাইভ :: নাসা ফার্মস",
+    "cached": "ক্যাশড :: স্থানীয় ডাটাবেস",
+    "demo": "ডেমো :: সিমুলেটেড"
+  },
+  "actions": {
+    "refresh": "রিফ্রেশ",
+    "download": "প্রতিবেদন ডাউনলোড",
+    "dispatch": "ডিসপ্যাচ সিমুলেট করুন",
+    "simulate_dispatch": "🚒 ডিসপ্যাচ সিমুলেট করুন",
+    "predict_spread": "💨 আগুন ছড়ানোর পূর্বাভাস",
+    "view_history": "📊 ইতিহাস দেখুন",
+    "verify": "ঘটনাস্থল এবং রাস্তার তথ্য যাচাই করুন >>",
+    "close": "বন্ধ করুন",
+    "dismiss": "বাতিল করুন",
+    "retry": "পুনরায় চেষ্টা করুন",
+    "export_brief": "সংক্ষিপ্ত রিপোর্ট রপ্তানি করুন",
+    "acknowledge": "স্বীকার করুন",
+    "escalate": "ঊর্ধ্বতন কর্তৃপক্ষকে জানান"
+  },
+  "stats": {
+    "active_hotspots": "সক্রিয় হটস্পট",
+    "critical_hazards": "মারাত্মক ঝুঁকি",
+    "forest_alerts": "বন সতর্কতা",
+    "industrial_clusters": "শিল্প ফিল্টার উত্তীর্ণ",
+    "avg_confidence": "গড় আত্মবিশ্বাস",
+    "peak_frp": "সর্বোচ্চ এফআরপি",
+    "hotspots_analyzed": "মোট পর্যালোচিত হটস্পট",
+    "filter_passed": "ফিল্টার করা হটস্পট",
+    "false_alarms_filtered": "প্রতিরোধিত ভুয়া সতর্কতা"
+  },
+  "filters": {
+    "all": "সমস্ত হটস্পট",
+    "emergency": "জরুরি শিল্প আগুন",
+    "persistent": "স্থায়ী শিল্প",
+    "agricultural": "কৃষি খড় পোড়ানো",
+    "forest": "বনের আগুন",
+    "time_horizon": "সময়কাল:",
+    "days_1": "বিগত ২৪ ঘন্টা",
+    "days_2": "বিগত ৪৮ ঘন্টা",
+    "days_3": "বিগত ৩ দিন",
+    "days_7": "বিগত ৭ দিন"
+  },
+  "protocols": {
+    "response_protocol": "জরুরি সাড়াদান প্রোটোকল",
+    "fire_class": "অগ্নিকাণ্ডের শ্রেণীবিভাগ",
+    "materials": "প্রধান উপাদান",
+    "primary_agents": "প্রাথমিক নির্বাপক মাধ্যম",
+    "secondary_agents": "দ্বিতীয় নির্বাপক মাধ্যম",
+    "avoid": "বিপজ্জনক উপাদান (ব্যবহার নিষিদ্ধ)",
+    "equipment": "প্রয়োজনীয় সরঞ্জাম",
+    "safety_distance": "নিরাপদ স্থানান্তর পরিধি",
+    "response_time": "নির্দিষ্ট প্রাথমিক সাড়াদান সময়",
+    "view_full": "সম্পূর্ণ প্রোটোকল দেখুন"
+  },
+  "weather": {
+    "title": "আবহাওয়া টেলিমেট্রি",
+    "ambient_temp": "পারিপার্শ্বিক তাপমাত্রা",
+    "humidity": "বাতাসের আর্দ্রতা",
+    "wind_vector": "বায়ু প্রবাহের দিক",
+    "from": "দিক থেকে"
+  },
+  "spread": {
+    "title": "অগ্নি বিস্তারের পূর্বাভাস",
+    "subtitle": "টেলিমেট্রি বিস্তার ভেক্টর এবং ঝুঁকি মডেলিং",
+    "vector_dynamics": "বিস্তারের গতিপ্রকৃতি",
+    "forward_rate": "অগ্রগমনের গতি (RoS)",
+    "spread_toward": "বিস্তারের দিক",
+    "horizon": "আনুমানিক সময়সীমা",
+    "max_advance": "সর্বোচ্চ অগ্রবর্তী দূরত্ব",
+    "burn_footprint": "ক্ষতিগ্রস্ত এলাকা",
+    "at_risk_assets": "ঝুঁকিপূর্ণ বসতি ও পরিকাঠামো",
+    "recommendations": "কমান্ড নিয়ন্ত্রণ নির্দেশাবলী",
+    "fire_break": "প্রস্তাবিত ফায়ার-ব্রেক লাইন"
+  },
+  "languages": {
+    "en": "English",
+    "hi": "हिन्दी (Hindi)",
+    "mr": "मराठी (Marathi)",
+    "ta": "தமிழ் (Tamil)",
+    "bn": "বাংলা (Bengali)"
+  }
+}

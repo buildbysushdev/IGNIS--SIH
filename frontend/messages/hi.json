@@ -1,0 +1,106 @@
+{
+  "header": {
+    "title": "IGNIS-01",
+    "subtitle": "अग्नि निगरानी एवं नियंत्रण केंद्र",
+    "mission_tag": "एनटीआरओ // एसआईएच26162",
+    "defense_node": "रक्षा थर्मल निगरानी नोड",
+    "operations": "संचालन",
+    "analytics": "एनालिटिक्स",
+    "field_officer": "फील्ड अधिकारी",
+    "scenario_label": "परिदृश्य:",
+    "live_data": "लाइव टेलीमेट्री",
+    "play_scenario": "[ परिदृश्य चलाएं ]",
+    "pause_scenario": "[ रोकें ]",
+    "emergency_panel": "[ आपातकालीन पैनल ]",
+    "dispatch_log": "[ डिस्पैच लॉग ]"
+  },
+  "categories": {
+    "EMERGENCY_INDUSTRIAL": "आपातकालीन औद्योगिक आग",
+    "PERSISTENT_INDUSTRIAL": "स्थायी औद्योगिक स्रोत",
+    "AGRICULTURAL_BURNING": "कृषि पराली दहन",
+    "FOREST_FIRE": "वनाग्नि (जंगल की आग)",
+    "UNKNOWN": "अज्ञात / अवर्गीकृत"
+  },
+  "modes": {
+    "live": "लाइव :: नासा फर्म्स",
+    "cached": "कैश्ड :: स्थानीय डेटाबेस",
+    "demo": "डेमो :: सिमुलेटेड"
+  },
+  "actions": {
+    "refresh": "रिफ्रेश",
+    "download": "रिपोर्ट डाउनलोड",
+    "dispatch": "डिस्पैच सिमुलेट करें",
+    "simulate_dispatch": "🚒 डिस्पैच सिमुलेट करें",
+    "predict_spread": "💨 आग फैलाव का अनुमान",
+    "view_history": "📊 इतिहास देखें",
+    "verify": "घटनास्थल एवं सड़क संदर्भ सत्यापित करें >>",
+    "close": "बंद करें",
+    "dismiss": "खारिज करें",
+    "retry": "पुनः प्रयास करें",
+    "export_brief": "संक्षिप्त रिपोर्ट निर्यात करें",
+    "acknowledge": "स्वीकार करें",
+    "escalate": "उच्च स्तर पर भेजें"
+  },
+  "stats": {
+    "active_hotspots": "सक्रिय हॉटस्पॉट",
+    "critical_hazards": "गंभीर खतरे",
+    "forest_alerts": "वन अलर्ट",
+    "industrial_clusters": "औद्योगिक फ़िल्टर उत्तीर्ण",
+    "avg_confidence": "औसत विश्वास दर",
+    "peak_frp": "अधिकतम एफआरपी",
+    "hotspots_analyzed": "कुल विश्लेषित हॉटस्पॉट",
+    "filter_passed": "फ़िल्टर किए गए हॉटस्पॉट",
+    "false_alarms_filtered": "रोकी गई झूठी चेतावनियां"
+  },
+  "filters": {
+    "all": "सभी हॉटस्पॉट",
+    "emergency": "आपातकालीन औद्योगिक",
+    "persistent": "स्थायी औद्योगिक",
+    "agricultural": "कृषि पराली",
+    "forest": "वनाग्नि",
+    "time_horizon": "समय सीमा:",
+    "days_1": "पिछले 24 घंटे",
+    "days_2": "पिछले 48 घंटे",
+    "days_3": "पिछले 3 दिन",
+    "days_7": "पिछले 7 दिन"
+  },
+  "protocols": {
+    "response_protocol": "प्रतिक्रिया प्रोटोकॉल",
+    "fire_class": "अग्नि वर्गीकरण",
+    "materials": "प्रमुख सामग्री",
+    "primary_agents": "प्राथमिक शमन एजेंट",
+    "secondary_agents": "द्वितीयक शमन एजेंट",
+    "avoid": "खतरनाक एजेंट (उपयोग न करें)",
+    "equipment": "आवश्यक उपकरण",
+    "safety_distance": "सुरक्षित निकासी परिधि",
+    "response_time": "लक्षित प्रथम प्रतिक्रिया समय",
+    "view_full": "पूर्ण प्रोटोकॉल देखें"
+  },
+  "weather": {
+    "title": "वायुमंडलीय टेलीमेट्री",
+    "ambient_temp": "परिवेशी तापमान",
+    "humidity": "आर्द्रता",
+    "wind_vector": "वायु प्रवाह वेक्टर",
+    "from": "की दिशा से"
+  },
+  "spread": {
+    "title": "अग्नि फैलाव पूर्वानुमान",
+    "subtitle": "टेलीमेट्री फैलाव वेक्टर एवं जोखिम मॉडलिंग",
+    "vector_dynamics": "प्रसार वेक्टर गतिशीलता",
+    "forward_rate": "अग्रिम प्रसार दर (RoS)",
+    "spread_toward": "फैलाव की दिशा",
+    "horizon": "अनुमानित समय सीमा",
+    "max_advance": "अधिकतम अग्रिम दूरी",
+    "burn_footprint": "प्रभावित अग्नि क्षेत्र",
+    "at_risk_assets": "जोखिम वाले बुनियादी ढांचे एवं बस्तियां",
+    "recommendations": "कमांड नियंत्रण निर्देश",
+    "fire_break": "अनुशंसित फायर-ब्रेक लाइन"
+  },
+  "languages": {
+    "en": "English",
+    "hi": "हिन्दी (Hindi)",
+    "mr": "मराठी (Marathi)",
+    "ta": "தமிழ் (Tamil)",
+    "bn": "বাংলা (Bengali)"
+  }
+}

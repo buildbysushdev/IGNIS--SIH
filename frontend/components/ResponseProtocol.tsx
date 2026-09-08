@@ -1,6 +1,7 @@
 "use client";
 
 import { getResponseProtocol, FireResponseProtocol } from "@/data/fireResponse";
+import { useI18n } from "@/context/I18nContext";
 
 export interface ResponseProtocolProps {
   category: string;
@@ -13,6 +14,7 @@ export default function ResponseProtocol({
   compact = false,
   onViewFull,
 }: ResponseProtocolProps) {
+  const { t } = useI18n();
   const protocol: FireResponseProtocol = getResponseProtocol(category);
 
   // Class badge color mapping
@@ -29,12 +31,13 @@ export default function ResponseProtocol({
         {/* Header Ribbon */}
         <div className="flex items-center justify-between border-b border-[#1f2933] pb-1.5">
           <div className="flex items-center gap-1.5">
-            <span className="text-[#00d4ff] font-bold tracking-wider">// RESPONSE PROTOCOL</span>
+            <span className="text-[#00d4ff] font-bold tracking-wider">// {t("protocols.response_protocol", "RESPONSE PROTOCOL")}</span>
           </div>
           <span className={`px-1.5 py-0.2 border text-[9px] font-bold ${getClassBadgeColor(protocol.fire_class)}`}>
             [{protocol.fire_class}]
           </span>
         </div>
+
 
         {/* Typical Materials Chips */}
         <div className="flex flex-wrap gap-1">
@@ -90,7 +93,7 @@ export default function ResponseProtocol({
             onClick={onViewFull}
             className="w-full text-center py-1 border border-[#00d4ff]/40 bg-[#00d4ff]/10 hover:bg-[#00d4ff]/25 text-[#00d4ff] text-[9px] font-bold uppercase transition cursor-pointer"
           >
-            [ VIEW FULL PROTOCOL &gt;&gt; ]
+            [ {t("protocols.view_full", "VIEW FULL PROTOCOL")} &gt;&gt; ]
           </button>
         )}
       </div>
@@ -104,9 +107,10 @@ export default function ResponseProtocol({
         <div className="flex items-center gap-2">
           <span className="text-[#00ff9c] font-bold text-sm">::</span>
           <span className="text-white font-bold tracking-wider uppercase text-xs sm:text-sm">
-            MATERIAL-BASED FIRE RESPONSE PROTOCOL
+            {t("protocols.response_protocol", "MATERIAL-BASED FIRE RESPONSE PROTOCOL")}
           </span>
         </div>
+
         <span className={`px-2 py-0.5 border font-bold text-[10px] ${getClassBadgeColor(protocol.fire_class)}`}>
           CLASS: {protocol.fire_class}
         </span>

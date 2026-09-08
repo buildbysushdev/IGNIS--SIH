@@ -7,6 +7,8 @@ import ProtocolModal from "./ProtocolModal";
 import WeatherWidget from "./WeatherWidget";
 import type { SpreadPredictionData } from "./SpreadPrediction";
 import { FIRE_STATIONS } from "@/data/fireStations";
+import { useI18n } from "@/context/I18nContext";
+
 
 export interface Fire {
   id?: string;
@@ -163,6 +165,7 @@ export default function FireMap({
   onLayerChange,
   scenarioOverlay,
 }: FireMapProps) {
+  const { t } = useI18n();
   const safeFires = Array.isArray(fires) ? fires : [];
   const [internalLayer, setInternalLayer] = useState<keyof typeof TILE_PRESETS>("ops_dark");
   const activeLayer = externalActiveLayer || internalLayer;
@@ -590,7 +593,7 @@ export default function FireMap({
                             : "border-[#ff3b3b] bg-[#ff3b3b]/15 hover:bg-[#ff3b3b]/25 text-[#ff8080] hover:text-white"
                         }`}
                       >
-                        <span>🚒 SIMULATE DISPATCH</span>
+                        <span>{t("actions.simulate_dispatch", "🚒 SIMULATE DISPATCH")}</span>
                       </button>
 
                       {/* Prominent Historical Analysis Trigger Button */}
@@ -601,7 +604,7 @@ export default function FireMap({
                         }}
                         className="w-full text-[10px] border border-[#ffb800] bg-[#ffb800]/15 hover:bg-[#ffb800]/25 text-[#ffb800] hover:text-white py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5"
                       >
-                        <span>📊 VIEW HISTORY</span>
+                        <span>{t("actions.view_history", "📊 VIEW HISTORY")}</span>
                       </button>
 
                       {/* Prominent Fire Spread Prediction Trigger Button */}
@@ -612,7 +615,7 @@ export default function FireMap({
                         }}
                         className="w-full text-[10px] border border-[#ff9500] bg-[#ff9500]/15 hover:bg-[#ff9500]/30 text-[#ff9500] hover:text-white py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5 shadow-[0_0_8px_rgba(255,149,0,0.2)]"
                       >
-                        <span>💨 PREDICT SPREAD</span>
+                        <span>{t("actions.predict_spread", "💨 PREDICT SPREAD")}</span>
                       </button>
 
 
@@ -634,7 +637,7 @@ export default function FireMap({
                         onClick={() => onOpenVerify && onOpenVerify(fire)}
                         className="w-full text-[10px] border border-[#00d4ff] bg-[#00d4ff]/10 text-[#00d4ff] hover:bg-[#00d4ff]/20 py-1 uppercase font-bold text-center cursor-pointer tracking-wider transition"
                       >
-                        [ VERIFY SCENE & ROAD CONTEXT &gt;&gt; ]
+                        [ {t("actions.verify", "VERIFY SCENE & ROAD CONTEXT >>")} ]
                       </button>
                     </div>
                   </div>

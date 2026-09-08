@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useI18n } from "@/context/I18nContext";
 
 interface FilterBarProps {
   days: number;
@@ -15,15 +16,6 @@ interface FilterBarProps {
   onDownload?: () => void;
   onTrainModel?: () => void;
 }
-
-const CATEGORIES = [
-  { value: "all", label: "ALL CATEGORIES" },
-  { value: "EMERGENCY_INDUSTRIAL", label: "EMERGENCY INDUSTRIAL" },
-  { value: "PERSISTENT_INDUSTRIAL", label: "PERSISTENT INDUSTRIAL" },
-  { value: "AGRICULTURAL_BURNING", label: "AGRICULTURAL BURNING" },
-  { value: "FOREST_FIRE", label: "FOREST BIOMASS" },
-  { value: "UNKNOWN", label: "UNCLASSIFIED" },
-];
 
 const SOURCES = [
   { value: "all", label: "MERGED (SNPP + NOAA20)" },
@@ -51,7 +43,17 @@ export default function FilterBar({
   onDownload,
   onTrainModel,
 }: FilterBarProps) {
+  const { t } = useI18n();
   const [countdown, setCountdown] = useState(180);
+
+  const categories = [
+    { value: "all", label: t("filters.all", "ALL CATEGORIES") },
+    { value: "EMERGENCY_INDUSTRIAL", label: t("categories.EMERGENCY_INDUSTRIAL", "EMERGENCY INDUSTRIAL") },
+    { value: "PERSISTENT_INDUSTRIAL", label: t("categories.PERSISTENT_INDUSTRIAL", "PERSISTENT INDUSTRIAL") },
+    { value: "AGRICULTURAL_BURNING", label: t("categories.AGRICULTURAL_BURNING", "AGRICULTURAL BURNING") },
+    { value: "FOREST_FIRE", label: t("categories.FOREST_FIRE", "FOREST BIOMASS") },
+    { value: "UNKNOWN", label: t("categories.UNKNOWN", "UNCLASSIFIED") },
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -75,7 +77,7 @@ export default function FilterBar({
           {/* TIME WINDOW */}
           <div>
             <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ TIME WINDOW ]
+              [ {t("filters.time_horizon", "TIME WINDOW")} ]
             </label>
             <select
               value={days}
@@ -93,14 +95,14 @@ export default function FilterBar({
           {/* CATEGORY FILTER */}
           <div>
             <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ CATEGORY FILTER ]
+              [ {t("filters.all", "CATEGORY FILTER")} ]
             </label>
             <select
               value={category}
               onChange={(e) => onCategoryChange(e.target.value)}
-              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
+              className="w-full bg-[#0a0e14] text-[#00d4ff] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs font-bold cursor-pointer rounded-none"
             >
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <option key={c.value} value={c.value} className="bg-[#0f141b] text-[#d0d8e0]">
                   {c.label} ▾
                 </option>
@@ -111,7 +113,7 @@ export default function FilterBar({
           {/* DATA SOURCE */}
           <div>
             <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ DATA SOURCE ]
+              [ SENSOR MESH ]
             </label>
             <select
               value={source}
@@ -150,7 +152,7 @@ export default function FilterBar({
             disabled={isRefreshing}
             className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#00ff9c] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer disabled:opacity-50"
           >
-            {isRefreshing ? "[ SYNCING... ]" : "[ REFRESH ▷ ]"}
+            {isRefreshing ? "[ SYNCING... ]" : `[ ${t("actions.refresh", "REFRESH")} ▷ ]`}
           </button>
 
           {/* EXPORT CSV */}
@@ -159,7 +161,7 @@ export default function FilterBar({
               onClick={onDownload}
               className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#00d4ff] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer"
             >
-              [ EXPORT CSV ↓ ]
+              [ {t("actions.download", "EXPORT CSV")} ↓ ]
             </button>
           )}
 

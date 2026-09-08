@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useI18n } from "@/context/I18nContext";
 
 export interface AlertItem {
   id?: number;
@@ -26,6 +27,7 @@ export default function AlertPanel({
   statusMode = "live",
   onOpenEmergencyPanel,
 }: AlertPanelProps) {
+  const { t, formatNumber } = useI18n();
   const safeAlerts = Array.isArray(alerts) ? alerts : [];
   const count = safeAlerts.length;
 
@@ -51,16 +53,17 @@ export default function AlertPanel({
       <div className="panel border border-[#1f2933] bg-[#0f141b] corner-brackets">
         <div className="panel-header px-3 py-1.5 bg-[#131a22] border-b border-[#1f2933] flex justify-between items-center">
           <span className="text-[11px] font-bold tracking-[0.15em] text-[#d0d8e0] uppercase">
-            // ACTIVE ALERTS
+            // {t("stats.critical_hazards", "ACTIVE ALERTS")}
           </span>
           <span
             className={`text-[10px] font-bold ${
               count > 0 ? "text-[#ff3b3b] status-dot-red" : "text-[#00ff9c]"
             }`}
           >
-            {count > 0 ? `[ ${count} CRIT ]` : "[ 00 ]"}
+            {count > 0 ? `[${formatNumber(count)} HOT]` : "[CLEAR]"}
           </span>
         </div>
+
 
         <div className="p-3">
           {count === 0 ? (

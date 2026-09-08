@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/context/I18nContext";
+
 export interface FireStats {
   total: number;
   emergency: number;
@@ -25,6 +27,8 @@ export default function StatsPanel({
   activeCategory = "all",
   onSelectCategory,
 }: StatsPanelProps) {
+  const { t, formatNumber } = useI18n();
+
   const total = stats?.total ?? 0;
   const emergency = stats?.emergency ?? 0;
   const persistent = stats?.persistent ?? 0;
@@ -40,22 +44,23 @@ export default function StatsPanel({
   const classifiedRate = total > 0 ? ((classified / total) * 100).toFixed(1) : "0.0";
 
   const rows = [
-    { label: "TOTAL ANOMALIES", value: total, key: "all", color: "#00d4ff" },
-    { label: "CRITICAL EVENTS", value: emergency, key: "EMERGENCY_INDUSTRIAL", color: "#ff3b3b" },
-    { label: "PERSISTENT SOURCES", value: persistent, key: "PERSISTENT_INDUSTRIAL", color: "#ffb800" },
-    { label: "AGRI BURNING EVENTS", value: agricultural, key: "AGRICULTURAL_BURNING", color: "#ff9500" },
-    { label: "FOREST BIOMASS BURNS", value: forest, key: "FOREST_FIRE", color: "#00ff9c" },
-    { label: "UNCLASSIFIED SIGNALS", value: unknown, key: "UNKNOWN", color: "#6b7785" },
+    { label: t("stats.hotspots_analyzed", "TOTAL ANOMALIES"), value: formatNumber(total), key: "all", color: "#00d4ff" },
+    { label: t("categories.EMERGENCY_INDUSTRIAL", "CRITICAL EVENTS"), value: formatNumber(emergency), key: "EMERGENCY_INDUSTRIAL", color: "#ff3b3b" },
+    { label: t("categories.PERSISTENT_INDUSTRIAL", "PERSISTENT SOURCES"), value: formatNumber(persistent), key: "PERSISTENT_INDUSTRIAL", color: "#ffb800" },
+    { label: t("categories.AGRICULTURAL_BURNING", "AGRI BURNING EVENTS"), value: formatNumber(agricultural), key: "AGRICULTURAL_BURNING", color: "#ff9500" },
+    { label: t("categories.FOREST_FIRE", "FOREST BIOMASS BURNS"), value: formatNumber(forest), key: "FOREST_FIRE", color: "#00ff9c" },
+    { label: t("categories.UNKNOWN", "UNCLASSIFIED SIGNALS"), value: formatNumber(unknown), key: "UNKNOWN", color: "#6b7785" },
     { label: "CLASSIFICATION RATE", value: `${classifiedRate}%`, key: "rate", color: "#00ff9c" },
   ];
 
   const distribution = [
-    { name: "PERSISTENT", val: persistent, code: "PERSISTENT_INDUSTRIAL", color: "#ffb800" },
-    { name: "FOREST    ", val: forest, code: "FOREST_FIRE", color: "#00ff9c" },
-    { name: "AGRI      ", val: agricultural, code: "AGRICULTURAL_BURNING", color: "#ff9500" },
-    { name: "EMERGENCY ", val: emergency, code: "EMERGENCY_INDUSTRIAL", color: "#ff3b3b" },
-    { name: "UNKNOWN   ", val: unknown, code: "UNKNOWN", color: "#6b7785" },
+    { name: t("categories.PERSISTENT_INDUSTRIAL", "PERSISTENT"), val: persistent, code: "PERSISTENT_INDUSTRIAL", color: "#ffb800" },
+    { name: t("categories.FOREST_FIRE", "FOREST"), val: forest, code: "FOREST_FIRE", color: "#00ff9c" },
+    { name: t("categories.AGRICULTURAL_BURNING", "AGRI"), val: agricultural, code: "AGRICULTURAL_BURNING", color: "#ff9500" },
+    { name: t("categories.EMERGENCY_INDUSTRIAL", "EMERGENCY"), val: emergency, code: "EMERGENCY_INDUSTRIAL", color: "#ff3b3b" },
+    { name: t("categories.UNKNOWN", "UNKNOWN"), val: unknown, code: "UNKNOWN", color: "#6b7785" },
   ];
+
 
   const handleRowClick = (key: string) => {
     if (!onSelectCategory) return;

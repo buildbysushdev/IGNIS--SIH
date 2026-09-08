@@ -1,0 +1,106 @@
+{
+  "header": {
+    "title": "IGNIS-01",
+    "subtitle": "अग्नी बुद्धिमत्ता नियंत्रण केंद्र",
+    "mission_tag": "एनटीआरओ // एसआयएच26162",
+    "defense_node": "संरक्षण थर्मल पाळत केंद्र",
+    "operations": "ऑपरेशन्स",
+    "analytics": "अ‍ॅनालिटिक्स",
+    "field_officer": "फील्ड अधिकारी",
+    "scenario_label": "प्रसंग:",
+    "live_data": "थेट टेलिमेंट्री",
+    "play_scenario": "[ प्रसंग सुरू करा ]",
+    "pause_scenario": "[ थांबवा ]",
+    "emergency_panel": "[ आणीबाणी पॅनेल ]",
+    "dispatch_log": "[ डिस्पॅच नोंद ]"
+  },
+  "categories": {
+    "EMERGENCY_INDUSTRIAL": "आपत्कालीन औद्योगिक आग",
+    "PERSISTENT_INDUSTRIAL": "सतत औद्योगिक स्रोत",
+    "AGRICULTURAL_BURNING": "शेती अवशेष जाळणे",
+    "FOREST_FIRE": "दावानल (जंगलातील आग)",
+    "UNKNOWN": "अज्ञात / अवर्गीकृत"
+  },
+  "modes": {
+    "live": "थेट :: नासा फर्म्स",
+    "cached": "कॅश्ड :: स्थानिक डेटाबेस",
+    "demo": "डेमो :: सिम्युलेटेड"
+  },
+  "actions": {
+    "refresh": "ताजे करा",
+    "download": "अहवाल डाउनलोड करा",
+    "dispatch": "डिस्पॅच सुरू करा",
+    "simulate_dispatch": "🚒 डिस्पॅच सुरू करा",
+    "predict_spread": "💨 आग पसरण्याचा अंदाज",
+    "view_history": "📊 इतिहास पहा",
+    "verify": "घटनास्थळ आणि रस्ता संदर्भ तपासा >>",
+    "close": "बंद करा",
+    "dismiss": "रद्द करा",
+    "retry": "पुन्हा प्रयत्न करा",
+    "export_brief": "संक्षिप्त अहवाल निर्यात करा",
+    "acknowledge": "स्वीकारा",
+    "escalate": "वरिष्ठांकडे पाठवा"
+  },
+  "stats": {
+    "active_hotspots": "सक्रिय हॉटस्पॉट",
+    "critical_hazards": "गंभीर धोके",
+    "forest_alerts": "वन इशारे",
+    "industrial_clusters": "औद्योगिक फिल्टर उत्तीर्ण",
+    "avg_confidence": "सरासरी विश्वासार्हता",
+    "peak_frp": "कमाल एफआरपी",
+    "hotspots_analyzed": "एकूण विश्लेषित हॉटस्पॉट",
+    "filter_passed": "फिल्टर केलेले हॉटस्पॉट",
+    "false_alarms_filtered": "टळलेले खोटे इशारे"
+  },
+  "filters": {
+    "all": "सर्व हॉटस्पॉट",
+    "emergency": "आपत्कालीन औद्योगिक",
+    "persistent": "सतत औद्योगिक",
+    "agricultural": "शेती कचरा",
+    "forest": "जंगल आग",
+    "time_horizon": "कालावधी:",
+    "days_1": "मागील २४ तास",
+    "days_2": "मागील ४८ तास",
+    "days_3": "मागील ३ दिवस",
+    "days_7": "मागील ७ दिवस"
+  },
+  "protocols": {
+    "response_protocol": "प्रतिसाद नियमावली",
+    "fire_class": "अग्नी वर्गीकरण",
+    "materials": "प्रमुख साहित्य",
+    "primary_agents": "प्राथमिक अग्निशामक",
+    "secondary_agents": "दुय्यम अग्निशामक",
+    "avoid": "धोकादायक घटक (वापरू नका)",
+    "equipment": "आवश्यक उपकरणे",
+    "safety_distance": "सुरक्षित स्थलांतर अंतर",
+    "response_time": "अपेक्षित प्रतिसाद वेळ",
+    "view_full": "संपूर्ण नियमावली पहा"
+  },
+  "weather": {
+    "title": "हवामान टेलिमेट्री",
+    "ambient_temp": "सभोवतालचे तापमान",
+    "humidity": "हवेतील आर्द्रता",
+    "wind_vector": "वारा प्रवाह दिशा",
+    "from": "कडून"
+  },
+  "spread": {
+    "title": "आग पसरण्याचा अंदाज",
+    "subtitle": "टेलिमेट्री प्रसार वेक्टर आणि जोखीम मॉडेलिंग",
+    "vector_dynamics": "प्रसार गतीशास्त्र",
+    "forward_rate": "आगाऊ प्रसार दर (RoS)",
+    "spread_toward": "पसरण्याची दिशा",
+    "horizon": "अंदाजित कालावधी",
+    "max_advance": "कमाल आगाऊ अंतर",
+    "burn_footprint": "बाधित क्षेत्रफळ",
+    "at_risk_assets": "धोक्यात असलेल्या वस्त्या आणि पायाभूत सुविधा",
+    "recommendations": "नियंत्रण शिफारसी",
+    "fire_break": "शिफारस केलेली फायर-ब्रेक रेषा"
+  },
+  "languages": {
+    "en": "English",
+    "hi": "हिन्दी (Hindi)",
+    "mr": "मराठी (Marathi)",
+    "ta": "தமிழ் (Tamil)",
+    "bn": "বাংলা (Bengali)"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "header": {
+    "title": "IGNIS-01",
+    "subtitle": "FIRE INTELLIGENCE GROUND STATION",
+    "mission_tag": "NTRO // SIH26162",
+    "defense_node": "DEFENSE THERMAL SURVEILLANCE NODE",
+    "operations": "OPERATIONS",
+    "analytics": "ANALYTICS",
+    "field_officer": "FIELD OFFICER",
+    "scenario_label": "SCENARIO:",
+    "live_data": "Live Telemetry",
+    "play_scenario": "[ PLAY SCENARIO ]",
+    "pause_scenario": "[ PAUSE ]",
+    "emergency_panel": "[ EMERGENCY PANEL ]",
+    "dispatch_log": "[ DISPATCH LOG ]"
+  },
+  "categories": {
+    "EMERGENCY_INDUSTRIAL": "Emergency Industrial Fire",
+    "PERSISTENT_INDUSTRIAL": "Persistent Industrial Source",
+    "AGRICULTURAL_BURNING": "Agricultural Burning (Stubble)",
+    "FOREST_FIRE": "Forest Fire",
+    "UNKNOWN": "Unknown / Unclassified"
+  },
+  "modes": {
+    "live": "LIVE :: NASA FIRMS",
+    "cached": "CACHED :: LOCAL DB",
+    "demo": "DEMO :: SIMULATED"
+  },
+  "actions": {
+    "refresh": "Refresh",
+    "download": "Download Report",
+    "dispatch": "Simulate Dispatch",
+    "simulate_dispatch": "🚒 SIMULATE DISPATCH",
+    "predict_spread": "💨 PREDICT SPREAD",
+    "view_history": "📊 VIEW HISTORY",
+    "verify": "VERIFY SCENE & ROAD CONTEXT >>",
+    "close": "Close",
+    "dismiss": "DISMISS",
+    "retry": "RETRY LINK",
+    "export_brief": "EXPORT SPREAD BRIEF",
+    "acknowledge": "ACKNOWLEDGE",
+    "escalate": "ESCALATE"
+  },
+  "stats": {
+    "active_hotspots": "Active Hotspots",
+    "critical_hazards": "Critical Risk",
+    "forest_alerts": "Forest Alerts",
+    "industrial_clusters": "Industrial Filters Passed",
+    "avg_confidence": "Avg Confidence",
+    "peak_frp": "Peak FRP",
+    "hotspots_analyzed": "Hotspots Analyzed",
+    "filter_passed": "Filtered Hotspots",
+    "false_alarms_filtered": "False Alarms Averted"
+  },
+  "filters": {
+    "all": "ALL HOTSPOTS",
+    "emergency": "EMERGENCY INDUSTRIAL",
+    "persistent": "PERSISTENT INDUSTRIAL",
+    "agricultural": "AGRICULTURAL STUBBLE",
+    "forest": "FOREST FIRE",
+    "time_horizon": "Time Window:",
+    "days_1": "Past 24 Hours",
+    "days_2": "Past 48 Hours",
+    "days_3": "Past 3 Days",
+    "days_7": "Past 7 Days"
+  },
+  "protocols": {
+    "response_protocol": "RESPONSE PROTOCOL",
+    "fire_class": "Fire Classification",
+    "materials": "Typical Materials",
+    "primary_agents": "Primary Suppressants",
+    "secondary_agents": "Secondary Suppressants",
+    "avoid": "DANGEROUS AGENTS (DO NOT USE)",
+    "equipment": "Equipment Required",
+    "safety_distance": "Evacuation Perimeter",
+    "response_time": "Target First Response",
+    "view_full": "VIEW FULL PROTOCOL"
+  },
+  "weather": {
+    "title": "ATMOSPHERIC TELEMETRY",
+    "ambient_temp": "AMBIENT TEMP",
+    "humidity": "HUMIDITY",
+    "wind_vector": "WIND VECTOR",
+    "from": "FROM"
+  },
+  "spread": {
+    "title": "FIRE SPREAD PREDICTION",
+    "subtitle": "TELEMETRY SPREAD VECTORS & RISK MODELING",
+    "vector_dynamics": "PROPAGATION VECTOR DYNAMICS",
+    "forward_rate": "FORWARD RATE (RoS)",
+    "spread_toward": "SPREAD TOWARD",
+    "horizon": "PROJECTED TIME HORIZON",
+    "max_advance": "MAX FORWARD ADVANCE",
+    "burn_footprint": "BURNED FOOTPRINT",
+    "at_risk_assets": "AT-RISK INFRASTRUCTURE & SETTLEMENTS",
+    "recommendations": "COMMAND CONTAINMENT RECOMMENDATIONS",
+    "fire_break": "RECOMMENDED FIRE BREAK LINE"
+  },
+  "languages": {
+    "en": "English",
+    "hi": "हिन्दी (Hindi)",
+    "mr": "मराठी (Marathi)",
+    "ta": "தமிழ் (Tamil)",
+    "bn": "বাংলা (Bengali)"
+  }
+}
