@@ -193,51 +193,75 @@ def _save_cache(path: str, data: list[dict[str, Any]]) -> None:
 def fetch_fires(
     days: int = 1, source: str = "VIIRS_SNPP_NRT", force: bool = False
 ) -> list[dict[str, Any]]:
-    """Fetch active fire detections with 3-hour cache and SQLite fallback."""
+    """Fetch active fire detections with 3-hour cache, multi-tier window expansion, and SQLite fallback."""
     cache_path = _get_cache_path(days, source)
 
     if not force and _is_cache_valid(cache_path, max_age_hours=3):
         data = _load_cache(cache_path)
-        if data:
+        if data and len(data) > 0:
             print(f"[IGNIS] Cache HIT (active satellite cycle) | source={source} | fires={len(data)}")
             _update_status("live", len(data), f"Connected to NASA FIRMS ({len(data)} active hotspots, <3h cache)")
             return data
 
     try:
         fires = _call_firms_api(days, source)
-        if fires:
+        
+        # If days=1 returned 0 passes (common when NASA orbit processing for today is pending), try days=3
+        if not fires and days == 1:
+            print(f"[IGNIS] 0 passes returned for 1-day window. Widening query to 3 days...")
+            fires = _call_firms_api(3, source)
+
+        if fires and len(fires) > 0:
             _save_cache(cache_path, fires)
             try:
                 insert_fires(fires)
             except Exception as db_err:
                 print(f"[IGNIS] SQLite cache insert notice: {db_err}")
-        _update_status("live", len(fires), f"Live NASA FIRMS satellite ingestion ({len(fires)} active hotspots)")
-        return fires
+            _update_status("live", len(fires), f"Live NASA FIRMS satellite ingestion ({len(fires)} active hotspots)")
+            return fires
+
+        # If FIRMS returned 0 fires even after widening, fail over to cached SQLite detections
+        print(f"[IGNIS] Live FIRMS returned 0 detections. Engaging local SQLite repository...")
+        db_fires = get_fires_by_date(3, limit=1000)
+        if not db_fires:
+            db_fires = get_fires_by_date(30, limit=1000)
+        if db_fires and len(db_fires) > 0:
+            _update_status("cached_fallback", len(db_fires), f"Operating on local repository ({len(db_fires)} verified detections)")
+            return db_fires
+
+        # If SQLite also has 0 detections, engage realistic demo data
+        from demo_data import load_demo_fires
+        demo = load_demo_fires()
+        _update_status("demo", len(demo), f"Simulated surveillance telemetry ({len(demo)} hotspots)")
+        return demo
     except Exception as e:
         print(f"[IGNIS] NASA FIRMS API Notice: {e}")
+        _data_status["last_error"] = str(e)
         # 1. Fallback to existing cache even if slightly expired
         if os.path.exists(cache_path):
             cached = _load_cache(cache_path)
-            if cached:
+            if cached and len(cached) > 0:
                 print(f"[IGNIS] Using cached satellite repository: {cache_path}")
                 _update_status("cached_fallback", len(cached), f"Operating on satellite cache ({e})")
                 return cached
 
         # 2. Fallback to SQLite historical database
         try:
-            today = datetime.now().strftime("%Y-%m-%d")
-            db_fires = get_fires_by_date(today)
+            db_fires = get_fires_by_date(3, limit=1000)
             if not db_fires:
-                db_fires = get_fires_by_date(days)
-            if db_fires:
+                db_fires = get_fires_by_date(30, limit=1000)
+            if db_fires and len(db_fires) > 0:
                 print(f"[IGNIS] Falling back to SQLite database ({len(db_fires)} fires found)")
                 _update_status("cached_fallback", len(db_fires), f"Operating on database repository ({e})")
                 return db_fires
         except Exception as db_err:
             print(f"[IGNIS] SQLite fallback notice: {db_err}")
 
-        _update_status("cached_fallback", 0, f"NASA FIRMS API: {e}")
-        return []
+        # 3. Fallback to demo fires
+        from demo_data import load_demo_fires
+        demo = load_demo_fires()
+        _update_status("demo", len(demo), f"Simulated surveillance telemetry ({len(demo)} hotspots)")
+        return demo
 
 
 def fetch_all_sources(days: int = 1, force: bool = False) -> list[dict[str, Any]]:
@@ -247,8 +271,15 @@ def fetch_all_sources(days: int = 1, force: bool = False) -> list[dict[str, Any]
     combined = fires_snpp + fires_noaa
 
     if not combined:
-        print(f"[IGNIS] fetch_all_sources | merged=0 | deduped=0")
-        return []
+        print(f"[IGNIS] fetch_all_sources | merged=0 | deduped=0, checking fallback...")
+        db_fires = get_fires_by_date(3, limit=1000)
+        if not db_fires:
+            db_fires = get_fires_by_date(30, limit=1000)
+        if db_fires:
+            combined = db_fires
+        else:
+            from demo_data import load_demo_fires
+            combined = load_demo_fires()
 
     # Sort descending by FRP to ensure points with higher FRP are preserved
     sorted_fires = sorted(combined, key=lambda f: float(f.get("frp", 0.0)), reverse=True)

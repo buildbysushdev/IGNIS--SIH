@@ -50,17 +50,17 @@ export interface ScenarioOverlayState {
   pulseMarker?: [number, number] | null;
 }
 
-// Strict Ground Station Color Coding (High Contrast, Phosphor & Terminal Accents)
+// Strict Ground Station Color Coding (High Contrast, Phosphor & Modern Mission Accents)
 export const TERMINAL_COLORS: Record<string, string> = {
-  EMERGENCY_INDUSTRIAL: "#ff3b3b", // Crimson
-  PERSISTENT_INDUSTRIAL: "#ffb800", // Gold / Amber
-  AGRICULTURAL_BURNING: "#ff9500", // Orange
-  FOREST_FIRE: "#00ff9c", // Phosphor Green
-  UNKNOWN: "#4a5563", // Terminal Slate
+  EMERGENCY_INDUSTRIAL: "#EF4444", // Crimson Red
+  PERSISTENT_INDUSTRIAL: "#F59E0B", // Gold / Amber
+  AGRICULTURAL_BURNING: "#F97316", // Warm Orange
+  FOREST_FIRE: "#22C55E", // Emerald Green
+  UNKNOWN: "#9CA3AF", // Slate Gray
 };
 
 export function getMarkerColor(category: string): string {
-  return TERMINAL_COLORS[category] || "#4a5563";
+  return TERMINAL_COLORS[category] || "#9CA3AF";
 }
 
 export const TILE_PRESETS = {
@@ -147,6 +147,8 @@ interface FireMapProps {
   activeLayer?: keyof typeof TILE_PRESETS;
   onLayerChange?: (layer: keyof typeof TILE_PRESETS) => void;
   scenarioOverlay?: ScenarioOverlayState | null;
+  onTryLast3Days?: () => void;
+  onSwitchToDemo?: () => void;
 }
 
 export default function FireMap({
@@ -166,6 +168,8 @@ export default function FireMap({
   activeLayer: externalActiveLayer,
   onLayerChange,
   scenarioOverlay,
+  onTryLast3Days,
+  onSwitchToDemo,
 }: FireMapProps) {
   const { t } = useI18n();
   const safeFires = Array.isArray(fires) ? fires : [];
@@ -234,10 +238,7 @@ export default function FireMap({
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="font-semibold text-white">
-            India Thermal Surveillance Map
-          </span>
-          <span className="text-[11px] text-[#9CA3AF] bg-[#0B1220] border border-[#1F2937] px-2 py-0.5 rounded-full font-mono">
-            {renderedFires.length} Active Hotspots
+            India Thermal Surveillance Map • <span className="text-[#22D3EE] font-mono">{renderedFires.length}</span> Active Hotspots
           </span>
         </div>
 
@@ -348,7 +349,7 @@ export default function FireMap({
                   : intensity >= 0.45
                   ? "#ffb800"
                   : "#00d4ff";
-              const markerRadius = Math.max(9, Math.min(24, Math.round(intensity * 20)));
+              const markerRadius = Math.max(6, Math.min(14, Math.round(intensity * 12)));
 
               return (
                 <CircleMarker
@@ -356,10 +357,10 @@ export default function FireMap({
                   center={[pt.lat, pt.lon]}
                   radius={markerRadius}
                   fillColor={color}
-                  fillOpacity={Math.min(0.42, Math.max(0.18, intensity * 0.4))}
+                  fillOpacity={0.22}
                   color={color}
-                  weight={1}
-                  opacity={0.65}
+                  weight={0.5}
+                  opacity={0.4}
                 >
                   <Popup>
                     <div className="font-mono text-xs text-[#d0d8e0] p-1.5 space-y-1.5 min-w-[230px]">
@@ -423,11 +424,22 @@ export default function FireMap({
               );
             })}
 
-          {/* Render Fire Hotspots */}
+          {/* Render Live Fire Hotspots (Rendered AFTER heatmap so markers are always visible on top) */}
           {renderedFires.map((fire, idx) => {
             const markerColor = getMarkerColor(fire.category);
             const isCritical = fire.risk_level === "CRITICAL" || fire.category === "EMERGENCY_INDUSTRIAL";
-            const radius = isCritical ? (fire.frp > 50 ? 9 : 7) : fire.frp > 80 ? 6.5 : fire.frp > 30 ? 5 : 4;
+            const frpVal = Number(fire.frp || 0);
+            let radius = 6;
+            if (frpVal > 50) {
+              radius = 12;
+            } else if (frpVal >= 10) {
+              radius = 9;
+            } else {
+              radius = 6;
+            }
+            if (isCritical) {
+              radius = Math.max(radius + 2, 11);
+            }
             const seqId = `ANOM-${String(idx + 1).padStart(4, "0")}`;
 
             // Clean reason and action to ensure strict ASCII
@@ -444,10 +456,10 @@ export default function FireMap({
                 center={[fire.latitude, fire.longitude]}
                 radius={radius}
                 fillColor={markerColor}
-                fillOpacity={0.9}
-                color={isCritical ? "#ffffff" : "#1f2933"}
-                weight={1}
-                className={isCritical ? "status-dot-red" : undefined}
+                fillOpacity={0.92}
+                color={isCritical ? "#ffffff" : "#0B1220"}
+                weight={isCritical ? 2 : 1}
+                className={isCritical ? "status-dot-red animate-pulse" : undefined}
                 eventHandlers={{
                   click: () => {
                     if (onSelectFire) {
@@ -877,6 +889,39 @@ export default function FireMap({
             <span className="text-[#9CA3AF]">Unclassified</span>
           </div>
         </div>
+
+        {/* Empty-State Card Overlay when 0 Hotspots */}
+        {renderedFires.length === 0 && (
+          <div className="absolute inset-0 z-[1001] flex items-center justify-center pointer-events-none p-4">
+            <div className="bg-[#111827]/95 border border-[#1F2937] text-white p-6 rounded-2xl shadow-2xl backdrop-blur-md max-w-sm text-center pointer-events-auto space-y-3.5 animate-in fade-in zoom-in-95">
+              <div className="w-12 h-12 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl">
+                🛰️
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white tracking-wide">No Hotspots In Selected Window</h3>
+                <p className="text-xs text-[#9CA3AF] mt-1 leading-relaxed">
+                  Satellite orbit telemetry returned 0 thermal detections for the selected filter criteria.
+                </p>
+              </div>
+              <div className="flex items-center justify-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={onTryLast3Days}
+                  className="px-3.5 py-1.5 bg-[#22D3EE]/20 hover:bg-[#22D3EE]/30 border border-[#22D3EE] text-[#22D3EE] text-xs font-semibold rounded-lg transition cursor-pointer"
+                >
+                  Try Last 3 Days
+                </button>
+                <button
+                  type="button"
+                  onClick={onSwitchToDemo}
+                  className="px-3.5 py-1.5 bg-[#EF4444]/20 hover:bg-[#EF4444]/30 border border-[#EF4444] text-[#EF4444] text-xs font-semibold rounded-lg transition cursor-pointer"
+                >
+                  Switch to Demo
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Material-Based Fire Response Protocol Directive Modal */}

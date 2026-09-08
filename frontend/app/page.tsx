@@ -49,14 +49,44 @@ const getApiBaseUrl = () => {
   return process.env.NEXT_PUBLIC_API_URL || "https://web-production-b1e6a.up.railway.app";
 };
 
+// Compute category summary dynamically from fire detection list
+const computeSummary = (fireList: Fire[]): FireStats => {
+  const sum: FireStats = {
+    total: fireList.length,
+    emergency: 0,
+    persistent: 0,
+    agricultural: 0,
+    forest: 0,
+    unknown: 0,
+  };
+  for (const f of fireList) {
+    const cat = (f.category || (f as any).classification || "UNKNOWN").toUpperCase();
+    if (cat === "EMERGENCY_INDUSTRIAL") sum.emergency += 1;
+    else if (cat === "PERSISTENT_INDUSTRIAL") sum.persistent += 1;
+    else if (cat === "AGRICULTURAL_BURNING") sum.agricultural += 1;
+    else if (cat === "FOREST_FIRE") sum.forest += 1;
+    else sum.unknown += 1;
+  }
+  return sum;
+};
+
 export default function DashboardPage() {
   const [fires, setFires] = useState<Fire[]>([]);
-  const [filteredFires, setFilteredFires] = useState<Fire[]>([]);
   const [stats, setStats] = useState<FireStats | null>(null);
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
   const [days, setDays] = useState<number>(1);
   const [category, setCategory] = useState<string>("all");
   const [source, setSource] = useState<string>("all");
+
+  // Dynamic category filtering bound directly to live fire telemetry
+  const filteredFires = useMemo(() => {
+    if (!Array.isArray(fires)) return [];
+    if (!category || category === "all") return fires;
+    return fires.filter((f) => {
+      const cat = (f.category || (f as any).classification || "UNKNOWN").toUpperCase();
+      return cat === category.toUpperCase();
+    });
+  }, [fires, category]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -254,11 +284,42 @@ export default function DashboardPage() {
           }
         }
 
-        const fetchedFires: Fire[] = Array.isArray(firesData?.fires)
+        let fetchedFires: Fire[] = Array.isArray(firesData?.fires)
           ? firesData.fires
-          : (FALLBACK_TELEMETRY_DATA.fires as Fire[]);
+          : Array.isArray(firesData?.data)
+          ? firesData.data
+          : [];
+
+        // If returned 0 fires in live mode, auto-call fallback with days=3
+        if (fetchedFires.length === 0 && days === 1) {
+          console.warn("[IGNIS] 0 hotspots returned for 24h. Trying 3-day window fallback...");
+          try {
+            const fallback3dUrl = `${baseUrl}/api/fires?days=3&source=${source}&mode=${activeQueryMode}`;
+            const res3d = await axios.get(fallback3dUrl, { timeout: 8000 });
+            if (Array.isArray(res3d.data?.fires) && res3d.data.fires.length > 0) {
+              firesData = res3d.data;
+              fetchedFires = res3d.data.fires;
+            }
+          } catch (err3) {
+            console.warn("[IGNIS] 3-day query failed:", err3);
+          }
+        }
+
+        // If still 0 fires, engage verified fallback data
+        if (fetchedFires.length === 0) {
+          setNotification("No hotspots in window. Serving verified surveillance cache...");
+          firesData = FALLBACK_TELEMETRY_DATA;
+          fetchedFires = FALLBACK_TELEMETRY_DATA.fires as Fire[];
+        }
+
         setFires(fetchedFires);
-        setStats(firesData?.summary || FALLBACK_TELEMETRY_DATA.summary);
+
+        // Calculate non-zero summary from fires if API returned zeroes
+        let finalSummary: FireStats = firesData?.summary;
+        if (!finalSummary || (finalSummary.total === 0 && fetchedFires.length > 0)) {
+          finalSummary = computeSummary(fetchedFires);
+        }
+        setStats(finalSummary);
 
         const fetchedAlerts = Array.isArray(alertsData?.alerts)
           ? alertsData.alerts
@@ -279,8 +340,9 @@ export default function DashboardPage() {
         }
       } catch (err: any) {
         console.error("TELEMETRY FETCH ERROR:", err);
-        setFires(FALLBACK_TELEMETRY_DATA.fires as Fire[]);
-        setStats(FALLBACK_TELEMETRY_DATA.summary);
+        const fallbackList = FALLBACK_TELEMETRY_DATA.fires as Fire[];
+        setFires(fallbackList);
+        setStats(FALLBACK_TELEMETRY_DATA.summary || computeSummary(fallbackList));
         setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
         setIgnisStatus("cached_fallback");
         setMode("CACHED");
@@ -364,15 +426,6 @@ export default function DashboardPage() {
     fetchData();
   }, [fetchData]);
 
-  // Client-side category filtering
-  useEffect(() => {
-    const safe = Array.isArray(fires) ? fires : [];
-    if (category === "all") {
-      setFilteredFires(safe);
-    } else {
-      setFilteredFires(safe.filter((f) => (f?.category || "UNKNOWN") === category));
-    }
-  }, [category, fires]);
 
   // Auto-refresh every 3 minutes (180s)
   useEffect(() => {
@@ -493,6 +546,53 @@ export default function DashboardPage() {
         onOpenSystemLogs={() => setIsAboutOpen(true)}
       />
 
+      {/* DATA STATUS CHIP STRIP UNDER FILTER BAR */}
+      <div className="bg-[#0c121e] border-b border-[#1F2937]/80 px-4 py-1.5 flex items-center justify-between text-[11px] text-[#9CA3AF]">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 font-semibold tracking-wide">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                mode === "DEMO"
+                  ? "bg-cyan-400"
+                  : ignisStatus === "live"
+                  ? "bg-emerald-400 animate-pulse"
+                  : "bg-amber-400"
+              }`}
+            />
+            <span className="text-white uppercase text-[11px]">
+              {mode === "DEMO"
+                ? "DEMO SIMULATION"
+                : ignisStatus === "live"
+                ? "LIVE DATA"
+                : "CACHED DATA"}
+            </span>
+          </div>
+          <span className="text-[#374151]">•</span>
+          <span>
+            {mode === "DEMO"
+              ? "250 Pre-Classified Scenarios"
+              : ignisStatus === "live"
+              ? "NASA FIRMS (VIIRS/MODIS)"
+              : "Local Surveillance Cache"}
+          </span>
+          <span className="text-[#374151]">•</span>
+          <span className="font-mono text-[10px]">
+            Last Sync: {lastRefreshedUtc ? lastRefreshedUtc.slice(11, 19) + " UTC" : "NOMINAL"}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3 font-mono text-[10px]">
+          <span>
+            SURVEILLANCE: <strong className="text-[#22D3EE]">{filteredFires.length}</strong> / {fires.length} ACTIVE
+          </span>
+          {category !== "all" && (
+            <span className="bg-[#1F2937] text-amber-300 px-2 py-0.5 rounded text-[9px] uppercase font-bold">
+              FILTER: {category}
+            </span>
+          )}
+        </div>
+      </div>
+
       {/* 3) MAIN CONTENT AREA (3-COLUMN PROGRESSIVE DISCLOSURE) */}
       <main className="flex-1 flex overflow-hidden relative">
         {/* Error Notification Banner */}
@@ -567,6 +667,8 @@ export default function DashboardPage() {
             onOpenSpreadPrediction={handleOpenSpreadPrediction}
             spreadPredictionData={spreadPredictionData}
             selectedSpreadHour={selectedSpreadHour}
+            onTryLast3Days={() => setDays(3)}
+            onSwitchToDemo={() => handleSelectMode("DEMO")}
           />
 
           {/* Clean Bottom Detail Drawer when a fire is clicked */}
