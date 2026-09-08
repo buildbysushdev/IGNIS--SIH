@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import LanguageSwitcher from "./LanguageSwitcher";
+import { usePathname } from "next/navigation";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useI18n } from "@/context/I18nContext";
 
-export interface HeaderProps {
+interface HeaderProps {
+  onSelectMode: (mode: "LIVE" | "CACHED" | "DEMO" | "AUTO") => void;
   currentMode: "LIVE" | "CACHED" | "DEMO";
   modeInfo?: {
     mode?: string;
@@ -14,42 +16,26 @@ export interface HeaderProps {
     data_source?: string;
     is_manual?: boolean;
   };
-  onSelectMode: (mode: "LIVE" | "CACHED" | "DEMO" | "AUTO") => void;
-  selectedScenarioId: string;
-  onSelectScenario: (scenarioId: string) => void;
-  isScenarioPlaying: boolean;
-  onTogglePlayScenario: () => void;
-  seqCounter: number;
-  utcClock: string;
-  latencyStr: string;
-  onOpenAbout: () => void;
-  onOpenEmergencyPanel?: () => void;
-  onOpenDispatchHistory?: () => void;
+  onOpenHelp?: () => void;
 }
 
 export default function Header({
-  currentMode,
-  modeInfo,
   onSelectMode,
-  selectedScenarioId,
-  onSelectScenario,
-  isScenarioPlaying,
-  onTogglePlayScenario,
-  seqCounter,
-  utcClock,
-  latencyStr,
-  onOpenAbout,
-  onOpenEmergencyPanel,
-  onOpenDispatchHistory,
+  currentMode = "LIVE",
+  modeInfo,
+  onOpenHelp,
 }: HeaderProps) {
   const { t } = useI18n();
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const pathname = usePathname();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     }
@@ -62,233 +48,153 @@ export default function Header({
     onSelectMode(target);
   };
 
-  const getPillLabel = () => {
-    switch (currentMode) {
-      case "LIVE":
-        return t("modes.live", "LIVE :: NASA FIRMS");
-      case "CACHED":
-        return t("modes.cached", "CACHED :: LOCAL DB");
-      case "DEMO":
-        return t("modes.demo", "DEMO :: SIMULATED");
-      default:
-        return t("modes.live", "LIVE :: NASA FIRMS");
-    }
-  };
+  const isOperationsActive = pathname === "/";
+  const isAnalyticsActive = pathname.startsWith("/analytics");
+  const isFieldOfficerActive = pathname.startsWith("/field-officer");
 
   return (
-    <header className="border-b border-[#1f2933] bg-[#0f141b] px-3 py-2 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs tracking-wider uppercase font-mono relative z-40">
-      {/* 1) Left: Node Identity & NTRO Mission Tag */}
+    <header className="h-16 bg-[#0B1220] border-b border-[#1F2937] px-4 sm:px-6 flex items-center justify-between z-40 relative">
+      {/* 1) LEFT: IGNIS Logo, Subtitle & NTRO SIH26162 Badge */}
       <div className="flex items-center gap-3">
-        <div className="w-2.5 h-2.5 bg-[#00ff9c] status-dot-green flex-shrink-0" />
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="text-[#00ff9c] font-black text-sm tracking-widest">
-              {t("header.title", "IGNIS-01")}
-            </span>
-            <span className="text-[#4a5563]">//</span>
-            <span className="text-[#d0d8e0] font-bold">
-              {t("header.subtitle", "FIRE INTELLIGENCE GROUND STATION")}
-            </span>
-            <span className="text-[10px] text-[#00d4ff] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14]">
-              v2.0
-            </span>
-            <span className="text-[10px] text-[#ffb800] border border-[#1f2933] px-1 py-0.2 bg-[#0a0e14] hidden sm:inline">
-              {t("header.mission_tag", "NTRO // SIH26162")}
-            </span>
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
+            🔥
           </div>
-          <div className="text-[10px] text-[#6b7785] tracking-wider uppercase flex items-center gap-2">
-            <span>{t("header.defense_node", "DEFENSE THERMAL SURVEILLANCE NODE")}</span>
-            <span className="text-[#4a5563]">::</span>
-            <span className="text-[#00d4ff] lowercase">{modeInfo?.data_source || "Real-time Telemetry"}</span>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-base sm:text-lg font-black tracking-wider text-white">
+                IGNIS
+              </span>
+              <span className="text-[10px] font-semibold bg-[#111827] text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full tracking-normal">
+                NTRO SIH26162
+              </span>
+            </div>
+            <p className="text-[11px] text-[#9CA3AF] -mt-0.5 hidden sm:block">
+              {t("header.subtitle", "Fire Intelligence Platform")}
+            </p>
           </div>
-        </div>
+        </Link>
       </div>
 
-      {/* 2) Center: Navigation View Switcher, Simulation Scenarios & Quick Launch */}
-      <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
-        {/* Navigation View Switcher */}
-        <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] p-0.5 text-[10px]">
-          <div className="px-2 py-0.5 bg-[#15202c] border border-[#00d4ff] text-[#00d4ff] font-bold uppercase">
-            [ {t("header.operations", "OPERATIONS")} ]
-          </div>
-          <Link
-            href="/analytics"
-            className="px-2 py-0.5 text-[#6b7785] hover:text-[#ffb800] uppercase font-bold transition cursor-pointer"
-            title="Open Authority Analytics Dashboard"
-          >
-            [ {t("header.analytics", "ANALYTICS")} ]
-          </Link>
-          <Link
-            href="/field-officer"
-            className="px-2 py-0.5 bg-[#ff9500]/15 border border-[#ff9500]/60 text-[#ffaa22] hover:bg-[#ff9500]/30 uppercase font-bold transition flex items-center gap-1 text-[10px]"
-          >
-            <span>🚒</span>
-            [ {t("header.field_officer", "FIELD OPS")} ]
-          </Link>
-        </div>
+      {/* 2) CENTER: Single Clean Navigation Tabs (Only one active at a time) */}
+      <nav className="hidden md:flex items-center gap-1.5 bg-[#111827] p-1 rounded-xl border border-[#1F2937]">
+        <Link
+          href="/"
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            isOperationsActive
+              ? "bg-[#1F2937] text-white shadow-sm"
+              : "text-[#9CA3AF] hover:text-white"
+          }`}
+        >
+          {t("header.operations", "Operations")}
+        </Link>
 
-        {/* Scenarios Selector Dropdown */}
-        <div className="flex items-center gap-1 border border-[#1f2933] bg-[#0a0e14] px-2 py-1 text-[10px]">
-          <span className="text-[#6b7785] font-bold hidden sm:inline">{t("header.scenario_label", "SCENARIO:")}</span>
-          <select
-            value={selectedScenarioId}
-            onChange={(e) => onSelectScenario(e.target.value)}
-            className="bg-[#0f141b] border border-[#1f2933] text-[#00d4ff] px-1.5 py-0.5 font-mono text-[10px] cursor-pointer"
-          >
-            <option value="live">Live Data</option>
-            <option value="surat_emergency">▶ Surat Emergency Response</option>
-            <option value="punjab_stubble">▶ Punjab Stubble Peak</option>
-            <option value="uttarakhand_forest">▶ Uttarakhand Forest Fire</option>
-          </select>
-          {selectedScenarioId !== "live" && (
-            <button
-              onClick={onTogglePlayScenario}
-              className={`px-2 py-0.5 text-[9px] font-bold uppercase cursor-pointer border transition ${
-                isScenarioPlaying
-                  ? "border-[#ffb800] bg-[#ffb800]/20 text-[#ffb800]"
-                  : "border-[#00ff9c] bg-[#00ff9c]/20 text-[#00ff9c] hover:bg-[#00ff9c]/30"
-              }`}
-            >
-              {isScenarioPlaying ? t("header.pause_scenario", "[ PAUSE ]") : t("header.play_scenario", "[ PLAY SCENARIO ]")}
-            </button>
-          )}
-        </div>
+        <Link
+          href="/analytics"
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            isAnalyticsActive
+              ? "bg-[#1F2937] text-white shadow-sm"
+              : "text-[#9CA3AF] hover:text-white"
+          }`}
+        >
+          {t("header.analytics", "Analytics")}
+        </Link>
 
-        {onOpenEmergencyPanel && (
-          <button
-            onClick={onOpenEmergencyPanel}
-            className="px-2 py-1 text-[10px] font-bold uppercase border border-[#ff3b3b]/60 bg-[#ff3b3b]/10 text-[#ff8080] hover:bg-[#ff3b3b]/25 cursor-pointer transition hidden md:inline-flex items-center gap-1"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
-            {t("header.emergency_panel", "[ EMERGENCY PANEL ]")}
-          </button>
-        )}
+        <Link
+          href="/field-officer"
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            isFieldOfficerActive
+              ? "bg-[#1F2937] text-white shadow-sm"
+              : "text-[#9CA3AF] hover:text-white"
+          }`}
+        >
+          {t("header.field_officer", "Field Officer")}
+        </Link>
+      </nav>
 
-        {onOpenDispatchHistory && (
-          <button
-            onClick={onOpenDispatchHistory}
-            className="px-2 py-1 text-[10px] font-bold uppercase border border-[#00d4ff]/60 bg-[#00d4ff]/10 text-[#00d4ff] hover:bg-[#00d4ff]/25 cursor-pointer transition hidden lg:inline-flex items-center gap-1"
-          >
-            <span>📋</span>
-            {t("header.dispatch_log", "[ DISPATCH LOG ]")}
-          </button>
-        )}
-      </div>
-
-      {/* 3) Right: Operational Mode Dropdown Pill, Satellite Link Info & Multi-Language Switcher */}
-      <div className="flex items-center gap-2 text-[11px] font-mono">
-        {/* MULTI-LANGUAGE SWITCHER DROPDOWN */}
-        <LanguageSwitcher />
-
-        {/* Latency & Packets */}
-        <div className="hidden xl:flex items-center gap-1.5 border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#6b7785]">
-          <span className="text-[#00d4ff]">{latencyStr}</span>
-          <span>::</span>
-          <span>PKT #{seqCounter}</span>
-        </div>
-
-
-        {/* PROMINENT OPERATIONAL MODE PILL WITH DROPDOWN */}
+      {/* 3) RIGHT: Mode Pill, Language Switcher & Help (?) */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Compact Mode Pill */}
         <div className="relative" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className={`flex items-center gap-2 border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase transition cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
               currentMode === "LIVE"
-                ? "border-[#00ff9c] bg-[#00ff9c]/10 text-[#00ff9c] hover:bg-[#00ff9c]/20"
-                : currentMode === "CACHED"
-                ? "border-[#ffb800] bg-[#ffb800]/10 text-[#ffb800] hover:bg-[#ffb800]/20"
-                : "border-[#a855f7] bg-[#a855f7]/15 text-[#c084fc] hover:bg-[#a855f7]/25"
+                ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-400 hover:bg-emerald-950/60"
+                : currentMode === "DEMO"
+                ? "bg-purple-950/40 border-purple-500/50 text-purple-300 hover:bg-purple-950/60"
+                : "bg-amber-950/40 border-amber-500/50 text-amber-400 hover:bg-amber-950/60"
             }`}
           >
             <span
               className={`w-2 h-2 rounded-full ${
                 currentMode === "LIVE"
-                  ? "bg-[#00ff9c] status-dot-green animate-pulse"
-                  : currentMode === "CACHED"
-                  ? "bg-[#ffb800] status-dot-amber"
-                  : "bg-[#a855f7] shadow-[0_0_8px_#a855f7] animate-pulse"
+                  ? "bg-emerald-400 animate-pulse"
+                  : currentMode === "DEMO"
+                  ? "bg-purple-400"
+                  : "bg-amber-400"
               }`}
             />
-            <span>{getPillLabel()}</span>
-            <span className="text-[8px] text-[#6b7785]">▼</span>
+            <span>{currentMode === "LIVE" ? "LIVE" : currentMode === "DEMO" ? "DEMO" : "CACHED"}</span>
+            <span className="text-[10px] text-[#9CA3AF]">▼</span>
           </button>
 
-          {/* Mode Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-1 w-52 bg-[#0f141b] border border-[#2d3a4a] shadow-2xl p-1.5 space-y-1 z-50 text-[10px] font-mono">
-              <div className="px-2 py-1 text-[9px] text-[#6b7785] border-b border-[#1f2933] font-bold">
-                // SELECT OPERATIONAL MODE
-              </div>
-
-              <button
-                type="button"
-                onClick={() => handleModePick("AUTO")}
-                className="w-full text-left px-2 py-1.5 text-[#d0d8e0] hover:bg-[#1f2933] flex items-center justify-between cursor-pointer"
-              >
-                <span>[ ○ AUTO DETECT ]</span>
-                <span className="text-[9px] text-[#6b7785]">HEALTH PING</span>
-              </button>
-
+            <div className="absolute right-0 mt-2 w-48 bg-[#111827] border border-[#1F2937] rounded-xl shadow-2xl p-1.5 z-50 text-xs">
               <button
                 type="button"
                 onClick={() => handleModePick("LIVE")}
-                className={`w-full text-left px-2 py-1.5 flex items-center justify-between cursor-pointer ${
+                className={`w-full text-left px-3 py-2 rounded-lg flex items-center justify-between ${
                   currentMode === "LIVE"
-                    ? "bg-[#00ff9c]/15 text-[#00ff9c] font-bold"
-                    : "text-[#d0d8e0] hover:bg-[#1f2933]"
+                    ? "bg-[#1F2937] text-emerald-400 font-semibold"
+                    : "text-[#E5E7EB] hover:bg-[#1F2937]/60"
                 }`}
               >
-                <span>{currentMode === "LIVE" ? "[ ● FORCE LIVE ]" : "[ ○ FORCE LIVE ]"}</span>
-                <span className="text-[9px] text-[#00ff9c]">NASA API</span>
+                <span>Live Feed (NASA)</span>
+                <span className="text-[10px] text-emerald-500">●</span>
               </button>
-
-              <button
-                type="button"
-                onClick={() => handleModePick("CACHED")}
-                className={`w-full text-left px-2 py-1.5 flex items-center justify-between cursor-pointer ${
-                  currentMode === "CACHED"
-                    ? "bg-[#ffb800]/15 text-[#ffb800] font-bold"
-                    : "text-[#d0d8e0] hover:bg-[#1f2933]"
-                }`}
-              >
-                <span>{currentMode === "CACHED" ? "[ ● FORCE CACHED ]" : "[ ○ FORCE CACHED ]"}</span>
-                <span className="text-[9px] text-[#ffb800]">SQLITE</span>
-              </button>
-
               <button
                 type="button"
                 onClick={() => handleModePick("DEMO")}
-                className={`w-full text-left px-2 py-1.5 flex items-center justify-between cursor-pointer ${
+                className={`w-full text-left px-3 py-2 rounded-lg flex items-center justify-between ${
                   currentMode === "DEMO"
-                    ? "bg-[#a855f7]/20 text-[#c084fc] font-bold"
-                    : "text-[#d0d8e0] hover:bg-[#1f2933]"
+                    ? "bg-[#1F2937] text-purple-300 font-semibold"
+                    : "text-[#E5E7EB] hover:bg-[#1F2937]/60"
                 }`}
               >
-                <span>{currentMode === "DEMO" ? "[ ● FORCE DEMO ]" : "[ ○ FORCE DEMO ]"}</span>
-                <span className="text-[9px] text-[#c084fc]">250 FIRES</span>
+                <span>Demo Simulation</span>
+                <span className="text-[10px] text-purple-400">●</span>
               </button>
-
-              <div className="pt-1 border-t border-[#1f2933] px-2 text-[8px] text-[#6b7785] lowercase truncate">
-                {modeInfo?.reason || "Operational status verified"}
-              </div>
+              <button
+                type="button"
+                onClick={() => handleModePick("CACHED")}
+                className={`w-full text-left px-3 py-2 rounded-lg flex items-center justify-between ${
+                  currentMode === "CACHED"
+                    ? "bg-[#1F2937] text-amber-300 font-semibold"
+                    : "text-[#E5E7EB] hover:bg-[#1F2937]/60"
+                }`}
+              >
+                <span>Offline Cached DB</span>
+                <span className="text-[10px] text-amber-500">●</span>
+              </button>
             </div>
           )}
         </div>
 
-        {/* Live UTC Clock */}
-        <div className="hidden lg:flex items-center gap-1.5 border border-[#1f2933] px-2 py-1 bg-[#0a0e14] text-[10px] text-[#d0d8e0] tabular-nums">
-          <span className="text-[#6b7785]">UTC</span>
-          <span>{utcClock || "SYNCING..."}</span>
-        </div>
+        {/* Multi-Language Dropdown */}
+        <LanguageSwitcher />
 
-        {/* Info Modal Button */}
-        <button
-          onClick={onOpenAbout}
-          className="border border-[#1f2933] bg-[#0a0e14] text-[#6b7785] hover:text-[#d0d8e0] hover:border-[#00d4ff] px-2 py-1 text-[10px] font-bold transition cursor-pointer"
-        >
-          [?]
-        </button>
+        {/* Help (?) Button */}
+        {onOpenHelp && (
+          <button
+            onClick={onOpenHelp}
+            className="w-8 h-8 rounded-lg bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] text-[#9CA3AF] hover:text-white flex items-center justify-center text-xs font-bold transition"
+            title="Help & System Info"
+          >
+            ?
+          </button>
+        )}
       </div>
     </header>
   );

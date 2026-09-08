@@ -1,188 +1,272 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useI18n } from "@/context/I18nContext";
 
 interface FilterBarProps {
   days: number;
   category: string;
   source: string;
-  lastUpdated?: string;
   isRefreshing?: boolean;
   onDaysChange: (days: number) => void;
   onCategoryChange: (category: string) => void;
   onSourceChange: (source: string) => void;
   onRefresh: () => void;
   onDownload?: () => void;
+  onOpenScenarios?: () => void;
+  onOpenEmergency?: () => void;
+  criticalAlertCount?: number;
+  onOpenDispatchHistory?: () => void;
   onTrainModel?: () => void;
+  onToggleHistoricalHeatmap?: () => void;
+  showHistoricalHeatmap?: boolean;
+  onOpenSystemLogs?: () => void;
 }
 
 const SOURCES = [
-  { value: "all", label: "MERGED (SNPP + NOAA20)" },
-  { value: "VIIRS_SNPP_NRT", label: "VIIRS-SNPP (375M)" },
-  { value: "VIIRS_NOAA20_NRT", label: "VIIRS-NOAA20 (375M)" },
+  { value: "all", label: "Merged Sensors (SNPP + NOAA20)" },
+  { value: "VIIRS_SNPP_NRT", label: "VIIRS-SNPP (375m)" },
+  { value: "VIIRS_NOAA20_NRT", label: "VIIRS-NOAA20 (375m)" },
 ];
 
 const DAY_OPTIONS = [
-  { value: 1, label: "1D" },
-  { value: 3, label: "3D" },
-  { value: 7, label: "7D" },
-  { value: 10, label: "10D" },
+  { value: 1, label: "Last 24 Hours (1D)" },
+  { value: 3, label: "Last 3 Days (3D)" },
+  { value: 7, label: "Last 7 Days (7D)" },
+  { value: 10, label: "Last 10 Days (10D)" },
 ];
 
 export default function FilterBar({
   days,
   category,
   source,
-  lastUpdated,
   isRefreshing = false,
   onDaysChange,
   onCategoryChange,
   onSourceChange,
   onRefresh,
   onDownload,
+  onOpenScenarios,
+  onOpenEmergency,
+  criticalAlertCount = 0,
+  onOpenDispatchHistory,
   onTrainModel,
+  onToggleHistoricalHeatmap,
+  showHistoricalHeatmap = false,
+  onOpenSystemLogs,
 }: FilterBarProps) {
   const { t } = useI18n();
-  const [countdown, setCountdown] = useState(180);
-
-  const categories = [
-    { value: "all", label: t("filters.all", "ALL CATEGORIES") },
-    { value: "EMERGENCY_INDUSTRIAL", label: t("categories.EMERGENCY_INDUSTRIAL", "EMERGENCY INDUSTRIAL") },
-    { value: "PERSISTENT_INDUSTRIAL", label: t("categories.PERSISTENT_INDUSTRIAL", "PERSISTENT INDUSTRIAL") },
-    { value: "AGRICULTURAL_BURNING", label: t("categories.AGRICULTURAL_BURNING", "AGRICULTURAL BURNING") },
-    { value: "FOREST_FIRE", label: t("categories.FOREST_FIRE", "FOREST BIOMASS") },
-    { value: "UNKNOWN", label: t("categories.UNKNOWN", "UNCLASSIFIED") },
-  ];
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((c) => (c <= 1 ? 180 : c - 1));
-    }, 1000);
-    return () => clearInterval(timer);
+    function handleClickOutside(event: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
+        setIsMoreOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const formatCountdown = (secs: number) => {
-    const m = String(Math.floor(secs / 60)).padStart(2, "0");
-    const s = String(secs % 60).padStart(2, "0");
-    return `${m}:${s}`;
-  };
+  const categories = [
+    { value: "all", label: t("filters.all", "All Fire Categories") },
+    {
+      value: "EMERGENCY_INDUSTRIAL",
+      label: t("categories.EMERGENCY_INDUSTRIAL", "Emergency Industrial"),
+    },
+    {
+      value: "PERSISTENT_INDUSTRIAL",
+      label: t("categories.PERSISTENT_INDUSTRIAL", "Persistent Industrial"),
+    },
+    {
+      value: "AGRICULTURAL_BURNING",
+      label: t("categories.AGRICULTURAL_BURNING", "Agricultural Burning"),
+    },
+    {
+      value: "FOREST_FIRE",
+      label: t("categories.FOREST_FIRE", "Forest Biomass"),
+    },
+    {
+      value: "UNKNOWN",
+      label: t("categories.UNKNOWN", "Unclassified Anomaly"),
+    },
+  ];
 
   return (
-    <div className="panel border border-[#1f2933] bg-[#0f141b] p-3 font-mono corner-brackets">
-      {/* Top Deck: Grid of Parameter Selectors & Operational Triggers */}
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#1f2933] pb-3">
-        {/* Controls Layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          {/* TIME WINDOW */}
-          <div>
-            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ {t("filters.time_horizon", "TIME WINDOW")} ]
-            </label>
-            <select
-              value={days}
-              onChange={(e) => onDaysChange(Number(e.target.value))}
-              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
-            >
-              {DAY_OPTIONS.map((d) => (
-                <option key={d.value} value={d.value} className="bg-[#0f141b] text-[#d0d8e0]">
-                  {d.label} ▾
-                </option>
-              ))}
-            </select>
-          </div>
+    <div className="bg-[#0B1220] border-b border-[#1F2937] px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs font-sans">
+      {/* Left Controls: Days, Category, Source */}
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        {/* Days Filter */}
+        <select
+          value={days}
+          onChange={(e) => onDaysChange(Number(e.target.value))}
+          className="bg-[#111827] border border-[#1F2937] text-[#E5E7EB] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:border-[#22D3EE] cursor-pointer"
+        >
+          {DAY_OPTIONS.map((d) => (
+            <option key={d.value} value={d.value} className="bg-[#111827]">
+              {d.label}
+            </option>
+          ))}
+        </select>
 
-          {/* CATEGORY FILTER */}
-          <div>
-            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ {t("filters.all", "CATEGORY FILTER")} ]
-            </label>
-            <select
-              value={category}
-              onChange={(e) => onCategoryChange(e.target.value)}
-              className="w-full bg-[#0a0e14] text-[#00d4ff] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs font-bold cursor-pointer rounded-none"
-            >
-              {categories.map((c) => (
-                <option key={c.value} value={c.value} className="bg-[#0f141b] text-[#d0d8e0]">
-                  {c.label} ▾
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* Category Filter */}
+        <select
+          value={category}
+          onChange={(e) => onCategoryChange(e.target.value)}
+          className="bg-[#111827] border border-[#1F2937] text-[#22D3EE] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#22D3EE] cursor-pointer max-w-[190px] truncate"
+        >
+          {categories.map((c) => (
+            <option key={c.value} value={c.value} className="bg-[#111827] text-[#E5E7EB]">
+              {c.label}
+            </option>
+          ))}
+        </select>
 
-          {/* DATA SOURCE */}
-          <div>
-            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ SENSOR MESH ]
-            </label>
-            <select
-              value={source}
-              onChange={(e) => onSourceChange(e.target.value)}
-              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
-            >
-              {SOURCES.map((s) => (
-                <option key={s.value} value={s.value} className="bg-[#0f141b] text-[#d0d8e0]">
-                  {s.label} ▾
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* REGION MASK */}
-          <div>
-            <label className="block text-[10px] font-bold text-[#4a5563] uppercase tracking-[0.15em] mb-1 select-none">
-              [ REGION MASK ]
-            </label>
-            <select
-              defaultValue="INDIA"
-              className="w-full bg-[#0a0e14] text-[#d0d8e0] border border-[#1f2933] border-b-2 border-b-[#00d4ff] px-2.5 py-1.5 focus:outline-none focus:border-[#00d4ff] font-mono text-xs cursor-pointer rounded-none"
-            >
-              <option value="INDIA" className="bg-[#0f141b] text-[#d0d8e0]">INDIA ▾</option>
-              <option value="NORTH" className="bg-[#0f141b] text-[#d0d8e0]">IND-NORTH ▾</option>
-              <option value="EAST" className="bg-[#0f141b] text-[#d0d8e0]">IND-EAST ▾</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Right Action Buttons */}
-        <div className="flex items-center gap-2">
-          {/* REFRESH */}
-          <button
-            onClick={onRefresh}
-            disabled={isRefreshing}
-            className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#00ff9c] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer disabled:opacity-50"
-          >
-            {isRefreshing ? "[ SYNCING... ]" : `[ ${t("actions.refresh", "REFRESH")} ▷ ]`}
-          </button>
-
-          {/* EXPORT CSV */}
-          {onDownload && (
-            <button
-              onClick={onDownload}
-              className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#00d4ff] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer"
-            >
-              [ {t("actions.download", "EXPORT CSV")} ↓ ]
-            </button>
-          )}
-
-          {/* TRAIN MODEL */}
-          <button
-            onClick={onTrainModel}
-            className="px-3 py-1.5 border border-[#1f2933] bg-[#0f141b] hover:bg-[#131a22] active:border-[#00d4ff] text-[#d0d8e0] hover:text-[#ffb800] text-xs font-mono font-bold tracking-wider uppercase transition cursor-pointer hidden md:inline-block"
-          >
-            [ TRAIN MODEL ⚙ ]
-          </button>
-        </div>
+        {/* Source Filter */}
+        <select
+          value={source}
+          onChange={(e) => onSourceChange(e.target.value)}
+          className="bg-[#111827] border border-[#1F2937] text-[#9CA3AF] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:border-[#22D3EE] cursor-pointer hidden md:block max-w-[180px] truncate"
+        >
+          {SOURCES.map((s) => (
+            <option key={s.value} value={s.value} className="bg-[#111827] text-[#E5E7EB]">
+              {s.label}
+            </option>
+          ))}
+        </select>
       </div>
 
-      {/* Bottom of Deck: Synchronization Heartbeat */}
-      <div className="flex items-center justify-between pt-2 text-[10px] font-mono text-[#6b7785] select-none">
-        <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff9c] status-dot-green" />
-          <span>AUTO-SYNC: 180s :: NEXT REFRESH IN {formatCountdown(countdown)}</span>
-        </div>
-        <div>
-          <span>PACKET PROTOCOL: HTTPS/REST :: FIRMS-MAP-KEY: VERIFIED</span>
+      {/* Right Actions: Refresh, Download, Scenarios, Emergency, More */}
+      <div className="flex items-center gap-2">
+        {/* Refresh */}
+        <button
+          onClick={onRefresh}
+          disabled={isRefreshing}
+          className="px-3 py-1.5 bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] text-[#E5E7EB] rounded-lg text-xs font-medium transition flex items-center gap-1.5 disabled:opacity-50"
+          title="Refresh satellite telemetry"
+        >
+          <span className={isRefreshing ? "animate-spin" : ""}>🔄</span>
+          <span className="hidden sm:inline">
+            {isRefreshing ? "Syncing..." : t("actions.refresh", "Refresh")}
+          </span>
+        </button>
+
+        {/* Download CSV */}
+        {onDownload && (
+          <button
+            onClick={onDownload}
+            className="px-3 py-1.5 bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] text-[#E5E7EB] rounded-lg text-xs font-medium transition flex items-center gap-1.5"
+            title="Download CSV report"
+          >
+            <span>📥</span>
+            <span className="hidden sm:inline">{t("actions.download", "Export")}</span>
+          </button>
+        )}
+
+        {/* Scenarios Button */}
+        {onOpenScenarios && (
+          <button
+            onClick={onOpenScenarios}
+            className="px-3 py-1.5 bg-[#111827] hover:bg-[#1F2937] border border-cyan-500/40 text-[#22D3EE] rounded-lg text-xs font-medium transition flex items-center gap-1.5"
+          >
+            <span>▶</span>
+            <span>Scenarios</span>
+          </button>
+        )}
+
+        {/* Emergency Trigger Button with Critical Badge */}
+        {onOpenEmergency && (
+          <button
+            onClick={onOpenEmergency}
+            className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900/50 border border-red-500/50 text-red-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
+          >
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span>Emergency</span>
+            {criticalAlertCount > 0 && (
+              <span className="bg-red-500 text-white px-1.5 py-0.2 text-[10px] font-bold rounded-full ml-0.5">
+                {criticalAlertCount}
+              </span>
+            )}
+          </button>
+        )}
+
+        {/* More Dropdown */}
+        <div className="relative" ref={moreRef}>
+          <button
+            onClick={() => setIsMoreOpen(!isMoreOpen)}
+            className="px-3 py-1.5 bg-[#111827] hover:bg-[#1F2937] border border-[#1F2937] text-[#9CA3AF] hover:text-white rounded-lg text-xs font-medium transition flex items-center gap-1"
+          >
+            <span>More</span>
+            <span className="text-[10px]">▼</span>
+          </button>
+
+          {isMoreOpen && (
+            <div className="absolute right-0 mt-2 w-56 bg-[#111827] border border-[#1F2937] rounded-xl shadow-2xl p-1.5 z-50 text-xs space-y-1">
+              {onOpenDispatchHistory && (
+                <button
+                  onClick={() => {
+                    setIsMoreOpen(false);
+                    onOpenDispatchHistory();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-lg text-[#E5E7EB] hover:bg-[#1F2937] flex items-center gap-2 transition"
+                >
+                  <span>📋</span>
+                  <span>Dispatch Audit Log</span>
+                </button>
+              )}
+
+              {onToggleHistoricalHeatmap && (
+                <button
+                  onClick={() => {
+                    setIsMoreOpen(false);
+                    onToggleHistoricalHeatmap();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-lg text-[#E5E7EB] hover:bg-[#1F2937] flex items-center justify-between transition"
+                >
+                  <div className="flex items-center gap-2">
+                    <span>🗺️</span>
+                    <span>5-Yr Recurrence Heatmap</span>
+                  </div>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+                      showHistoricalHeatmap
+                        ? "bg-emerald-950 text-emerald-400"
+                        : "bg-gray-800 text-gray-400"
+                    }`}
+                  >
+                    {showHistoricalHeatmap ? "ON" : "OFF"}
+                  </span>
+                </button>
+              )}
+
+              {onTrainModel && (
+                <button
+                  onClick={() => {
+                    setIsMoreOpen(false);
+                    onTrainModel();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-lg text-[#E5E7EB] hover:bg-[#1F2937] flex items-center gap-2 transition"
+                >
+                  <span>⚙️</span>
+                  <span>Retrain ML Classifier</span>
+                </button>
+              )}
+
+              {onOpenSystemLogs && (
+                <button
+                  onClick={() => {
+                    setIsMoreOpen(false);
+                    onOpenSystemLogs();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-lg text-[#E5E7EB] hover:bg-[#1F2937] flex items-center gap-2 transition"
+                >
+                  <span>📑</span>
+                  <span>System Diagnostics & Logs</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

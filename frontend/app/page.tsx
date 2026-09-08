@@ -21,6 +21,9 @@ import Header from "@/components/Header";
 import ScenarioPlayer from "@/components/ScenarioPlayer";
 import HistoricalAnalysis from "@/components/HistoricalAnalysis";
 import AgniChatbot from "@/components/AgniChatbot";
+import LeftPanel from "@/components/LeftPanel";
+import FireDetailDrawer from "@/components/FireDetailDrawer";
+import ProtocolModal from "@/components/ProtocolModal";
 import SpreadPrediction, { SpreadPredictionData } from "@/components/SpreadPrediction";
 
 const FireMap = dynamic(() => import("@/components/FireMap"), {
@@ -102,6 +105,22 @@ export default function DashboardPage() {
   const [isHistoricalOpen, setIsHistoricalOpen] = useState<boolean>(false);
   const [historicalTargetFire, setHistoricalTargetFire] = useState<Fire | null>(null);
   const [showHistoricalHeatmap, setShowHistoricalHeatmap] = useState<boolean>(false);
+
+  // Progressive Disclosure Redesign States
+  const [selectedFire, setSelectedFire] = useState<Fire | null>(null);
+  const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState<boolean>(false);
+  const [isProtocolModalOpen, setIsProtocolModalOpen] = useState<boolean>(false);
+  const [isScenarioModalOpen, setIsScenarioModalOpen] = useState<boolean>(false);
+
+  const criticalAlertCount = useMemo(() => {
+    return alerts.filter(
+      (a) =>
+        a.severity === "CRITICAL" ||
+        a.severity === "HIGH" ||
+        a.alert_type?.includes("EMERGENCY") ||
+        a.message?.toLowerCase().includes("critical")
+    ).length;
+  }, [alerts]);
 
   // Fire Spread Prediction Engine State (Rothermel Model)
   const [isSpreadDrawerOpen, setIsSpreadDrawerOpen] = useState<boolean>(false);
@@ -432,260 +451,267 @@ export default function DashboardPage() {
 
   return (
     <div
-      className={`min-h-screen text-[#d0d8e0] font-mono flex flex-col antialiased select-none transition-colors duration-500 ${
-        mode === "LIVE" ? "mode-bg-live" : mode === "CACHED" ? "mode-bg-cached" : "mode-bg-demo"
+      className={`min-h-screen h-screen text-[#E5E7EB] bg-[#0B1220] font-sans flex flex-col antialiased select-none overflow-hidden transition-colors duration-300 ${
+        mode === "DEMO" ? "mode-bg-demo" : ""
       }`}
     >
-      {/* ========================================================================= */}
-      {/* 1) TOP ROW (VERY THIN, 24PX)                                              */}
-      {/* ========================================================================= */}
-      <div className="h-6 bg-[#0a0e14] border-b border-[#1f2933] px-3 flex items-center justify-between text-[10px] text-[#6b7785] tracking-widest uppercase">
-        <div className="flex items-center gap-2">
-          <span className="text-[#00ff9c] font-bold">::</span>
-          <span className="text-[#d0d8e0] font-semibold">
-            IGNIS-01 :: FIRE INTELLIGENCE GROUND STATION
-          </span>
-          <span className="text-[#4a5563] hidden sm:inline">// SECTOR: IND-SUBCONTINENT</span>
-        </div>
-        <div className="flex items-center gap-4 tabular-nums">
-          <span className="text-[#00d4ff]">SEQ #{String(seqCounter).padStart(5, "0")}</span>
-          <span className="text-[#6b7785] hidden md:inline">NODE: RAILWAY-PROD-B1</span>
-          <span className="text-[#d0d8e0] font-bold">{utcClock || "2025-01-20T14:32:15Z"}</span>
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* 2) MAIN HEADER ROW WITH OPERATIONAL MODE PILL & DROPDOWN                  */}
-      {/* ========================================================================= */}
+      {/* 1) TOP BAR (SINGLE CLEAN BAR, HEIGHT 64PX) */}
       <Header
         currentMode={mode}
         modeInfo={modeInfo}
         onSelectMode={handleSelectMode}
-        selectedScenarioId={selectedScenarioId}
-        onSelectScenario={handleSelectScenario}
-        isScenarioPlaying={isScenarioPlaying}
-        onTogglePlayScenario={togglePlayScenario}
-        seqCounter={seqCounter}
-        utcClock={utcClock}
-        latencyStr={latencyStr}
-        onOpenAbout={() => setIsAboutOpen(true)}
-        onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
-        onOpenDispatchHistory={() => setIsDispatchHistoryOpen(true)}
+        onOpenHelp={() => setIsAboutOpen(true)}
       />
 
-      {/* ========================================================================= */}
-      {/* 3) STATUS STRIP (ULTRA-THIN 28PX STATUS RIBBON)                           */}
-      {/* ========================================================================= */}
-      <div className="h-7 bg-[#0a0e14] border-b border-[#1f2933] px-3 flex items-center justify-between text-[10px] font-mono overflow-x-auto">
-        <div className="flex items-center gap-2 whitespace-nowrap">
-          {ignisStatus === "live" ? (
-            <>
-              <span className="text-[#00ff9c] font-bold">[LIVE]</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#00ff9c]">NASA-FIRMS LINK NOMINAL</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#d0d8e0]">OSM-BASELINE LOADED (248 SITES)</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#6b7785]">LAST SYNC {lastRefreshedUtc || "14:32:15Z"}</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#00d4ff]">NEXT SYNC IN 03:00</span>
-            </>
-          ) : (
-            <>
-              <span className="text-[#ffb800] font-bold">[WARN]</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#ffb800]">LINK DEGRADED</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#d0d8e0]">SERVING FROM LOCAL CACHE REPOSITORY</span>
-              <span className="text-[#4a5563]">::</span>
-              <span className="text-[#6b7785]">SNAPSHOT: {lastRefreshedUtc}</span>
-            </>
-          )}
+      {/* 2) SECOND BAR (COMPACT CONTROLS & ACTIONS) */}
+      <FilterBar
+        days={days}
+        category={category}
+        source={source}
+        isRefreshing={isRefreshing}
+        onDaysChange={setDays}
+        onCategoryChange={setCategory}
+        onSourceChange={setSource}
+        onRefresh={() => fetchData(true)}
+        onDownload={handleDownloadReport}
+        onOpenScenarios={() => setIsScenarioModalOpen(true)}
+        onOpenEmergency={() => {
+          const crit = filteredFires.find(
+            (f) => f.risk_level === "CRITICAL" || f.category === "EMERGENCY_INDUSTRIAL"
+          );
+          if (crit) setEmergencyActiveFire(crit);
+          setIsEmergencyPanelOpen(true);
+        }}
+        criticalAlertCount={criticalAlertCount}
+        onOpenDispatchHistory={() => setIsDispatchHistoryOpen(true)}
+        onTrainModel={() => {
+          setNotification("ML MODEL RETRAINING INITIATED");
+          setTimeout(() => setNotification(null), 3000);
+        }}
+        onToggleHistoricalHeatmap={() => setShowHistoricalHeatmap((prev) => !prev)}
+        showHistoricalHeatmap={showHistoricalHeatmap}
+        onOpenSystemLogs={() => setIsAboutOpen(true)}
+      />
 
-          {notification && (
-            <span className="text-[#00ff9c] font-bold bg-[#0f141b] border border-[#00ff9c] px-2 py-0.2 ml-2">
-              {notification}
-            </span>
-          )}
-        </div>
-
-        {/* Quick Ops Commands */}
-        <div className="flex items-center gap-2 text-[#4a5563] shrink-0 font-bold ml-4">
-          {/* Quick Trigger Emergency Panel Button */}
-          <button
-            onClick={() => {
-              const crit = filteredFires.find(
-                (f) => f.risk_level === "CRITICAL" || f.category === "EMERGENCY_INDUSTRIAL"
-              );
-              if (crit) setEmergencyActiveFire(crit);
-              setIsEmergencyPanelOpen((prev) => !prev);
-            }}
-            className="border border-[#ff3b3b] bg-[#ff3b3b]/15 px-2 py-0.5 text-[#ff8080] hover:bg-[#ff3b3b]/30 cursor-pointer text-[10px] font-bold flex items-center gap-1.5 transition"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b3b] animate-ping" />
-            <span>[ 🚨 EMERGENCY PANEL ]</span>
-          </button>
-          <button
-            onClick={() => setIsDispatchHistoryOpen(true)}
-            className="border border-[#00d4ff]/60 bg-[#00d4ff]/10 px-2 py-0.5 text-[#00d4ff] hover:bg-[#00d4ff]/25 cursor-pointer text-[10px] font-bold flex items-center gap-1 transition"
-          >
-            <span>[ 📋 DISPATCH LOG ]</span>
-          </button>
-          <span>::</span>
-          <button
-            onClick={() => fetchData(true)}
-            className="hover:text-[#00ff9c] cursor-pointer"
-          >
-            [ SYS ]
-          </button>
-          <span>::</span>
-          <button
-            onClick={() => setIsAboutOpen(true)}
-            className="hover:text-[#00d4ff] cursor-pointer"
-          >
-            [ LOG ]
-          </button>
-          <span>::</span>
-          <button
-            onClick={handleDownloadReport}
-            className="hover:text-[#ffb800] cursor-pointer"
-          >
-            [ EXPORT ]
-          </button>
-          <span>::</span>
-          <button
-            onClick={() => setShowHistoricalHeatmap((prev) => !prev)}
-            className={`cursor-pointer transition ${
-              showHistoricalHeatmap ? "text-[#ffb800] font-bold" : "hover:text-[#ffb800]"
-            }`}
-            title="Toggle 5-Year Historical Fire Density Heatmap Layer"
-          >
-            [ {showHistoricalHeatmap ? "🔥 5Y HEATMAP ON" : "HISTORICAL HEATMAP"} ]
-          </button>
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* 4) CONTROL DECK (TERMINAL-STYLE FILTERS)                                   */}
-      {/* ========================================================================= */}
-      <div className="px-3 pt-2.5 max-w-[1800px] w-full mx-auto">
-        <FilterBar
-          days={days}
-          category={category}
-          source={source}
-          lastUpdated={lastRefreshedUtc}
-          isRefreshing={isRefreshing}
-          onDaysChange={setDays}
-          onCategoryChange={setCategory}
-          onSourceChange={setSource}
-          onRefresh={() => fetchData(true)}
-          onDownload={handleDownloadReport}
-          onTrainModel={() => setIsAboutOpen(true)}
-        />
-      </div>
-
-      {/* ========================================================================= */}
-      {/* 5) MAIN OPS GRID (3-COLUMN: 22% REGISTRY | 52% MAP | 26% TELEMETRY)        */}
-      {/* ========================================================================= */}
-      <main className="max-w-[1800px] w-full mx-auto p-3 flex-1 flex flex-col">
-        {/* Error Alert Strip if Node Unreachable */}
+      {/* 3) MAIN CONTENT AREA (3-COLUMN PROGRESSIVE DISCLOSURE) */}
+      <main className="flex-1 flex overflow-hidden relative">
+        {/* Error Notification Banner */}
         {error && (
-          <div className="mb-2 p-2 border border-[#ff3b3b] bg-[#ff3b3b]/10 text-[#ff3b3b] text-xs flex justify-between items-center font-mono">
-            <span>[ERR] {error}</span>
+          <div className="absolute top-2 left-1/2 -translate-x-1/2 z-40 bg-red-950/90 border border-red-500 text-red-300 text-xs px-4 py-2 rounded-lg shadow-xl flex items-center gap-3">
+            <span>⚠️ {error}</span>
             <button
               onClick={() => fetchData(true)}
-              className="border border-[#ff3b3b] px-2 py-0.5 hover:bg-[#ff3b3b]/20 cursor-pointer uppercase font-bold"
+              className="bg-red-600 text-white px-2 py-0.5 rounded text-[11px] font-bold"
             >
-              [ RETRY LINK ]
+              Retry Link
             </button>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1">
-          {/* COLUMN 1: LEFT SIDE PANEL (22% -> 3 cols on lg grid) */}
-          <aside className="lg:col-span-3 h-[600px] lg:h-[calc(100vh-210px)] min-h-[480px]">
-            <IndustrialRegistry
-              selectedFacilityId={selectedFacilityId}
-              onSelectFacility={(fac: IndustrialFacility) => {
-                setSelectedFacilityId(fac.id);
-                setTargetCoords([fac.latitude, fac.longitude]);
-                setNotification(`[NAV] PANNED TO ${fac.name} (${fac.id})`);
-                setTimeout(() => setNotification(null), 3000);
-              }}
-            />
-          </aside>
+        {/* Transient Notification Toast */}
+        {notification && (
+          <div className="absolute top-3 right-4 z-40 bg-emerald-950/90 border border-emerald-500 text-emerald-300 text-xs px-3.5 py-1.5 rounded-lg shadow-xl animate-in fade-in slide-in-from-top-2">
+            ✓ {notification}
+          </div>
+        )}
 
-          {/* COLUMN 2: CENTER MAP STAGE (52% -> 6 cols on lg grid) */}
-          <section className="lg:col-span-6 h-[600px] lg:h-[calc(100vh-210px)] min-h-[480px] flex flex-col">
-            <FireMap
-              fires={filteredFires}
-              targetCoords={targetCoords}
-              targetZoom={targetZoom}
-              facilities={[]}
-              onOpenVerify={(fire) => setVerifyFire(fire)}
-              onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
-              onOpenHistory={(fire) => {
-                setHistoricalTargetFire(fire);
+        {/* COLUMN 1: LEFT PANEL (280px, Collapsible with Industries & Alerts tabs) */}
+        <LeftPanel
+          isCollapsed={isLeftPanelCollapsed}
+          onToggleCollapse={() => setIsLeftPanelCollapsed((prev) => !prev)}
+          selectedFacilityId={selectedFacilityId}
+          onSelectFacility={(fac) => {
+            setSelectedFacilityId(fac.id);
+            setTargetCoords([fac.latitude, fac.longitude]);
+            setTargetZoom(12);
+            setNotification(`Focused on ${fac.name}`);
+            setTimeout(() => setNotification(null), 3000);
+          }}
+          alerts={alerts}
+          onSelectCoordinates={(lat, lon) => {
+            setTargetCoords([lat, lon]);
+            setTargetZoom(12);
+          }}
+          onOpenDispatchModal={(coords) => {
+            if (coords) {
+              const matched = filteredFires.find(
+                (f) => Math.hypot(f.latitude - coords[0], f.longitude - coords[1]) < 0.2
+              );
+              handleOpenDispatchModal(matched || filteredFires[0]);
+            } else if (filteredFires.length > 0) {
+              handleOpenDispatchModal(filteredFires[0]);
+            }
+          }}
+          onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
+        />
+
+        {/* COLUMN 2: CENTER MAP STAGE (MAP IS THE HERO) */}
+        <section className="flex-1 flex flex-col relative h-full overflow-hidden">
+          <FireMap
+            fires={filteredFires}
+            targetCoords={targetCoords}
+            targetZoom={targetZoom}
+            facilities={[]}
+            onSelectFire={(fire) => setSelectedFire(fire)}
+            onOpenVerify={(fire) => setVerifyFire(fire)}
+            onOpenDispatch={(fire) => handleOpenDispatchModal(fire)}
+            onOpenHistory={(fire) => {
+              setHistoricalTargetFire(fire);
+              setIsHistoricalOpen(true);
+            }}
+            showHistoricalHeatmap={showHistoricalHeatmap}
+            onToggleHistoricalHeatmap={() => setShowHistoricalHeatmap((prev) => !prev)}
+            activeLayer={activeBasemap}
+            onLayerChange={setActiveBasemap}
+            scenarioOverlay={scenarioOverlay}
+            onOpenSpreadPrediction={handleOpenSpreadPrediction}
+            spreadPredictionData={spreadPredictionData}
+            selectedSpreadHour={selectedSpreadHour}
+          />
+
+          {/* Clean Bottom Detail Drawer when a fire is clicked */}
+          {selectedFire && (
+            <FireDetailDrawer
+              fire={selectedFire}
+              onClose={() => setSelectedFire(null)}
+              onOpenDispatch={(f) => handleOpenDispatchModal(f)}
+              onOpenHistory={(f) => {
+                setHistoricalTargetFire(f);
                 setIsHistoricalOpen(true);
               }}
-              showHistoricalHeatmap={showHistoricalHeatmap}
-              onToggleHistoricalHeatmap={() => setShowHistoricalHeatmap((prev) => !prev)}
-              activeLayer={activeBasemap}
-              onLayerChange={setActiveBasemap}
-              scenarioOverlay={scenarioOverlay}
-              onOpenSpreadPrediction={handleOpenSpreadPrediction}
-              spreadPredictionData={spreadPredictionData}
-              selectedSpreadHour={selectedSpreadHour}
+              onOpenVerify={(f) => setVerifyFire(f)}
+              onOpenSpreadPrediction={(f) => handleOpenSpreadPrediction(f)}
+              onAskAgni={() => {
+                const agniBtn = document.getElementById("agni-floating-toggle");
+                if (agniBtn) agniBtn.click();
+              }}
             />
-          </section>
+          )}
+        </section>
 
-          {/* COLUMN 3: RIGHT TELEMETRY STACK (26% -> 3 cols on lg grid) */}
-          <aside className="lg:col-span-3 flex flex-col gap-3 h-[calc(100vh-210px)] overflow-y-auto">
-            <StatsPanel
-              stats={stats}
-              activeCategory={category}
-              onSelectCategory={setCategory}
-            />
-            <AlertPanel
-              alerts={alerts}
-              onSelectCoordinates={(lat, lon) => setTargetCoords([lat, lon])}
-              statusMode={ignisStatus}
-              onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
-            />
-          </aside>
-        </div>
+        {/* COLUMN 3: RIGHT PANEL (320px, Overview Stats, Distribution, Quick Actions) */}
+        <aside className="w-[320px] hidden xl:flex flex-col h-full overflow-y-auto p-3 bg-[#0B1220] border-l border-[#1F2937]">
+          <StatsPanel
+            stats={stats}
+            activeCategory={category}
+            onSelectCategory={setCategory}
+            onOpenProtocol={() => setIsProtocolModalOpen(true)}
+            onOpenDispatch={() => {
+              if (selectedFire) {
+                handleOpenDispatchModal(selectedFire);
+              } else if (filteredFires.length > 0) {
+                handleOpenDispatchModal(filteredFires[0]);
+              }
+            }}
+            onOpenChatbot={() => {
+              const agniBtn = document.getElementById("agni-floating-toggle");
+              if (agniBtn) agniBtn.click();
+            }}
+          />
+        </aside>
       </main>
 
-      {/* ========================================================================= */}
-      {/* 6) BOTTOM STATUS BAR (GROUND STATION TERMINAL STYLE)                      */}
-      {/* ========================================================================= */}
-      <footer className="h-6 bg-[#0f141b] border-t border-[#1f2933] px-3 flex items-center justify-between text-[10px] text-[#6b7785] tracking-wider uppercase font-mono">
-        <div className="flex items-center gap-2">
-          <span className="text-[#00ff9c]">[SYS] READY</span>
-          <span className="text-[#4a5563]">::</span>
-          <span className="text-[#d0d8e0]">[NET] 200 OK</span>
-          <span className="text-[#4a5563]">::</span>
-          <span className="text-[#d0d8e0]">[DB] SQLITE/47MB</span>
-          <span className="text-[#4a5563]">::</span>
-          <span className="text-[#00d4ff]">[ML] RF-100/89.2%</span>
+      {/* 4) BOTTOM STATUS BAR (CLEAN, MINIMAL FOOTER) */}
+      <footer className="h-7 bg-[#0B1220] border-t border-[#1F2937] px-4 flex items-center justify-between text-[11px] text-[#9CA3AF] font-sans">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            System Ready
+          </span>
+          <span className="text-[#1F2937]">|</span>
+          <span className="text-[#E5E7EB]">
+            {mode === "LIVE"
+              ? "NASA FIRMS Telemetry Connected"
+              : mode === "DEMO"
+              ? "Simulation Demo Mode"
+              : "Local Cached Database"}
+          </span>
+          <span className="text-[#1F2937] hidden sm:inline">|</span>
+          <span className="hidden sm:inline text-[#9CA3AF]">
+            Accuracy Rate: 95.8% (Active Learning Loop)
+          </span>
         </div>
 
-        <div className="hidden md:flex items-center gap-2 tabular-nums text-[#4a5563]">
-          <span className="text-[#6b7785]">PACKETS RX: {seqCounter}</span>
-          <span>//</span>
-          <span>TX: 128</span>
-          <span>//</span>
-          <span className="text-[#00ff9c]">ERR: 0</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="hidden sm:inline">MEM: 62% :: CPU: 12%</span>
-          <span className="text-[#4a5563] hidden sm:inline">::</span>
-          <span className="text-[#d0d8e0] font-bold">IGNIS v1.0.4</span>
-          <span className="text-[#4a5563]">::</span>
-          <span className="text-[#6b7785]">© NTRO</span>
+        <div className="flex items-center gap-3 text-[11px]">
+          <span>IGNIS Ground Station</span>
+          <span className="text-[#1F2937]">|</span>
+          <span className="text-[#E5E7EB] font-mono">NTRO SIH26162</span>
         </div>
       </footer>
+
+      {/* Demo Simulation Scenarios Selection Modal */}
+      {isScenarioModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#111827] border border-[#1F2937] rounded-xl max-w-md w-full p-5 shadow-2xl space-y-4 font-sans animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between border-b border-[#1F2937] pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-base">▶</span>
+                <h3 className="font-bold text-white text-sm">Demo Simulation Scenarios</h3>
+              </div>
+              <button
+                onClick={() => setIsScenarioModalOpen(false)}
+                className="text-[#9CA3AF] hover:text-white text-sm p-1 rounded-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-[#9CA3AF]">
+              Select a scripted emergency scenario to demonstrate automated detection, telemetry convergence, and automated dispatch.
+            </p>
+
+            <div className="space-y-2">
+              {[
+                {
+                  id: "surat_emergency",
+                  title: "Surat Chemical Factory Emergency",
+                  desc: "Industrial reactor breach with Hazmat Class D response protocols",
+                },
+                {
+                  id: "punjab_stubble",
+                  title: "Punjab Stubble Burning Crisis",
+                  desc: "Seasonal agricultural burning cluster in Ludhiana farming belt",
+                },
+                {
+                  id: "uttarakhand_forest",
+                  title: "Uttarakhand Forest Wildfire",
+                  desc: "Mountain biomass blaze near Nainital forest reserve",
+                },
+                {
+                  id: "live",
+                  title: "Return to Live Data Feed",
+                  desc: "Resume real-time satellite telemetry ingestion",
+                },
+              ].map((sc) => (
+                <button
+                  key={sc.id}
+                  onClick={() => {
+                    handleSelectScenario(sc.id);
+                    if (sc.id !== "live") setIsScenarioPlaying(true);
+                    setIsScenarioModalOpen(false);
+                  }}
+                  className={`w-full text-left p-3 rounded-lg border transition ${
+                    selectedScenarioId === sc.id
+                      ? "bg-[#1F2937] border-[#22D3EE] text-white font-semibold"
+                      : "bg-[#0B1220] border-[#1F2937] text-[#E5E7EB] hover:border-gray-600"
+                  }`}
+                >
+                  <div className="font-semibold text-xs text-[#22D3EE]">{sc.title}</div>
+                  <div className="text-[11px] text-[#9CA3AF] mt-0.5">{sc.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Response Protocol Directive Modal */}
+      <ProtocolModal
+        isOpen={isProtocolModalOpen}
+        onClose={() => setIsProtocolModalOpen(false)}
+        category={selectedFire?.category || (category !== "all" ? category : "EMERGENCY_INDUSTRIAL")}
+        fire={selectedFire || filteredFires[0] || null}
+      />
 
       {/* Cross-Sensor Verification & Road Context Workspace Dialog */}
       <VerifyPanel

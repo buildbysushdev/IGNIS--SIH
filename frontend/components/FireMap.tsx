@@ -135,6 +135,7 @@ interface FireMapProps {
   targetCoords?: [number, number] | null;
   targetZoom?: number;
   facilities?: FacilityMarker[];
+  onSelectFire?: (fire: Fire) => void;
   onOpenVerify?: (fire: Fire) => void;
   onOpenDispatch?: (fire: Fire) => void;
   onOpenHistory?: (fire: Fire) => void;
@@ -153,6 +154,7 @@ export default function FireMap({
   targetCoords,
   targetZoom,
   facilities = [],
+  onSelectFire,
   onOpenVerify,
   onOpenDispatch,
   onOpenHistory,
@@ -226,52 +228,53 @@ export default function FireMap({
   const currentTile = TILE_PRESETS[activeLayer] || TILE_PRESETS.ops_dark;
 
   return (
-    <div className="panel flex flex-col h-full w-full overflow-hidden border border-[#1f2933] bg-[#0a0e14] corner-brackets relative">
+    <div className="flex flex-col h-full w-full overflow-hidden border border-[#1F2937] bg-[#0B1220] rounded-xl shadow-lg relative font-sans">
       {/* Panel Header */}
-      <div className="panel-header flex items-center justify-between border-b border-[#1f2933] px-3 py-2 bg-[#131a22]">
+      <div className="flex items-center justify-between border-b border-[#1F2937] px-3.5 py-2.5 bg-[#111827] text-xs">
         <div className="flex items-center gap-2">
-          <span className="text-[#00ff9c] font-mono text-xs">::</span>
-          <span className="font-mono text-[11px] font-bold tracking-[0.15em] text-[#d0d8e0] uppercase">
-            // GEO SURVEILLANCE // INDIA SECTOR
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="font-semibold text-white">
+            India Thermal Surveillance Map
           </span>
-          <span className="text-[10px] font-mono text-[#6b7785] hidden md:inline">
-            [VIIRS 375M SENSOR GRID]
+          <span className="text-[11px] text-[#9CA3AF] bg-[#0B1220] border border-[#1F2937] px-2 py-0.5 rounded-full font-mono">
+            {renderedFires.length} Active Hotspots
           </span>
         </div>
 
-        {/* Top-Right Basemap / Sensor Layer Chips & Historical Heatmap Toggle */}
-        <div className="flex items-center gap-1 font-mono text-[10px]">
-          {(Object.keys(TILE_PRESETS) as Array<keyof typeof TILE_PRESETS>).map((key) => {
-            const isActive = activeLayer === key;
-            return (
-              <button
-                key={key}
-                onClick={() => handleSelectLayer(key)}
-                className={`px-2 py-0.5 border uppercase font-bold tracking-wider transition cursor-pointer ${
-                  isActive
-                    ? "bg-[#131a22] border-[#00d4ff] text-[#00d4ff]"
-                    : "bg-[#0f141b] border-[#1f2933] text-[#6b7785] hover:text-[#d0d8e0] hover:border-[#2d3a4a]"
-                }`}
-              >
-                [ {TILE_PRESETS[key].name} ]
-              </button>
-            );
-          })}
+        {/* Top-Right Basemap Switcher & 5-Yr Heatmap */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center bg-[#0B1220] p-0.5 rounded-lg border border-[#1F2937]">
+            {(Object.keys(TILE_PRESETS) as Array<keyof typeof TILE_PRESETS>).map((key) => {
+              const isActive = activeLayer === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => handleSelectLayer(key)}
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition ${
+                    isActive
+                      ? "bg-[#1F2937] text-[#22D3EE] font-semibold shadow-sm"
+                      : "text-[#9CA3AF] hover:text-white"
+                  }`}
+                >
+                  {key === "ops_dark" ? "Dark" : key === "satellite" ? "Satellite" : "Hybrid"}
+                </button>
+              );
+            })}
+          </div>
 
-          <div className="w-[1px] h-3 bg-[#1f2933] mx-0.5" />
-
-          {/* Historical Heatmap Layer Toggle */}
           <button
+            type="button"
             onClick={handleToggleHeatmap}
-            className={`px-2 py-0.5 border uppercase font-bold tracking-wider transition cursor-pointer flex items-center gap-1 ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition flex items-center gap-1 ${
               isHeatmapActive
-                ? "bg-[#ffb800]/20 border-[#ffb800] text-[#ffb800] shadow-[0_0_10px_rgba(255,184,0,0.3)]"
-                : "bg-[#0f141b] border-[#1f2933] text-[#6b7785] hover:text-[#ffb800] hover:border-[#ffb800]/50"
+                ? "bg-amber-950/40 border-amber-500 text-amber-300 font-semibold"
+                : "bg-[#0B1220] border-[#1F2937] text-[#9CA3AF] hover:text-white"
             }`}
-            title="Toggle 5-Year Historical Fire Density Heatmap Layer (2021-2025)"
+            title="Toggle 5-Year Historical Fire Density Heatmap Layer"
           >
             <span>{isHeatmapActive ? "🔥" : "◒"}</span>
-            <span>{isHeatmapActive ? "[ 5Y HEATMAP: ON ]" : "[ HISTORICAL HEATMAP ]"}</span>
+            <span>{isHeatmapActive ? "5Y Heatmap: ON" : "5Y Heatmap"}</span>
             {loadingDensity && <span className="animate-spin text-[9px]">◌</span>}
           </button>
         </div>
@@ -447,7 +450,11 @@ export default function FireMap({
                 className={isCritical ? "status-dot-red" : undefined}
                 eventHandlers={{
                   click: () => {
-                    if (onOpenVerify) onOpenVerify(fire);
+                    if (onSelectFire) {
+                      onSelectFire(fire);
+                    } else if (onOpenVerify) {
+                      onOpenVerify(fire);
+                    }
                   },
                 }}
               >
@@ -844,44 +851,30 @@ export default function FireMap({
         {/* Live Weather & Atmospheric Telemetry Widget */}
         <WeatherWidget lat={currentCenter.lat} lon={currentCenter.lon} />
 
-        {/* Bottom-Left Live Telemetry Overlay */}
-        <div className="absolute bottom-2 left-2 z-[1000] pointer-events-none">
-          <div className="border border-[#1f2933] bg-[#0a0e14]/90 px-2.5 py-1 text-[10px] font-mono text-[#00d4ff] tabular-nums flex items-center gap-2">
-            <span>
-              COORDS: {currentCenter.lat.toFixed(4)}°N, {currentCenter.lon.toFixed(4)}°E
-            </span>
-            <span className="text-[#4a5563]">::</span>
-            <span>ZOOM: {currentCenter.zoom}</span>
+        {/* Bottom-Left Compact Legend */}
+        <div className="absolute bottom-3 left-3 z-[1000] pointer-events-auto bg-[#111827]/90 backdrop-blur-sm border border-[#1F2937] rounded-xl p-2.5 shadow-lg text-xs space-y-1.5 max-w-[210px]">
+          <div className="text-[10px] text-[#9CA3AF] font-semibold uppercase tracking-wider border-b border-[#1F2937] pb-1">
+            Map Legend
           </div>
-        </div>
-
-        {/* Bottom-Right Legend & Crosshair */}
-        <div className="absolute bottom-2 right-2 z-[1000] pointer-events-auto">
-          <div className="border border-[#1f2933] bg-[#0a0e14]/95 p-2 text-[10px] font-mono space-y-1">
-            <div className="text-[9px] text-[#6b7785] font-bold border-b border-[#1f2933] pb-0.5 flex justify-between">
-              <span>// SURVEILLANCE LEGEND</span>
-              <span className="text-[#00ff9c]">[OK]</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#ff3b3b]" />
-              <span className="text-[#d0d8e0]">EMERGENCY (CRIT)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-[#ffb800]" />
-              <span className="text-[#d0d8e0]">PERSISTENT (WORKS)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#ff9500]" />
-              <span className="text-[#d0d8e0]">AGRICULTURAL (CROP)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00ff9c]" />
-              <span className="text-[#d0d8e0]">FOREST (WILDLAND)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#4a5563]" />
-              <span className="text-[#6b7785]">UNCLASSIFIED</span>
-            </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#EF4444] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">Emergency Industrial</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#A855F7] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">Persistent Industrial</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#F59E0B] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">Agricultural Burning</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#22C55E] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">Forest Biomass</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#9CA3AF] flex-shrink-0" />
+            <span className="text-[#9CA3AF]">Unclassified</span>
           </div>
         </div>
       </div>
