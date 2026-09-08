@@ -118,9 +118,13 @@ export default function Header({
           >
             [ {t("header.analytics", "ANALYTICS")} ]
           </Link>
-          <span className="px-1.5 py-0.5 text-[#4a5563] uppercase font-bold hidden xl:inline cursor-not-allowed">
-            [ {t("header.field_officer", "FIELD OFFICER")} ]
-          </span>
+          <Link
+            href="/field-officer"
+            className="px-2 py-0.5 bg-[#ff9500]/15 border border-[#ff9500]/60 text-[#ffaa22] hover:bg-[#ff9500]/30 uppercase font-bold transition flex items-center gap-1 text-[10px]"
+          >
+            <span>🚒</span>
+            [ {t("header.field_officer", "FIELD OPS")} ]
+          </Link>
         </div>
 
         {/* Scenarios Selector Dropdown */}

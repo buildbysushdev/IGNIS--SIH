@@ -1080,6 +1080,52 @@ def get_predict_spread_endpoint(
     return predict_spread(fire=fire_payload, hours=hours)
 
 
+# ==============================================================================
+# FIELD OFFICER REPORT SYSTEM & ACTIVE LEARNING ENDPOINTS
+# ==============================================================================
+@app.post("/api/field-report")
+@limiter.limit("60/minute")
+async def post_field_report_endpoint(request: Request) -> dict[str, Any]:
+    """Submit a field officer verification report, update fire ground truth, and trigger active learning."""
+    from field_reports import submit_field_report
+
+    try:
+        payload = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON payload")
+
+    return submit_field_report(payload)
+
+
+@app.get("/api/field-report/fire/{fire_id}")
+@limiter.limit("60/minute")
+def get_fire_reports_endpoint(request: Request, fire_id: int) -> dict[str, Any]:
+    """Retrieve ground observation reports for a specific thermal detection ID."""
+    from field_reports import get_reports_for_fire
+
+    reports = get_reports_for_fire(fire_id=fire_id)
+    return {"fire_id": fire_id, "reports": reports, "count": len(reports)}
+
+
+@app.get("/api/field-report/officer/{officer_id}")
+@limiter.limit("60/minute")
+def get_officer_reports_endpoint(request: Request, officer_id: str) -> dict[str, Any]:
+    """Retrieve all reports submitted by a specific field officer."""
+    from field_reports import get_officer_history
+
+    reports = get_officer_history(officer_id=officer_id)
+    return {"officer_id": officer_id, "reports": reports, "count": len(reports)}
+
+
+@app.get("/api/field-report/stats")
+@limiter.limit("60/minute")
+def get_field_stats_endpoint(request: Request) -> dict[str, Any]:
+    """Retrieve system classification accuracy metrics and discrepancy improvements."""
+    from field_reports import get_accuracy_stats
+
+    return get_accuracy_stats()
+
+
 if __name__ == "__main__":
     import uvicorn
 
