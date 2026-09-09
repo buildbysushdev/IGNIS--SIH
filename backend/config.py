@@ -29,6 +29,10 @@ CORS_ORIGINS: list[str] = [
     origin.strip() for origin in os.getenv("CORS_ORIGINS", "*").split(",") if origin.strip()
 ]
 
+# Gemini AI Assistant (AGNI-AI) Configuration
+GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
+
 
 def get_db_path() -> str:
     """Return the absolute file path to the SQLite database."""

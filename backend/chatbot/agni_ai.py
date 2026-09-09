@@ -54,19 +54,55 @@ STATE_CENTROIDS: dict[str, dict[str, Any]] = {
     "bhilai": {"lat": 21.1890, "lon": 81.3980, "zoom": 12, "name": "Bhilai"},
 }
 
+SYSTEM_PROMPT = """
+You are AGNI-AI, the official in-app tactical assistant for Project IGNIS
+(Intelligent Geospatial Network for Industrial Fire Screening) — SIH Problem ID SIH26162 (NTRO).
+
+STRICT RULES:
+1. You ONLY answer questions about IGNIS: fire detection, NASA FIRMS satellite telemetry, OSM infrastructure classification,
+   FRP (Fire Radiative Power), persistence analysis, false-alarm filtering (bonfire and garbage burn suppression),
+   dispatch simulation, SMS radius alerts, IS 2190 protocols, NDMA guidelines, tactical operations, dashboard usage,
+   APIs, deployment, and this SIH project context.
+2. If the user asks about anything else (recipes, personal advice, homework, general knowledge,
+   politics, other projects, jokes unrelated to IGNIS, etc.), reply EXACTLY with:
+   "I'm AGNI-AI and can only help with the IGNIS fire-intelligence platform and this SIH project. Please ask about fires, alerts, dispatch, classification, or the dashboard."
+3. Be concise, operator-friendly, and accurate to IGNIS domain language and tactical standards.
+4. If the user describes a site issue (API down, map not loading, no fires, deploy error, NXDOMAIN, 503),
+   suggest practical IGNIS-specific checks: /api/health, Railway deploy logs, FIRMS cache fallback,
+   CORS, port binding 0.0.0.0, domain regeneration, filters (days/category), etc.
+5. Never ask for or expose API keys, tokens, or secrets.
+6. Never invent live fire incidents; if data is unavailable, say to use Mentorship Demo or Cached mode.
+"""
+
+EXACT_REFUSAL = "I'm AGNI-AI and can only help with the IGNIS fire-intelligence platform and this SIH project. Please ask about fires, alerts, dispatch, classification, or the dashboard."
+
 
 class AgniAI:
     """
-    AGNI-AI Tactical Command Assistant
+    AGNI-AI Tactical Command Assistant with Google Gemini & RAG
     """
 
     def __init__(self) -> None:
         self.groq_api_key = os.getenv("GROQ_API_KEY")
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY", "").strip()
+        self.gemini_model_name = os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
+        self._genai_model = None
+
+        if self.gemini_api_key:
+            try:
+                import google.generativeai as genai
+                genai.configure(api_key=self.gemini_api_key)
+                self._genai_model = genai.GenerativeModel(
+                    model_name=self.gemini_model_name,
+                    system_instruction=SYSTEM_PROMPT,
+                )
+                print(f"[AGNI-AI] Gemini model '{self.gemini_model_name}' initialized successfully")
+            except Exception as e:
+                print(f"[AGNI-AI] Gemini initialization notice: {e}")
 
     def _extract_coordinates(self, text: str, context: Optional[dict[str, Any]] = None) -> tuple[float, float]:
         """Extract latitude and longitude from user text or dashboard context."""
-        # Check text for decimal coordinates e.g. "21.17, 72.83" or "lat 21.17 lon 72.83"
         match = re.search(r"(-?\d+\.\d+)\s*[,;/ ]\s*(-?\d+\.\d+)", text)
         if match:
             try:
@@ -77,13 +113,11 @@ class AgniAI:
             except ValueError:
                 pass
 
-        # Check for named city / state in text
         lower = text.lower()
         for key, info in STATE_CENTROIDS.items():
             if key in lower:
                 return info["lat"], info["lon"]
 
-        # Check context for selected fire or map target
         if context:
             if context.get("selected_fire"):
                 sf = context["selected_fire"]
@@ -95,8 +129,34 @@ class AgniAI:
             if context.get("lat") and context.get("lon"):
                 return float(context["lat"]), float(context["lon"])
 
-        # Default fallback to Surat Industrial Sector
         return 21.1702, 72.8311
+
+    def _call_gemini_llm(self, prompt: str, history: Optional[list[dict[str, str]]] = None) -> Optional[str]:
+        """Call Gemini LLM with strict system prompt and refusal guardrails."""
+        if not self._genai_model:
+            return None
+        try:
+            chat_history = []
+            if history:
+                for turn in history[-6:]:
+                    role = turn.get("role", "user")
+                    if role == "assistant":
+                        role = "model"
+                    content = turn.get("content", "")
+                    if role in ("user", "model") and content:
+                        chat_history.append({"role": role, "parts": [content]})
+
+            if chat_history:
+                chat = self._genai_model.start_chat(history=chat_history)
+                resp = chat.send_message(prompt[:4000])
+            else:
+                resp = self._genai_model.generate_content(prompt[:4000])
+
+            text = (resp.text or "").strip()
+            return text if text else None
+        except Exception as err:
+            print(f"[AGNI-AI] Gemini call notice: {err}")
+            return None
 
     def _call_groq_llm(self, prompt: str, system_prompt: str) -> Optional[str]:
         """Optionally call Groq LLM API if key is available."""
@@ -119,7 +179,12 @@ class AgniAI:
             print(f"[AGNI-AI] Groq LLM call failed: {err}")
             return None
 
-    def query(self, user_message: str, context: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    def query(
+        self,
+        user_message: str,
+        context: Optional[dict[str, Any]] = None,
+        history: Optional[list[dict[str, str]]] = None,
+    ) -> dict[str, Any]:
         """
         Execute full RAG retrieval, tool execution, and tactical response synthesis.
         """
@@ -127,13 +192,38 @@ class AgniAI:
         if not user_msg:
             return {
                 "response": "AGNI-AI operational. Please enter an inquiry regarding fire tactics, chemical hazards, station dispatch, or regional telemetry.",
+                "reply": "AGNI-AI operational. Please enter an inquiry regarding fire tactics, chemical hazards, station dispatch, or regional telemetry.",
                 "sources": ["IGNIS Command System"],
                 "confidence": 0.95,
                 "suggested_actions": ["Query active emergencies", "Find nearest fire station"],
                 "follow_up_questions": ["What is the current emergency status?", "How to fight chemical fire?"],
+                "scoped": True,
             }
 
         lower_msg = user_msg.lower()
+
+        # Quick guardrail: check obvious off-topic prompts
+        off_topic_words = [
+            "recipe", "cake", "cookie", "cook ", "cooking", "dinner recipe", "breakfast", "pasta",
+            "love letter", "dating advice", "relationship advice", "homework",
+            "quadratic equation", "capital of ", "who is the president", "who won the match",
+            "write a poem", "tell me a joke", "horoscope", "astrology", "crypto", "bitcoin"
+        ]
+        ignis_keywords = [
+            "fire", "flame", "burn", "ignis", "frp", "firms", "satellite", "dispatch", "hazard",
+            "evacuat", "is 2190", "ndma", "sih", "hospital", "petrol", "kitchen", "stubble", "forest",
+            "health", "railway", "deploy", "503", "nxdomain", "api", "dashboard", "alert", "map", "station"
+        ]
+        if any(w in lower_msg for w in off_topic_words) and not any(k in lower_msg for k in ignis_keywords):
+            return {
+                "response": EXACT_REFUSAL,
+                "reply": EXACT_REFUSAL,
+                "sources": ["IGNIS Scope Guardrail"],
+                "confidence": 1.0,
+                "suggested_actions": ["Ask about active emergencies", "Ask about false alarm filtering", "Check site /health"],
+                "follow_up_questions": ["What is the FRP filter threshold in IGNIS?", "What is the protocol for Hospital fires?"],
+                "scoped": False,
+            }
 
         # Step 1: Semantic RAG Retrieval from Knowledge Base
         rag_chunks = search_knowledge_base(user_msg, top_k=4)
@@ -141,12 +231,55 @@ class AgniAI:
         if not sources:
             sources = ["NDMA Guidelines on Disaster Management", "Bureau of Indian Standards IS 2190"]
 
-        # Step 2: Intent-based tool execution & domain reasoning
         lat, lon = self._extract_coordinates(user_msg, context)
         data_card: Optional[dict[str, Any]] = None
         map_action: Optional[dict[str, Any]] = None
         suggested_actions: list[str] = []
         follow_up_questions: list[str] = []
+
+        # Step 2: Try Gemini LLM First if configured
+        if self._genai_model:
+            ctx_str = ""
+            if context:
+                ctx_items = [f"{k}={v}" for k, v in context.items() if isinstance(v, (str, int, float, bool))]
+                if ctx_items:
+                    ctx_str = f"\n[APP CONTEXT]: {', '.join(ctx_items)}"
+
+            rag_summary = "\n\n".join([f"Source: {c['source']}\n{c['text']}" for c in rag_chunks[:3]])
+            llm_prompt = (
+                f"User Question: {user_msg}{ctx_str}\n\n"
+                f"[RELEVANT IGNIS KNOWLEDGE]:\n{rag_summary}\n\n"
+                f"Instructions: Provide an authoritative, clear, and actionable tactical response in markdown. "
+                f"If the query is unrelated to IGNIS or fire disaster intelligence, output ONLY the exact refusal sentence: \"{EXACT_REFUSAL}\""
+            )
+
+            gemini_out = self._call_gemini_llm(llm_prompt, history=history)
+            if gemini_out:
+                if EXACT_REFUSAL.lower() in gemini_out.lower() or "can only help with the ignis" in gemini_out.lower():
+                    return {
+                        "response": EXACT_REFUSAL,
+                        "reply": EXACT_REFUSAL,
+                        "sources": ["IGNIS Scope Guardrail"],
+                        "confidence": 1.0,
+                        "suggested_actions": ["Ask about active emergencies", "Ask about false alarm filtering"],
+                        "follow_up_questions": ["What is the FRP filter threshold in IGNIS?"],
+                        "scoped": False,
+                    }
+
+                # Map panning action if coordinates or known city detected
+                if any(k in lower_msg for k in ["surat", "delhi", "jamnagar", "bhilai", "mumbai", "punjab", "pan"]):
+                    map_action = {"lat": lat, "lon": lon, "zoom": 11}
+
+                return {
+                    "response": gemini_out,
+                    "reply": gemini_out,
+                    "sources": sources[:4] or ["IGNIS AI Intelligence Core", "IS 2190 / NDMA Standards"],
+                    "confidence": 0.98,
+                    "suggested_actions": ["Simulate dispatch", "View regional telemetry", "Check /health status"],
+                    "follow_up_questions": ["What is the turnout ETA for this sector?", "Show response protocol checklist"],
+                    "map_action": map_action,
+                    "scoped": True,
+                }
 
         # ----------------------------------------------------------------------
         # Case 1: Station / Nearest Dispatch query

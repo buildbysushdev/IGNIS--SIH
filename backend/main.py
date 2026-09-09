@@ -1074,23 +1074,29 @@ def get_notable_incidents_endpoint(
 # ==============================================================================
 # 11) AGNI-AI (TACTICAL FIRE ASSISTANT) ENDPOINTS
 # ==============================================================================
-class ChatRequest(BaseModel):
+class AgniChatRequest(BaseModel):
     message: str
+    history: Optional[list[dict[str, Any]]] = None
     context: Optional[dict[str, Any]] = None
 
 
+@app.post("/api/v1/agni/chat")
 @app.post("/api/chat")
 @limiter.limit("60/minute")
-def chat_endpoint(request: Request, body: ChatRequest) -> dict[str, Any]:
-    """AGNI-AI context-aware fire response chat endpoint with RAG and tools."""
+def chat_endpoint(request: Request, body: AgniChatRequest) -> dict[str, Any]:
+    """AGNI-AI context-aware fire response chat endpoint with RAG, Gemini LLM, and refusal guardrails."""
     from chatbot.agni_ai import agni_ai
 
-    return agni_ai.query(user_message=body.message, context=body.context)
+    msg = body.message.strip()
+    if not msg:
+        raise HTTPException(status_code=400, detail="message required")
+
+    return agni_ai.query(user_message=msg, context=body.context, history=body.history)
 
 
 @app.post("/api/chat/stream")
 @limiter.limit("60/minute")
-def chat_stream_endpoint(request: Request, body: ChatRequest) -> StreamingResponse:
+def chat_stream_endpoint(request: Request, body: AgniChatRequest) -> StreamingResponse:
     """Streaming response for long answers using server-sent events (SSE)."""
     from chatbot.agni_ai import agni_ai
 
