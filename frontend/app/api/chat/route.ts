@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+// ─── Increase maxDuration for Vercel (Pro plan allows up to 300s; Hobby: 60s)
+export const maxDuration = 60;
+
 const BACKEND_URL =
   process.env.BACKEND_INTERNAL_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
@@ -18,7 +21,7 @@ const FALLBACK_ANSWERS: Record<string, any> = {
   },
   station: {
     response:
-      "### 🚒 Tactical Dispatch Analysis (Surat Sector Fallback)\n\n- **Primary Station**: Surat Fire Station HQ\n- **Distance**: **3.2 km**\n- **ETA**: **6 minutes**\n- **Direct Line**: `0261-2423777`\n- **Capabilities**: Heavy Foam Units, 54m Hydraulic Platform, Water Tenders.",
+      "### 🚒 Tactical Dispatch Analysis (Fallback)\n\n- **Primary Station**: Nearest City Fire Station HQ\n- **Emergency Line**: `101` (Fire Control) / `112` (Unified Emergency)\n- **Capabilities**: Heavy Foam Units, Hydraulic Platform, Water Tenders.",
     sources: ["State Fire Services Directory"],
     confidence: 0.9,
     suggested_actions: ["Simulate emergency dispatch", "Check road transit corridor"],
@@ -26,7 +29,7 @@ const FALLBACK_ANSWERS: Record<string, any> = {
   },
   default: {
     response:
-      "### 🤖 AGNI-AI Response\n\nAGNI-AI is actively monitoring real-time telemetry grid. All operations must adhere to NDMA Incident Command System (ICS) guidelines.\n\n- **Classification**: Consult IS 2190 for Class A/B/C/D extinguisher compatibility.\n- **Emergency Control Lines**: **112** (Unified) / **101** (Fire Control).",
+      "### 🤖 AGNI-AI Response\n\nAGNI-AI is actively monitoring real-time telemetry grid. All operations must adhere to NDMA Incident Command System (ICS) guidelines.\n\n- **Classification**: Consult IS 2190 for Class A/B/C/D extinguisher compatibility.\n- **Emergency Control Lines**: **112** (Unified) / **101** (Fire Control).\n\n> ⚠️ *AI backend is temporarily busy — this is a cached tactical response. Ask again in a moment for a live AI-generated reply.*",
     sources: ["NDMA Incident Response System", "IS 2190"],
     confidence: 0.88,
     suggested_actions: ["Query active fires", "Locate nearest fire station"],
@@ -45,8 +48,9 @@ export async function POST(request: Request) {
   const message = String(body.message || "").toLowerCase();
 
   try {
+    // 45-second timeout — Gemini LLM can take 20-30s on first cold call
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
 
     const res = await fetch(`${BACKEND_URL}/api/chat`, {
       method: "POST",
@@ -67,10 +71,22 @@ export async function POST(request: Request) {
       }
     }
   } catch (err: any) {
+    const isTimeout = err?.name === "AbortError" || err?.message?.includes("abort");
+    if (isTimeout) {
+      console.warn("[IGNIS-PROXY] /api/chat timed out after 45s — Gemini API slow");
+      return NextResponse.json({
+        response:
+          "### ⏳ AGNI-AI is processing...\n\nThe AI response is taking longer than usual (Gemini API may be under high load). Please try again in a few seconds.\n\n> 💡 *Tip: For immediate fire intelligence, check the live map hotspots and stats panel.*",
+        sources: ["IGNIS System"],
+        confidence: 0.5,
+        suggested_actions: ["Try again", "Check active fire map", "View emergency alerts"],
+        follow_up_questions: ["What fires are active now?", "Show nearest fire station"],
+      });
+    }
     console.warn("[IGNIS-PROXY] /api/chat backend link issue:", err?.message);
   }
 
-  // Resilient fallback logic
+  // Resilient fallback based on query keywords
   if (message.includes("chemical") || message.includes("foam") || message.includes("lpg")) {
     return NextResponse.json(FALLBACK_ANSWERS.chemical);
   }

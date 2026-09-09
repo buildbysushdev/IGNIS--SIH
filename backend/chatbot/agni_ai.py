@@ -17,6 +17,14 @@ _backend_dir = str(Path(__file__).resolve().parent.parent)
 if _backend_dir not in sys.path:
     sys.path.insert(0, _backend_dir)
 
+# Load .env from backend directory explicitly
+try:
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path=Path(_backend_dir) / ".env", override=False)
+except ImportError:
+    pass
+
+
 try:
     from chatbot.knowledge_base import search_knowledge_base
 except ImportError:
