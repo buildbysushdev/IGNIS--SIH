@@ -99,32 +99,7 @@ class FireClassifier:
         pop_density = ctx["population_density"]
 
         # =========================================================================
-        # FILTER RULE 1: BONFIRE / GARBAGE BURN SUPPRESSION (NO FALSE ALERTS)
-        # Low-intensity thermal signals (< 10 MW) in residential/farmland/general areas
-        # =========================================================================
-        if frp < 10.0 and location_type in ["RESIDENTIAL", "GENERAL", "FARMLAND"]:
-            return {
-                "category": "DOMESTIC_LOW_INTENSITY_BURN",
-                "confidence": 88,
-                "risk_level": "VERY_LOW",
-                "color": "slate",
-                "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
-                "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
-            }
-
-        # EDGE CASE 1: Cremation grounds with persistent thermal signatures
-        if ctx["is_cremation"] and (persistence > 30.0 or frp < 20.0):
-            return {
-                "category": "PERSISTENT_INDUSTRIAL",
-                "confidence": 88,
-                "risk_level": "LOW",
-                "color": "yellow",
-                "reason": "Persistent cultural/religious thermal signature; not emergency",
-                "action": "No emergency action needed. Cultural/religious thermal source.",
-            }
-
-        # =========================================================================
-        # PRIORITY URBAN EMERGENCY & HIGH-RISK RULES
+        # PRIORITY URBAN EMERGENCY & HIGH-RISK RULES (LIFE-CRITICAL)
         # =========================================================================
 
         # 1. HOSPITAL FIRE (CRITICAL):
@@ -204,22 +179,7 @@ class FireClassifier:
                 "action": "DISPATCH FIRE SERVICES. Search & rescue team for smoke inhalation.",
             }
 
-        # =========================================================================
-        # INDUSTRIAL, AGRICULTURAL & WILDLAND RULES
-        # =========================================================================
-
-        # 8. PERSISTENT INDUSTRIAL (EXISTING RULE):
-        if (dist < 6.0 and persistence >= 25.0) or (dist < 8.0 and persistence >= 40.0):
-            return {
-                "category": "PERSISTENT_INDUSTRIAL",
-                "confidence": 94,
-                "risk_level": "LOW",
-                "color": "yellow",
-                "reason": f"Persistent plant heat signature ({nearest_name}); operational flare / furnace; not emergency",
-                "action": "No emergency action needed. Normal industrial operational thermal source.",
-            }
-
-        # 9. EMERGENCY INDUSTRIAL (EXISTING RULE):
+        # 8. EMERGENCY INDUSTRIAL (UNSCHEDULED SURGE NEAR HIGH-RISK FACILITY):
         if dist <= 3.5 and persistence < 20.0 and frp >= 25.0:
             return {
                 "category": "EMERGENCY_INDUSTRIAL",
@@ -233,26 +193,66 @@ class FireClassifier:
                 "action": "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
             }
 
-        # 10. AGRICULTURAL BURNING (EXISTING RULE):
-        if (ctx["is_agri"] or ctx["is_burning_season"] or location_type == "FARMLAND") and frp < 60.0 and dist > 4.0:
+        # EDGE CASE 1: Cremation grounds with persistent thermal signatures
+        if ctx["is_cremation"] and (persistence > 30.0 or frp < 20.0):
+            return {
+                "category": "PERSISTENT_INDUSTRIAL",
+                "confidence": 88,
+                "risk_level": "LOW",
+                "color": "yellow",
+                "reason": "Persistent cultural/religious thermal signature; not emergency",
+                "action": "No emergency action needed. Cultural/religious thermal source.",
+            }
+
+        # 9. PERSISTENT INDUSTRIAL (RECURRING THERMAL FLARE / FURNACE):
+        if (dist < 6.0 and persistence >= 25.0) or (dist < 8.0 and persistence >= 40.0):
+            return {
+                "category": "PERSISTENT_INDUSTRIAL",
+                "confidence": 94,
+                "risk_level": "LOW",
+                "color": "yellow",
+                "reason": f"Persistent plant heat signature ({nearest_name}); operational flare / furnace; not emergency",
+                "action": "No emergency action needed. Normal industrial operational thermal source.",
+            }
+
+        # =========================================================================
+        # WILDLAND FOREST & AGRICULTURAL CLASSIFICATION
+        # =========================================================================
+
+        # 10. FOREST WILDLAND (BIOSPHERE / CANOPY / FOREST RESERVES):
+        if location_type == "FOREST" or (dist > 10.0 and not ctx["is_agri"] and location_type not in ["FARMLAND", "RESIDENTIAL"] and frp >= 5.0):
+            return {
+                "category": "FOREST_FIRE",
+                "confidence": 88,
+                "risk_level": "HIGH",
+                "color": "green",
+                "reason": f"Active wildland vegetation canopy detection ({frp:.1f}MW in forest/biosphere perimeter)",
+                "action": "🚨 Notify Forest Department & NDRF regional wildland response unit.",
+            }
+
+        # 11. AGRICULTURAL BURNING (SEASONAL HARVEST STUBBLE & CROP RESIDUE):
+        if (ctx["is_agri"] or ctx["is_burning_season"] or location_type == "FARMLAND") and dist > 3.0 and frp >= 6.0:
             return {
                 "category": "AGRICULTURAL_BURNING",
-                "confidence": 88,
+                "confidence": 90,
                 "risk_level": "MODERATE",
                 "color": "orange",
-                "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+                "reason": f"Seasonal agricultural crop residue/stubble burning ({frp:.1f}MW in agrarian corridor)",
                 "action": "Log in state pollution registry. Monitor for potential spread.",
             }
 
-        # 11. FOREST FIRE (EXISTING RULE):
-        if dist > 12.0 and frp >= 15.0 and not ctx["is_agri"] and location_type != "FARMLAND":
+        # =========================================================================
+        # BONFIRE & DOMESTIC RESIDENTIAL BURNING SUPPRESSION
+        # Filter low-intensity residential waste/bonfires without suppressing rural fires
+        # =========================================================================
+        if frp < 10.0 and (location_type in ["RESIDENTIAL"] or (location_type == "GENERAL" and dist < 10.0)):
             return {
-                "category": "FOREST_FIRE",
-                "confidence": 86,
-                "risk_level": "HIGH",
-                "color": "green",
-                "reason": "Forest reserve perimeter thermal anomaly detected",
-                "action": "🚨 Notify Forest Department & NDRF regional response unit.",
+                "category": "DOMESTIC_LOW_INTENSITY_BURN",
+                "confidence": 88,
+                "risk_level": "VERY_LOW",
+                "color": "slate",
+                "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or domestic cooking burn.",
+                "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
             }
 
         # ML Model Assist (if available)

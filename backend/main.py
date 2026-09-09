@@ -35,7 +35,7 @@ from osm_data import load_or_cache_zones
 from ml_model import load_persistence_cache
 from alerts import generate_alerts, store_alerts, get_active_alerts
 from database import init_db, insert_fires, get_fires_by_date, get_cache_status, get_connection
-from firms import fetch_fires, fetch_all_sources, get_data_status
+from firms import fetch_fires, fetch_all_sources, get_data_status, get_last_fetched_at
 from mode_manager import mode_manager
 from demo_data import load_demo_fires
 from scenarios.scenario_engine import scenario_engine
@@ -163,6 +163,7 @@ app.add_middleware(
 # Allowed Satellite Sources Whitelist
 ALLOWED_SOURCES = {
     "all",
+    "VIIRS",
     "VIIRS_SNPP_NRT",
     "VIIRS_NOAA20_NRT",
     "MODIS_NRT",
@@ -389,7 +390,8 @@ def get_fires(
         )
 
     classifier = get_classifier()
-    active_mode = (mode or mode_manager.current_mode).upper().strip()
+    mode_str = mode if isinstance(mode, str) else None
+    active_mode = (mode_str or mode_manager.current_mode).upper().strip()
 
     # 1) DEMO MODE: load 250 realistic pre-classified fires instantly
     if active_mode == "DEMO":
@@ -434,7 +436,7 @@ def get_fires(
 
     # 3) LIVE MODE: try NASA FIRMS API with automatic failover to SQLite
     try:
-        if source == "all":
+        if source in ("all", "VIIRS"):
             raw_fires = fetch_all_sources(days=days, force=force)
         else:
             raw_fires = fetch_fires(days=days, source=source, force=force)
@@ -506,6 +508,7 @@ def get_fires(
             "ignis_status": ignis_status,
             "data_source": data_source,
             "message": status_message,
+            "fetched_at": get_last_fetched_at(),
             "generated_at": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as exc:
@@ -547,8 +550,112 @@ def get_fires(
             "ignis_status": ignis_status,
             "data_source": ds,
             "message": msg,
+            "fetched_at": get_last_fetched_at(),
             "generated_at": datetime.utcnow().isoformat() + "Z",
         }
+
+
+# ==============================================================================
+# AUDIT & REAL-TIME LIVE DATA PIPELINE V1 ENDPOINTS
+# ==============================================================================
+@app.get("/api/v1/fires/realtime")
+@limiter.limit("60/minute")
+def get_fires_realtime_v1(
+    request: Request,
+    days: int = Query(default=1, ge=1, le=7),
+    source: str = Query(default="VIIRS"),
+    force: bool = Query(default=False),
+) -> dict[str, Any]:
+    """Real NASA FIRMS active thermal telemetry endpoint with dynamic classification and timestamps."""
+    return get_fires(request, days=days, source=source, force=force, mode=None)
+
+
+@app.get("/api/v1/facilities")
+@limiter.limit("60/minute")
+def get_facilities_v1(
+    request: Request,
+    type: str = Query(default="all"),
+    limit: int = Query(default=500, ge=1, le=1000),
+    refresh: bool = Query(default=False),
+) -> dict[str, Any]:
+    """Real OpenStreetMap Overpass industrial zones and critical infrastructure facilities."""
+    from services.osm_service import get_facilities
+    return get_facilities(facility_type=type, limit=limit, force_refresh=refresh)
+
+
+@app.get("/api/v1/weather")
+@limiter.limit("60/minute")
+def get_weather_v1(
+    request: Request,
+    lat: float = Query(default=21.1702, ge=-90.0, le=90.0),
+    lng: Optional[float] = Query(default=None),
+    lon: Optional[float] = Query(default=None),
+) -> dict[str, Any]:
+    """Real-time atmospheric telemetry from Open-Meteo API with 10-min caching."""
+    target_lon = lng if lng is not None else (lon if lon is not None else 72.8311)
+    from services.weather_service import get_current_weather
+    return get_current_weather(lat=lat, lon=target_lon)
+
+
+@app.get("/api/v1/analytics/summary")
+@limiter.limit("60/minute")
+def get_analytics_summary_v1(request: Request) -> dict[str, Any]:
+    """Live distribution breakdown across active NASA FIRMS detections."""
+    classifier = get_classifier()
+    raw_fires = fetch_all_sources(days=1)
+    if not raw_fires:
+        return {
+            "total": 0,
+            "status": "initializing",
+            "message": "Classifier initializing...",
+            "breakdown": {
+                "emergency": {"count": 0, "percentage": 0.0},
+                "persistent": {"count": 0, "percentage": 0.0},
+                "agricultural": {"count": 0, "percentage": 0.0},
+                "forest": {"count": 0, "percentage": 0.0},
+                "low_intensity": {"count": 0, "percentage": 0.0},
+            },
+        }
+    classified = classifier.classify_batch(raw_fires)
+    summary = classifier.get_summary(classified)
+    total = max(1, len(classified))
+    
+    return {
+        "total": len(classified),
+        "status": "ready",
+        "fetched_at": get_last_fetched_at(),
+        "breakdown": {
+            "emergency": {
+                "count": summary["emergency"],
+                "percentage": round((summary["emergency"] / total) * 100.0, 1),
+            },
+            "persistent": {
+                "count": summary["persistent"],
+                "percentage": round((summary["persistent"] / total) * 100.0, 1),
+            },
+            "agricultural": {
+                "count": summary["agricultural"],
+                "percentage": round((summary["agricultural"] / total) * 100.0, 1),
+            },
+            "forest": {
+                "count": summary["forest"],
+                "percentage": round((summary["forest"] / total) * 100.0, 1),
+            },
+            "low_intensity": {
+                "count": summary["unknown"],
+                "percentage": round((summary["unknown"] / total) * 100.0, 1),
+            },
+        },
+    }
+
+
+@app.get("/api/v1/analytics/model-accuracy")
+@limiter.limit("60/minute")
+def get_model_accuracy_v1(request: Request) -> dict[str, Any]:
+    """Validated machine learning baseline metric and cross-validation metadata."""
+    from services.classifier_service import get_model_accuracy_metadata
+    return get_model_accuracy_metadata()
+
 
 
 @app.get("/api/debug/firms")

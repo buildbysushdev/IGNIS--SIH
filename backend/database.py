@@ -1,5 +1,6 @@
 import sqlite3
-from typing import Any
+import json
+from typing import Any, Optional
 from config import get_db_path
 
 INIT_SQL = """
@@ -52,6 +53,17 @@ CREATE TABLE IF NOT EXISTS field_reports (
     damage_assessment TEXT,
     resources_needed TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS industrial_zones (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    zone_type TEXT NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    sector TEXT,
+    tags TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(latitude, longitude, name)
 );
 """
 
@@ -637,6 +649,88 @@ def get_field_report_stats() -> dict[str, Any]:
             "recent_reports": [],
             "improvements": {"retrained_samples": 0, "accuracy_gain": "+0%", "false_alarm_reduction": "0%"},
         }
+
+
+def insert_industrial_zones(zones: list[dict[str, Any]]) -> int:
+    """Insert or update parsed OpenStreetMap industrial facilities and infrastructure into database."""
+    if not zones:
+        return 0
+    sql = """
+    INSERT OR REPLACE INTO industrial_zones (name, zone_type, latitude, longitude, sector, tags, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+    """
+    inserted = 0
+    with get_connection() as conn:
+        for z in zones:
+            try:
+                name = str(z.get("name", "Unnamed")).strip()
+                zone_type = str(z.get("zone_type", z.get("type", "industrial"))).strip()
+                lat = float(z.get("latitude", z.get("lat", 0.0)))
+                lon = float(z.get("longitude", z.get("lon", 0.0)))
+                sector = str(z.get("sector", "IN-01")).strip()
+                tags_str = z.get("tags")
+                if isinstance(tags_str, dict):
+                    tags_str = json.dumps(tags_str)
+                elif not isinstance(tags_str, str):
+                    tags_str = "{}"
+                if lat and lon and name:
+                    conn.execute(sql, (name, zone_type, lat, lon, sector, tags_str))
+                    inserted += 1
+            except Exception:
+                continue
+    return inserted
+
+
+def get_cached_industrial_zones(
+    zone_type: Optional[str] = None,
+    limit: int = 500,
+) -> list[dict[str, Any]]:
+    """Retrieve industrial facilities from the SQLite registry with optional type filtering."""
+    try:
+        with get_connection() as conn:
+            if zone_type and zone_type.lower() != "all":
+                q_type = f"%{zone_type.lower()}%"
+                rows = conn.execute(
+                    """
+                    SELECT id, name, zone_type, latitude, longitude, sector, tags, updated_at
+                    FROM industrial_zones
+                    WHERE LOWER(zone_type) LIKE ? OR LOWER(name) LIKE ?
+                    ORDER BY id ASC LIMIT ?
+                    """,
+                    (q_type, q_type, limit),
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    """
+                    SELECT id, name, zone_type, latitude, longitude, sector, tags, updated_at
+                    FROM industrial_zones
+                    ORDER BY id ASC LIMIT ?
+                    """,
+                    (limit,),
+                ).fetchall()
+
+            result = []
+            for r in rows:
+                tags = {}
+                if r["tags"]:
+                    try:
+                        tags = json.loads(r["tags"])
+                    except Exception:
+                        pass
+                result.append({
+                    "id": f"FAC-{r['id']:04d}",
+                    "name": r["name"],
+                    "type": r["zone_type"].upper(),
+                    "latitude": r["latitude"],
+                    "longitude": r["longitude"],
+                    "sector": r["sector"] or "IN-01",
+                    "tags": tags,
+                    "updated_at": r["updated_at"],
+                })
+            return result
+    except Exception:
+        return []
+
 
 
 

@@ -134,66 +134,127 @@ out center;
 
 
 def fetch_industrial_zones_from_osm() -> list[dict[str, Any]]:
-    """Query Overpass API for industrial facilities and zones across India with retries and fallback."""
+    """Query Overpass API for industrial facilities and critical infrastructure across India."""
+    import database
+
     headers = {
-        "User-Agent": "IGNIS-Fire-Surveillance/1.0 (SIH26162 NTRO)",
+        "User-Agent": "IGNIS-FireIntelligenceGroundStation/2.0 (SIH26162 NTRO; contact: admin@ignis.sih)",
         "Accept": "application/json",
     }
-    for attempt in range(2):
-        try:
-            resp = requests.post(OVERPASS_URL, data={"data": OVERPASS_QUERY}, headers=headers, timeout=15)
-            resp.raise_for_status()
-            zones: list[dict[str, Any]] = []
-            for el in resp.json().get("elements", []):
-                lat = el.get("lat") or (el.get("center", {}).get("lat") if "center" in el else None)
-                lon = el.get("lon") or (el.get("center", {}).get("lon") if "center" in el else None)
-                if lat is None or lon is None:
-                    continue
-                tags = el.get("tags", {})
-                z_type = tags.get("landuse") or tags.get("man_made") or tags.get("power") or "industrial"
-                zones.append({
-                    "latitude": float(lat),
-                    "longitude": float(lon),
-                    "name": tags.get("name", "Unnamed"),
-                    "zone_type": str(z_type),
-                })
-            if zones:
-                return zones
-        except Exception as exc:
-            print(f"[IGNIS] Overpass API notice (attempt {attempt + 1}/2): {exc}")
-            time.sleep(1.0)
+    
+    # Key industrial corridors with bounding boxes for ultra-fast, reliable response
+    corridors = [
+        # Gujarat & Maharashtra Heavy Chemical & Refining Belt
+        (18.5, 72.5, 23.5, 74.5, "Western Petrochem"),
+        # Chota Nagpur & Eastern Steel/Mining Corridor (Bhilai, Bokaro, Rourkela, Jamshedpur, Angul)
+        (20.5, 81.0, 24.5, 87.5, "Eastern Metallurgical"),
+        # Northern Industrial & Refinery Corridor (NCR, Panipat, Mathura)
+        (27.0, 76.5, 30.5, 78.5, "Northern Industrial"),
+        # Southern Petrochemical & Industrial Hubs (Vizag, Chennai, Bellary)
+        (12.5, 76.0, 18.5, 83.5, "Southern Industrial"),
+    ]
 
-    print(f"[IGNIS] Falling back to preconfigured industrial facility database ({len(FALLBACK_ZONES)} sites)")
-    return list(FALLBACK_ZONES)
+    all_zones: list[dict[str, Any]] = []
+
+    # First merge with our verified high-priority Indian industrial baseline
+    for f in FALLBACK_ZONES:
+        all_zones.append({
+            "name": f["name"],
+            "zone_type": f.get("zone_type", "works"),
+            "latitude": float(f["latitude"]),
+            "longitude": float(f["longitude"]),
+            "sector": f.get("sector", "IN-01"),
+            "tags": {"source": "IGNIS Verified Baseline"},
+        })
+
+    for min_lat, min_lon, max_lat, max_lon, corridor_name in corridors:
+        q = f"""
+        [out:json][timeout:15];
+        (
+          node["industrial"]({min_lat},{min_lon},{max_lat},{max_lon});
+          node["man_made"="works"]({min_lat},{min_lon},{max_lat},{max_lon});
+          node["amenity"="hospital"]({min_lat},{min_lon},{max_lat},{max_lon});
+          node["amenity"="fuel"]({min_lat},{min_lon},{max_lat},{max_lon});
+        );
+        out center 40;
+        """
+        try:
+            resp = requests.post(OVERPASS_URL, data={"data": q}, headers=headers, timeout=10)
+            if resp.status_code == 200:
+                elements = resp.json().get("elements", [])
+                for el in elements:
+                    lat = el.get("lat") or (el.get("center", {}).get("lat") if "center" in el else None)
+                    lon = el.get("lon") or (el.get("center", {}).get("lon") if "center" in el else None)
+                    if lat is None or lon is None:
+                        continue
+                    tags = el.get("tags", {})
+                    name = tags.get("name")
+                    if not name:
+                        continue
+                    z_type = tags.get("industrial") or tags.get("amenity") or tags.get("man_made") or "industrial"
+                    all_zones.append({
+                        "name": str(name),
+                        "zone_type": str(z_type),
+                        "latitude": float(lat),
+                        "longitude": float(lon),
+                        "sector": corridor_name,
+                        "tags": tags,
+                    })
+        except Exception as exc:
+            print(f"[IGNIS] Overpass API notice for {corridor_name}: {exc}")
+
+    # Deduplicate by name and coordinates
+    seen = set()
+    deduped: list[dict[str, Any]] = []
+    for z in all_zones:
+        key = (round(z["latitude"], 3), round(z["longitude"], 3), z["name"].lower())
+        if key not in seen:
+            seen.add(key)
+            deduped.append(z)
+
+    # Persist into database
+    try:
+        database.insert_industrial_zones(deduped)
+    except Exception as db_err:
+        print(f"[IGNIS] Database zone insert notice: {db_err}")
+
+    # Also persist to JSON cache
+    try:
+        cache_path = Path(CACHE_DIR) / "industrial_zones.json"
+        with open(cache_path, "w", encoding="utf-8") as f:
+            json.dump(deduped, f, indent=2)
+    except Exception:
+        pass
+
+    print(f"[IGNIS] OSM Overpass & Infrastructure sync complete: {len(deduped)} sites indexed")
+    return deduped
 
 
 def load_or_cache_zones() -> list[dict[str, Any]]:
-    """Load zones from cache (<7d) or immediately use comprehensive preconfigured facilities."""
+    """Load zones from SQLite database (<24h) or query Overpass API."""
+    import database
+
+    # 1. Try SQLite database
+    db_zones = database.get_cached_industrial_zones(limit=1000)
+    if db_zones and len(db_zones) >= 30:
+        return db_zones
+
+    # 2. Try JSON cache
     cache_path = Path(CACHE_DIR) / "industrial_zones.json"
     if cache_path.exists():
         try:
             zones = json.loads(cache_path.read_text(encoding="utf-8"))
-            if zones and len(zones) > 0:
+            if zones and len(zones) >= 30:
+                try:
+                    database.insert_industrial_zones(zones)
+                except Exception:
+                    pass
                 return zones
         except Exception:
             pass
 
-    # If cache not present, populate with bundled comprehensive facility database using atomic write
-    tmp_path = str(cache_path) + ".tmp"
-    try:
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(tmp_path, "w", encoding="utf-8") as f:
-            json.dump(FALLBACK_ZONES, f, indent=2)
-        os.replace(tmp_path, str(cache_path))
-    except (OSError, PermissionError):
-        if os.path.exists(tmp_path):
-            try:
-                os.remove(tmp_path)
-            except OSError:
-                pass
-
-    print(f"[IGNIS] [mode=fallback] Loaded {len(FALLBACK_ZONES)} industrial facilities")
-    return list(FALLBACK_ZONES)
+    # 3. Fetch live from OSM Overpass & populate DB
+    return fetch_industrial_zones_from_osm()
 
 
 def find_nearest_industry(lat: float, lon: float, zones: list[dict[str, Any]]) -> dict[str, Any]:
@@ -209,7 +270,7 @@ def find_nearest_industry(lat: float, lon: float, zones: list[dict[str, Any]]) -
     return {
         "distance_km": round(dist_km, 2),
         "name": str(nearest.get("name", "Unnamed")),
-        "zone_type": str(nearest.get("zone_type", "industrial")),
+        "zone_type": str(nearest.get("zone_type", nearest.get("type", "industrial"))),
         "zone_lat": float(nearest.get("latitude", 0.0)),
         "zone_lon": float(nearest.get("longitude", 0.0)),
     }
@@ -252,14 +313,14 @@ def load_or_cache_amenities() -> list[dict[str, Any]]:
 
 def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dict[str, Any]:
     """
-    Queries local cached OSM amenity and building data within radius_m of (lat, lon).
+    Queries local cached OSM amenity, industrial, forest and building data within radius_m of (lat, lon).
     Returns primary amenity/building tag found:
-    'HOSPITAL' | 'SCHOOL' | 'PETROL_PUMP' | 'RESTAURANT' | 'MARKET' | 'RESIDENTIAL' | 'SLUM' | 'INDUSTRIAL' | 'FARMLAND' | 'GENERAL'
+    'HOSPITAL' | 'SCHOOL' | 'PETROL_PUMP' | 'RESTAURANT' | 'MARKET' | 'RESIDENTIAL' | 'SLUM' | 'INDUSTRIAL' | 'FARMLAND' | 'FOREST' | 'GENERAL'
     """
     amenities = load_or_cache_amenities()
     origin = (lat, lon)
 
-    # 1. Check nearest urban amenity
+    # 1. Check nearest urban amenity (hospital, fuel station, school)
     if amenities:
         nearest_amenity = min(
             amenities,
@@ -294,7 +355,27 @@ def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dic
                 "longitude": float(nearest_ind["longitude"]),
             }
 
-    # 3. Check agricultural corridor coordinates in India
+    # 3. Check major Indian forest reserves & biosphere corridors
+    is_forest = (
+        (29.0 <= lat <= 31.8 and 77.5 <= lon <= 81.2) or  # Uttarakhand/Himachal Himalayas & Corbett
+        (21.0 <= lat <= 22.8 and 85.0 <= lon <= 87.2) or  # Simlipal / Mayurbhanj Reserve (Odisha)
+        (21.5 <= lat <= 23.8 and 79.5 <= lon <= 82.5) or  # Kanha / Bandhavgarh / Satpura (MP)
+        (11.0 <= lat <= 16.0 and 74.5 <= lon <= 77.5) or  # Western Ghats / Nilgiris / Wayanad
+        (24.5 <= lat <= 28.5 and 89.5 <= lon <= 96.5) or  # Northeast India (Assam, Meghalaya, Arunachal)
+        (21.5 <= lat <= 22.5 and 88.0 <= lon <= 89.5) or  # Sundarbans Mangrove Reserve
+        (20.8 <= lat <= 21.5 and 70.5 <= lon <= 71.5)     # Gir Forest Reserve
+    )
+    if is_forest:
+        return {
+            "location_type": "FOREST",
+            "name": "Forest Reserve & Wildland Zone",
+            "distance_m": 0.0,
+            "zone_type": "forest",
+            "latitude": lat,
+            "longitude": lon,
+        }
+
+    # 4. Check agricultural corridor coordinates in India
     is_agri = (
         (28.0 <= lat <= 32.5 and 74.0 <= lon <= 80.0) or
         (24.0 <= lat <= 28.5 and 77.0 <= lon <= 88.5) or
@@ -311,7 +392,7 @@ def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dic
             "longitude": lon,
         }
 
-    # 4. Fallback if no specific OSM tag found
+    # 5. Fallback if no specific OSM tag found
     return {
         "location_type": "GENERAL",
         "name": "General Geographic Area",
@@ -320,4 +401,5 @@ def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dic
         "latitude": lat,
         "longitude": lon,
     }
+
 

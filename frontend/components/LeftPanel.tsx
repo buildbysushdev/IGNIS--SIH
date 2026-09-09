@@ -30,14 +30,14 @@ export default function LeftPanel({
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredFacilities = useMemo(() => {
-    if (!searchQuery.trim()) return ALL_FACILITIES.slice(0, 40);
+    if (!searchQuery.trim()) return ALL_FACILITIES;
     const q = searchQuery.toLowerCase();
     return ALL_FACILITIES.filter(
       (f) =>
         f.name.toLowerCase().includes(q) ||
         f.type.toLowerCase().includes(q) ||
         (f.sector && f.sector.toLowerCase().includes(q))
-    ).slice(0, 50);
+    );
   }, [searchQuery]);
 
   const criticalAlerts = useMemo(() => {

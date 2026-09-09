@@ -19,6 +19,7 @@ _data_status: dict[str, Any] = {
     "mode": "empty",
     "count": 0,
     "message": "Initializing NASA FIRMS ingestion...",
+    "fetched_at": datetime.utcnow().isoformat() + "Z",
 }
 
 
@@ -26,6 +27,11 @@ def _update_status(mode: str, count: int, message: str) -> None:
     _data_status["mode"] = mode
     _data_status["count"] = count
     _data_status["message"] = message
+    _data_status["fetched_at"] = datetime.utcnow().isoformat() + "Z"
+
+
+def get_last_fetched_at() -> str:
+    return _data_status.get("fetched_at") or (datetime.utcnow().isoformat() + "Z")
 
 
 def _get_map_key() -> str:
@@ -149,15 +155,15 @@ def _get_cache_path(days: int, source: str) -> str:
     return str(cache_dir / f"firms_{source}_{days}d.json")
 
 
-def _is_cache_valid(path: str, max_age_hours: int = 3) -> bool:
-    """Check if cache file exists and was modified within max_age_hours."""
+def _is_cache_valid(path: str, max_age_minutes: int = 15) -> bool:
+    """Check if cache file exists and was modified within max_age_minutes (15 min default)."""
     if not os.path.exists(path):
         return False
     try:
         mtime = os.path.getmtime(path)
         file_time = datetime.fromtimestamp(mtime)
         age = datetime.now() - file_time
-        return age < timedelta(hours=max_age_hours)
+        return age < timedelta(minutes=max_age_minutes)
     except OSError:
         return False
 
@@ -193,14 +199,14 @@ def _save_cache(path: str, data: list[dict[str, Any]]) -> None:
 def fetch_fires(
     days: int = 1, source: str = "VIIRS_SNPP_NRT", force: bool = False
 ) -> list[dict[str, Any]]:
-    """Fetch active fire detections with 3-hour cache, multi-tier window expansion, and SQLite fallback."""
+    """Fetch active fire detections with 15-minute real-time cache, multi-tier window expansion, and SQLite fallback."""
     cache_path = _get_cache_path(days, source)
 
-    if not force and _is_cache_valid(cache_path, max_age_hours=3):
+    if not force and _is_cache_valid(cache_path, max_age_minutes=15):
         data = _load_cache(cache_path)
         if data and len(data) > 0:
             print(f"[IGNIS] Cache HIT (active satellite cycle) | source={source} | fires={len(data)}")
-            _update_status("live", len(data), f"Connected to NASA FIRMS ({len(data)} active hotspots, <3h cache)")
+            _update_status("live", len(data), f"Connected to NASA FIRMS ({len(data)} active hotspots, <15m cache)")
             return data
 
     try:

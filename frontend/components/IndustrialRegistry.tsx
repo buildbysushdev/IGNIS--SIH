@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
+import axios from "axios";
 
 export interface IndustrialFacility {
   id: string;
@@ -10,93 +11,40 @@ export interface IndustrialFacility {
   longitude: number;
   dist?: string;
   sector?: string;
+  zone_type?: string;
 }
 
-// Master Indian Industrial Facilities Registry (248 Known Sites)
-const RAW_FACILITIES: Array<{ name: string; type: string; lat: number; lon: number; sector: string }> = [
-  { name: "BHILAI STEEL PLANT", type: "WORKS", lat: 21.2000, lon: 81.3800, sector: "CT-01" },
-  { name: "BOKARO STEEL PLANT", type: "WORKS", lat: 23.7900, lon: 86.1400, sector: "JH-02" },
-  { name: "JAMSHEDPUR TATA STEEL", type: "WORKS", lat: 22.8000, lon: 86.2000, sector: "JH-01" },
-  { name: "ROURKELA STEEL PLANT", type: "WORKS", lat: 22.2500, lon: 84.8500, sector: "OR-03" },
-  { name: "DURGAPUR STEEL PLANT", type: "WORKS", lat: 23.5500, lon: 87.2900, sector: "WB-01" },
-  { name: "ANGUL JINDAL/NALCO", type: "SMELTER", lat: 20.9500, lon: 85.1500, sector: "OR-02" },
-  { name: "KALINGANAGAR STEEL HUB", type: "WORKS", lat: 20.9600, lon: 85.8300, sector: "OR-01" },
-  { name: "RAIGARH JSPL COMPLEX", type: "WORKS", lat: 21.9000, lon: 83.4000, sector: "CT-02" },
-  { name: "KORBA POWER & ALUM", type: "POWER", lat: 22.3500, lon: 82.6800, sector: "CT-03" },
-  { name: "BELLARY JSW VIJAYANAGAR", type: "WORKS", lat: 15.1800, lon: 76.6600, sector: "KA-01" },
-  { name: "JAMNAGAR REFINERY", type: "REFINERY", lat: 22.3800, lon: 69.8300, sector: "GJ-01" },
-  { name: "MANGALORE REFINERY MRPL", type: "REFINERY", lat: 12.9800, lon: 74.8300, sector: "KA-02" },
-  { name: "KOCHI REFINERY BPCL", type: "REFINERY", lat: 9.9600, lon: 76.3600, sector: "KL-01" },
-  { name: "PARADIP IOCL REFINERY", type: "REFINERY", lat: 20.2700, lon: 86.6700, sector: "OR-04" },
-  { name: "HALDIA REFINERY IOCL", type: "REFINERY", lat: 22.0600, lon: 88.0700, sector: "WB-02" },
-  { name: "VISHAKHAPATNAM HPCL", type: "REFINERY", lat: 17.6900, lon: 83.2500, sector: "AP-01" },
-  { name: "VISHAKHAPATNAM RINL", type: "WORKS", lat: 17.6300, lon: 83.1800, sector: "AP-02" },
-  { name: "PANIPAT REFINERY IOCL", type: "REFINERY", lat: 29.4600, lon: 76.9200, sector: "HR-01" },
-  { name: "MATHURA REFINERY IOCL", type: "REFINERY", lat: 27.4200, lon: 77.7000, sector: "UP-01" },
-  { name: "BHATINDA HMEL REFINERY", type: "REFINERY", lat: 30.0300, lon: 74.9300, sector: "PB-01" },
-  { name: "BINA REFINERY BPCL", type: "REFINERY", lat: 24.1800, lon: 78.1800, sector: "MP-01" },
-  { name: "BARAUNI REFINERY IOCL", type: "REFINERY", lat: 25.4600, lon: 85.9800, sector: "BR-01" },
-  { name: "NUMALIGARH REFINERY", type: "REFINERY", lat: 26.5600, lon: 93.7600, sector: "AS-01" },
-  { name: "DIGBOI REFINERY IOCL", type: "REFINERY", lat: 27.3800, lon: 95.6200, sector: "AS-02" },
-  { name: "TATANAGAR FOUNDRIES", type: "WORKS", lat: 22.7800, lon: 86.1800, sector: "JH-03" },
-  { name: "SINGRAULI NTPC SUPER", type: "POWER", lat: 24.1000, lon: 82.6800, sector: "UP-02" },
-  { name: "VINDHYACHAL STPS", type: "POWER", lat: 24.0900, lon: 82.6600, sector: "MP-02" },
-  { name: "RIHAND SUPER THERMAL", type: "POWER", lat: 24.0200, lon: 82.7900, sector: "UP-03" },
-  { name: "TALCHER THERMAL POWER", type: "POWER", lat: 20.9100, lon: 85.2200, sector: "OR-05" },
-  { name: "CHANDRAPUR SUPER STPS", type: "POWER", lat: 19.9800, lon: 79.2900, sector: "MH-01" },
-  { name: "RAMAGUNDAM NTPC", type: "POWER", lat: 18.7600, lon: 79.5200, sector: "TS-01" },
-  { name: "SIMHADRI SUPER THERMAL", type: "POWER", lat: 17.6100, lon: 83.0800, sector: "AP-03" },
-  { name: "MUNDRA THERMAL ADANI", type: "POWER", lat: 22.8200, lon: 69.5200, sector: "GJ-02" },
-  { name: "SASAN ULTRA MEGA POWER", type: "POWER", lat: 23.9700, lon: 82.6200, sector: "MP-03" },
-  { name: "DAHEJ PETROCHEM SEZ", type: "CHEM", lat: 21.7100, lon: 72.5800, sector: "GJ-03" },
-  { name: "HAZIRA L&T / ONGC HUB", type: "WORKS", lat: 21.1400, lon: 72.6500, sector: "GJ-04" },
-  { name: "VAPI INDUSTRIAL ESTATE", type: "CHEM", lat: 20.3700, lon: 72.9100, sector: "GJ-05" },
-  { name: "ANKLESHWAR GIDC ESTATE", type: "CHEM", lat: 21.6300, lon: 73.0000, sector: "GJ-06" },
+// ─────────────────────────────────────────────────────────
+// STATIC FALLBACK (used only if /api/industries is down)
+// ─────────────────────────────────────────────────────────
+const STATIC_FALLBACK: IndustrialFacility[] = [
+  { id: "A001", name: "BHILAI STEEL PLANT", type: "WORKS", latitude: 21.2000, longitude: 81.3800, sector: "CT-01" },
+  { id: "A002", name: "BOKARO STEEL PLANT", type: "WORKS", latitude: 23.7900, longitude: 86.1400, sector: "JH-02" },
+  { id: "A003", name: "JAMSHEDPUR TATA STEEL", type: "WORKS", latitude: 22.8000, longitude: 86.2000, sector: "JH-01" },
+  { id: "A004", name: "ROURKELA STEEL PLANT", type: "WORKS", latitude: 22.2500, longitude: 84.8500, sector: "OR-03" },
+  { id: "A005", name: "DURGAPUR STEEL PLANT", type: "WORKS", latitude: 23.5500, longitude: 87.2900, sector: "WB-01" },
+  { id: "A006", name: "ANGUL JINDAL/NALCO", type: "SMELTER", latitude: 20.9500, longitude: 85.1500, sector: "OR-02" },
+  { id: "A007", name: "KALINGANAGAR STEEL HUB", type: "WORKS", latitude: 20.9600, longitude: 85.8300, sector: "OR-01" },
+  { id: "A008", name: "RAIGARH JSPL COMPLEX", type: "WORKS", latitude: 21.9000, longitude: 83.4000, sector: "CT-02" },
+  { id: "A009", name: "KORBA POWER & ALUM", type: "POWER", latitude: 22.3500, longitude: 82.6800, sector: "CT-03" },
+  { id: "A010", name: "JAMNAGAR REFINERY", type: "REFINERY", latitude: 22.3800, longitude: 69.8300, sector: "GJ-01" },
+  { id: "A011", name: "MANGALORE REFINERY MRPL", type: "REFINERY", latitude: 12.9800, longitude: 74.8300, sector: "KA-02" },
+  { id: "A012", name: "KOCHI REFINERY BPCL", type: "REFINERY", latitude: 9.9600, longitude: 76.3600, sector: "KL-01" },
+  { id: "A013", name: "PARADIP IOCL REFINERY", type: "REFINERY", latitude: 20.2700, longitude: 86.6700, sector: "OR-04" },
+  { id: "A014", name: "DAHEJ PETROCHEM SEZ", type: "CHEM", latitude: 21.7100, longitude: 72.5800, sector: "GJ-03" },
+  { id: "A015", name: "HAZIRA L&T / ONGC HUB", type: "WORKS", latitude: 21.1400, longitude: 72.6500, sector: "GJ-04" },
 ];
 
-// Generate deterministic 248 industrial nodes across key Indian clusters
-export const ALL_FACILITIES: IndustrialFacility[] = (() => {
-  const list: IndustrialFacility[] = [];
-  const baseTypes = ["WORKS", "REFINERY", "POWER", "CHEM", "SMELTER", "MINING"];
-
-  for (let i = 0; i < 248; i++) {
-    const base = RAW_FACILITIES[i % RAW_FACILITIES.length];
-    const idNum = String(i + 1).padStart(3, "0");
-    const id = `A${idNum}`;
-
-    if (i < RAW_FACILITIES.length) {
-      list.push({
-        id,
-        name: base.name,
-        type: base.type,
-        latitude: base.lat,
-        longitude: base.lon,
-        dist: `${(0.8 + ((i * 7) % 35) / 10).toFixed(1)}km`,
-        sector: base.sector,
-      });
-    } else {
-      const offsetLat = ((i * 13) % 40 - 20) * 0.04;
-      const offsetLon = ((i * 17) % 40 - 20) * 0.04;
-      const type = baseTypes[i % baseTypes.length];
-      list.push({
-        id,
-        name: `${base.name.split(" ")[0]} UNIT-${(i % 8) + 1}`,
-        type,
-        latitude: parseFloat((base.lat + offsetLat).toFixed(4)),
-        longitude: parseFloat((base.lon + offsetLon).toFixed(4)),
-        dist: `${(1.1 + ((i * 3) % 42) / 10).toFixed(1)}km`,
-        sector: `${base.sector.slice(0, 2)}-${String((i % 9) + 1).padStart(2, "0")}`,
-      });
-    }
-  }
-  return list;
-})();
-
-export function findNearestFacility(lat: number, lon: number): { facility: IndustrialFacility; distanceKm: number } {
-  let nearest = ALL_FACILITIES[0];
+// Haversine helper for nearest facility lookup
+export function findNearestFacility(
+  lat: number,
+  lon: number,
+  facilities: IndustrialFacility[] = STATIC_FALLBACK
+): { facility: IndustrialFacility; distanceKm: number } {
+  let nearest = facilities[0];
   let minDistance = Infinity;
 
-  for (const fac of ALL_FACILITIES) {
+  for (const fac of facilities) {
     const dLat = (fac.latitude - lat) * (Math.PI / 180);
     const dLon = (fac.longitude - lon) * (Math.PI / 180);
     const a =
@@ -106,8 +54,7 @@ export function findNearestFacility(lat: number, lon: number): { facility: Indus
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const dist = 6371 * c; // Earth radius in km
-
+    const dist = 6371 * c;
     if (dist < minDistance) {
       minDistance = dist;
       nearest = fac;
@@ -116,6 +63,9 @@ export function findNearestFacility(lat: number, lon: number): { facility: Indus
 
   return { facility: nearest, distanceKm: minDistance };
 }
+
+// Export the live-fetched facilities list for other components
+export let ALL_FACILITIES: IndustrialFacility[] = [...STATIC_FALLBACK];
 
 interface IndustrialRegistryProps {
   onSelectFacility?: (facility: IndustrialFacility) => void;
@@ -126,21 +76,66 @@ export default function IndustrialRegistry({
   onSelectFacility,
   selectedFacilityId,
 }: IndustrialRegistryProps) {
+  const [facilities, setFacilities] = useState<IndustrialFacility[]>(STATIC_FALLBACK);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isLive, setIsLive] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const pageSize = 25;
 
+  // Fetch from live API on mount
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        setLoading(true);
+        const apiBase =
+          process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+        const res = await axios.get(`${apiBase}/api/industries`, {
+          params: { limit: 500 },
+          timeout: 8000,
+        });
+        const data = res.data;
+        const raw: any[] = data.industries || [];
+        if (raw.length > 0) {
+          const mapped: IndustrialFacility[] = raw.map((z: any, i: number) => ({
+            id: z.id || `Z${String(i + 1).padStart(3, "0")}`,
+            name: z.name || z.display_name || "Unknown Facility",
+            type: (z.zone_type || z.type || "INDUSTRIAL").toUpperCase().replace(/_/g, " "),
+            latitude: parseFloat(z.latitude || z.lat || 0),
+            longitude: parseFloat(z.longitude || z.lon || 0),
+            sector: z.sector || z.state || "IN",
+            dist: z.dist || undefined,
+            zone_type: z.zone_type || z.type || "industrial",
+          }));
+          setFacilities(mapped);
+          ALL_FACILITIES = mapped; // update shared export
+          setIsLive(true);
+        } else {
+          // API returned empty - keep fallback
+          setIsLive(false);
+        }
+      } catch {
+        // Silently fall back to static list
+        setIsLive(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFacilities();
+  }, []);
+
   const filtered = useMemo(() => {
-    if (!searchTerm.trim()) return ALL_FACILITIES;
+    if (!searchTerm.trim()) return facilities;
     const term = searchTerm.toLowerCase();
-    return ALL_FACILITIES.filter(
+    return facilities.filter(
       (f) =>
         f.name.toLowerCase().includes(term) ||
         f.type.toLowerCase().includes(term) ||
         f.id.toLowerCase().includes(term) ||
         f.sector?.toLowerCase().includes(term)
     );
-  }, [searchTerm]);
+  }, [searchTerm, facilities]);
 
   const totalPages = Math.ceil(filtered.length / pageSize);
   const paginated = useMemo(() => {
@@ -159,10 +154,15 @@ export default function IndustrialRegistry({
       {/* Panel Header */}
       <div className="panel-header flex items-center justify-between border-b border-[#1f2933] px-3 py-2 bg-[#131a22]">
         <span className="font-mono text-[11px] font-bold tracking-[0.15em] text-[#6b7785] uppercase">
-          // INDUSTRIAL REGISTRY :: 248 SITES
+          // INDUSTRIAL REGISTRY ::{" "}
+          {loading ? "LOADING..." : `${facilities.length} SITES`}
         </span>
-        <span className="text-[10px] font-mono text-[#00ff9c] uppercase font-semibold">
-          [OSM-LINKED]
+        <span
+          className={`text-[10px] font-mono uppercase font-semibold ${
+            isLive ? "text-[#00ff9c]" : "text-[#ffb800]"
+          }`}
+        >
+          {loading ? "[SYNCING]" : isLive ? "[LIVE-OSM]" : "[FALLBACK]"}
         </span>
       </div>
 
@@ -188,12 +188,16 @@ export default function IndustrialRegistry({
         <span className="col-span-2">ID</span>
         <span className="col-span-6">FACILITY NAME</span>
         <span className="col-span-2">TYPE</span>
-        <span className="col-span-2 text-right">DIST</span>
+        <span className="col-span-2 text-right">SECTOR</span>
       </div>
 
       {/* Table Body */}
       <div className="flex-1 overflow-y-auto divide-y divide-[#1f2933] font-mono text-xs">
-        {paginated.length === 0 ? (
+        {loading ? (
+          <div className="p-4 text-center text-[#4a5563] text-xs font-mono animate-pulse">
+            // QUERYING OSM INDUSTRIAL DATABASE...
+          </div>
+        ) : paginated.length === 0 ? (
           <div className="p-4 text-center text-[#4a5563] text-xs font-mono">
             // NO MATCHING SITES FOUND IN REGISTRY
           </div>
@@ -215,7 +219,7 @@ export default function IndustrialRegistry({
                 <span className="col-span-6 truncate font-medium">{fac.name}</span>
                 <span className="col-span-2 text-[10px] text-[#ffb800] uppercase">{fac.type}</span>
                 <span className="col-span-2 text-right text-[11px] tabular-nums text-[#6b7785]">
-                  {fac.dist}
+                  {fac.sector || "—"}
                 </span>
               </div>
             );

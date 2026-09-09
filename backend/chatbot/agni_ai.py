@@ -87,17 +87,29 @@ class AgniAI:
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.gemini_api_key = os.getenv("GEMINI_API_KEY", "").strip()
         self.gemini_model_name = os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
-        self._genai_model = None
+        self._genai_client = None
+        self._genai_model = None  # legacy compat flag
 
         if self.gemini_api_key:
             try:
-                import google.generativeai as genai
-                genai.configure(api_key=self.gemini_api_key)
-                self._genai_model = genai.GenerativeModel(
-                    model_name=self.gemini_model_name,
-                    system_instruction=SYSTEM_PROMPT,
-                )
-                print(f"[AGNI-AI] Gemini model '{self.gemini_model_name}' initialized successfully")
+                # Try new google.genai SDK first (recommended)
+                from google import genai as google_genai
+                self._genai_client = google_genai.Client(api_key=self.gemini_api_key)
+                self._genai_model = self.gemini_model_name  # store model name as string
+                print(f"[AGNI-AI] Gemini (google.genai) model '{self.gemini_model_name}' initialized successfully")
+            except ImportError:
+                try:
+                    # Fallback to legacy google.generativeai
+                    import google.generativeai as genai  # type: ignore
+                    genai.configure(api_key=self.gemini_api_key)
+                    self._genai_model = genai.GenerativeModel(
+                        model_name=self.gemini_model_name,
+                        system_instruction=SYSTEM_PROMPT,
+                    )
+                    self._genai_client = None
+                    print(f"[AGNI-AI] Gemini (legacy genai) model '{self.gemini_model_name}' initialized")
+                except Exception as e:
+                    print(f"[AGNI-AI] Gemini initialization notice: {e}")
             except Exception as e:
                 print(f"[AGNI-AI] Gemini initialization notice: {e}")
 
@@ -135,6 +147,40 @@ class AgniAI:
         """Call Gemini LLM with strict system prompt and refusal guardrails."""
         if not self._genai_model:
             return None
+
+        full_prompt = f"{SYSTEM_PROMPT}\n\n{prompt}"
+
+        # Path 1: New google.genai SDK (preferred)
+        if self._genai_client is not None:
+            try:
+                from google.genai import types as genai_types
+                config = genai_types.GenerateContentConfig(
+                    system_instruction=SYSTEM_PROMPT,
+                    temperature=0.3,
+                    max_output_tokens=1200,
+                )
+                contents = []
+                if history:
+                    for turn in history[-6:]:
+                        role = turn.get("role", "user")
+                        if role == "assistant":
+                            role = "model"
+                        content = turn.get("content", "")
+                        if role in ("user", "model") and content:
+                            contents.append({"role": role, "parts": [{"text": content}]})
+                contents.append({"role": "user", "parts": [{"text": prompt[:4000]}]})
+                resp = self._genai_client.models.generate_content(
+                    model=f"models/{self._genai_model}" if not str(self._genai_model).startswith("models/") else self._genai_model,
+                    contents=contents,
+                    config=config,
+                )
+                text = (resp.text or "").strip()
+                return text if text else None
+            except Exception as err:
+                print(f"[AGNI-AI] Gemini (new SDK) call notice: {err}")
+                return None
+
+        # Path 2: Legacy google.generativeai SDK fallback
         try:
             chat_history = []
             if history:
@@ -238,7 +284,7 @@ class AgniAI:
         follow_up_questions: list[str] = []
 
         # Step 2: Try Gemini LLM First if configured
-        if self._genai_model:
+        if self._genai_model or self._genai_client:
             ctx_str = ""
             if context:
                 ctx_items = [f"{k}={v}" for k, v in context.items() if isinstance(v, (str, int, float, bool))]
