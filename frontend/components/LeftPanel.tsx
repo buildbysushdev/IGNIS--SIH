@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { ALL_FACILITIES, IndustrialFacility } from "@/components/IndustrialRegistry";
 import type { AlertItem } from "@/components/AlertPanel";
+import InfoTooltip from "@/components/InfoTooltip";
 
 interface LeftPanelProps {
   isCollapsed: boolean;
@@ -128,7 +129,14 @@ export default function LeftPanel({
           </div>
 
           <div className="flex items-center justify-between text-[11px] text-[#9CA3AF] px-1 font-medium">
-            <span>High-Risk Facilities</span>
+            <div className="flex items-center gap-1.5">
+              <span>High-Risk Facilities</span>
+              <InfoTooltip
+                title="Industrial Registry"
+                text="Geospatial registry of 500+ refineries, chemical corridors, and metallurgical facilities monitored across India."
+                position="right"
+              />
+            </div>
             <span className="font-mono">{filteredFacilities.length} sites</span>
           </div>
 
@@ -179,7 +187,14 @@ export default function LeftPanel({
       {activeTab === "alerts" && (
         <div className="flex-1 flex flex-col overflow-hidden p-3 space-y-2.5">
           <div className="flex items-center justify-between text-[11px] text-[#9CA3AF] px-1 font-medium">
-            <span>Critical Threat Queue</span>
+            <div className="flex items-center gap-1.5">
+              <span>Critical Threat Queue</span>
+              <InfoTooltip
+                title="Tactical Alerts"
+                text="Real-time alert stream raised when thermal anomalies breach industrial safety buffers or exhibit rapid growth."
+                position="right"
+              />
+            </div>
             <span className="font-mono text-red-400 font-bold">
               {criticalAlerts.length} Active
             </span>

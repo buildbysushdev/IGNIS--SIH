@@ -50,9 +50,18 @@ class FireClassifier:
             29.90 < lat < 30.05 and 78.10 < lon < 78.25
         )
 
+        # Check explicit distance or find nearest from zones
+        explicit_dist = fire.get("distance_km") if fire.get("distance_km") is not None else fire.get("facility_dist")
+        if explicit_dist is not None:
+            distance_km = float(explicit_dist)
+            nearest_name = str(fire.get("facility_name") or fire.get("nearest_facility") or nearest.get("name", "Industrial Facility"))
+        else:
+            distance_km = float(nearest.get("distance_km", 999.0))
+            nearest_name = str(nearest.get("name", "Unknown"))
+
         return {
-            "distance_km": float(nearest.get("distance_km", 999.0)),
-            "nearest_name": str(nearest.get("name", "Unknown")),
+            "distance_km": distance_km,
+            "nearest_name": nearest_name,
             "persistence": persistence,
             "is_agri": is_agri,
             "is_burning_season": is_burning_season,
@@ -71,72 +80,86 @@ class FireClassifier:
         lon = float(fire["longitude"])
 
         # EDGE CASE 1: Cremation grounds with persistent thermal signatures
-        if ctx["is_cremation"] and persistence > 40.0:
+        if ctx["is_cremation"] and (persistence > 30.0 or frp < 20.0):
             return {
                 "category": "PERSISTENT_INDUSTRIAL",
                 "confidence": 88,
                 "risk_level": "LOW",
                 "color": "yellow",
-                "reason": (
-                    f"Cremation ground thermal source at {lat:.2f},{lon:.2f}. "
-                    f"Persistent {persistence:.0f}% of days."
-                ),
+                "reason": "Persistent cultural/religious thermal signature; not emergency",
                 "action": "No emergency action needed. Cultural/religious thermal source.",
             }
 
-        # RULE 1: Persistent Industrial (steel plant, refinery, flare, or kiln)
-        if (dist < 6.0 and persistence > 35.0) or (dist < 3.0 and frp > 30.0):
+        # RULE 1: Persistent Industrial (known facility with regular thermal baseline)
+        if (dist < 6.0 and persistence >= 25.0) or (dist < 8.0 and persistence >= 40.0):
             return {
                 "category": "PERSISTENT_INDUSTRIAL",
-                "confidence": 92,
+                "confidence": 94,
                 "risk_level": "LOW",
                 "color": "yellow",
-                "reason": (
-                    f"Within {dist:.1f}km of {ctx['nearest_name']}. Hot {persistence:.0f}% of past days. "
-                    "Likely furnace/flare/kiln."
-                ),
+                "reason": f"Persistent plant heat signature ({ctx['nearest_name']}); operational flare / furnace; not emergency",
                 "action": "No emergency action needed. Normal industrial operational thermal source.",
             }
 
-        # RULE 2: Emergency Industrial Fire (sudden intense spike in/near industrial zone)
-        if dist < 12.0 and persistence < 25.0 and frp > 45.0:
+        # RULE 2: Emergency Industrial Fire (requires high FRP, close proximity, AND low historical persistence)
+        # Emergency only if all conditions match:
+        # - FRP >= 25.0 MW
+        # - Distance <= 3.5 km to facility
+        # - Historical persistence < 20.0% (unscheduled/sudden flare)
+        if dist <= 3.5 and persistence < 20.0 and frp >= 25.0:
             return {
                 "category": "EMERGENCY_INDUSTRIAL",
-                "confidence": 89,
+                "confidence": 92,
                 "risk_level": "CRITICAL",
                 "color": "red",
                 "reason": (
-                    f"Near {ctx['nearest_name']} ({dist:.1f}km) with NO recurring baseline. "
-                    f"High FRP ({frp:.1f}MW). Unexpected industrial fire spike!"
+                    f"Unscheduled thermal surge ({frp:.1f}MW) within {dist:.1f}km of {ctx['nearest_name']} "
+                    f"with no historical baseline. High emergency risk."
                 ),
-                "action": "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Notify district disaster cell.",
+                "action": "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
             }
 
-        # RULE 3: Agricultural Burning (crop stubble burning in agrarian regions)
-        if ctx["is_agri"] and frp < 55.0 and dist > 5.0:
+        # RULE 3: Low-Intensity Domestic / Garbage / Bonfire Suppression (Prevents false alarms)
+        if frp < 18.0 and dist > 2.0:
+            # Check if it is seasonal agricultural burning
+            if ctx["is_agri"] and ctx["is_burning_season"] and frp >= 12.0:
+                return {
+                    "category": "AGRICULTURAL_BURNING",
+                    "confidence": 84,
+                    "risk_level": "MODERATE",
+                    "color": "orange",
+                    "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+                    "action": "Log in state pollution registry. Monitor for potential spread.",
+                }
+            # Otherwise, classify as low-intensity localized burn
+            return {
+                "category": "UNKNOWN",
+                "confidence": 85,
+                "risk_level": "LOW",
+                "color": "gray",
+                "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+                "action": "No emergency action required. Routine municipal monitoring.",
+            }
+
+        # RULE 4: Agricultural Burning (seasonal crop residue / open biomass)
+        if (ctx["is_agri"] or ctx["is_burning_season"]) and frp < 60.0 and dist > 4.0:
             return {
                 "category": "AGRICULTURAL_BURNING",
-                "confidence": 86,
+                "confidence": 88,
                 "risk_level": "MODERATE",
                 "color": "orange",
-                "reason": (
-                    f"Agrarian corridor at {lat:.2f},{lon:.2f}. "
-                    f"FRP {frp:.1f}MW consistent with open biomass / crop residue burning."
-                ),
+                "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
                 "action": "Log in state pollution registry. Monitor for potential spread.",
             }
 
-        # RULE 4: Forest Fire (remote non-industrial wilderness / vegetation canopy)
-        if dist > 15.0 and frp >= 5.0 and not ctx["is_agri"]:
+        # RULE 5: Forest Fire (remote wilderness canopy / non-agricultural)
+        if dist > 12.0 and frp >= 15.0 and not ctx["is_agri"]:
             return {
                 "category": "FOREST_FIRE",
-                "confidence": 81,
+                "confidence": 86,
                 "risk_level": "HIGH",
                 "color": "green",
-                "reason": (
-                    f"Remote wildland zone ({dist:.1f}km from nearest facility). "
-                    f"FRP {frp:.1f}MW indicating forest/brush combustion."
-                ),
+                "reason": "Forest reserve perimeter thermal anomaly detected",
                 "action": "🚨 Notify Forest Department & NDRF regional response unit.",
             }
 
@@ -156,7 +179,11 @@ class FireClassifier:
                     "hour_of_day": 12,
                 }
                 cat, ml_conf = predict_ml(self.ml_model, feat)
-                if cat != "UNKNOWN" and ml_conf >= 60.0:
+                if cat != "UNKNOWN" and ml_conf >= 65.0:
+                    # Prevent ML from declaring emergency if FRP is low or far from industry
+                    if cat == "EMERGENCY_INDUSTRIAL" and (frp < 25.0 or dist > 3.5):
+                        cat = "UNKNOWN"
+                    
                     risk_meta = {
                         "EMERGENCY_INDUSTRIAL": (
                             "CRITICAL",
@@ -179,29 +206,38 @@ class FireClassifier:
                             "🚨 Notify Forest Department. ML classified remote wildland fire.",
                         ),
                     }
-                    r_level, r_color, r_act = risk_meta.get(
-                        cat, ("MODERATE", "gray", "Verify with local authorities.")
-                    )
-                    return {
-                        "category": cat,
-                        "confidence": int(round(ml_conf)),
-                        "risk_level": r_level,
-                        "color": r_color,
-                        "reason": f"ML model classified as {cat} with {ml_conf:.1f}% probability based on feature signature.",
-                        "action": r_act,
-                    }
+                    if cat in risk_meta:
+                        r_level, r_color, r_act = risk_meta[cat]
+                        return {
+                            "category": cat,
+                            "confidence": int(round(ml_conf)),
+                            "risk_level": r_level,
+                            "color": r_color,
+                            "reason": f"ML model classified as {cat} with {ml_conf:.1f}% probability based on feature signature.",
+                            "action": r_act,
+                        }
             except Exception:
                 pass
 
-        # RULE 5: Unknown
+        # RULE 6: Unknown Fallback (Low risk if low FRP)
+        if frp < 25.0:
+            return {
+                "category": "UNKNOWN",
+                "confidence": 80,
+                "risk_level": "LOW",
+                "color": "gray",
+                "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+                "action": "No emergency action required. Routine municipal monitoring.",
+            }
+
         return {
             "category": "UNKNOWN",
-            "confidence": 45,
+            "confidence": 55,
             "risk_level": "MODERATE",
             "color": "gray",
             "reason": (
-                f"Low confidence classification. Industry: {dist}km. "
-                f"FRP: {frp:.1f}MW. Persistence: {persistence:.0f}%."
+                f"Uncorrelated thermal anomaly ({frp:.1f}MW). Proximity to industry: {dist:.1f}km. "
+                f"Persistence: {persistence:.0f}%."
             ),
             "action": "Manual verification recommended. Cross-check with local authorities.",
         }

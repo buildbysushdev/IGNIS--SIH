@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useI18n } from "@/context/I18nContext";
+import InfoTooltip from "@/components/InfoTooltip";
 
 interface HeaderProps {
   onSelectMode: (mode: "LIVE" | "CACHED" | "DEMO" | "AUTO") => void;
@@ -19,6 +20,7 @@ interface HeaderProps {
     is_manual?: boolean;
   };
   onOpenHelp?: () => void;
+  onTriggerMentorshipDemo?: () => void;
 }
 
 export default function Header({
@@ -28,6 +30,7 @@ export default function Header({
   activeHotspotsCount,
   modeInfo,
   onOpenHelp,
+  onTriggerMentorshipDemo,
 }: HeaderProps) {
   const { t } = useI18n();
   const pathname = usePathname();
@@ -56,6 +59,15 @@ export default function Header({
   const isAnalyticsActive = pathname.startsWith("/analytics");
   const isFieldOfficerActive = pathname.startsWith("/field-officer");
 
+  const modeTooltipText =
+    currentMode === "DEMO" || ignisStatus === "demo"
+      ? "DEMO MODE — Presentation Dataset: 250 verified pre-classified points with zero Railway backend dependency."
+      : ignisStatus === "offline"
+      ? "OFFLINE CACHE: Operating in disconnected fallback mode with locally buffered historical fires."
+      : ignisStatus === "live"
+      ? "LIVE STREAM: Direct orbital downlink from NASA FIRMS & VIIRS thermal telemetry pipeline."
+      : "CACHED REPOSITORY: Buffered satellite detections ensuring continuous uninterrupted surveillance.";
+
   return (
     <header className="h-16 bg-[#0B1220] border-b border-[#1F2937] px-4 sm:px-6 flex items-center justify-between z-40 relative">
       {/* 1) LEFT: IGNIS Logo, Subtitle & NTRO SIH26162 Badge */}
@@ -69,9 +81,16 @@ export default function Header({
               <span className="text-base sm:text-lg font-black tracking-wider text-white">
                 IGNIS
               </span>
-              <span className="text-[10px] font-semibold bg-[#111827] text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full tracking-normal">
-                NTRO SIH26162
-              </span>
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] font-semibold bg-[#111827] text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full tracking-normal">
+                  NTRO SIH26162
+                </span>
+                <InfoTooltip
+                  title="NTRO SIH26162"
+                  text="Government of India SIH Problem Statement 26162: AI-driven satellite fire intelligence & false-alarm suppression."
+                  position="bottom"
+                />
+              </div>
               {typeof activeHotspotsCount === "number" && (
                 <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono font-bold bg-[#082032] text-[#22D3EE] border border-[#0284C7]/50 px-2 py-0.5 rounded-full shadow-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] animate-pulse" />
@@ -122,10 +141,29 @@ export default function Header({
         </Link>
       </nav>
 
-      {/* 3) RIGHT: Mode Pill, Language Switcher & Help (?) */}
+      {/* 3) RIGHT: Mentorship Demo Action, Mode Pill, Language Switcher & Help (?) */}
       <div className="flex items-center gap-2 sm:gap-3">
+        {/* Mentorship Demo Action Button */}
+        {onTriggerMentorshipDemo && (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onTriggerMentorshipDemo}
+              className="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-md shadow-red-900/30 flex items-center gap-1.5 transition-all transform hover:scale-[1.02] cursor-pointer border border-amber-400/40"
+              title="One-click presentation mode with guaranteed fires"
+            >
+              <span>🎯</span>
+              <span className="font-semibold tracking-wide">Mentorship Demo</span>
+            </button>
+            <InfoTooltip
+              title="Mentorship Presentation Flow"
+              text="1-Click guaranteed demonstration: switches to offline demo dataset, focuses Surat Hazira Chemical Emergency, and opens response protocols."
+              position="bottom"
+            />
+          </div>
+        )}
+
         {/* Compact Mode Pill */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative flex items-center gap-1" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -161,6 +199,11 @@ export default function Header({
             </span>
             <span className="text-[10px] text-[#9CA3AF]">▼</span>
           </button>
+          <InfoTooltip
+            title="Telemetry Mode"
+            text={modeTooltipText}
+            position="bottom"
+          />
 
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-[#111827] border border-[#1F2937] rounded-xl shadow-2xl p-1.5 z-50 text-xs">

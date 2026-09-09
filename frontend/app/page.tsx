@@ -370,6 +370,41 @@ export default function DashboardPage() {
     [fetchData]
   );
 
+  // 1-Click Mentorship Presentation Flow (Zero Railway Dependency)
+  const handleTriggerMentorshipDemo = useCallback(() => {
+    setMode("DEMO");
+    setIgnisStatus("demo");
+    setCategory("all");
+    setBackendHealthError(null);
+    setError(null);
+    setSelectedScenarioId("live");
+    setIsScenarioPlaying(false);
+    setScenarioOverlay(null);
+
+    const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
+    setFires(demoFires);
+    setStats(DEMO_TELEMETRY_DATA.summary);
+    setStatusMessage("DEMO MODE — PRESENTATION DATASET (250 VERIFIED FIRES)");
+    setLastRefreshedUtc(getUtcTimestamp());
+
+    // Auto-select Surat Hazira Chemical Emergency Fire (IGNIS-EM-0001)
+    const emergencyFire =
+      demoFires.find(
+        (f) => f.id === "IGNIS-EM-0001" || f.category === "EMERGENCY_INDUSTRIAL"
+      ) || demoFires[0];
+
+    if (emergencyFire) {
+      setSelectedFire(emergencyFire);
+      setTargetCoords([emergencyFire.latitude, emergencyFire.longitude]);
+      setTargetZoom(12);
+    }
+
+    setNotification(
+      "🎯 MENTORSHIP DEMO READY: Surat Chemical Emergency selected with active IS 2190 protocol"
+    );
+    setTimeout(() => setNotification(null), 4000);
+  }, []);
+
   // Scenario Selector & Animated Playback Control
   const handleSelectScenario = useCallback(
     (scenId: string) => {
@@ -502,10 +537,35 @@ export default function DashboardPage() {
         modeInfo={modeInfo}
         onSelectMode={handleSelectMode}
         onOpenHelp={() => setIsAboutOpen(true)}
+        onTriggerMentorshipDemo={handleTriggerMentorshipDemo}
       />
 
-      {/* RUNTIME CONFIGURATION CHECK BANNER (when NEXT_PUBLIC_API_URL is missing) */}
-      {!isApiConfigured && (
+      {/* DEMO MODE PRESENTATION BADGE (Calm, non-error badge) */}
+      {mode === "DEMO" && (
+        <div className="bg-purple-950/70 border-b border-purple-500/40 px-4 py-1.5 text-xs text-purple-200 flex items-center justify-between z-30">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-purple-400" />
+            <span className="font-semibold text-purple-300">DEMO MODE — Presentation Dataset</span>
+            <span className="text-purple-300/70 text-[11px] hidden sm:inline">
+              (250 pre-classified thermal anomalies • Zero Railway dependency)
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setMode("LIVE");
+                fetchData(true, "LIVE");
+              }}
+              className="px-2.5 py-0.5 bg-[#1F2937] hover:bg-[#374151] text-emerald-400 border border-emerald-500/40 rounded text-[11px] font-medium transition cursor-pointer"
+            >
+              Retry Live
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* RUNTIME CONFIGURATION CHECK BANNER (Only when not in DEMO mode and missing URL) */}
+      {mode !== "DEMO" && !isApiConfigured && (
         <div className="bg-amber-950/90 border-b border-amber-500/60 px-4 py-1.5 text-xs text-amber-200 flex items-center justify-between z-30">
           <div className="flex items-center gap-2">
             <span className="text-amber-400 font-bold">⚙️ Configuration Notice:</span>
@@ -515,8 +575,8 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* HEALTH CHECK FAILURE BANNER */}
-      {backendHealthError && (
+      {/* HEALTH CHECK FAILURE BANNER (Suppressed completely during DEMO mode) */}
+      {mode !== "DEMO" && backendHealthError && (
         <div className="bg-red-950/90 border-b border-red-500/60 px-4 py-2 text-xs text-red-200 flex items-center justify-between z-30">
           <div className="flex items-center gap-2">
             <span className="text-red-400 font-bold">⚠️ Connection Warning:</span>
@@ -531,7 +591,7 @@ export default function DashboardPage() {
               Retry Live
             </button>
             <button
-              onClick={() => handleSelectMode("DEMO")}
+              onClick={handleTriggerMentorshipDemo}
               className="px-2.5 py-1 bg-[#1F2937] hover:bg-[#374151] text-cyan-300 rounded text-[11px] font-semibold transition cursor-pointer"
             >
               Use Demo Mode
@@ -587,7 +647,7 @@ export default function DashboardPage() {
             />
             <span className="text-white uppercase text-[11px]">
               {mode === "DEMO" || ignisStatus === "demo"
-                ? "DEMO SIMULATION"
+                ? "DEMO PRESENTATION DATASET"
                 : ignisStatus === "offline"
                 ? "OFFLINE"
                 : ignisStatus === "live"
@@ -598,7 +658,7 @@ export default function DashboardPage() {
           <span className="text-[#374151]">•</span>
           <span>
             {mode === "DEMO" || ignisStatus === "demo"
-              ? "250 Pre-Classified Scenarios"
+              ? "250 Verified Pre-Classified Hotspots"
               : ignisStatus === "offline"
               ? "Host Unreachable / Offline"
               : ignisStatus === "live"
@@ -625,8 +685,8 @@ export default function DashboardPage() {
 
       {/* 3) MAIN CONTENT AREA (3-COLUMN PROGRESSIVE DISCLOSURE) */}
       <main className="flex-1 flex overflow-hidden relative">
-        {/* Error Notification Banner */}
-        {error && (
+        {/* Error Notification Banner (Suppressed in DEMO mode) */}
+        {error && mode !== "DEMO" && (
           <div className="absolute top-2 left-1/2 -translate-x-1/2 z-40 bg-red-950/90 border border-red-500 text-red-300 text-xs px-4 py-2 rounded-lg shadow-xl flex items-center gap-3">
             <span>⚠️ {error}</span>
             <button
@@ -718,6 +778,7 @@ export default function DashboardPage() {
                 const agniBtn = document.getElementById("agni-floating-toggle");
                 if (agniBtn) agniBtn.click();
               }}
+              initialProtocolOpen={mode === "DEMO" || selectedFire?.category === "EMERGENCY_INDUSTRIAL"}
             />
           )}
         </section>

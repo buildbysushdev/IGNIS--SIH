@@ -8,6 +8,7 @@ import WeatherWidget from "./WeatherWidget";
 import type { SpreadPredictionData } from "./SpreadPrediction";
 import { FIRE_STATIONS } from "@/data/fireStations";
 import { useI18n } from "@/context/I18nContext";
+import InfoTooltip from "@/components/InfoTooltip";
 
 
 export interface Fire {
@@ -867,8 +868,15 @@ export default function FireMap({
 
         {/* Bottom-Left Compact Legend */}
         <div className="absolute bottom-3 left-3 z-[1000] pointer-events-auto bg-[#111827]/90 backdrop-blur-sm border border-[#1F2937] rounded-xl p-2.5 shadow-lg text-xs space-y-1.5 max-w-[210px]">
-          <div className="text-[10px] text-[#9CA3AF] font-semibold uppercase tracking-wider border-b border-[#1F2937] pb-1">
-            Map Legend
+          <div className="flex items-center justify-between border-b border-[#1F2937] pb-1">
+            <span className="text-[10px] text-[#9CA3AF] font-semibold uppercase tracking-wider">
+              Map Legend
+            </span>
+            <InfoTooltip
+              title="Tactical Map Legend"
+              text="Color-coded thermal anomaly categories based on IGNIS spatial reasoning engine: Red (Emergency), Yellow (Persistent), Orange (Agri), Green (Forest), Gray (Unclassified)."
+              position="top"
+            />
           </div>
           <div className="flex items-center gap-2 text-[11px]">
             <span className="w-2 h-2 rounded-full bg-[#EF4444] flex-shrink-0" />

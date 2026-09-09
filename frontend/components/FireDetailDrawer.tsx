@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import type { Fire } from "@/components/FireMap";
 import { findLocalNearestStation } from "@/components/FireMap";
+import InfoTooltip from "@/components/InfoTooltip";
 
 interface FireDetailDrawerProps {
   fire: Fire | null;
@@ -12,6 +13,7 @@ interface FireDetailDrawerProps {
   onOpenVerify?: (fire: Fire) => void;
   onOpenSpreadPrediction?: (fire: Fire) => void;
   onAskAgni?: (fire: Fire) => void;
+  initialProtocolOpen?: boolean;
 }
 
 const CATEGORY_STYLES: Record<
@@ -43,7 +45,7 @@ const CATEGORY_STYLES: Record<
     text: "text-emerald-400",
   },
   UNKNOWN: {
-    label: "Unclassified Anomaly",
+    label: "Unclassified / Small Burn",
     badge: "bg-gray-800 text-gray-300 border-gray-600",
     border: "border-gray-500",
     text: "text-gray-400",
@@ -58,8 +60,11 @@ export default function FireDetailDrawer({
   onOpenVerify,
   onOpenSpreadPrediction,
   onAskAgni,
+  initialProtocolOpen = false,
 }: FireDetailDrawerProps) {
-  const [protocolOpen, setProtocolOpen] = useState(false);
+  const [protocolOpen, setProtocolOpen] = useState(
+    initialProtocolOpen || fire?.category === "EMERGENCY_INDUSTRIAL"
+  );
 
   if (!fire) return null;
 
@@ -102,9 +107,16 @@ export default function FireDetailDrawer({
       {/* Main Grid: Telemetry & Nearest Infrastructure */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs mb-3">
         <div className="bg-[#0B1220]/70 p-2.5 rounded-lg border border-[#1F2937]/80">
-          <span className="text-[11px] text-[#9CA3AF] block mb-0.5">
-            Severity Assessment
-          </span>
+          <div className="flex items-center justify-between mb-0.5">
+            <span className="text-[11px] text-[#9CA3AF]">
+              Severity Assessment
+            </span>
+            <InfoTooltip
+              title="Threat Assessment"
+              text="Computed emergency priority considering proximity to hazardous industrial infrastructure and radiant heat output."
+              position="top"
+            />
+          </div>
           <span
             className={`font-semibold text-sm ${
               fire.risk_level === "CRITICAL"
@@ -119,9 +131,16 @@ export default function FireDetailDrawer({
         </div>
 
         <div className="bg-[#0B1220]/70 p-2.5 rounded-lg border border-[#1F2937]/80">
-          <span className="text-[11px] text-[#9CA3AF] block mb-0.5">
-            Nearest Fire Station
-          </span>
+          <div className="flex items-center justify-between mb-0.5">
+            <span className="text-[11px] text-[#9CA3AF]">
+              Nearest Fire Station
+            </span>
+            <InfoTooltip
+              title="Turnout Station"
+              text="Closest municipal / industrial fire tender base with computed road distance and response ETA."
+              position="top"
+            />
+          </div>
           <span className="font-semibold text-white truncate block">
             {station.name}
           </span>
@@ -156,13 +175,18 @@ export default function FireDetailDrawer({
           onClick={() => setProtocolOpen(!protocolOpen)}
           className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-[#E5E7EB] hover:bg-[#1F2937]/40 transition text-left"
         >
-          <span className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <span>🛡️</span>
             <span>Recommended Fire Response Protocol</span>
-            <span className="text-[10px] text-[#9CA3AF] font-normal">
+            <span className="text-[10px] text-[#9CA3AF] font-normal hidden sm:inline">
               (IS 2190 & NDMA guidelines)
             </span>
-          </span>
+            <InfoTooltip
+              title="Standard Operating Protocol"
+              text="Automated chemical suppression SOPs, extinguishing agents, and evacuation perimeters per IS 2190 codes."
+              position="top"
+            />
+          </div>
           <span className="text-[#9CA3AF]">{protocolOpen ? "▲" : "▼"}</span>
         </button>
 

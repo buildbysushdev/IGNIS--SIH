@@ -72,9 +72,21 @@
     "zone_type": "works"
   },
   {
+    "latitude": 21.1925,
+    "longitude": 72.8258,
+    "name": "Surat Chemical Cluster GIDC",
+    "zone_type": "industrial"
+  },
+  {
     "latitude": 21.12,
     "longitude": 72.67,
     "name": "Hazira Industrial Complex",
+    "zone_type": "industrial"
+  },
+  {
+    "latitude": 20.3725,
+    "longitude": 72.912,
+    "name": "Vapi Industrial Estate Complex",
     "zone_type": "industrial"
   },
   {
@@ -84,9 +96,21 @@
     "zone_type": "industrial"
   },
   {
+    "latitude": 21.628,
+    "longitude": 73.004,
+    "name": "Ankleshwar Chemical Corridor",
+    "zone_type": "industrial"
+  },
+  {
     "latitude": 21.63,
     "longitude": 73.01,
     "name": "Ankleshwar GIDC Chemical Zone",
+    "zone_type": "industrial"
+  },
+  {
+    "latitude": 17.632,
+    "longitude": 83.185,
+    "name": "Visakhapatnam Pharma City",
     "zone_type": "industrial"
   },
   {

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useI18n } from "@/context/I18nContext";
+import InfoTooltip from "@/components/InfoTooltip";
 
 export interface FireStats {
   total: number;
@@ -50,6 +51,9 @@ export default function StatsPanel({
       color: "bg-red-500",
       textColor: "text-red-400",
       dot: "#EF4444",
+      tooltipTitle: "Emergency Industrial Fire",
+      tooltipText:
+        "High-intensity unscheduled heat surge (FRP ≥ 25 MW) within 3.5 km of a critical industrial site. Requires immediate mobilization.",
     },
     {
       key: "PERSISTENT_INDUSTRIAL",
@@ -58,6 +62,9 @@ export default function StatsPanel({
       color: "bg-purple-500",
       textColor: "text-purple-400",
       dot: "#A855F7",
+      tooltipTitle: "Persistent Industrial Heat",
+      tooltipText:
+        "Routine operational heat signatures from verified steel mills, refineries, and kiln furnaces. Not an emergency.",
     },
     {
       key: "AGRICULTURAL_BURNING",
@@ -66,6 +73,9 @@ export default function StatsPanel({
       color: "bg-amber-500",
       textColor: "text-amber-400",
       dot: "#F59E0B",
+      tooltipTitle: "Agricultural Crop Burning",
+      tooltipText:
+        "Seasonal crop residue and stubble burns in farm belts. Tracked for air quality management and spread prevention.",
     },
     {
       key: "FOREST_FIRE",
@@ -74,14 +84,20 @@ export default function StatsPanel({
       color: "bg-emerald-500",
       textColor: "text-emerald-400",
       dot: "#22C55E",
+      tooltipTitle: "Forest Wildfire",
+      tooltipText:
+        "Thermal anomalies detected in remote forest reserves and wilderness canopies away from industrial infrastructure.",
     },
     {
       key: "UNKNOWN",
-      label: t("categories.UNKNOWN", "Unclassified Anomaly"),
+      label: t("categories.UNKNOWN", "Unclassified / Small Burns"),
       val: unknown,
       color: "bg-gray-400",
       textColor: "text-gray-400",
       dot: "#9CA3AF",
+      tooltipTitle: "Unclassified / Low-Intensity Burn",
+      tooltipText:
+        "Localized low-intensity heat (e.g. domestic waste, bonfires) automatically filtered out to prevent false emergency spam.",
     },
   ];
 
@@ -90,9 +106,16 @@ export default function StatsPanel({
       {/* BLOCK 1: OVERVIEW STATS */}
       <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-3.5 shadow-sm">
         <div className="flex items-center justify-between border-b border-[#1F2937] pb-2.5 mb-2.5">
-          <span className="font-semibold text-xs text-[#9CA3AF] uppercase tracking-wider">
-            Overview Stats
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-xs text-[#9CA3AF] uppercase tracking-wider">
+              Overview Stats
+            </span>
+            <InfoTooltip
+              title="Overview Statistics"
+              text="Real-time breakdown of thermal detections across India categorized by the IGNIS tactical engine."
+              position="right"
+            />
+          </div>
           <button
             onClick={() => onSelectCategory && onSelectCategory("all")}
             className={`text-[11px] px-2 py-0.5 rounded font-medium transition ${
@@ -111,7 +134,14 @@ export default function StatsPanel({
           className="bg-[#0B1220] border border-[#1F2937] rounded-lg p-3 mb-2.5 flex items-center justify-between cursor-pointer hover:border-gray-600 transition"
         >
           <div>
-            <span className="text-[11px] text-[#9CA3AF] block">Total Active Hotspots</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-[#9CA3AF]">Total Active Hotspots</span>
+              <InfoTooltip
+                title="Active Hotspots"
+                text="Total satellite thermal anomalies captured by VIIRS and MODIS sensors over India in the active timeframe."
+                position="top"
+              />
+            </div>
             <span className="text-2xl font-black text-white font-mono">
               {formatNumber(total)}
             </span>
@@ -124,27 +154,31 @@ export default function StatsPanel({
           {items.map((it) => {
             const isSelected = activeCategory === it.key;
             return (
-              <button
+              <div
                 key={it.key}
-                type="button"
-                onClick={() => onSelectCategory && onSelectCategory(it.key)}
                 className={`w-full flex items-center justify-between p-2 rounded-lg transition text-left cursor-pointer ${
                   isSelected
                     ? "bg-[#1F2937] border border-gray-600 text-white font-semibold"
                     : "bg-[#0B1220]/50 hover:bg-[#0B1220] border border-transparent text-[#E5E7EB]"
                 }`}
+                onClick={() => onSelectCategory && onSelectCategory(it.key)}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 min-w-0 pr-1">
                   <span
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ backgroundColor: it.dot }}
                   />
                   <span className="truncate">{it.label}</span>
+                  <InfoTooltip
+                    title={it.tooltipTitle}
+                    text={it.tooltipText}
+                    position="right"
+                  />
                 </div>
-                <span className={`font-mono font-bold text-xs ${it.textColor}`}>
+                <span className={`font-mono font-bold text-xs ${it.textColor} flex-shrink-0`}>
                   {formatNumber(it.val)}
                 </span>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -152,9 +186,16 @@ export default function StatsPanel({
 
       {/* BLOCK 2: DISTRIBUTION MINI CHART */}
       <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-3.5 shadow-sm space-y-2">
-        <span className="font-semibold text-xs text-[#9CA3AF] uppercase tracking-wider block">
-          Distribution Breakdown
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span className="font-semibold text-xs text-[#9CA3AF] uppercase tracking-wider block">
+            Distribution Breakdown
+          </span>
+          <InfoTooltip
+            title="Distribution Chart"
+            text="Proportional ratio of active thermal detections across India."
+            position="right"
+          />
+        </div>
 
         {/* Stacked Proportional Bar */}
         <div className="w-full h-3 rounded-full bg-[#0B1220] overflow-hidden flex border border-[#1F2937]">
@@ -198,47 +239,75 @@ export default function StatsPanel({
 
       {/* BLOCK 3: QUICK ACTIONS */}
       <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-3.5 shadow-sm space-y-2">
-        <span className="font-semibold text-xs text-[#9CA3AF] uppercase tracking-wider block">
-          Quick Actions
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span className="font-semibold text-xs text-[#9CA3AF] uppercase tracking-wider block">
+            Quick Actions
+          </span>
+          <InfoTooltip
+            title="Tactical Actions"
+            text="Immediate emergency dispatch, IS standard response protocols, and AI decision support."
+            position="right"
+          />
+        </div>
 
         <div className="space-y-1.5">
           {onOpenProtocol && (
             <button
               onClick={onOpenProtocol}
-              className="w-full flex items-center gap-2.5 p-2.5 bg-[#0B1220] hover:bg-[#1F2937] border border-[#1F2937] hover:border-gray-600 rounded-lg text-xs text-[#E5E7EB] font-medium transition text-left"
+              className="w-full flex items-center justify-between p-2.5 bg-[#0B1220] hover:bg-[#1F2937] border border-[#1F2937] hover:border-gray-600 rounded-lg text-xs text-[#E5E7EB] font-medium transition text-left"
             >
-              <span className="text-base">🛡️</span>
-              <div>
-                <div className="font-semibold">View Response Protocols</div>
-                <div className="text-[10px] text-[#9CA3AF]">IS 2190 & chemical standards</div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-base">🛡️</span>
+                <div>
+                  <div className="font-semibold">Response Protocol</div>
+                  <div className="text-[10px] text-[#9CA3AF]">IS 2190 & chemical standards</div>
+                </div>
               </div>
+              <InfoTooltip
+                title="Response Protocols"
+                text="Automated SOP guidance detailing recommended suppression agents (Class B Foam, Dry Chemical, Water) by facility type."
+                position="left"
+              />
             </button>
           )}
 
           {onOpenDispatch && (
             <button
               onClick={onOpenDispatch}
-              className="w-full flex items-center gap-2.5 p-2.5 bg-[#0B1220] hover:bg-[#1F2937] border border-[#1F2937] hover:border-red-500/40 rounded-lg text-xs text-[#E5E7EB] font-medium transition text-left"
+              className="w-full flex items-center justify-between p-2.5 bg-[#0B1220] hover:bg-[#1F2937] border border-[#1F2937] hover:border-red-500/40 rounded-lg text-xs text-[#E5E7EB] font-medium transition text-left"
             >
-              <span className="text-base">🚨</span>
-              <div>
-                <div className="font-semibold text-red-400">Simulate Dispatch</div>
-                <div className="text-[10px] text-[#9CA3AF]">Route to nearest fire tender</div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-base">🚨</span>
+                <div>
+                  <div className="font-semibold text-red-400">Emergency Dispatch</div>
+                  <div className="text-[10px] text-[#9CA3AF]">Route to nearest fire tender</div>
+                </div>
               </div>
+              <InfoTooltip
+                title="Emergency Dispatch"
+                text="Generates immediate mobilization alerts for NDRF, municipal fire brigades, and facility response coordinators."
+                position="left"
+              />
             </button>
           )}
 
           {onOpenChatbot && (
             <button
               onClick={onOpenChatbot}
-              className="w-full flex items-center gap-2.5 p-2.5 bg-[#0B1220] hover:bg-[#1F2937] border border-[#1F2937] hover:border-amber-500/40 rounded-lg text-xs text-[#E5E7EB] font-medium transition text-left"
+              className="w-full flex items-center justify-between p-2.5 bg-[#0B1220] hover:bg-[#1F2937] border border-[#1F2937] hover:border-amber-500/40 rounded-lg text-xs text-[#E5E7EB] font-medium transition text-left"
             >
-              <span className="text-base">🤖</span>
-              <div>
-                <div className="font-semibold text-amber-400">Ask AGNI-AI</div>
-                <div className="text-[10px] text-[#9CA3AF]">Tactical firefighting chatbot</div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-base">🤖</span>
+                <div>
+                  <div className="font-semibold text-amber-400">AGNI-AI Assistant</div>
+                  <div className="text-[10px] text-[#9CA3AF]">Tactical firefighting AI</div>
+                </div>
               </div>
+              <InfoTooltip
+                title="AGNI-AI"
+                text="Natural-language assistant trained on hazardous materials, IS 2190 fire codes, and incident escalation procedures."
+                position="left"
+              />
             </button>
           )}
         </div>

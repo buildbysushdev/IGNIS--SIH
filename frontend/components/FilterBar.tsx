@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useI18n } from "@/context/I18nContext";
+import InfoTooltip from "@/components/InfoTooltip";
 
 interface FilterBarProps {
   days: number;
@@ -89,7 +90,7 @@ export default function FilterBar({
     },
     {
       value: "UNKNOWN",
-      label: t("categories.UNKNOWN", "Unclassified Anomaly"),
+      label: t("categories.UNKNOWN", "Unclassified / Small Burns"),
     },
   ];
 
@@ -98,43 +99,64 @@ export default function FilterBar({
       {/* Left Controls: Days, Category, Source */}
       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         {/* Days Filter */}
-        <select
-          value={days}
-          onChange={(e) => onDaysChange(Number(e.target.value))}
-          className="bg-[#111827] border border-[#1F2937] text-[#E5E7EB] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:border-[#22D3EE] cursor-pointer"
-        >
-          {DAY_OPTIONS.map((d) => (
-            <option key={d.value} value={d.value} className="bg-[#111827]">
-              {d.label}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-1.5">
+          <select
+            value={days}
+            onChange={(e) => onDaysChange(Number(e.target.value))}
+            className="bg-[#111827] border border-[#1F2937] text-[#E5E7EB] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:border-[#22D3EE] cursor-pointer"
+          >
+            {DAY_OPTIONS.map((d) => (
+              <option key={d.value} value={d.value} className="bg-[#111827]">
+                {d.label}
+              </option>
+            ))}
+          </select>
+          <InfoTooltip
+            title="Observation Window"
+            text="Filter satellite thermal detections by age (from latest 24-hour pass up to 10 days)."
+            position="bottom"
+          />
+        </div>
 
         {/* Category Filter */}
-        <select
-          value={category}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          className="bg-[#111827] border border-[#1F2937] text-[#22D3EE] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#22D3EE] cursor-pointer max-w-[190px] truncate"
-        >
-          {categories.map((c) => (
-            <option key={c.value} value={c.value} className="bg-[#111827] text-[#E5E7EB]">
-              {c.label}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-1.5">
+          <select
+            value={category}
+            onChange={(e) => onCategoryChange(e.target.value)}
+            className="bg-[#111827] border border-[#1F2937] text-[#22D3EE] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#22D3EE] cursor-pointer max-w-[190px] truncate"
+          >
+            {categories.map((c) => (
+              <option key={c.value} value={c.value} className="bg-[#111827] text-[#E5E7EB]">
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <InfoTooltip
+            title="Classification Filter"
+            text="Filter map display by fire risk tier (e.g. Critical Emergency, Forest, Agricultural, or All)."
+            position="bottom"
+          />
+        </div>
 
         {/* Source Filter */}
-        <select
-          value={source}
-          onChange={(e) => onSourceChange(e.target.value)}
-          className="bg-[#111827] border border-[#1F2937] text-[#9CA3AF] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:border-[#22D3EE] cursor-pointer hidden md:block max-w-[180px] truncate"
-        >
-          {SOURCES.map((s) => (
-            <option key={s.value} value={s.value} className="bg-[#111827] text-[#E5E7EB]">
-              {s.label}
-            </option>
-          ))}
-        </select>
+        <div className="hidden md:flex items-center gap-1.5">
+          <select
+            value={source}
+            onChange={(e) => onSourceChange(e.target.value)}
+            className="bg-[#111827] border border-[#1F2937] text-[#9CA3AF] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:border-[#22D3EE] cursor-pointer max-w-[180px] truncate"
+          >
+            {SOURCES.map((s) => (
+              <option key={s.value} value={s.value} className="bg-[#111827] text-[#E5E7EB]">
+                {s.label}
+              </option>
+            ))}
+          </select>
+          <InfoTooltip
+            title="Satellite Sensors"
+            text="Toggle between high-resolution VIIRS Suomi-NPP (375m) and NOAA-20 thermal infrared instruments."
+            position="bottom"
+          />
+        </div>
       </div>
 
       {/* Right Actions: Refresh, Download, Scenarios, Emergency, More */}
@@ -166,29 +188,43 @@ export default function FilterBar({
 
         {/* Scenarios Button */}
         {onOpenScenarios && (
-          <button
-            onClick={onOpenScenarios}
-            className="px-3 py-1.5 bg-[#111827] hover:bg-[#1F2937] border border-cyan-500/40 text-[#22D3EE] rounded-lg text-xs font-medium transition flex items-center gap-1.5"
-          >
-            <span>▶</span>
-            <span>Scenarios</span>
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onOpenScenarios}
+              className="px-3 py-1.5 bg-[#111827] hover:bg-[#1F2937] border border-cyan-500/40 text-[#22D3EE] rounded-lg text-xs font-medium transition flex items-center gap-1.5"
+            >
+              <span>▶</span>
+              <span>Scenarios</span>
+            </button>
+            <InfoTooltip
+              title="Crisis Scenarios"
+              text="Preset real-world crisis simulations (e.g. Punjab Stubble, Vizag Flare, Surat Tanker) for instant demonstration."
+              position="bottom"
+            />
+          </div>
         )}
 
         {/* Emergency Trigger Button with Critical Badge */}
         {onOpenEmergency && (
-          <button
-            onClick={onOpenEmergency}
-            className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900/50 border border-red-500/50 text-red-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
-          >
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span>Emergency</span>
-            {criticalAlertCount > 0 && (
-              <span className="bg-red-500 text-white px-1.5 py-0.2 text-[10px] font-bold rounded-full ml-0.5">
-                {criticalAlertCount}
-              </span>
-            )}
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onOpenEmergency}
+              className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900/50 border border-red-500/50 text-red-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
+            >
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span>Emergency</span>
+              {criticalAlertCount > 0 && (
+                <span className="bg-red-500 text-white px-1.5 py-0.2 text-[10px] font-bold rounded-full ml-0.5">
+                  {criticalAlertCount}
+                </span>
+              )}
+            </button>
+            <InfoTooltip
+              title="Critical Emergency Alerts"
+              text="Active high-risk thermal anomalies requiring immediate response (chemical, petroleum, explosive corridors)."
+              position="bottom"
+            />
+          </div>
         )}
 
         {/* More Dropdown */}
@@ -202,7 +238,7 @@ export default function FilterBar({
           </button>
 
           {isMoreOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-[#111827] border border-[#1F2937] rounded-xl shadow-2xl p-1.5 z-50 text-xs space-y-1">
+            <div className="absolute right-0 mt-2 w-60 bg-[#111827] border border-[#1F2937] rounded-xl shadow-2xl p-1.5 z-50 text-xs space-y-1">
               {onOpenDispatchHistory && (
                 <button
                   onClick={() => {

@@ -125,8 +125,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.68,
       "distance_km": 1.68,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bhilai Steel Plant (1.68km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0007",
@@ -147,8 +147,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.31,
       "distance_km": 0.31,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bokaro Steel Works (0.31km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0008",
@@ -169,8 +169,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.47,
       "distance_km": 1.47,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamshedpur Tata Steel (1.47km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0009",
@@ -191,8 +191,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.26,
       "distance_km": 1.26,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Rourkela Steel Plant (1.26km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0010",
@@ -213,8 +213,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.94,
       "distance_km": 0.94,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Durgapur Steel Works (0.94km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0011",
@@ -235,8 +235,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "SMELTER",
       "facility_dist": 0.26,
       "distance_km": 0.26,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Angul Jindal/NALCO (0.26km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Angul Jindal/NALCO); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0012",
@@ -257,8 +257,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.55,
       "distance_km": 1.55,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Kalinganagar Steel Hub (1.55km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Kalinganagar Steel Hub); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0013",
@@ -279,8 +279,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "POWER",
       "facility_dist": 0.91,
       "distance_km": 0.91,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Korba Power & Alum (0.91km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Korba Power & Alum); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0014",
@@ -301,8 +301,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.62,
       "distance_km": 1.62,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bellary JSW Vijayanagar (1.62km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bellary JSW Vijayanagar); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0015",
@@ -323,8 +323,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.94,
       "distance_km": 0.94,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamnagar Refinery Complex (0.94km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamnagar Refinery Complex); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0016",
@@ -345,8 +345,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.77,
       "distance_km": 1.77,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Mangalore Refinery MRPL (1.77km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Mangalore Refinery MRPL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0017",
@@ -367,8 +367,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.93,
       "distance_km": 0.93,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Kochi Refinery BPCL (0.93km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Kochi Refinery BPCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0018",
@@ -389,8 +389,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.73,
       "distance_km": 0.73,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Paradip IOCL Refinery (0.73km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Paradip IOCL Refinery); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0019",
@@ -411,8 +411,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.31,
       "distance_km": 0.31,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Haldia Refinery IOCL (0.31km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Haldia Refinery IOCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0020",
@@ -433,8 +433,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.27,
       "distance_km": 1.27,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Visakhapatnam HPCL (1.27km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Visakhapatnam HPCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0021",
@@ -455,8 +455,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.61,
       "distance_km": 1.61,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bhilai Steel Plant (1.61km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0022",
@@ -477,8 +477,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.63,
       "distance_km": 0.63,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bokaro Steel Works (0.63km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0023",
@@ -499,8 +499,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.43,
       "distance_km": 1.43,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamshedpur Tata Steel (1.43km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0024",
@@ -521,8 +521,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.2,
       "distance_km": 1.2,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Rourkela Steel Plant (1.2km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0025",
@@ -543,8 +543,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.23,
       "distance_km": 1.23,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Durgapur Steel Works (1.23km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0026",
@@ -565,8 +565,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "SMELTER",
       "facility_dist": 1.64,
       "distance_km": 1.64,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Angul Jindal/NALCO (1.64km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Angul Jindal/NALCO); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0027",
@@ -587,8 +587,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.64,
       "distance_km": 1.64,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Kalinganagar Steel Hub (1.64km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Kalinganagar Steel Hub); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0028",
@@ -609,8 +609,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "POWER",
       "facility_dist": 1.34,
       "distance_km": 1.34,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Korba Power & Alum (1.34km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Korba Power & Alum); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0029",
@@ -631,8 +631,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.3,
       "distance_km": 0.3,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bellary JSW Vijayanagar (0.3km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bellary JSW Vijayanagar); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0030",
@@ -653,8 +653,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.6,
       "distance_km": 1.6,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamnagar Refinery Complex (1.6km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamnagar Refinery Complex); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0031",
@@ -675,8 +675,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.44,
       "distance_km": 0.44,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Mangalore Refinery MRPL (0.44km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Mangalore Refinery MRPL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0032",
@@ -697,8 +697,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.44,
       "distance_km": 1.44,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Kochi Refinery BPCL (1.44km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Kochi Refinery BPCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0033",
@@ -719,8 +719,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.23,
       "distance_km": 1.23,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Paradip IOCL Refinery (1.23km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Paradip IOCL Refinery); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0034",
@@ -741,8 +741,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.35,
       "distance_km": 0.35,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Haldia Refinery IOCL (0.35km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Haldia Refinery IOCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0035",
@@ -763,8 +763,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.4,
       "distance_km": 0.4,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Visakhapatnam HPCL (0.4km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Visakhapatnam HPCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0036",
@@ -785,8 +785,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.29,
       "distance_km": 1.29,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bhilai Steel Plant (1.29km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0037",
@@ -807,8 +807,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.04,
       "distance_km": 1.04,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bokaro Steel Works (1.04km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0038",
@@ -829,8 +829,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.42,
       "distance_km": 0.42,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamshedpur Tata Steel (0.42km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0039",
@@ -851,8 +851,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.8,
       "distance_km": 1.8,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Rourkela Steel Plant (1.8km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0040",
@@ -873,8 +873,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.59,
       "distance_km": 1.59,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Durgapur Steel Works (1.59km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0041",
@@ -895,8 +895,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "SMELTER",
       "facility_dist": 0.47,
       "distance_km": 0.47,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Angul Jindal/NALCO (0.47km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Angul Jindal/NALCO); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0042",
@@ -917,8 +917,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.59,
       "distance_km": 0.59,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Kalinganagar Steel Hub (0.59km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Kalinganagar Steel Hub); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0043",
@@ -939,8 +939,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "POWER",
       "facility_dist": 1.0,
       "distance_km": 1.0,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Korba Power & Alum (1.0km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Korba Power & Alum); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0044",
@@ -961,8 +961,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.62,
       "distance_km": 1.62,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bellary JSW Vijayanagar (1.62km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bellary JSW Vijayanagar); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0045",
@@ -983,8 +983,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.45,
       "distance_km": 0.45,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamnagar Refinery Complex (0.45km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamnagar Refinery Complex); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0046",
@@ -1005,8 +1005,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.76,
       "distance_km": 0.76,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Mangalore Refinery MRPL (0.76km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Mangalore Refinery MRPL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0047",
@@ -1027,8 +1027,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.76,
       "distance_km": 1.76,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Kochi Refinery BPCL (1.76km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Kochi Refinery BPCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0048",
@@ -1049,8 +1049,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 0.54,
       "distance_km": 0.54,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Paradip IOCL Refinery (0.54km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Paradip IOCL Refinery); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0049",
@@ -1071,8 +1071,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.45,
       "distance_km": 1.45,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Haldia Refinery IOCL (1.45km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Haldia Refinery IOCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0050",
@@ -1093,8 +1093,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "REFINERY",
       "facility_dist": 1.63,
       "distance_km": 1.63,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Visakhapatnam HPCL (1.63km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Visakhapatnam HPCL); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0051",
@@ -1115,8 +1115,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.47,
       "distance_km": 1.47,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bhilai Steel Plant (1.47km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0052",
@@ -1137,8 +1137,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 1.22,
       "distance_km": 1.22,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Bokaro Steel Works (1.22km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0053",
@@ -1159,8 +1159,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.76,
       "distance_km": 0.76,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Jamshedpur Tata Steel (0.76km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0054",
@@ -1181,8 +1181,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.95,
       "distance_km": 0.95,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Rourkela Steel Plant (0.95km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-IND-0055",
@@ -1203,8 +1203,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "WORKS",
       "facility_dist": 0.63,
       "distance_km": 0.63,
-      "reason": "Known industrial flaring / metallurgical furnace thermal baseline at Durgapur Steel Works (0.63km). Expected operational signature.",
-      "action": "Monitor persistence telemetry. Confirm operational parameters with plant dispatch desk."
+      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
+      "action": "No emergency action needed. Normal industrial operational thermal source."
     },
     {
       "id": "IGNIS-AGR-0056",
@@ -1225,8 +1225,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 23.3,
       "distance_km": 23.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0057",
@@ -1247,8 +1247,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.9,
       "distance_km": 34.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0058",
@@ -1269,8 +1269,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 31.4,
       "distance_km": 31.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0059",
@@ -1291,8 +1291,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 21.3,
       "distance_km": 21.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0060",
@@ -1313,8 +1313,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 17.1,
       "distance_km": 17.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0061",
@@ -1335,8 +1335,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 27.1,
       "distance_km": 27.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0062",
@@ -1357,8 +1357,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 32.4,
       "distance_km": 32.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0063",
@@ -1379,8 +1379,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.4,
       "distance_km": 34.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0064",
@@ -1401,8 +1401,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 7.2,
       "distance_km": 7.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0065",
@@ -1423,8 +1423,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 10.9,
       "distance_km": 10.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0066",
@@ -1445,8 +1445,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 11.1,
       "distance_km": 11.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0067",
@@ -1467,8 +1467,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 10.3,
       "distance_km": 10.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0068",
@@ -1489,8 +1489,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 9.6,
       "distance_km": 9.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0069",
@@ -1511,8 +1511,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 24.5,
       "distance_km": 24.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0070",
@@ -1533,8 +1533,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 12.2,
       "distance_km": 12.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0071",
@@ -1555,8 +1555,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 30.7,
       "distance_km": 30.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0072",
@@ -1577,8 +1577,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 33.2,
       "distance_km": 33.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0073",
@@ -1599,8 +1599,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 26.8,
       "distance_km": 26.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0074",
@@ -1621,8 +1621,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 9.7,
       "distance_km": 9.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0075",
@@ -1643,8 +1643,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 28.1,
       "distance_km": 28.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0076",
@@ -1665,8 +1665,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 27.5,
       "distance_km": 27.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0077",
@@ -1687,8 +1687,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 22.1,
       "distance_km": 22.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0078",
@@ -1709,8 +1709,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 12.0,
       "distance_km": 12.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0079",
@@ -1731,8 +1731,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 28.6,
       "distance_km": 28.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0080",
@@ -1753,8 +1753,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 26.3,
       "distance_km": 26.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0081",
@@ -1775,8 +1775,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 10.0,
       "distance_km": 10.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0082",
@@ -1797,8 +1797,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 22.6,
       "distance_km": 22.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0083",
@@ -1819,8 +1819,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 13.7,
       "distance_km": 13.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0084",
@@ -1841,8 +1841,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 11.7,
       "distance_km": 11.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0085",
@@ -1863,8 +1863,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 25.9,
       "distance_km": 25.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0086",
@@ -1885,8 +1885,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 20.7,
       "distance_km": 20.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0087",
@@ -1907,8 +1907,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.8,
       "distance_km": 34.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0088",
@@ -1929,8 +1929,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 14.9,
       "distance_km": 14.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0089",
@@ -1951,8 +1951,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 30.5,
       "distance_km": 30.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0090",
@@ -1973,8 +1973,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 30.4,
       "distance_km": 30.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0091",
@@ -1995,8 +1995,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 29.9,
       "distance_km": 29.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0092",
@@ -2017,8 +2017,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 24.7,
       "distance_km": 24.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0093",
@@ -2039,8 +2039,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 12.5,
       "distance_km": 12.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0094",
@@ -2061,8 +2061,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.0,
       "distance_km": 34.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0095",
@@ -2083,8 +2083,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 28.6,
       "distance_km": 28.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0096",
@@ -2105,8 +2105,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 21.4,
       "distance_km": 21.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0097",
@@ -2127,8 +2127,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.7,
       "distance_km": 34.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0098",
@@ -2149,8 +2149,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 33.5,
       "distance_km": 33.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0099",
@@ -2171,8 +2171,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 24.7,
       "distance_km": 24.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0100",
@@ -2193,8 +2193,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 33.6,
       "distance_km": 33.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0101",
@@ -2215,8 +2215,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 16.7,
       "distance_km": 16.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0102",
@@ -2237,8 +2237,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 12.6,
       "distance_km": 12.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0103",
@@ -2259,8 +2259,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 27.5,
       "distance_km": 27.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0104",
@@ -2281,8 +2281,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 11.4,
       "distance_km": 11.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0105",
@@ -2303,8 +2303,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 30.8,
       "distance_km": 30.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0106",
@@ -2325,8 +2325,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 33.0,
       "distance_km": 33.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0107",
@@ -2347,8 +2347,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 22.4,
       "distance_km": 22.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0108",
@@ -2369,8 +2369,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 11.0,
       "distance_km": 11.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0109",
@@ -2391,8 +2391,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 23.3,
       "distance_km": 23.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0110",
@@ -2413,8 +2413,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 26.9,
       "distance_km": 26.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0111",
@@ -2435,8 +2435,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 16.1,
       "distance_km": 16.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0112",
@@ -2457,8 +2457,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 11.2,
       "distance_km": 11.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0113",
@@ -2479,8 +2479,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 21.7,
       "distance_km": 21.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0114",
@@ -2501,8 +2501,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 28.5,
       "distance_km": 28.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0115",
@@ -2523,8 +2523,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 8.6,
       "distance_km": 8.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0116",
@@ -2545,8 +2545,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 17.3,
       "distance_km": 17.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0117",
@@ -2567,8 +2567,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 26.0,
       "distance_km": 26.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0118",
@@ -2589,8 +2589,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 10.2,
       "distance_km": 10.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0119",
@@ -2611,8 +2611,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 17.0,
       "distance_km": 17.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0120",
@@ -2633,8 +2633,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 24.2,
       "distance_km": 24.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0121",
@@ -2655,8 +2655,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 25.7,
       "distance_km": 25.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0122",
@@ -2677,8 +2677,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 14.6,
       "distance_km": 14.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0123",
@@ -2699,8 +2699,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 16.7,
       "distance_km": 16.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0124",
@@ -2721,8 +2721,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 28.3,
       "distance_km": 28.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0125",
@@ -2743,8 +2743,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 14.8,
       "distance_km": 14.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0126",
@@ -2765,8 +2765,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 7.4,
       "distance_km": 7.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0127",
@@ -2787,8 +2787,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 23.2,
       "distance_km": 23.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0128",
@@ -2809,8 +2809,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 18.8,
       "distance_km": 18.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0129",
@@ -2831,8 +2831,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 29.1,
       "distance_km": 29.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0130",
@@ -2853,8 +2853,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 7.1,
       "distance_km": 7.1,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0131",
@@ -2875,8 +2875,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 33.5,
       "distance_km": 33.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0132",
@@ -2897,8 +2897,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 29.9,
       "distance_km": 29.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0133",
@@ -2919,8 +2919,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 20.3,
       "distance_km": 20.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0134",
@@ -2941,8 +2941,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 25.2,
       "distance_km": 25.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0135",
@@ -2963,8 +2963,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 31.8,
       "distance_km": 31.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0136",
@@ -2985,8 +2985,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 23.5,
       "distance_km": 23.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0137",
@@ -3007,8 +3007,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 15.9,
       "distance_km": 15.9,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0138",
@@ -3029,8 +3029,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 10.6,
       "distance_km": 10.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0139",
@@ -3051,8 +3051,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 16.2,
       "distance_km": 16.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0140",
@@ -3073,8 +3073,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 10.2,
       "distance_km": 10.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0141",
@@ -3095,8 +3095,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 25.2,
       "distance_km": 25.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0142",
@@ -3117,8 +3117,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 28.0,
       "distance_km": 28.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0143",
@@ -3139,8 +3139,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 19.6,
       "distance_km": 19.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0144",
@@ -3161,8 +3161,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 27.7,
       "distance_km": 27.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0145",
@@ -3183,8 +3183,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 15.6,
       "distance_km": 15.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0146",
@@ -3205,8 +3205,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.2,
       "distance_km": 34.2,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0147",
@@ -3227,8 +3227,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 34.5,
       "distance_km": 34.5,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0148",
@@ -3249,8 +3249,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 30.7,
       "distance_km": 30.7,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0149",
@@ -3271,8 +3271,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 31.3,
       "distance_km": 31.3,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0150",
@@ -3293,8 +3293,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 12.8,
       "distance_km": 12.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0151",
@@ -3315,8 +3315,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 27.8,
       "distance_km": 27.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Ludhiana/Sangrur)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0152",
@@ -3337,8 +3337,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 26.6,
       "distance_km": 26.6,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Punjab (Patiala/Bathinda)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0153",
@@ -3359,8 +3359,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 13.0,
       "distance_km": 13.0,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Karnal/Kaithal)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0154",
@@ -3381,8 +3381,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 15.4,
       "distance_km": 15.4,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Haryana (Kurukshetra)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-AGR-0155",
@@ -3403,8 +3403,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "AGRI",
       "facility_dist": 23.8,
       "distance_km": 23.8,
-      "reason": "Paddy/crop residue burn in agricultural cropland belt (Western UP (Meerut/Muzaffarnagar)). Isolated open-air field combustion.",
-      "action": "Log crop residue burn for state pollution control board and district satellite audit."
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread."
     },
     {
       "id": "IGNIS-FOR-0156",
@@ -3425,8 +3425,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 18.6,
       "distance_km": 18.6,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>18.6km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0157",
@@ -3447,8 +3447,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 30.5,
       "distance_km": 30.5,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>30.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0158",
@@ -3469,8 +3469,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 23.5,
       "distance_km": 23.5,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>23.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0159",
@@ -3491,8 +3491,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 36.9,
       "distance_km": 36.9,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>36.9km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0160",
@@ -3513,8 +3513,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 58.5,
       "distance_km": 58.5,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>58.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0161",
@@ -3535,8 +3535,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 33.7,
       "distance_km": 33.7,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>33.7km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0162",
@@ -3557,8 +3557,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 33.5,
       "distance_km": 33.5,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>33.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0163",
@@ -3579,8 +3579,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 43.1,
       "distance_km": 43.1,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>43.1km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0164",
@@ -3601,8 +3601,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 44.6,
       "distance_km": 44.6,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>44.6km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0165",
@@ -3623,8 +3623,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 33.2,
       "distance_km": 33.2,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>33.2km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0166",
@@ -3645,8 +3645,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 17.5,
       "distance_km": 17.5,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>17.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0167",
@@ -3667,8 +3667,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 46.3,
       "distance_km": 46.3,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>46.3km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0168",
@@ -3689,8 +3689,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 41.1,
       "distance_km": 41.1,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>41.1km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0169",
@@ -3711,8 +3711,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 49.3,
       "distance_km": 49.3,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>49.3km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0170",
@@ -3733,8 +3733,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 21.4,
       "distance_km": 21.4,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>21.4km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0171",
@@ -3755,8 +3755,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 53.8,
       "distance_km": 53.8,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>53.8km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0172",
@@ -3777,8 +3777,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 36.5,
       "distance_km": 36.5,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>36.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0173",
@@ -3799,8 +3799,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 51.7,
       "distance_km": 51.7,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>51.7km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0174",
@@ -3821,8 +3821,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 48.2,
       "distance_km": 48.2,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>48.2km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0175",
@@ -3843,8 +3843,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 42.8,
       "distance_km": 42.8,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>42.8km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0176",
@@ -3865,8 +3865,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 45.5,
       "distance_km": 45.5,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>45.5km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0177",
@@ -3887,8 +3887,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 37.1,
       "distance_km": 37.1,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>37.1km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0178",
@@ -3909,8 +3909,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 39.6,
       "distance_km": 39.6,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>39.6km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0179",
@@ -3931,8 +3931,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 33.7,
       "distance_km": 33.7,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>33.7km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0180",
@@ -3953,8 +3953,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 34.4,
       "distance_km": 34.4,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>34.4km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0181",
@@ -3975,8 +3975,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 27.2,
       "distance_km": 27.2,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>27.2km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0182",
@@ -3997,8 +3997,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 46.9,
       "distance_km": 46.9,
-      "reason": "High FRP biomass burn in wildland canopy (Himachal Pradesh (Kullu/Mandi)). Remote steep terrain (>46.9km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0183",
@@ -4019,8 +4019,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 55.9,
       "distance_km": 55.9,
-      "reason": "High FRP biomass burn in wildland canopy (Odisha (Simlipal Biosphere)). Remote steep terrain (>55.9km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0184",
@@ -4041,8 +4041,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 52.4,
       "distance_km": 52.4,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Chamoli/Garhwal)). Remote steep terrain (>52.4km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-FOR-0185",
@@ -4063,8 +4063,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "FOREST",
       "facility_dist": 18.8,
       "distance_km": 18.8,
-      "reason": "High FRP biomass burn in wildland canopy (Uttarakhand (Nainital/Kumaon)). Remote steep terrain (>18.8km from industry).",
-      "action": "Notify State Forest Division & Regional NDRF Battalion. Establish aerial fire breaks."
+      "reason": "Forest reserve perimeter thermal anomaly detected",
+      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
     },
     {
       "id": "IGNIS-UNK-0186",
@@ -4085,8 +4085,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 21.3,
       "distance_km": 21.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0187",
@@ -4107,8 +4107,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 21.1,
       "distance_km": 21.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0188",
@@ -4129,8 +4129,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 22.4,
       "distance_km": 22.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0189",
@@ -4151,8 +4151,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 21.2,
       "distance_km": 21.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0190",
@@ -4173,8 +4173,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 21.1,
       "distance_km": 21.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0191",
@@ -4195,8 +4195,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 17.6,
       "distance_km": 17.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0192",
@@ -4217,8 +4217,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 19.6,
       "distance_km": 19.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0193",
@@ -4239,8 +4239,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 23.1,
       "distance_km": 23.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0194",
@@ -4261,8 +4261,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 18.6,
       "distance_km": 18.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0195",
@@ -4283,8 +4283,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.9,
       "distance_km": 11.9,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0196",
@@ -4305,8 +4305,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 24.5,
       "distance_km": 24.5,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0197",
@@ -4327,8 +4327,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 6.4,
       "distance_km": 6.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0198",
@@ -4349,8 +4349,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 20.2,
       "distance_km": 20.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0199",
@@ -4371,8 +4371,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 8.9,
       "distance_km": 8.9,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0200",
@@ -4393,8 +4393,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.0,
       "distance_km": 11.0,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0201",
@@ -4415,8 +4415,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 22.3,
       "distance_km": 22.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0202",
@@ -4437,8 +4437,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 14.3,
       "distance_km": 14.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0203",
@@ -4459,8 +4459,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 9.3,
       "distance_km": 9.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0204",
@@ -4481,8 +4481,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 12.1,
       "distance_km": 12.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0205",
@@ -4503,8 +4503,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 4.6,
       "distance_km": 4.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0206",
@@ -4525,8 +4525,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 18.2,
       "distance_km": 18.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0207",
@@ -4547,8 +4547,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 18.0,
       "distance_km": 18.0,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0208",
@@ -4569,8 +4569,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.0,
       "distance_km": 11.0,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0209",
@@ -4591,8 +4591,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 24.8,
       "distance_km": 24.8,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0210",
@@ -4613,8 +4613,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 6.3,
       "distance_km": 6.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0211",
@@ -4635,8 +4635,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 18.9,
       "distance_km": 18.9,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0212",
@@ -4657,8 +4657,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 14.6,
       "distance_km": 14.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0213",
@@ -4679,8 +4679,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 15.7,
       "distance_km": 15.7,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0214",
@@ -4701,8 +4701,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 17.3,
       "distance_km": 17.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0215",
@@ -4723,8 +4723,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 14.4,
       "distance_km": 14.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0216",
@@ -4745,8 +4745,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 8.1,
       "distance_km": 8.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0217",
@@ -4767,8 +4767,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 23.1,
       "distance_km": 23.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0218",
@@ -4789,8 +4789,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 8.1,
       "distance_km": 8.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0219",
@@ -4811,8 +4811,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.2,
       "distance_km": 11.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0220",
@@ -4833,8 +4833,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 9.6,
       "distance_km": 9.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0221",
@@ -4855,8 +4855,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 16.3,
       "distance_km": 16.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0222",
@@ -4877,8 +4877,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 10.4,
       "distance_km": 10.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0223",
@@ -4899,8 +4899,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 6.4,
       "distance_km": 6.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0224",
@@ -4921,8 +4921,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 4.6,
       "distance_km": 4.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0225",
@@ -4943,8 +4943,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 19.2,
       "distance_km": 19.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0226",
@@ -4965,8 +4965,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 14.9,
       "distance_km": 14.9,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0227",
@@ -4987,8 +4987,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 5.6,
       "distance_km": 5.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0228",
@@ -5009,8 +5009,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 19.8,
       "distance_km": 19.8,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0229",
@@ -5031,8 +5031,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 6.6,
       "distance_km": 6.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0230",
@@ -5053,8 +5053,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 23.6,
       "distance_km": 23.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0231",
@@ -5075,8 +5075,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 20.1,
       "distance_km": 20.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0232",
@@ -5097,8 +5097,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 22.6,
       "distance_km": 22.6,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0233",
@@ -5119,8 +5119,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 10.4,
       "distance_km": 10.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0234",
@@ -5141,8 +5141,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 10.1,
       "distance_km": 10.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0235",
@@ -5163,8 +5163,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 20.9,
       "distance_km": 20.9,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0236",
@@ -5185,8 +5185,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 12.8,
       "distance_km": 12.8,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0237",
@@ -5207,8 +5207,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 22.0,
       "distance_km": 22.0,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0238",
@@ -5229,8 +5229,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 15.9,
       "distance_km": 15.9,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0239",
@@ -5251,8 +5251,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 12.2,
       "distance_km": 12.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0240",
@@ -5273,8 +5273,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 19.5,
       "distance_km": 19.5,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0241",
@@ -5295,8 +5295,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 20.5,
       "distance_km": 20.5,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0242",
@@ -5317,8 +5317,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 8.4,
       "distance_km": 8.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0243",
@@ -5339,8 +5339,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.2,
       "distance_km": 11.2,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0244",
@@ -5361,8 +5361,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 24.4,
       "distance_km": 24.4,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0245",
@@ -5383,8 +5383,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 6.7,
       "distance_km": 6.7,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0246",
@@ -5405,8 +5405,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 9.7,
       "distance_km": 9.7,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0247",
@@ -5427,8 +5427,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 7.1,
       "distance_km": 7.1,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0248",
@@ -5449,8 +5449,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.0,
       "distance_km": 11.0,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0249",
@@ -5471,8 +5471,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 11.7,
       "distance_km": 11.7,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     },
     {
       "id": "IGNIS-UNK-0250",
@@ -5493,8 +5493,8 @@ export const DEMO_TELEMETRY_DATA = {
       "facility_type": "RURAL",
       "facility_dist": 22.3,
       "distance_km": 22.3,
-      "reason": "Unverified low-confidence thermal signal. Awaiting secondary orbital pass validation.",
-      "action": "Queue for secondary sensor cross-referencing and optical verification."
+      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
+      "action": "No emergency action required. Routine municipal monitoring."
     }
   ],
   "total": 250,
