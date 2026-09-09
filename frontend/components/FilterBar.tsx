@@ -71,26 +71,46 @@ export default function FilterBar({
   }, []);
 
   const categories = [
-    { value: "all", label: t("filters.all", "All Fire Categories") },
+    { value: "all", label: "All Fire Categories" },
+    {
+      value: "CRITICAL",
+      label: "🔴 Critical Emergency (Hospital / Fuel / Factory)",
+    },
+    {
+      value: "HOSPITAL_FIRE",
+      label: "🏥 Hospital Facility Fire",
+    },
+    {
+      value: "FUEL_STATION_FIRE",
+      label: "⛽ Petrol Pump / Fuel Depot",
+    },
     {
       value: "EMERGENCY_INDUSTRIAL",
-      label: t("categories.EMERGENCY_INDUSTRIAL", "Emergency Industrial"),
+      label: "🏭 Factory Industrial Fire",
+    },
+    {
+      value: "HIGH_RISK",
+      label: "🟠 High Risk (Kitchen / Market / Res)",
+    },
+    {
+      value: "RESTAURANT_KITCHEN_FIRE",
+      label: "🍳 Restaurant Commercial Kitchen",
     },
     {
       value: "PERSISTENT_INDUSTRIAL",
-      label: t("categories.PERSISTENT_INDUSTRIAL", "Persistent Industrial"),
-    },
-    {
-      value: "AGRICULTURAL_BURNING",
-      label: t("categories.AGRICULTURAL_BURNING", "Agricultural Burning"),
+      label: "🟡 Persistent Industrial (Routine)",
     },
     {
       value: "FOREST_FIRE",
-      label: t("categories.FOREST_FIRE", "Forest Biomass"),
+      label: "🟢 Forest Wildland",
     },
     {
-      value: "UNKNOWN",
-      label: t("categories.UNKNOWN", "Unclassified / Small Burns"),
+      value: "AGRICULTURAL_BURNING",
+      label: "🔵 Agricultural Stubble",
+    },
+    {
+      value: "DOMESTIC_LOW_INTENSITY_BURN",
+      label: "⚪ Low-Intensity Domestic (Suppressed)",
     },
   ];
 

@@ -1,5515 +1,13439 @@
-// 250+ Realistic Demo Hotspots with Full Tactical Classifications
+// 250 Realistic Demo Hotspots with Full Tactical Classifications
 export const DEMO_TELEMETRY_DATA = {
   "fires": [
     {
-      "latitude": 21.1925,
-      "longitude": 72.8258,
-      "brightness": 382.4,
-      "frp": 48.6,
+      "id": "IGNIS-EM-0002",
+      "latitude": 28.5672,
+      "longitude": 77.21,
+      "brightness": 345.2,
+      "frp": 18.5,
       "confidence": 96,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1030",
-      "daynight": "D",
-      "category": "EMERGENCY_INDUSTRIAL",
-      "risk_level": "CRITICAL",
-      "color": "#ff3b3b",
-      "facility_name": "Surat Chemical Cluster GIDC",
-      "nearest_facility": "Surat Chemical Works",
-      "facility_dist": 0.35,
-      "distance_km": 0.35,
-      "reason": "Major chemical tank farm breach with volatile thermal anomaly (48.6MW). Multi-tender hazmat containment required immediately.",
-      "action": "DISPATCH Class B/C Foam units + hazmat suppression team. Evacuate 500m radius.",
-      "id": "IGNIS-EM-0001"
-    },
-    {
-      "latitude": 20.3725,
-      "longitude": 72.912,
-      "brightness": 376.1,
-      "frp": 41.2,
-      "confidence": 94,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1115",
-      "daynight": "D",
-      "category": "EMERGENCY_INDUSTRIAL",
-      "risk_level": "CRITICAL",
-      "color": "#ff3b3b",
-      "facility_name": "Vapi Industrial Estate Complex",
-      "nearest_facility": "Vapi Pharma Intermediates",
-      "facility_dist": 0.42,
-      "distance_km": 0.42,
-      "reason": "Solvent synthesis reaction runaway detected with high thermal intensity (41.2MW) within 500m of facility core.",
-      "action": "Activate GIDC disaster protocol. Deploy dry chemical + CO2 tenders. Alert district collector.",
-      "id": "IGNIS-EM-0002"
-    },
-    {
-      "latitude": 21.628,
-      "longitude": 73.004,
-      "brightness": 379.8,
-      "frp": 44.8,
-      "confidence": 95,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0945",
-      "daynight": "D",
-      "category": "EMERGENCY_INDUSTRIAL",
-      "risk_level": "CRITICAL",
-      "color": "#ff3b3b",
-      "facility_name": "Ankleshwar Chemical Corridor",
-      "nearest_facility": "Ankleshwar Bulk Petrochem",
-      "facility_dist": 0.28,
-      "distance_km": 0.28,
-      "reason": "Hydrocarbon storage valve ignition exhibiting rapid FRP surge (44.8MW). Toxic vapor plume risk.",
-      "action": "Immediate 500m evacuation. Water spray curtain to prevent adjacent vessel exposure.",
-      "id": "IGNIS-EM-0003"
-    },
-    {
-      "latitude": 17.632,
-      "longitude": 83.185,
-      "brightness": 388.5,
-      "frp": 52.1,
-      "confidence": 98,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1205",
-      "daynight": "D",
-      "category": "EMERGENCY_INDUSTRIAL",
-      "risk_level": "CRITICAL",
-      "color": "#ff3b3b",
-      "facility_name": "Visakhapatnam Pharma City",
-      "nearest_facility": "Vizag Petro Complex",
-      "facility_dist": 0.65,
-      "distance_km": 0.65,
-      "reason": "High-temperature industrial flaring emergency exceeding baseline threshold (52.1MW). Dense plume detected.",
-      "action": "Dispatch Port Trust & Municipal fire tenders. Mobilize emergency medical units.",
-      "id": "IGNIS-EM-0004"
-    },
-    {
-      "latitude": 22.542,
-      "longitude": 88.318,
-      "brightness": 371.9,
-      "frp": 39.4,
-      "confidence": 92,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1310",
-      "daynight": "D",
-      "category": "EMERGENCY_INDUSTRIAL",
-      "risk_level": "CRITICAL",
-      "color": "#ff3b3b",
-      "facility_name": "Kolkata Taratala Industrial Area",
-      "nearest_facility": "Kolkata Heavy Works",
-      "facility_dist": 0.52,
-      "distance_km": 0.52,
-      "reason": "Transformer yard & oil circuit breaker explosion. Heavy electrical/petroleum combustion (39.4MW).",
-      "action": "DO NOT USE WATER. Deploy dry powder & CO2 tenders immediately.",
-      "id": "IGNIS-EM-0005"
-    },
-    {
-      "id": "IGNIS-IND-0006",
-      "latitude": 21.1931,
-      "longitude": 81.3827,
-      "brightness": 346.7,
-      "frp": 31.3,
-      "confidence": 86,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1818",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bhilai Steel Plant",
-      "nearest_facility": "Bhilai Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.68,
-      "distance_km": 1.68,
-      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0007",
-      "latitude": 23.6786,
-      "longitude": 86.1366,
-      "brightness": 339.8,
-      "frp": 31.4,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1634",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bokaro Steel Works",
-      "nearest_facility": "Bokaro Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 0.31,
-      "distance_km": 0.31,
-      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0008",
-      "latitude": 22.7866,
-      "longitude": 86.2163,
-      "brightness": 345.6,
-      "frp": 16.8,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1119",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamshedpur Tata Steel",
-      "nearest_facility": "Jamshedpur Tata Steel",
-      "facility_type": "WORKS",
-      "facility_dist": 1.47,
-      "distance_km": 1.47,
-      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0009",
-      "latitude": 22.2055,
-      "longitude": 84.8852,
-      "brightness": 357.1,
-      "frp": 25.6,
-      "confidence": 92,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0727",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Rourkela Steel Plant",
-      "nearest_facility": "Rourkela Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.26,
-      "distance_km": 1.26,
-      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0010",
-      "latitude": 23.5132,
-      "longitude": 87.3274,
-      "brightness": 348.4,
-      "frp": 12.1,
-      "confidence": 91,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0945",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Durgapur Steel Works",
-      "nearest_facility": "Durgapur Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 0.94,
-      "distance_km": 0.94,
-      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0011",
-      "latitude": 20.8105,
-      "longitude": 85.1552,
-      "brightness": 339.5,
-      "frp": 15.1,
-      "confidence": 82,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1043",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Angul Jindal/NALCO",
-      "nearest_facility": "Angul Jindal/NALCO",
-      "facility_type": "SMELTER",
-      "facility_dist": 0.26,
-      "distance_km": 0.26,
-      "reason": "Persistent plant heat signature (Angul Jindal/NALCO); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0012",
-      "latitude": 20.9828,
-      "longitude": 86.0385,
-      "brightness": 347.8,
-      "frp": 15.3,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0504",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Kalinganagar Steel Hub",
-      "nearest_facility": "Kalinganagar Steel Hub",
-      "facility_type": "WORKS",
-      "facility_dist": 1.55,
-      "distance_km": 1.55,
-      "reason": "Persistent plant heat signature (Kalinganagar Steel Hub); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0013",
-      "latitude": 22.3628,
-      "longitude": 82.7517,
-      "brightness": 355.4,
-      "frp": 26.0,
-      "confidence": 94,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1411",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Korba Power & Alum",
-      "nearest_facility": "Korba Power & Alum",
-      "facility_type": "POWER",
-      "facility_dist": 0.91,
-      "distance_km": 0.91,
-      "reason": "Persistent plant heat signature (Korba Power & Alum); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0014",
-      "latitude": 15.1969,
-      "longitude": 76.6916,
-      "brightness": 338.5,
-      "frp": 20.9,
-      "confidence": 84,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0924",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bellary JSW Vijayanagar",
-      "nearest_facility": "Bellary JSW Vijayanagar",
-      "facility_type": "WORKS",
-      "facility_dist": 1.62,
-      "distance_km": 1.62,
-      "reason": "Persistent plant heat signature (Bellary JSW Vijayanagar); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0015",
-      "latitude": 22.363,
-      "longitude": 69.8675,
-      "brightness": 339.8,
-      "frp": 32.0,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0859",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamnagar Refinery Complex",
-      "nearest_facility": "Jamnagar Refinery Complex",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.94,
-      "distance_km": 0.94,
-      "reason": "Persistent plant heat signature (Jamnagar Refinery Complex); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0016",
-      "latitude": 12.9855,
-      "longitude": 74.8302,
-      "brightness": 357.5,
-      "frp": 14.2,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0517",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Mangalore Refinery MRPL",
-      "nearest_facility": "Mangalore Refinery MRPL",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.77,
-      "distance_km": 1.77,
-      "reason": "Persistent plant heat signature (Mangalore Refinery MRPL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0017",
-      "latitude": 9.9676,
-      "longitude": 76.3747,
-      "brightness": 349.2,
-      "frp": 29.1,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1617",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Kochi Refinery BPCL",
-      "nearest_facility": "Kochi Refinery BPCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.93,
-      "distance_km": 0.93,
-      "reason": "Persistent plant heat signature (Kochi Refinery BPCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0018",
-      "latitude": 20.286,
-      "longitude": 86.6476,
-      "brightness": 358.4,
-      "frp": 22.7,
-      "confidence": 89,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1423",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Paradip IOCL Refinery",
-      "nearest_facility": "Paradip IOCL Refinery",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.73,
-      "distance_km": 0.73,
-      "reason": "Persistent plant heat signature (Paradip IOCL Refinery); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0019",
-      "latitude": 22.057,
-      "longitude": 88.0627,
-      "brightness": 338.7,
-      "frp": 16.4,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0907",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Haldia Refinery IOCL",
-      "nearest_facility": "Haldia Refinery IOCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.31,
-      "distance_km": 0.31,
-      "reason": "Persistent plant heat signature (Haldia Refinery IOCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0020",
-      "latitude": 17.6712,
-      "longitude": 83.316,
-      "brightness": 355.6,
-      "frp": 16.0,
-      "confidence": 86,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1134",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Visakhapatnam HPCL",
-      "nearest_facility": "Visakhapatnam HPCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.27,
-      "distance_km": 1.27,
-      "reason": "Persistent plant heat signature (Visakhapatnam HPCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0021",
-      "latitude": 21.179,
-      "longitude": 81.3881,
-      "brightness": 340.1,
-      "frp": 17.1,
-      "confidence": 89,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0703",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bhilai Steel Plant",
-      "nearest_facility": "Bhilai Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.61,
-      "distance_km": 1.61,
-      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0022",
-      "latitude": 23.681,
-      "longitude": 86.1479,
-      "brightness": 352.8,
-      "frp": 25.3,
-      "confidence": 81,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1359",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bokaro Steel Works",
-      "nearest_facility": "Bokaro Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 0.63,
-      "distance_km": 0.63,
-      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0023",
-      "latitude": 22.7777,
-      "longitude": 86.2234,
-      "brightness": 358.9,
-      "frp": 25.3,
-      "confidence": 95,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0444",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamshedpur Tata Steel",
-      "nearest_facility": "Jamshedpur Tata Steel",
-      "facility_type": "WORKS",
-      "facility_dist": 1.43,
-      "distance_km": 1.43,
-      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0024",
-      "latitude": 22.2302,
-      "longitude": 84.8501,
-      "brightness": 346.2,
-      "frp": 13.7,
-      "confidence": 82,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1145",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Rourkela Steel Plant",
-      "nearest_facility": "Rourkela Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.2,
-      "distance_km": 1.2,
-      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0025",
-      "latitude": 23.4984,
-      "longitude": 87.2943,
-      "brightness": 348.3,
-      "frp": 19.1,
-      "confidence": 87,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1410",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Durgapur Steel Works",
-      "nearest_facility": "Durgapur Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 1.23,
-      "distance_km": 1.23,
-      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0026",
-      "latitude": 20.8465,
-      "longitude": 85.1564,
-      "brightness": 346.2,
-      "frp": 25.3,
-      "confidence": 81,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1833",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Angul Jindal/NALCO",
-      "nearest_facility": "Angul Jindal/NALCO",
-      "facility_type": "SMELTER",
-      "facility_dist": 1.64,
-      "distance_km": 1.64,
-      "reason": "Persistent plant heat signature (Angul Jindal/NALCO); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0027",
-      "latitude": 20.9433,
-      "longitude": 86.0364,
-      "brightness": 347.7,
-      "frp": 12.2,
-      "confidence": 84,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1808",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Kalinganagar Steel Hub",
-      "nearest_facility": "Kalinganagar Steel Hub",
-      "facility_type": "WORKS",
-      "facility_dist": 1.64,
-      "distance_km": 1.64,
-      "reason": "Persistent plant heat signature (Kalinganagar Steel Hub); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0028",
-      "latitude": 22.3395,
-      "longitude": 82.727,
-      "brightness": 359.8,
-      "frp": 24.2,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1048",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Korba Power & Alum",
-      "nearest_facility": "Korba Power & Alum",
-      "facility_type": "POWER",
-      "facility_dist": 1.34,
-      "distance_km": 1.34,
-      "reason": "Persistent plant heat signature (Korba Power & Alum); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0029",
-      "latitude": 15.195,
-      "longitude": 76.6528,
-      "brightness": 337.4,
-      "frp": 25.7,
-      "confidence": 89,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0646",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bellary JSW Vijayanagar",
-      "nearest_facility": "Bellary JSW Vijayanagar",
-      "facility_type": "WORKS",
-      "facility_dist": 0.3,
-      "distance_km": 0.3,
-      "reason": "Persistent plant heat signature (Bellary JSW Vijayanagar); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0030",
-      "latitude": 22.3928,
-      "longitude": 69.859,
-      "brightness": 352.7,
-      "frp": 27.9,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0719",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamnagar Refinery Complex",
-      "nearest_facility": "Jamnagar Refinery Complex",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.6,
-      "distance_km": 1.6,
-      "reason": "Persistent plant heat signature (Jamnagar Refinery Complex); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0031",
-      "latitude": 13.0179,
-      "longitude": 74.8435,
-      "brightness": 339.1,
-      "frp": 16.0,
-      "confidence": 94,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1812",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Mangalore Refinery MRPL",
-      "nearest_facility": "Mangalore Refinery MRPL",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.44,
-      "distance_km": 0.44,
-      "reason": "Persistent plant heat signature (Mangalore Refinery MRPL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0032",
-      "latitude": 10.0049,
-      "longitude": 76.3808,
-      "brightness": 340.6,
-      "frp": 15.8,
-      "confidence": 88,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1657",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Kochi Refinery BPCL",
-      "nearest_facility": "Kochi Refinery BPCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.44,
-      "distance_km": 1.44,
-      "reason": "Persistent plant heat signature (Kochi Refinery BPCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0033",
-      "latitude": 20.2594,
-      "longitude": 86.6496,
-      "brightness": 352.1,
-      "frp": 25.2,
-      "confidence": 91,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1359",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Paradip IOCL Refinery",
-      "nearest_facility": "Paradip IOCL Refinery",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.23,
-      "distance_km": 1.23,
-      "reason": "Persistent plant heat signature (Paradip IOCL Refinery); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0034",
-      "latitude": 22.0795,
-      "longitude": 88.0628,
-      "brightness": 351.5,
-      "frp": 25.4,
-      "confidence": 91,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1702",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Haldia Refinery IOCL",
-      "nearest_facility": "Haldia Refinery IOCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.35,
-      "distance_km": 0.35,
-      "reason": "Persistent plant heat signature (Haldia Refinery IOCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0035",
-      "latitude": 17.6722,
-      "longitude": 83.2758,
-      "brightness": 359.7,
-      "frp": 12.1,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1044",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Visakhapatnam HPCL",
-      "nearest_facility": "Visakhapatnam HPCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.4,
-      "distance_km": 0.4,
-      "reason": "Persistent plant heat signature (Visakhapatnam HPCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0036",
-      "latitude": 21.1775,
-      "longitude": 81.4215,
-      "brightness": 342.1,
-      "frp": 26.6,
-      "confidence": 92,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1610",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bhilai Steel Plant",
-      "nearest_facility": "Bhilai Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.29,
-      "distance_km": 1.29,
-      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0037",
-      "latitude": 23.6589,
-      "longitude": 86.1376,
-      "brightness": 336.3,
-      "frp": 29.6,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1644",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bokaro Steel Works",
-      "nearest_facility": "Bokaro Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 1.04,
-      "distance_km": 1.04,
-      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0038",
-      "latitude": 22.7913,
-      "longitude": 86.2083,
-      "brightness": 358.6,
-      "frp": 24.5,
-      "confidence": 87,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1628",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamshedpur Tata Steel",
-      "nearest_facility": "Jamshedpur Tata Steel",
-      "facility_type": "WORKS",
-      "facility_dist": 0.42,
-      "distance_km": 0.42,
-      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0039",
-      "latitude": 22.2194,
-      "longitude": 84.8751,
-      "brightness": 336.5,
-      "frp": 21.6,
-      "confidence": 94,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1722",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Rourkela Steel Plant",
-      "nearest_facility": "Rourkela Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.8,
-      "distance_km": 1.8,
-      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0040",
-      "latitude": 23.5012,
-      "longitude": 87.2978,
-      "brightness": 356.3,
-      "frp": 27.7,
-      "confidence": 93,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1611",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Durgapur Steel Works",
-      "nearest_facility": "Durgapur Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 1.59,
-      "distance_km": 1.59,
-      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0041",
-      "latitude": 20.8287,
-      "longitude": 85.1687,
-      "brightness": 355.5,
-      "frp": 14.1,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1246",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Angul Jindal/NALCO",
-      "nearest_facility": "Angul Jindal/NALCO",
-      "facility_type": "SMELTER",
-      "facility_dist": 0.47,
-      "distance_km": 0.47,
-      "reason": "Persistent plant heat signature (Angul Jindal/NALCO); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0042",
-      "latitude": 20.9645,
-      "longitude": 86.0391,
-      "brightness": 349.1,
-      "frp": 25.5,
-      "confidence": 82,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0603",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Kalinganagar Steel Hub",
-      "nearest_facility": "Kalinganagar Steel Hub",
-      "facility_type": "WORKS",
-      "facility_dist": 0.59,
-      "distance_km": 0.59,
-      "reason": "Persistent plant heat signature (Kalinganagar Steel Hub); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0043",
-      "latitude": 22.3753,
-      "longitude": 82.731,
-      "brightness": 342.6,
-      "frp": 14.9,
-      "confidence": 84,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0631",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Korba Power & Alum",
-      "nearest_facility": "Korba Power & Alum",
-      "facility_type": "POWER",
-      "facility_dist": 1.0,
-      "distance_km": 1.0,
-      "reason": "Persistent plant heat signature (Korba Power & Alum); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0044",
-      "latitude": 15.184,
-      "longitude": 76.65,
-      "brightness": 349.2,
-      "frp": 19.2,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0420",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bellary JSW Vijayanagar",
-      "nearest_facility": "Bellary JSW Vijayanagar",
-      "facility_type": "WORKS",
-      "facility_dist": 1.62,
-      "distance_km": 1.62,
-      "reason": "Persistent plant heat signature (Bellary JSW Vijayanagar); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0045",
-      "latitude": 22.3677,
-      "longitude": 69.8515,
-      "brightness": 353.0,
-      "frp": 29.7,
-      "confidence": 93,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1455",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamnagar Refinery Complex",
-      "nearest_facility": "Jamnagar Refinery Complex",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.45,
-      "distance_km": 0.45,
-      "reason": "Persistent plant heat signature (Jamnagar Refinery Complex); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0046",
-      "latitude": 12.989,
-      "longitude": 74.8586,
-      "brightness": 357.2,
-      "frp": 23.6,
-      "confidence": 92,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0736",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Mangalore Refinery MRPL",
-      "nearest_facility": "Mangalore Refinery MRPL",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.76,
-      "distance_km": 0.76,
-      "reason": "Persistent plant heat signature (Mangalore Refinery MRPL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0047",
-      "latitude": 9.9817,
-      "longitude": 76.3573,
-      "brightness": 338.9,
-      "frp": 30.8,
-      "confidence": 84,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1006",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Kochi Refinery BPCL",
-      "nearest_facility": "Kochi Refinery BPCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.76,
-      "distance_km": 1.76,
-      "reason": "Persistent plant heat signature (Kochi Refinery BPCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0048",
-      "latitude": 20.2942,
-      "longitude": 86.659,
-      "brightness": 347.3,
-      "frp": 15.6,
-      "confidence": 86,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0505",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Paradip IOCL Refinery",
-      "nearest_facility": "Paradip IOCL Refinery",
-      "facility_type": "REFINERY",
-      "facility_dist": 0.54,
-      "distance_km": 0.54,
-      "reason": "Persistent plant heat signature (Paradip IOCL Refinery); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0049",
-      "latitude": 22.082,
-      "longitude": 88.1001,
-      "brightness": 342.6,
-      "frp": 19.9,
-      "confidence": 84,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0459",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Haldia Refinery IOCL",
-      "nearest_facility": "Haldia Refinery IOCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.45,
-      "distance_km": 1.45,
-      "reason": "Persistent plant heat signature (Haldia Refinery IOCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0050",
-      "latitude": 17.7007,
-      "longitude": 83.3074,
-      "brightness": 356.5,
-      "frp": 16.1,
-      "confidence": 89,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0658",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Visakhapatnam HPCL",
-      "nearest_facility": "Visakhapatnam HPCL",
-      "facility_type": "REFINERY",
-      "facility_dist": 1.63,
-      "distance_km": 1.63,
-      "reason": "Persistent plant heat signature (Visakhapatnam HPCL); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0051",
-      "latitude": 21.1833,
-      "longitude": 81.423,
-      "brightness": 351.0,
-      "frp": 22.1,
-      "confidence": 95,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0751",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bhilai Steel Plant",
-      "nearest_facility": "Bhilai Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 1.47,
-      "distance_km": 1.47,
-      "reason": "Persistent plant heat signature (Bhilai Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0052",
-      "latitude": 23.6526,
-      "longitude": 86.1508,
-      "brightness": 340.9,
-      "frp": 27.2,
-      "confidence": 94,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0526",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Bokaro Steel Works",
-      "nearest_facility": "Bokaro Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 1.22,
-      "distance_km": 1.22,
-      "reason": "Persistent plant heat signature (Bokaro Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0053",
-      "latitude": 22.7947,
-      "longitude": 86.2228,
-      "brightness": 336.0,
-      "frp": 25.9,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0936",
-      "daynight": "N",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Jamshedpur Tata Steel",
-      "nearest_facility": "Jamshedpur Tata Steel",
-      "facility_type": "WORKS",
-      "facility_dist": 0.76,
-      "distance_km": 0.76,
-      "reason": "Persistent plant heat signature (Jamshedpur Tata Steel); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0054",
-      "latitude": 22.2484,
-      "longitude": 84.8469,
-      "brightness": 342.5,
-      "frp": 27.8,
-      "confidence": 88,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0653",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Rourkela Steel Plant",
-      "nearest_facility": "Rourkela Steel Plant",
-      "facility_type": "WORKS",
-      "facility_dist": 0.95,
-      "distance_km": 0.95,
-      "reason": "Persistent plant heat signature (Rourkela Steel Plant); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-IND-0055",
-      "latitude": 23.5382,
-      "longitude": 87.3008,
-      "brightness": 356.6,
-      "frp": 22.3,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0944",
-      "daynight": "D",
-      "category": "PERSISTENT_INDUSTRIAL",
-      "risk_level": "MEDIUM",
-      "color": "#ffb800",
-      "facility_name": "Durgapur Steel Works",
-      "nearest_facility": "Durgapur Steel Works",
-      "facility_type": "WORKS",
-      "facility_dist": 0.63,
-      "distance_km": 0.63,
-      "reason": "Persistent plant heat signature (Durgapur Steel Works); operational flare / furnace; not emergency",
-      "action": "No emergency action needed. Normal industrial operational thermal source."
-    },
-    {
-      "id": "IGNIS-AGR-0056",
-      "latitude": 30.9472,
-      "longitude": 75.972,
-      "brightness": 329.3,
-      "frp": 13.5,
-      "confidence": 80,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1242",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 23.3,
-      "distance_km": 23.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0057",
-      "latitude": 30.2052,
-      "longitude": 76.1292,
-      "brightness": 320.6,
-      "frp": 6.9,
-      "confidence": 81,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0948",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.9,
-      "distance_km": 34.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0058",
-      "latitude": 29.6985,
-      "longitude": 76.3537,
-      "brightness": 322.0,
-      "frp": 18.1,
-      "confidence": 87,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0822",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 31.4,
-      "distance_km": 31.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0059",
-      "latitude": 29.8072,
-      "longitude": 76.7326,
-      "brightness": 327.2,
-      "frp": 14.0,
-      "confidence": 88,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0729",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 21.3,
-      "distance_km": 21.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0060",
-      "latitude": 29.0739,
-      "longitude": 77.4785,
-      "brightness": 337.9,
-      "frp": 15.9,
-      "confidence": 80,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0736",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 17.1,
-      "distance_km": 17.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0061",
-      "latitude": 30.2865,
-      "longitude": 75.6377,
-      "brightness": 330.5,
-      "frp": 10.5,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0931",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 27.1,
-      "distance_km": 27.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0062",
-      "latitude": 29.9957,
-      "longitude": 74.9449,
-      "brightness": 334.8,
-      "frp": 15.4,
-      "confidence": 76,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1304",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 32.4,
-      "distance_km": 32.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0063",
-      "latitude": 30.0337,
-      "longitude": 76.9756,
-      "brightness": 344.0,
-      "frp": 8.5,
-      "confidence": 75,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0943",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.4,
-      "distance_km": 34.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0064",
-      "latitude": 30.0566,
-      "longitude": 77.0457,
-      "brightness": 343.4,
-      "frp": 16.3,
-      "confidence": 92,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1138",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 7.2,
-      "distance_km": 7.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0065",
-      "latitude": 29.3866,
-      "longitude": 77.4446,
-      "brightness": 336.6,
-      "frp": 4.0,
-      "confidence": 71,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0812",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 10.9,
-      "distance_km": 10.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0066",
-      "latitude": 30.5869,
-      "longitude": 76.1027,
-      "brightness": 341.1,
-      "frp": 5.8,
-      "confidence": 86,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1455",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 11.1,
-      "distance_km": 11.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0067",
-      "latitude": 29.9469,
-      "longitude": 74.9666,
-      "brightness": 336.3,
-      "frp": 3.9,
-      "confidence": 91,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1647",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 10.3,
-      "distance_km": 10.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0068",
-      "latitude": 29.6526,
-      "longitude": 76.7079,
-      "brightness": 322.6,
-      "frp": 10.3,
-      "confidence": 84,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0944",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 9.6,
-      "distance_km": 9.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0069",
-      "latitude": 29.8897,
-      "longitude": 76.9125,
-      "brightness": 337.9,
-      "frp": 15.5,
-      "confidence": 74,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0921",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 24.5,
-      "distance_km": 24.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0070",
-      "latitude": 28.99,
-      "longitude": 77.4661,
-      "brightness": 338.8,
-      "frp": 4.2,
-      "confidence": 77,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1428",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 12.2,
-      "distance_km": 12.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0071",
-      "latitude": 30.2905,
-      "longitude": 76.2095,
-      "brightness": 339.2,
-      "frp": 16.5,
-      "confidence": 77,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1011",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 30.7,
-      "distance_km": 30.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0072",
-      "latitude": 29.9306,
-      "longitude": 76.1352,
-      "brightness": 335.0,
-      "frp": 16.4,
-      "confidence": 70,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0745",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 33.2,
-      "distance_km": 33.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0073",
-      "latitude": 29.541,
-      "longitude": 76.9888,
-      "brightness": 335.5,
-      "frp": 18.1,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1603",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 26.8,
-      "distance_km": 26.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0074",
-      "latitude": 30.0508,
-      "longitude": 77.0621,
-      "brightness": 333.9,
-      "frp": 16.9,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1617",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 9.7,
-      "distance_km": 9.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0075",
-      "latitude": 29.4128,
-      "longitude": 77.4899,
-      "brightness": 337.9,
-      "frp": 10.8,
-      "confidence": 84,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1136",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 28.1,
-      "distance_km": 28.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0076",
-      "latitude": 30.3184,
-      "longitude": 75.9888,
-      "brightness": 336.6,
-      "frp": 9.9,
-      "confidence": 87,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0951",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 27.5,
-      "distance_km": 27.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0077",
-      "latitude": 30.3697,
-      "longitude": 75.1104,
-      "brightness": 333.6,
-      "frp": 10.7,
-      "confidence": 73,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1022",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 22.1,
-      "distance_km": 22.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0078",
-      "latitude": 29.666,
-      "longitude": 76.5793,
-      "brightness": 337.1,
-      "frp": 9.7,
-      "confidence": 70,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1114",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 12.0,
-      "distance_km": 12.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0079",
-      "latitude": 29.8413,
-      "longitude": 77.0532,
-      "brightness": 332.5,
-      "frp": 11.4,
-      "confidence": 75,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1015",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 28.6,
-      "distance_km": 28.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0080",
-      "latitude": 29.4138,
-      "longitude": 77.4288,
-      "brightness": 343.1,
-      "frp": 17.7,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1059",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 26.3,
-      "distance_km": 26.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0081",
-      "latitude": 30.8777,
-      "longitude": 75.8081,
-      "brightness": 339.9,
-      "frp": 14.5,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1404",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 10.0,
-      "distance_km": 10.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0082",
-      "latitude": 30.2298,
-      "longitude": 76.1784,
-      "brightness": 344.5,
-      "frp": 14.2,
-      "confidence": 70,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1305",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 22.6,
-      "distance_km": 22.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0083",
-      "latitude": 29.6481,
-      "longitude": 76.2153,
-      "brightness": 337.2,
-      "frp": 7.5,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0931",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 13.7,
-      "distance_km": 13.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0084",
-      "latitude": 30.1133,
-      "longitude": 77.1586,
-      "brightness": 342.2,
-      "frp": 9.7,
-      "confidence": 87,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1635",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 11.7,
-      "distance_km": 11.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0085",
-      "latitude": 29.3123,
-      "longitude": 77.9568,
-      "brightness": 344.6,
-      "frp": 13.0,
-      "confidence": 83,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1607",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 25.9,
-      "distance_km": 25.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0086",
-      "latitude": 30.3957,
-      "longitude": 76.3845,
-      "brightness": 340.2,
-      "frp": 16.5,
-      "confidence": 73,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1027",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 20.7,
-      "distance_km": 20.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0087",
-      "latitude": 30.1872,
-      "longitude": 76.4046,
-      "brightness": 334.5,
-      "frp": 9.0,
-      "confidence": 92,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1108",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.8,
-      "distance_km": 34.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0088",
-      "latitude": 29.9257,
-      "longitude": 76.8029,
-      "brightness": 335.3,
-      "frp": 15.0,
-      "confidence": 87,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1748",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 14.9,
-      "distance_km": 14.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0089",
-      "latitude": 29.9902,
-      "longitude": 76.7515,
-      "brightness": 333.6,
-      "frp": 16.8,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0923",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 30.5,
-      "distance_km": 30.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0090",
-      "latitude": 29.0595,
-      "longitude": 77.986,
-      "brightness": 331.4,
-      "frp": 6.9,
-      "confidence": 78,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1323",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 30.4,
-      "distance_km": 30.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0091",
-      "latitude": 30.7683,
-      "longitude": 76.3608,
-      "brightness": 332.9,
-      "frp": 16.0,
-      "confidence": 87,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1609",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 29.9,
-      "distance_km": 29.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0092",
-      "latitude": 30.1538,
-      "longitude": 75.4239,
-      "brightness": 332.4,
-      "frp": 12.2,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0759",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 24.7,
-      "distance_km": 24.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0093",
-      "latitude": 29.9219,
-      "longitude": 76.2054,
-      "brightness": 325.5,
-      "frp": 17.2,
-      "confidence": 76,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0647",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 12.5,
-      "distance_km": 12.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0094",
-      "latitude": 30.1149,
-      "longitude": 76.6348,
-      "brightness": 326.3,
-      "frp": 13.0,
-      "confidence": 88,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1304",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.0,
-      "distance_km": 34.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0095",
-      "latitude": 29.5356,
-      "longitude": 77.4278,
-      "brightness": 332.3,
-      "frp": 12.1,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
+      "confidence_score": 0.96,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
       "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 28.6,
-      "distance_km": 28.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "HOSPITAL_FIRE",
+      "location_type": "HOSPITAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "AIIMS New Delhi Area",
+      "reason": "CRITICAL: Active thermal anomaly inside/adjacent to Hospital facility (AIIMS New Delhi Area). High patient casualty risk.",
+      "action": "\ud83d\udea8 IMMEDIATE DISPATCH! Notify ICU Triage, Medical Evacuation, and District Collector.",
+      "classification": "HOSPITAL_FIRE",
+      "response_protocol": {
+        "fire_class": "Class A/C Life-Critical",
+        "typical_materials": [
+          "Medical Equipment",
+          "Linens",
+          "Oxygen Pipelines",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water Spray (non-electrical)",
+            "CO2",
+            "Wet Chemical"
+          ],
+          "secondary": [
+            "Clean Agent FE-36"
+          ]
+        },
+        "avoid": [
+          "Cutting main power without ICU backup generator check",
+          "Direct water jets on energized diagnostic equipment"
+        ],
+        "equipment_required": [
+          "Fire Tenders (3+)",
+          "Ambulances (5+)",
+          "ICU Stretchers",
+          "Smoke Ejectors",
+          "Portable Oxygen Resuscitators"
+        ],
+        "safety_distance_m": 200,
+        "response_time_target_min": 3,
+        "personnel_required": 16,
+        "coordination": [
+          "Hospital Medical Superintendent",
+          "District Collector",
+          "Chief Medical Officer",
+          "Disaster Management Cell"
+        ],
+        "special_notes": "Coordinate with Hospital Administrator for ICU patient triage and oxygen manifold shutoff. Prioritize non-ambulatory patient evacuation.",
+        "evacuation_radius_m": 200,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0096",
-      "latitude": 30.5233,
-      "longitude": 76.1378,
-      "brightness": 338.7,
-      "frp": 5.5,
-      "confidence": 89,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0744",
+      "id": "IGNIS-EM-0003",
+      "latitude": 22.47,
+      "longitude": 70.05,
+      "brightness": 365.8,
+      "frp": 24.2,
+      "confidence": 95,
+      "confidence_score": 0.95,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 21.4,
-      "distance_km": 21.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "FUEL_STATION_FIRE",
+      "location_type": "PETROL_PUMP",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Jamnagar Fuel Station & Depot",
+      "reason": "CRITICAL: Fire near fuel storage / petrol pump (Jamnagar Fuel Station & Depot). BLEVE & Explosion hazard.",
+      "action": "\ud83d\udea8 FOAM TENDERS ONLY! DO NOT USE WATER. Evacuate 500m perimeter immediately.",
+      "classification": "FUEL_STATION_FIRE",
+      "response_protocol": {
+        "fire_class": "Class B Flammable Liquid / BLEVE Hazard",
+        "typical_materials": [
+          "Motor Spirit (Petrol)",
+          "High Speed Diesel",
+          "LPG/CNG Dispenser Lines"
+        ],
+        "use_agents": {
+          "primary": [
+            "AFFF Foam",
+            "Dry Chemical Powder (DCP)",
+            "CO2"
+          ],
+          "secondary": [
+            "Alcohol-Resistant Foam"
+          ]
+        },
+        "avoid": [
+          "DIRECT WATER STREAMS (Spreads fuel and causes steam explosion)",
+          "Approaching downwind of fuel storage"
+        ],
+        "equipment_required": [
+          "Foam Tenders (3+)",
+          "DCP Extinguishers (50kg trolleys)",
+          "Hazmat Protective Gear",
+          "Water Bowser for boundary cooling"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 3,
+        "personnel_required": 14,
+        "coordination": [
+          "Oil Marketing Company Safety Cell (IOCL/HPCL/BPCL)",
+          "District Emergency Operations Centre",
+          "Police Traffic Control"
+        ],
+        "special_notes": "STRICT 500m Evacuation. Cool underground/overhead fuel storage tanks with water mist from distance. Activate emergency shut-off valves.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0097",
-      "latitude": 29.9954,
-      "longitude": 76.4523,
-      "brightness": 340.9,
-      "frp": 11.0,
-      "confidence": 79,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1614",
+      "id": "IGNIS-EM-0004",
+      "latitude": 28.5665,
+      "longitude": 77.178,
+      "brightness": 338.4,
+      "frp": 16.4,
+      "confidence": 93,
+      "confidence_score": 0.93,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.7,
-      "distance_km": 34.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "SCHOOL_FIRE",
+      "location_type": "SCHOOL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Delhi Public School RK Puram",
+      "reason": "CRITICAL: Thermal anomaly at educational institution (Delhi Public School RK Puram) during operational/occupancy window.",
+      "action": "\ud83d\udea8 DISPATCH FIRE TENDERS & AMBULANCES. Coordinate student assembly point evacuation.",
+      "classification": "SCHOOL_FIRE",
+      "response_protocol": {
+        "fire_class": "Class A/C Life-Safety Critical",
+        "typical_materials": [
+          "Desks",
+          "Paper",
+          "Lab Chemicals",
+          "Electrical Wiring"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water Mist",
+            "CO2",
+            "Dry Chemical Powder"
+          ],
+          "secondary": [
+            "Foam"
+          ]
+        },
+        "avoid": [
+          "Re-entry into building prior to all-clear",
+          "Blocking emergency school stairwells"
+        ],
+        "equipment_required": [
+          "Fire Tenders (2+)",
+          "Ambulances (3+)",
+          "Hydraulic Rescue Platform",
+          "Breathing Apparatus"
+        ],
+        "safety_distance_m": 200,
+        "response_time_target_min": 4,
+        "personnel_required": 12,
+        "coordination": [
+          "School Administration & Principal",
+          "City Police & Traffic Division",
+          "District Education Officer"
+        ],
+        "special_notes": "Immediate roll-call at external open assembly grounds. Verify student counts class-by-class. Restrict parent vehicle congestion.",
+        "evacuation_radius_m": 200,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0098",
-      "latitude": 29.6049,
-      "longitude": 76.5695,
-      "brightness": 335.8,
-      "frp": 12.7,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1120",
+      "id": "IGNIS-EM-0005",
+      "latitude": 19.0434,
+      "longitude": 72.8562,
+      "brightness": 352.0,
+      "frp": 28.5,
+      "confidence": 94,
+      "confidence_score": 0.94,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 33.5,
-      "distance_km": 33.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "SLUM_DENSE_URBAN_FIRE",
+      "location_type": "SLUM",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Dharavi Dense Urban Settlement Mumbai",
+      "reason": "CRITICAL: High-density urban settlement fire (Dharavi Dense Urban Settlement Mumbai). Extreme risk of rapid lateral spread.",
+      "action": "\ud83d\udea8 MASS DISPATCH! Narrow-lane access units required. Broadcast SMS evacuation alert.",
+      "classification": "SLUM_DENSE_URBAN_FIRE",
+      "response_protocol": {
+        "fire_class": "Class A Rapid Lateral Conflagration",
+        "typical_materials": [
+          "Timber",
+          "Plastic Tarpaulins",
+          "Tin Sheds",
+          "Domestic LPG Cylinders"
+        ],
+        "use_agents": {
+          "primary": [
+            "High-Volume Water Sprays",
+            "Foam Blanket",
+            "Fire Breaks"
+          ],
+          "secondary": [
+            "DCP for cylinder clusters"
+          ]
+        },
+        "avoid": [
+          "Large engine entry in lanes < 2.5m wide",
+          "Delaying power grid disconnection"
+        ],
+        "equipment_required": [
+          "Narrow-Lane Quick Response Vehicles (QRV)",
+          "Long-distance Hose Lays (500m+)",
+          "Portable High-Pressure Pumps",
+          "Ambulances (4+)"
+        ],
+        "safety_distance_m": 300,
+        "response_time_target_min": 4,
+        "personnel_required": 20,
+        "coordination": [
+          "Disaster Management Authority",
+          "Municipal Ward Officer",
+          "Community Volunteers / Civil Defence",
+          "Electricity Distribution Board"
+        ],
+        "special_notes": "Extreme risk of rapid lateral spread and cylinder BLEVEs. Immediate electric power grid cut-off for the sector. Broadcast SMS alert.",
+        "evacuation_radius_m": 300,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0099",
-      "latitude": 30.1514,
-      "longitude": 76.7791,
-      "brightness": 343.4,
-      "frp": 16.1,
-      "confidence": 78,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1040",
+      "id": "IGNIS-EM-0001",
+      "latitude": 21.17,
+      "longitude": 72.83,
+      "brightness": 384.5,
+      "frp": 48.6,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 24.7,
-      "distance_km": 24.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Surat Chemical Cluster GIDC",
+      "reason": "Unscheduled thermal surge (48.6MW) within 2.5km of Surat Chemical Cluster GIDC with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0100",
-      "latitude": 29.1897,
-      "longitude": 77.6086,
-      "brightness": 333.3,
-      "frp": 12.5,
-      "confidence": 76,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0626",
+      "id": "IGNIS-EM-0006",
+      "latitude": 20.37,
+      "longitude": 72.9,
+      "brightness": 388.0,
+      "frp": 142.8,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 33.6,
-      "distance_km": 33.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Vapi Chemical Estate Complex",
+      "reason": "Unscheduled thermal surge (142.8MW) within 1.3km of Vapi Chemical Estate Complex with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0101",
-      "latitude": 30.7038,
-      "longitude": 75.7914,
-      "brightness": 339.9,
-      "frp": 3.6,
-      "confidence": 90,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1125",
+      "id": "IGNIS-EM-0007",
+      "latitude": 21.63,
+      "longitude": 73.0,
+      "brightness": 395.2,
+      "frp": 188.2,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1230",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 16.7,
-      "distance_km": 16.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Ankleshwar Petrochemical Complex",
+      "reason": "Unscheduled thermal surge (188.2MW) within 0.5km of Ankleshwar Petrochemical Complex with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0102",
-      "latitude": 30.476,
-      "longitude": 76.469,
-      "brightness": 335.3,
-      "frp": 3.9,
-      "confidence": 80,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0951",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 12.6,
-      "distance_km": 12.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0103",
-      "latitude": 30.054,
-      "longitude": 76.9174,
-      "brightness": 344.2,
-      "frp": 12.4,
-      "confidence": 77,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1032",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 27.5,
-      "distance_km": 27.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0104",
-      "latitude": 29.9419,
-      "longitude": 77.0339,
+      "id": "IGNIS-HR-0001",
+      "latitude": 12.975,
+      "longitude": 77.605,
       "brightness": 335.4,
       "frp": 14.8,
-      "confidence": 75,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0623",
+      "confidence": 90,
+      "confidence_score": 0.9,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1345",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 11.4,
-      "distance_km": 11.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "RESTAURANT_KITCHEN_FIRE",
+      "location_type": "RESTAURANT",
+      "risk_level": "HIGH",
+      "color": "orange",
+      "facility_name": "MG Road Restaurant & Kitchen Hub Bangalore",
+      "reason": "HIGH RISK: Commercial kitchen fire (MG Road Restaurant & Kitchen Hub Bangalore). High probability of LPG cylinder involvement.",
+      "action": "DISPATCH FOAM & CO2 UNITS. Isolate commercial LPG valves immediately.",
+      "classification": "RESTAURANT_KITCHEN_FIRE",
+      "response_protocol": {
+        "fire_class": "Class F / Class B (Cooking Oils & Commercial Gas)",
+        "typical_materials": [
+          "Cooking Oils",
+          "Animal Fats",
+          "Commercial LPG",
+          "Ductwork Grease"
+        ],
+        "use_agents": {
+          "primary": [
+            "Wet Chemical (Class F)",
+            "CO2",
+            "Fire Blankets"
+          ],
+          "secondary": [
+            "AFFF Foam"
+          ]
+        },
+        "avoid": [
+          "Water on hot cooking oil (causes explosive oil flare)",
+          "Using ventilation fans before fire suppression"
+        ],
+        "equipment_required": [
+          "CO2 Extinguishers",
+          "Wet Chemical Extinguishers",
+          "Foam Units",
+          "Gas Detector & Thermal Camera"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 5,
+        "personnel_required": 6,
+        "coordination": [
+          "Commercial Complex Safety Officer",
+          "Local Fire Station",
+          "Gas Pipeline Authority"
+        ],
+        "special_notes": "Isolate commercial LPG manifold supply immediately. Evacuate adjacent commercial units. Check exhaust ducting for hidden spread.",
+        "evacuation_radius_m": 100,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0105",
-      "latitude": 29.5984,
-      "longitude": 77.8015,
-      "brightness": 322.4,
-      "frp": 8.4,
-      "confidence": 81,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0932",
+      "id": "IGNIS-HR-0002",
+      "latitude": 28.6505,
+      "longitude": 77.2303,
+      "brightness": 348.0,
+      "frp": 21.4,
+      "confidence": 94,
+      "confidence_score": 0.94,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1345",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 30.8,
-      "distance_km": 30.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "SLUM_DENSE_URBAN_FIRE",
+      "location_type": "MARKET",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Chandni Chowk Wholesale Market Delhi",
+      "reason": "CRITICAL: High-density urban settlement fire (Chandni Chowk Wholesale Market Delhi). Extreme risk of rapid lateral spread.",
+      "action": "\ud83d\udea8 MASS DISPATCH! Narrow-lane access units required. Broadcast SMS evacuation alert.",
+      "classification": "SLUM_DENSE_URBAN_FIRE",
+      "response_protocol": {
+        "fire_class": "Class A Rapid Lateral Conflagration",
+        "typical_materials": [
+          "Timber",
+          "Plastic Tarpaulins",
+          "Tin Sheds",
+          "Domestic LPG Cylinders"
+        ],
+        "use_agents": {
+          "primary": [
+            "High-Volume Water Sprays",
+            "Foam Blanket",
+            "Fire Breaks"
+          ],
+          "secondary": [
+            "DCP for cylinder clusters"
+          ]
+        },
+        "avoid": [
+          "Large engine entry in lanes < 2.5m wide",
+          "Delaying power grid disconnection"
+        ],
+        "equipment_required": [
+          "Narrow-Lane Quick Response Vehicles (QRV)",
+          "Long-distance Hose Lays (500m+)",
+          "Portable High-Pressure Pumps",
+          "Ambulances (4+)"
+        ],
+        "safety_distance_m": 300,
+        "response_time_target_min": 4,
+        "personnel_required": 20,
+        "coordination": [
+          "Disaster Management Authority",
+          "Municipal Ward Officer",
+          "Community Volunteers / Civil Defence",
+          "Electricity Distribution Board"
+        ],
+        "special_notes": "Extreme risk of rapid lateral spread and cylinder BLEVEs. Immediate electric power grid cut-off for the sector. Broadcast SMS alert.",
+        "evacuation_radius_m": 300,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0106",
-      "latitude": 30.778,
-      "longitude": 75.7548,
-      "brightness": 322.8,
-      "frp": 3.7,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1022",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 33.0,
-      "distance_km": 33.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0107",
-      "latitude": 30.35,
-      "longitude": 76.1594,
-      "brightness": 330.6,
-      "frp": 11.5,
-      "confidence": 76,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1758",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 22.4,
-      "distance_km": 22.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0108",
-      "latitude": 29.7678,
-      "longitude": 76.8729,
-      "brightness": 337.4,
-      "frp": 4.9,
-      "confidence": 81,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0839",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 11.0,
-      "distance_km": 11.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0109",
-      "latitude": 29.9299,
-      "longitude": 76.8677,
-      "brightness": 337.9,
-      "frp": 7.6,
-      "confidence": 88,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1746",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 23.3,
-      "distance_km": 23.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0110",
-      "latitude": 28.8366,
-      "longitude": 77.9768,
-      "brightness": 323.4,
-      "frp": 4.9,
-      "confidence": 83,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1704",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 26.9,
-      "distance_km": 26.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0111",
-      "latitude": 30.382,
-      "longitude": 76.3726,
-      "brightness": 326.1,
-      "frp": 16.0,
+      "id": "IGNIS-HR-0003",
+      "latitude": 18.5074,
+      "longitude": 73.8077,
+      "brightness": 342.1,
+      "frp": 19.2,
       "confidence": 89,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0721",
+      "confidence_score": 0.89,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1345",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 16.1,
-      "distance_km": 16.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "RESIDENTIAL_STRUCTURE_FIRE",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "HIGH",
+      "color": "orange",
+      "facility_name": "Kothrud Residential Township Pune",
+      "reason": "HIGH RISK: Expanding structure fire in residential building/apartments (Kothrud Residential Township Pune).",
+      "action": "DISPATCH FIRE SERVICES. Search & rescue team for smoke inhalation.",
+      "classification": "RESIDENTIAL_STRUCTURE_FIRE",
+      "response_protocol": {
+        "fire_class": "Class A/C Multi-Story Structure",
+        "typical_materials": [
+          "Furniture",
+          "Electronics",
+          "Domestic LPG",
+          "Curtains"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water Fog & Spray",
+            "CO2 for electrical panels",
+            "Foam"
+          ],
+          "secondary": [
+            "Thermal Imaging Camera Search"
+          ]
+        },
+        "avoid": [
+          "Using elevators during structural fire",
+          "Ventilation before charged line placement"
+        ],
+        "equipment_required": [
+          "Fire Tenders (2+)",
+          "Aerial Ladder Platform",
+          "Thermal Imaging Cameras",
+          "SCBA Breathing Sets",
+          "Ambulances (2+)"
+        ],
+        "safety_distance_m": 150,
+        "response_time_target_min": 5,
+        "personnel_required": 10,
+        "coordination": [
+          "Resident Welfare Association (RWA)",
+          "Local Police",
+          "Gas and Power Utilities"
+        ],
+        "special_notes": "Immediate search and rescue on fire floor and floor above for smoke inhalation. Check stairwells for occupant evacuation.",
+        "evacuation_radius_m": 150,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0112",
-      "latitude": 30.2303,
-      "longitude": 76.0212,
-      "brightness": 326.0,
-      "frp": 14.6,
-      "confidence": 71,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1445",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 11.2,
-      "distance_km": 11.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0113",
-      "latitude": 29.6099,
-      "longitude": 76.5868,
-      "brightness": 339.9,
-      "frp": 3.7,
+      "id": "IGNIS-PI-0001",
+      "latitude": 21.2,
+      "longitude": 81.38,
+      "brightness": 358.4,
+      "frp": 110.0,
       "confidence": 92,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1018",
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0915",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 21.7,
-      "distance_km": 21.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "facility_name": "Bhilai Steel Plant",
+      "reason": "Unscheduled thermal surge (110.0MW) within 0.0km of Bhilai Steel Plant with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0114",
-      "latitude": 29.9416,
-      "longitude": 77.1483,
-      "brightness": 325.8,
-      "frp": 14.6,
-      "confidence": 73,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1200",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 28.5,
-      "distance_km": 28.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 21.1525,
+      "longitude": 81.3575,
+      "brightness": 340.0,
+      "frp": 243.6,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2147",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (243.6MW). Proximity to industry: 5.8km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0115",
-      "latitude": 29.0827,
-      "longitude": 78.1376,
-      "brightness": 338.7,
-      "frp": 5.6,
-      "confidence": 70,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1635",
+      "latitude": 21.153,
+      "longitude": 81.3519,
+      "brightness": 352.7,
+      "frp": 105.2,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0645",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 8.6,
-      "distance_km": 8.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (105.2MW). Proximity to industry: 6.0km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0116",
-      "latitude": 30.2879,
-      "longitude": 76.0411,
+      "latitude": 22.7778,
+      "longitude": 86.2369,
+      "brightness": 364.1,
+      "frp": 131.1,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1321",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (131.1MW). Proximity to industry: 4.5km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.2102,
+      "longitude": 84.838,
+      "brightness": 346.2,
+      "frp": 167.1,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0851",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (167.1MW). Proximity to industry: 4.6km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.7625,
+      "longitude": 86.2422,
+      "brightness": 333.5,
+      "frp": 157.2,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2039",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (157.2MW). Proximity to industry: 6.0km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.1546,
+      "longitude": 81.3528,
+      "brightness": 343.0,
+      "frp": 115.6,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0755",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (115.6MW). Proximity to industry: 5.8km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.3636,
+      "longitude": 69.0565,
+      "brightness": 346.7,
+      "frp": 140.9,
+      "confidence": 95,
+      "confidence_score": 0.95,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0844",
+      "daynight": "D",
+      "category": "FUEL_STATION_FIRE",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "CRITICAL: Fire near fuel storage / petrol pump (Reliance Jamnagar Refinery). BLEVE & Explosion hazard.",
+      "action": "\ud83d\udea8 FOAM TENDERS ONLY! DO NOT USE WATER. Evacuate 500m perimeter immediately.",
+      "classification": "FUEL_STATION_FIRE",
+      "response_protocol": {
+        "fire_class": "Class B Flammable Liquid / BLEVE Hazard",
+        "typical_materials": [
+          "Motor Spirit (Petrol)",
+          "High Speed Diesel",
+          "LPG/CNG Dispenser Lines"
+        ],
+        "use_agents": {
+          "primary": [
+            "AFFF Foam",
+            "Dry Chemical Powder (DCP)",
+            "CO2"
+          ],
+          "secondary": [
+            "Alcohol-Resistant Foam"
+          ]
+        },
+        "avoid": [
+          "DIRECT WATER STREAMS (Spreads fuel and causes steam explosion)",
+          "Approaching downwind of fuel storage"
+        ],
+        "equipment_required": [
+          "Foam Tenders (3+)",
+          "DCP Extinguishers (50kg trolleys)",
+          "Hazmat Protective Gear",
+          "Water Bowser for boundary cooling"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 3,
+        "personnel_required": 14,
+        "coordination": [
+          "Oil Marketing Company Safety Cell (IOCL/HPCL/BPCL)",
+          "District Emergency Operations Centre",
+          "Police Traffic Control"
+        ],
+        "special_notes": "STRICT 500m Evacuation. Cool underground/overhead fuel storage tanks with water mist from distance. Activate emergency shut-off valves.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": true
+      }
+    },
+    {
+      "latitude": 23.7934,
+      "longitude": 86.1145,
+      "brightness": 350.8,
+      "frp": 152.6,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2044",
+      "daynight": "N",
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "Unscheduled thermal surge (152.6MW) within 2.6km of Bokaro Steel Plant with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
+    },
+    {
+      "latitude": 21.1729,
+      "longitude": 81.3332,
       "brightness": 344.2,
-      "frp": 6.9,
-      "confidence": 72,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1159",
+      "frp": 152.2,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0658",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 17.3,
-      "distance_km": 17.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (152.2MW). Proximity to industry: 5.7km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0117",
-      "latitude": 30.1097,
-      "longitude": 75.2508,
-      "brightness": 332.7,
-      "frp": 12.4,
-      "confidence": 81,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0628",
+      "latitude": 22.3396,
+      "longitude": 69.1115,
+      "brightness": 350.6,
+      "frp": 151.7,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0747",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 26.0,
-      "distance_km": 26.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (151.7MW). Proximity to industry: 4.4km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0118",
-      "latitude": 29.9646,
-      "longitude": 76.2752,
-      "brightness": 326.0,
-      "frp": 15.3,
-      "confidence": 80,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1034",
+      "latitude": 22.3898,
+      "longitude": 69.0599,
+      "brightness": 339.9,
+      "frp": 294.5,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1631",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 10.2,
-      "distance_km": 10.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (294.5MW). Proximity to industry: 4.5km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0119",
-      "latitude": 30.0431,
-      "longitude": 76.8095,
-      "brightness": 339.5,
-      "frp": 15.8,
-      "confidence": 80,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1454",
+      "latitude": 21.1653,
+      "longitude": 81.346,
+      "brightness": 360.6,
+      "frp": 216.3,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1224",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 17.0,
-      "distance_km": 17.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (216.3MW). Proximity to industry: 5.2km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0120",
-      "latitude": 29.27,
-      "longitude": 77.681,
+      "latitude": 22.8361,
+      "longitude": 86.1511,
+      "brightness": 362.4,
+      "frp": 232.9,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1748",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (232.9MW). Proximity to industry: 6.4km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.2112,
+      "longitude": 84.8435,
+      "brightness": 350.4,
+      "frp": 286.0,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2316",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (286.0MW). Proximity to industry: 4.3km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.2371,
+      "longitude": 81.3598,
+      "brightness": 358.8,
+      "frp": 218.7,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0423",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (218.7MW). Proximity to industry: 4.6km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.8418,
+      "longitude": 86.2099,
+      "brightness": 352.0,
+      "frp": 121.8,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1156",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (121.8MW). Proximity to industry: 4.7km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 23.8278,
+      "longitude": 86.1847,
       "brightness": 333.9,
-      "frp": 15.3,
-      "confidence": 91,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1120",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 24.2,
-      "distance_km": 24.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "frp": 194.8,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0248",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (194.8MW). Proximity to industry: 6.2km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0121",
-      "latitude": 30.2148,
-      "longitude": 75.6344,
-      "brightness": 335.7,
-      "frp": 8.1,
+      "latitude": 22.3947,
+      "longitude": 69.0365,
+      "brightness": 353.7,
+      "frp": 218.3,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0659",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (218.3MW). Proximity to industry: 6.0km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.3995,
+      "longitude": 69.085,
+      "brightness": 349.7,
+      "frp": 200.9,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0315",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (200.9MW). Proximity to industry: 5.7km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.2088,
+      "longitude": 81.353,
+      "brightness": 339.9,
+      "frp": 113.8,
       "confidence": 92,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0720",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 25.7,
-      "distance_km": 25.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2003",
+      "daynight": "N",
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "Unscheduled thermal surge (113.8MW) within 3.0km of Bhilai Steel Plant with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0122",
-      "latitude": 30.1345,
-      "longitude": 75.4692,
-      "brightness": 331.6,
-      "frp": 11.9,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0733",
+      "latitude": 21.236,
+      "longitude": 81.3371,
+      "brightness": 340.7,
+      "frp": 230.5,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0634",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 14.6,
-      "distance_km": 14.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (230.5MW). Proximity to industry: 6.0km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0123",
-      "latitude": 29.5423,
-      "longitude": 76.245,
-      "brightness": 320.4,
-      "frp": 8.7,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1642",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 16.7,
-      "distance_km": 16.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 22.8076,
+      "longitude": 86.1743,
+      "brightness": 351.3,
+      "frp": 179.4,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0306",
+      "daynight": "N",
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "Unscheduled thermal surge (179.4MW) within 2.8km of Jamshedpur (Tata Steel) with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0124",
-      "latitude": 29.9567,
-      "longitude": 76.7134,
-      "brightness": 337.2,
-      "frp": 17.7,
-      "confidence": 78,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0907",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 28.3,
-      "distance_km": 28.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 22.3467,
+      "longitude": 69.0929,
+      "brightness": 360.3,
+      "frp": 291.9,
+      "confidence": 95,
+      "confidence_score": 0.95,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0303",
+      "daynight": "N",
+      "category": "FUEL_STATION_FIRE",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "CRITICAL: Fire near fuel storage / petrol pump (Reliance Jamnagar Refinery). BLEVE & Explosion hazard.",
+      "action": "\ud83d\udea8 FOAM TENDERS ONLY! DO NOT USE WATER. Evacuate 500m perimeter immediately.",
+      "classification": "FUEL_STATION_FIRE",
+      "response_protocol": {
+        "fire_class": "Class B Flammable Liquid / BLEVE Hazard",
+        "typical_materials": [
+          "Motor Spirit (Petrol)",
+          "High Speed Diesel",
+          "LPG/CNG Dispenser Lines"
+        ],
+        "use_agents": {
+          "primary": [
+            "AFFF Foam",
+            "Dry Chemical Powder (DCP)",
+            "CO2"
+          ],
+          "secondary": [
+            "Alcohol-Resistant Foam"
+          ]
+        },
+        "avoid": [
+          "DIRECT WATER STREAMS (Spreads fuel and causes steam explosion)",
+          "Approaching downwind of fuel storage"
+        ],
+        "equipment_required": [
+          "Foam Tenders (3+)",
+          "DCP Extinguishers (50kg trolleys)",
+          "Hazmat Protective Gear",
+          "Water Bowser for boundary cooling"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 3,
+        "personnel_required": 14,
+        "coordination": [
+          "Oil Marketing Company Safety Cell (IOCL/HPCL/BPCL)",
+          "District Emergency Operations Centre",
+          "Police Traffic Control"
+        ],
+        "special_notes": "STRICT 500m Evacuation. Cool underground/overhead fuel storage tanks with water mist from distance. Activate emergency shut-off valves.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0125",
-      "latitude": 29.4978,
-      "longitude": 78.0651,
-      "brightness": 337.9,
-      "frp": 16.0,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0608",
+      "latitude": 21.1749,
+      "longitude": 81.349,
+      "brightness": 350.2,
+      "frp": 182.3,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0829",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 14.8,
-      "distance_km": 14.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (182.3MW). Proximity to industry: 4.2km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0126",
-      "latitude": 30.4259,
-      "longitude": 76.1783,
-      "brightness": 331.7,
-      "frp": 8.6,
-      "confidence": 75,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1145",
+      "latitude": 21.1943,
+      "longitude": 81.4161,
+      "brightness": 354.8,
+      "frp": 109.9,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1753",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 7.4,
-      "distance_km": 7.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (109.9MW). Proximity to industry: 3.8km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0127",
-      "latitude": 30.2852,
-      "longitude": 76.392,
-      "brightness": 338.3,
-      "frp": 7.7,
-      "confidence": 84,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1721",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 23.2,
-      "distance_km": 23.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 23.7566,
+      "longitude": 86.1386,
+      "brightness": 339.6,
+      "frp": 178.2,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0110",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (178.2MW). Proximity to industry: 3.7km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0128",
-      "latitude": 29.587,
-      "longitude": 76.2086,
-      "brightness": 341.4,
-      "frp": 4.9,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1422",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 18.8,
-      "distance_km": 18.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 22.3265,
+      "longitude": 69.0984,
+      "brightness": 350.5,
+      "frp": 182.5,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2350",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (182.5MW). Proximity to industry: 3.9km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0129",
-      "latitude": 30.0926,
-      "longitude": 76.8135,
-      "brightness": 339.7,
-      "frp": 7.5,
-      "confidence": 91,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1523",
+      "latitude": 22.2218,
+      "longitude": 84.8058,
+      "brightness": 363.1,
+      "frp": 111.9,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1003",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 29.1,
-      "distance_km": 29.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (111.9MW). Proximity to industry: 5.5km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0130",
-      "latitude": 29.3308,
-      "longitude": 77.9538,
+      "latitude": 22.8419,
+      "longitude": 86.2031,
+      "brightness": 332.6,
+      "frp": 199.0,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0504",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (199.0MW). Proximity to industry: 4.7km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 23.7804,
+      "longitude": 86.1842,
+      "brightness": 355.6,
+      "frp": 212.9,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0139",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (212.9MW). Proximity to industry: 4.6km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.8065,
+      "longitude": 86.1816,
       "brightness": 341.7,
-      "frp": 9.5,
-      "confidence": 75,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1427",
+      "frp": 230.6,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1015",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 7.1,
-      "distance_km": 7.1,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "Unscheduled thermal surge (230.6MW) within 2.0km of Jamshedpur (Tata Steel) with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0131",
-      "latitude": 30.8129,
-      "longitude": 75.7043,
-      "brightness": 324.2,
-      "frp": 4.6,
-      "confidence": 87,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1749",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 33.5,
-      "distance_km": 33.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 22.2457,
+      "longitude": 84.8929,
+      "brightness": 372.1,
+      "frp": 101.8,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1936",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (101.8MW). Proximity to industry: 4.5km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0132",
-      "latitude": 30.3115,
-      "longitude": 75.4872,
-      "brightness": 338.7,
-      "frp": 4.2,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0930",
+      "latitude": 23.7906,
+      "longitude": 86.1032,
+      "brightness": 345.7,
+      "frp": 113.4,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0723",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 29.9,
-      "distance_km": 29.9,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (113.4MW). Proximity to industry: 3.8km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0133",
-      "latitude": 29.6413,
-      "longitude": 76.3777,
-      "brightness": 340.3,
-      "frp": 14.4,
-      "confidence": 87,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1102",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 20.3,
-      "distance_km": 20.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "latitude": 22.8204,
+      "longitude": 86.2112,
+      "brightness": 374.4,
+      "frp": 227.5,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0042",
+      "daynight": "N",
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "Unscheduled thermal surge (227.5MW) within 2.5km of Jamshedpur (Tata Steel) with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
     },
     {
-      "id": "IGNIS-AGR-0134",
-      "latitude": 29.9443,
-      "longitude": 76.9024,
-      "brightness": 322.1,
-      "frp": 10.9,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1317",
+      "latitude": 21.2439,
+      "longitude": 81.3434,
+      "brightness": 335.2,
+      "frp": 120.9,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1709",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 25.2,
-      "distance_km": 25.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (120.9MW). Proximity to industry: 6.2km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0135",
-      "latitude": 29.3418,
-      "longitude": 78.1287,
-      "brightness": 324.6,
-      "frp": 14.6,
-      "confidence": 73,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0603",
+      "latitude": 23.8118,
+      "longitude": 86.1104,
+      "brightness": 358.5,
+      "frp": 151.5,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1516",
       "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 31.8,
-      "distance_km": 31.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (151.5MW). Proximity to industry: 3.9km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-AGR-0136",
-      "latitude": 30.6801,
-      "longitude": 76.0997,
-      "brightness": 325.2,
-      "frp": 6.4,
+      "latitude": 22.3829,
+      "longitude": 69.0244,
+      "brightness": 345.0,
+      "frp": 125.5,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0810",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (125.5MW). Proximity to industry: 5.9km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.3561,
+      "longitude": 69.0312,
+      "brightness": 372.5,
+      "frp": 234.7,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0434",
+      "daynight": "N",
+      "category": "UNKNOWN",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (234.7MW). Proximity to industry: 4.0km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.8053,
+      "longitude": 86.193,
+      "brightness": 331.9,
+      "frp": 171.1,
+      "confidence": 92,
+      "confidence_score": 0.92,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0157",
+      "daynight": "N",
+      "category": "EMERGENCY_INDUSTRIAL",
+      "location_type": "INDUSTRIAL",
+      "risk_level": "CRITICAL",
+      "color": "red",
+      "reason": "Unscheduled thermal surge (171.1MW) within 0.9km of Jamshedpur (Tata Steel) with no historical baseline. High emergency risk.",
+      "action": "\ud83d\udea8 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
+      "classification": "EMERGENCY_INDUSTRIAL",
+      "response_protocol": {
+        "fire_class": "Class B/C likely",
+        "typical_materials": [
+          "Chemicals",
+          "Petroleum",
+          "Solvents",
+          "Gases",
+          "Plastics"
+        ],
+        "use_agents": {
+          "primary": [
+            "Foam (AFFF)",
+            "CO2",
+            "Dry chemical"
+          ],
+          "secondary": [
+            "Halon (if available)"
+          ]
+        },
+        "avoid": [
+          "Water on petroleum/electrical fires",
+          "Water on chemical fires (can spread/react)"
+        ],
+        "equipment_required": [
+          "Foam tenders (3+)",
+          "Hazmat suits (Level A)",
+          "CO2 units",
+          "SCBA breathing apparatus",
+          "Chemical detection kits",
+          "Decontamination trailer"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 5,
+        "personnel_required": 15,
+        "coordination": [
+          "NDRF",
+          "District Collector",
+          "Pollution Control Board",
+          "Nearest Hospital"
+        ],
+        "special_notes": "IDENTIFY CHEMICAL BEFORE APPROACH. Check MSDS. Evacuate downwind areas. Monitor for toxic release.",
+        "evacuation_radius_m": 1000,
+        "hospital_notification": true,
+        "aerial_support": "Consider helicopter if fire >500m"
+      }
+    },
+    {
+      "latitude": 30.2056,
+      "longitude": 75.5602,
+      "brightness": 331.5,
+      "frp": 17.8,
       "confidence": 88,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1042",
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1447",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 23.5,
-      "distance_km": 23.5,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0137",
-      "latitude": 29.9367,
-      "longitude": 75.214,
-      "brightness": 331.2,
-      "frp": 11.5,
-      "confidence": 86,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1104",
+      "latitude": 30.325,
+      "longitude": 75.5998,
+      "brightness": 310.3,
+      "frp": 17.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1147",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 15.9,
-      "distance_km": 15.9,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0138",
-      "latitude": 29.7444,
-      "longitude": 76.4894,
-      "brightness": 332.9,
+      "latitude": 31.3398,
+      "longitude": 75.4701,
+      "brightness": 312.4,
       "frp": 11.8,
-      "confidence": 86,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1506",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.4449,
+      "longitude": 77.6332,
+      "brightness": 318.8,
+      "frp": 15.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1655",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.7969,
+      "longitude": 76.5572,
+      "brightness": 307.1,
+      "frp": 26.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1241",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.6623,
+      "longitude": 76.0552,
+      "brightness": 331.3,
+      "frp": 14.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1416",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.4571,
+      "longitude": 74.6274,
+      "brightness": 323.2,
+      "frp": 20.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1357",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.0034,
+      "longitude": 77.8512,
+      "brightness": 321.2,
+      "frp": 25.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1547",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.3285,
+      "longitude": 74.6604,
+      "brightness": 314.4,
+      "frp": 28.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1557",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.6524,
+      "longitude": 77.3944,
+      "brightness": 321.6,
+      "frp": 12.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1524",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.0959,
+      "longitude": 74.0008,
+      "brightness": 313.6,
+      "frp": 18.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
       "acq_time": "1438",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 10.6,
-      "distance_km": 10.6,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0139",
-      "latitude": 30.1683,
-      "longitude": 76.8018,
-      "brightness": 320.1,
-      "frp": 10.6,
-      "confidence": 73,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0627",
+      "latitude": 30.4274,
+      "longitude": 74.9464,
+      "brightness": 332.0,
+      "frp": 27.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1142",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 16.2,
-      "distance_km": 16.2,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0140",
-      "latitude": 29.4872,
-      "longitude": 78.0172,
-      "brightness": 326.6,
-      "frp": 17.0,
-      "confidence": 91,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1102",
+      "latitude": 29.2385,
+      "longitude": 76.1868,
+      "brightness": 333.6,
+      "frp": 13.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1214",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 10.2,
-      "distance_km": 10.2,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0141",
-      "latitude": 30.8248,
-      "longitude": 76.1559,
-      "brightness": 341.9,
-      "frp": 10.3,
-      "confidence": 79,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0724",
+      "latitude": 31.9679,
+      "longitude": 75.2225,
+      "brightness": 328.1,
+      "frp": 18.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1536",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 25.2,
-      "distance_km": 25.2,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0142",
-      "latitude": 30.4623,
-      "longitude": 76.1189,
-      "brightness": 333.7,
-      "frp": 9.1,
-      "confidence": 90,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0748",
+      "latitude": 30.7993,
+      "longitude": 74.2951,
+      "brightness": 325.6,
+      "frp": 29.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1649",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 28.0,
-      "distance_km": 28.0,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0143",
-      "latitude": 29.9773,
-      "longitude": 76.223,
-      "brightness": 326.0,
-      "frp": 13.3,
-      "confidence": 85,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1317",
+      "latitude": 31.6082,
+      "longitude": 75.3918,
+      "brightness": 318.9,
+      "frp": 21.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1607",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 19.6,
-      "distance_km": 19.6,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0144",
-      "latitude": 30.0326,
-      "longitude": 77.1748,
-      "brightness": 325.0,
-      "frp": 12.1,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
+      "latitude": 31.0623,
+      "longitude": 75.1179,
+      "brightness": 314.5,
+      "frp": 26.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1339",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.7944,
+      "longitude": 75.4873,
+      "brightness": 319.2,
+      "frp": 14.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1153",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.2535,
+      "longitude": 74.5492,
+      "brightness": 307.3,
+      "frp": 14.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1221",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.3017,
+      "longitude": 74.7661,
+      "brightness": 309.6,
+      "frp": 13.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1326",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.4137,
+      "longitude": 74.8403,
+      "brightness": 332.1,
+      "frp": 22.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1501",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.5972,
+      "longitude": 76.78,
+      "brightness": 331.7,
+      "frp": 28.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1447",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.9713,
+      "longitude": 74.7777,
+      "brightness": 325.1,
+      "frp": 27.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1510",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.0682,
+      "longitude": 77.8139,
+      "brightness": 322.8,
+      "frp": 23.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1041",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.1006,
+      "longitude": 74.7582,
+      "brightness": 311.3,
+      "frp": 15.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1656",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.8431,
+      "longitude": 77.6698,
+      "brightness": 319.1,
+      "frp": 26.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1022",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.3035,
+      "longitude": 77.5085,
+      "brightness": 333.5,
+      "frp": 12.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1039",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.2288,
+      "longitude": 75.8955,
+      "brightness": 319.0,
+      "frp": 14.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1210",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.6221,
+      "longitude": 75.1574,
+      "brightness": 332.9,
+      "frp": 21.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1325",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.2545,
+      "longitude": 76.2038,
+      "brightness": 328.2,
+      "frp": 28.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
       "acq_time": "1451",
       "daynight": "D",
       "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 27.7,
-      "distance_km": 27.7,
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
       "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-AGR-0145",
-      "latitude": 29.2258,
-      "longitude": 78.0965,
-      "brightness": 326.7,
-      "frp": 11.3,
-      "confidence": 87,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1157",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 15.6,
-      "distance_km": 15.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0146",
-      "latitude": 30.4317,
-      "longitude": 75.8525,
-      "brightness": 337.0,
-      "frp": 15.3,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1755",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.2,
-      "distance_km": 34.2,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0147",
-      "latitude": 30.1329,
-      "longitude": 74.8476,
-      "brightness": 341.3,
-      "frp": 13.6,
-      "confidence": 77,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1759",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 34.5,
-      "distance_km": 34.5,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0148",
-      "latitude": 29.6827,
-      "longitude": 76.4973,
-      "brightness": 331.3,
-      "frp": 7.7,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1747",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 30.7,
-      "distance_km": 30.7,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0149",
-      "latitude": 29.938,
-      "longitude": 76.6262,
-      "brightness": 342.8,
-      "frp": 11.7,
-      "confidence": 82,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1321",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 31.3,
-      "distance_km": 31.3,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0150",
-      "latitude": 29.5119,
-      "longitude": 77.7638,
-      "brightness": 326.4,
-      "frp": 8.4,
-      "confidence": 78,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0805",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 12.8,
-      "distance_km": 12.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0151",
-      "latitude": 30.2009,
-      "longitude": 75.6481,
-      "brightness": 330.2,
-      "frp": 5.2,
-      "confidence": 77,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0920",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 27.8,
-      "distance_km": 27.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0152",
-      "latitude": 30.3135,
-      "longitude": 75.8202,
-      "brightness": 326.8,
-      "frp": 18.1,
-      "confidence": 75,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1420",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 26.6,
-      "distance_km": 26.6,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0153",
-      "latitude": 29.6768,
-      "longitude": 76.4659,
-      "brightness": 343.8,
-      "frp": 3.8,
-      "confidence": 73,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1723",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 13.0,
-      "distance_km": 13.0,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0154",
-      "latitude": 30.0305,
-      "longitude": 76.7575,
-      "brightness": 343.5,
-      "frp": 12.6,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1248",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 15.4,
-      "distance_km": 15.4,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-AGR-0155",
-      "latitude": 28.8823,
-      "longitude": 77.4594,
-      "brightness": 341.0,
-      "frp": 13.0,
-      "confidence": 89,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1333",
-      "daynight": "D",
-      "category": "AGRICULTURAL_BURNING",
-      "risk_level": "LOW",
-      "color": "#ff9500",
-      "facility_name": "Crop Farmland Sector",
-      "nearest_facility": "Rural Grain Silo Depot",
-      "facility_type": "AGRI",
-      "facility_dist": 23.8,
-      "distance_km": 23.8,
-      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-      "action": "Log in state pollution registry. Monitor for potential spread."
-    },
-    {
-      "id": "IGNIS-FOR-0156",
-      "latitude": 30.501,
-      "longitude": 79.5427,
-      "brightness": 350.3,
-      "frp": 14.4,
-      "confidence": 91,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1036",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 18.6,
-      "distance_km": 18.6,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0157",
-      "latitude": 29.3129,
-      "longitude": 79.783,
-      "brightness": 353.7,
-      "frp": 30.4,
-      "confidence": 93,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1248",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 30.5,
-      "distance_km": 30.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0158",
-      "latitude": 32.1777,
-      "longitude": 77.191,
-      "brightness": 350.8,
-      "frp": 20.5,
-      "confidence": 89,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1748",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 23.5,
-      "distance_km": 23.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0159",
-      "latitude": 21.7455,
-      "longitude": 86.289,
-      "brightness": 333.7,
-      "frp": 12.7,
-      "confidence": 81,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1016",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 36.9,
-      "distance_km": 36.9,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0160",
-      "latitude": 30.5127,
-      "longitude": 79.3567,
-      "brightness": 339.8,
-      "frp": 34.4,
-      "confidence": 94,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0811",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 58.5,
-      "distance_km": 58.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0161",
-      "latitude": 29.7398,
-      "longitude": 79.5688,
-      "brightness": 339.4,
-      "frp": 9.5,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0917",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 33.7,
-      "distance_km": 33.7,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0162",
-      "latitude": 31.8129,
-      "longitude": 76.9711,
-      "brightness": 344.7,
-      "frp": 27.5,
-      "confidence": 92,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1716",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 33.5,
-      "distance_km": 33.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0163",
-      "latitude": 21.8237,
-      "longitude": 86.2068,
-      "brightness": 347.5,
-      "frp": 12.8,
-      "confidence": 80,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0847",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 43.1,
-      "distance_km": 43.1,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0164",
-      "latitude": 30.3971,
-      "longitude": 79.8505,
-      "brightness": 348.1,
-      "frp": 18.9,
-      "confidence": 94,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1108",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 44.6,
-      "distance_km": 44.6,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0165",
-      "latitude": 29.424,
-      "longitude": 79.7141,
-      "brightness": 346.7,
-      "frp": 19.0,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1111",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 33.2,
-      "distance_km": 33.2,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0166",
-      "latitude": 31.5998,
-      "longitude": 77.1975,
-      "brightness": 349.8,
-      "frp": 15.8,
-      "confidence": 93,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1821",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 17.5,
-      "distance_km": 17.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0167",
-      "latitude": 22.0907,
-      "longitude": 86.2848,
-      "brightness": 348.2,
-      "frp": 25.4,
-      "confidence": 87,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1033",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 46.3,
-      "distance_km": 46.3,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0168",
-      "latitude": 30.1567,
-      "longitude": 79.1245,
-      "brightness": 339.4,
-      "frp": 24.9,
-      "confidence": 93,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1127",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 41.1,
-      "distance_km": 41.1,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0169",
-      "latitude": 29.5931,
-      "longitude": 79.9022,
-      "brightness": 341.0,
-      "frp": 14.2,
-      "confidence": 85,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0822",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 49.3,
-      "distance_km": 49.3,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0170",
-      "latitude": 31.6003,
-      "longitude": 77.4646,
-      "brightness": 349.4,
-      "frp": 19.9,
-      "confidence": 80,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1114",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 21.4,
-      "distance_km": 21.4,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0171",
-      "latitude": 21.7365,
-      "longitude": 86.1167,
-      "brightness": 349.9,
-      "frp": 10.1,
-      "confidence": 92,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1103",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 53.8,
-      "distance_km": 53.8,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0172",
-      "latitude": 30.1557,
-      "longitude": 79.7948,
-      "brightness": 355.0,
-      "frp": 8.6,
-      "confidence": 87,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0927",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 36.5,
-      "distance_km": 36.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0173",
-      "latitude": 29.6862,
-      "longitude": 79.441,
-      "brightness": 343.6,
-      "frp": 8.5,
-      "confidence": 93,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "0808",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 51.7,
-      "distance_km": 51.7,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0174",
-      "latitude": 32.1327,
-      "longitude": 77.0657,
-      "brightness": 335.8,
-      "frp": 11.4,
-      "confidence": 93,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1422",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 48.2,
-      "distance_km": 48.2,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0175",
-      "latitude": 21.9473,
-      "longitude": 86.3062,
-      "brightness": 350.6,
-      "frp": 22.4,
-      "confidence": 91,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1322",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 42.8,
-      "distance_km": 42.8,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0176",
-      "latitude": 30.5687,
-      "longitude": 79.109,
-      "brightness": 342.6,
-      "frp": 13.7,
-      "confidence": 82,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1205",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 45.5,
-      "distance_km": 45.5,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0177",
-      "latitude": 29.756,
-      "longitude": 79.8969,
-      "brightness": 338.8,
-      "frp": 20.0,
-      "confidence": 82,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0956",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 37.1,
-      "distance_km": 37.1,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0178",
-      "latitude": 32.0437,
-      "longitude": 77.3376,
-      "brightness": 348.3,
-      "frp": 33.7,
-      "confidence": 90,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1557",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 39.6,
-      "distance_km": 39.6,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0179",
-      "latitude": 21.7258,
-      "longitude": 86.1667,
-      "brightness": 344.4,
-      "frp": 33.5,
-      "confidence": 91,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1124",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 33.7,
-      "distance_km": 33.7,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0180",
-      "latitude": 30.2107,
-      "longitude": 79.7395,
-      "brightness": 350.1,
-      "frp": 31.1,
-      "confidence": 93,
-      "satellite": "VIIRS-NOAA20",
-      "acq_date": "2026-09-07",
-      "acq_time": "1725",
-      "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 34.4,
-      "distance_km": 34.4,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0181",
-      "latitude": 29.4173,
-      "longitude": 79.6503,
-      "brightness": 332.2,
-      "frp": 31.0,
-      "confidence": 83,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1022",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 27.2,
-      "distance_km": 27.2,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0182",
-      "latitude": 32.1226,
-      "longitude": 77.1566,
-      "brightness": 350.4,
-      "frp": 13.5,
-      "confidence": 86,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1806",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 46.9,
-      "distance_km": 46.9,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-FOR-0183",
-      "latitude": 21.9904,
-      "longitude": 86.2912,
-      "brightness": 349.5,
-      "frp": 18.1,
+      "latitude": 30.0821,
+      "longitude": 75.0655,
+      "brightness": 324.8,
+      "frp": 9.7,
       "confidence": 88,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1843",
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1521",
       "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 55.9,
-      "distance_km": 55.9,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "FARMLAND",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-FOR-0184",
-      "latitude": 30.6123,
-      "longitude": 79.6553,
-      "brightness": 331.7,
-      "frp": 34.1,
-      "confidence": 84,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1154",
+      "latitude": 28.2111,
+      "longitude": 77.9216,
+      "brightness": 324.1,
+      "frp": 27.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1509",
       "daynight": "D",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 52.4,
-      "distance_km": 52.4,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-FOR-0185",
-      "latitude": 29.215,
-      "longitude": 79.9847,
-      "brightness": 346.7,
-      "frp": 14.7,
-      "confidence": 93,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0913",
-      "daynight": "N",
-      "category": "FOREST_FIRE",
-      "risk_level": "HIGH",
-      "color": "#00ff9c",
-      "facility_name": "Protected Forest Reserve",
-      "nearest_facility": "Forest Range Outpost",
-      "facility_type": "FOREST",
-      "facility_dist": 18.8,
-      "distance_km": 18.8,
-      "reason": "Forest reserve perimeter thermal anomaly detected",
-      "action": "\ud83d\udea8 Notify Forest Department & NDRF regional response unit."
-    },
-    {
-      "id": "IGNIS-UNK-0186",
-      "latitude": 17.2778,
-      "longitude": 80.1609,
-      "brightness": 323.9,
-      "frp": 5.1,
-      "confidence": 54,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0641",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 21.3,
-      "distance_km": 21.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0187",
-      "latitude": 10.5551,
-      "longitude": 83.5753,
-      "brightness": 334.3,
-      "frp": 4.1,
-      "confidence": 55,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1954",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 21.1,
-      "distance_km": 21.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0188",
-      "latitude": 11.4013,
-      "longitude": 85.3736,
-      "brightness": 331.6,
-      "frp": 4.0,
-      "confidence": 58,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1818",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 22.4,
-      "distance_km": 22.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0189",
-      "latitude": 13.9928,
-      "longitude": 84.62,
-      "brightness": 334.1,
-      "frp": 7.4,
-      "confidence": 68,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1957",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 21.2,
-      "distance_km": 21.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0190",
-      "latitude": 24.6269,
-      "longitude": 79.4435,
-      "brightness": 322.7,
-      "frp": 1.9,
-      "confidence": 68,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1615",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 21.1,
-      "distance_km": 21.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0191",
-      "latitude": 23.0271,
-      "longitude": 73.6949,
-      "brightness": 317.1,
-      "frp": 2.0,
-      "confidence": 71,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1042",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 17.6,
-      "distance_km": 17.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0192",
-      "latitude": 22.9755,
-      "longitude": 77.0682,
-      "brightness": 330.7,
-      "frp": 7.2,
-      "confidence": 50,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1125",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 19.6,
-      "distance_km": 19.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0193",
-      "latitude": 12.5754,
-      "longitude": 82.8257,
-      "brightness": 316.6,
-      "frp": 1.8,
-      "confidence": 70,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1121",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 23.1,
-      "distance_km": 23.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0194",
-      "latitude": 17.0397,
-      "longitude": 77.1378,
-      "brightness": 323.7,
-      "frp": 1.9,
-      "confidence": 60,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0502",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 18.6,
-      "distance_km": 18.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0195",
-      "latitude": 12.448,
-      "longitude": 76.7815,
-      "brightness": 327.1,
-      "frp": 7.0,
-      "confidence": 61,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0543",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.9,
-      "distance_km": 11.9,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0196",
-      "latitude": 23.5442,
-      "longitude": 74.8116,
-      "brightness": 331.1,
-      "frp": 8.1,
-      "confidence": 64,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0943",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 24.5,
-      "distance_km": 24.5,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0197",
-      "latitude": 17.4858,
-      "longitude": 73.2688,
+      "latitude": 31.3009,
+      "longitude": 75.2318,
       "brightness": 332.6,
-      "frp": 5.7,
-      "confidence": 73,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1233",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 6.4,
-      "distance_km": 6.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0198",
-      "latitude": 25.7225,
-      "longitude": 76.537,
-      "brightness": 315.9,
-      "frp": 5.8,
-      "confidence": 57,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1155",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 20.2,
-      "distance_km": 20.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0199",
-      "latitude": 16.6392,
-      "longitude": 78.5683,
-      "brightness": 318.0,
-      "frp": 7.5,
-      "confidence": 69,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1811",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 8.9,
-      "distance_km": 8.9,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0200",
-      "latitude": 26.0777,
-      "longitude": 73.264,
-      "brightness": 334.6,
-      "frp": 6.5,
-      "confidence": 58,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1653",
+      "frp": 26.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1327",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.0,
-      "distance_km": 11.0,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0201",
-      "latitude": 16.6362,
-      "longitude": 76.5713,
-      "brightness": 324.4,
-      "frp": 8.6,
-      "confidence": 59,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1121",
+      "latitude": 31.8692,
+      "longitude": 74.5579,
+      "brightness": 318.5,
+      "frp": 26.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1439",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 22.3,
-      "distance_km": 22.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0202",
-      "latitude": 18.0811,
-      "longitude": 76.3816,
-      "brightness": 331.9,
-      "frp": 5.6,
-      "confidence": 50,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1955",
+      "latitude": 30.65,
+      "longitude": 74.9751,
+      "brightness": 315.6,
+      "frp": 14.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1256",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 14.3,
-      "distance_km": 14.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0203",
-      "latitude": 24.9427,
-      "longitude": 77.7479,
-      "brightness": 316.5,
-      "frp": 1.7,
-      "confidence": 55,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1650",
+      "latitude": 30.3821,
+      "longitude": 74.4827,
+      "brightness": 317.2,
+      "frp": 21.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1144",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 9.3,
-      "distance_km": 9.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0204",
-      "latitude": 14.023,
-      "longitude": 75.2671,
-      "brightness": 321.0,
-      "frp": 7.1,
-      "confidence": 75,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1325",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 12.1,
-      "distance_km": 12.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0205",
-      "latitude": 25.1403,
-      "longitude": 80.9202,
-      "brightness": 332.0,
-      "frp": 2.0,
-      "confidence": 72,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1930",
+      "latitude": 31.5859,
+      "longitude": 74.1861,
+      "brightness": 311.6,
+      "frp": 24.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1242",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 4.6,
-      "distance_km": 4.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0206",
-      "latitude": 19.6891,
-      "longitude": 78.9575,
-      "brightness": 316.1,
-      "frp": 2.0,
-      "confidence": 57,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0830",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 18.2,
-      "distance_km": 18.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0207",
-      "latitude": 26.3972,
-      "longitude": 81.6058,
-      "brightness": 320.2,
-      "frp": 4.4,
-      "confidence": 55,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1506",
+      "latitude": 30.851,
+      "longitude": 75.4919,
+      "brightness": 314.9,
+      "frp": 24.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1219",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 18.0,
-      "distance_km": 18.0,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0208",
-      "latitude": 22.8026,
-      "longitude": 73.4218,
-      "brightness": 333.1,
-      "frp": 6.5,
-      "confidence": 61,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1410",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.0,
-      "distance_km": 11.0,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0209",
-      "latitude": 25.2118,
-      "longitude": 75.891,
-      "brightness": 330.1,
-      "frp": 5.7,
-      "confidence": 73,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1818",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 24.8,
-      "distance_km": 24.8,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0210",
-      "latitude": 19.0722,
-      "longitude": 82.2912,
-      "brightness": 317.4,
-      "frp": 1.9,
-      "confidence": 53,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1526",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 6.3,
-      "distance_km": 6.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0211",
-      "latitude": 21.4939,
-      "longitude": 77.2897,
-      "brightness": 319.5,
-      "frp": 4.5,
-      "confidence": 61,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1902",
+      "latitude": 28.6311,
+      "longitude": 77.4858,
+      "brightness": 333.5,
+      "frp": 24.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1113",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 18.9,
-      "distance_km": 18.9,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0212",
-      "latitude": 11.0124,
-      "longitude": 74.3932,
-      "brightness": 326.2,
-      "frp": 7.8,
-      "confidence": 63,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0540",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 14.6,
-      "distance_km": 14.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0213",
-      "latitude": 13.574,
-      "longitude": 73.1348,
-      "brightness": 329.1,
-      "frp": 5.2,
-      "confidence": 51,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1226",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 15.7,
-      "distance_km": 15.7,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0214",
-      "latitude": 20.8256,
-      "longitude": 81.2495,
-      "brightness": 323.4,
-      "frp": 4.8,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1107",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 17.3,
-      "distance_km": 17.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0215",
-      "latitude": 25.3543,
-      "longitude": 80.843,
-      "brightness": 330.4,
-      "frp": 8.6,
-      "confidence": 62,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0719",
+      "latitude": 31.5204,
+      "longitude": 75.1936,
+      "brightness": 334.4,
+      "frp": 28.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1214",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 14.4,
-      "distance_km": 14.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0216",
-      "latitude": 20.4317,
-      "longitude": 76.6638,
-      "brightness": 315.9,
-      "frp": 5.5,
-      "confidence": 73,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1801",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 8.1,
-      "distance_km": 8.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0217",
-      "latitude": 14.1957,
-      "longitude": 76.1302,
-      "brightness": 317.6,
-      "frp": 6.7,
-      "confidence": 63,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1802",
+      "latitude": 31.0683,
+      "longitude": 74.5486,
+      "brightness": 334.2,
+      "frp": 21.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1508",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 23.1,
-      "distance_km": 23.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0218",
-      "latitude": 11.2593,
-      "longitude": 83.8963,
-      "brightness": 323.8,
-      "frp": 6.6,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0627",
+      "latitude": 30.5687,
+      "longitude": 74.9574,
+      "brightness": 315.2,
+      "frp": 31.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1255",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 8.1,
-      "distance_km": 8.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0219",
-      "latitude": 10.2319,
-      "longitude": 77.4728,
-      "brightness": 332.7,
-      "frp": 7.6,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1459",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.2,
-      "distance_km": 11.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0220",
-      "latitude": 14.5664,
-      "longitude": 83.8548,
-      "brightness": 327.0,
-      "frp": 3.8,
-      "confidence": 64,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1344",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 9.6,
-      "distance_km": 9.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0221",
-      "latitude": 13.2063,
-      "longitude": 80.245,
-      "brightness": 326.6,
-      "frp": 7.7,
-      "confidence": 56,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1431",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 16.3,
-      "distance_km": 16.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0222",
-      "latitude": 26.8223,
-      "longitude": 85.1325,
-      "brightness": 334.9,
-      "frp": 4.1,
-      "confidence": 71,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1437",
+      "latitude": 30.9835,
+      "longitude": 75.154,
+      "brightness": 325.6,
+      "frp": 11.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1636",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 10.4,
-      "distance_km": 10.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0223",
-      "latitude": 13.9641,
-      "longitude": 76.1082,
-      "brightness": 327.9,
-      "frp": 7.5,
-      "confidence": 68,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1841",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 6.4,
-      "distance_km": 6.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0224",
-      "latitude": 19.7566,
-      "longitude": 83.4193,
-      "brightness": 327.1,
-      "frp": 1.9,
-      "confidence": 54,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1657",
+      "latitude": 31.1161,
+      "longitude": 74.8323,
+      "brightness": 322.9,
+      "frp": 22.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1633",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 4.6,
-      "distance_km": 4.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0225",
-      "latitude": 15.8394,
-      "longitude": 85.2984,
-      "brightness": 321.5,
-      "frp": 4.4,
-      "confidence": 51,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0946",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 19.2,
-      "distance_km": 19.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0226",
-      "latitude": 20.7725,
-      "longitude": 82.4854,
-      "brightness": 334.1,
-      "frp": 8.8,
-      "confidence": 64,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1626",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 14.9,
-      "distance_km": 14.9,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0227",
-      "latitude": 10.9349,
-      "longitude": 79.2888,
-      "brightness": 322.3,
-      "frp": 3.3,
-      "confidence": 63,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1341",
+      "latitude": 31.7203,
+      "longitude": 75.9801,
+      "brightness": 314.2,
+      "frp": 22.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1447",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 5.6,
-      "distance_km": 5.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0228",
-      "latitude": 15.2203,
-      "longitude": 74.4923,
-      "brightness": 327.3,
-      "frp": 2.9,
-      "confidence": 71,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0814",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 19.8,
-      "distance_km": 19.8,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0229",
-      "latitude": 11.9444,
-      "longitude": 85.74,
-      "brightness": 331.8,
-      "frp": 3.4,
-      "confidence": 61,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1730",
+      "latitude": 30.4221,
+      "longitude": 75.3209,
+      "brightness": 309.7,
+      "frp": 12.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1010",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 6.6,
-      "distance_km": 6.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0230",
-      "latitude": 23.3092,
-      "longitude": 82.6324,
-      "brightness": 332.4,
-      "frp": 8.5,
-      "confidence": 57,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1644",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 23.6,
-      "distance_km": 23.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0231",
-      "latitude": 11.1259,
-      "longitude": 75.9795,
-      "brightness": 315.3,
-      "frp": 4.3,
-      "confidence": 55,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1555",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 20.1,
-      "distance_km": 20.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0232",
-      "latitude": 10.6809,
-      "longitude": 82.0897,
-      "brightness": 326.0,
-      "frp": 2.7,
-      "confidence": 75,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1711",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 22.6,
-      "distance_km": 22.6,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0233",
-      "latitude": 22.2371,
-      "longitude": 76.6742,
-      "brightness": 333.6,
-      "frp": 3.6,
-      "confidence": 60,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0833",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 10.4,
-      "distance_km": 10.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0234",
-      "latitude": 15.8071,
-      "longitude": 85.8498,
-      "brightness": 321.6,
-      "frp": 5.2,
-      "confidence": 63,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0843",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 10.1,
-      "distance_km": 10.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0235",
-      "latitude": 18.7903,
-      "longitude": 84.9885,
-      "brightness": 319.8,
-      "frp": 4.0,
-      "confidence": 50,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0551",
+      "latitude": 28.9398,
+      "longitude": 76.0653,
+      "brightness": 313.6,
+      "frp": 14.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1629",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 20.9,
-      "distance_km": 20.9,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0236",
-      "latitude": 21.1659,
-      "longitude": 82.1507,
-      "brightness": 318.4,
-      "frp": 2.7,
-      "confidence": 60,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
+      "latitude": 29.5757,
+      "longitude": 77.2501,
+      "brightness": 324.8,
+      "frp": 30.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1307",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.6533,
+      "longitude": 76.1428,
+      "brightness": 310.0,
+      "frp": 15.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
       "acq_time": "1552",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 12.8,
-      "distance_km": 12.8,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0237",
-      "latitude": 17.5873,
-      "longitude": 81.4571,
-      "brightness": 317.1,
-      "frp": 1.7,
-      "confidence": 67,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0644",
+      "latitude": 30.6082,
+      "longitude": 74.805,
+      "brightness": 313.2,
+      "frp": 21.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1305",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 22.0,
-      "distance_km": 22.0,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0238",
-      "latitude": 20.2594,
-      "longitude": 73.25,
-      "brightness": 323.2,
-      "frp": 1.8,
-      "confidence": 69,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0538",
+      "latitude": 29.2074,
+      "longitude": 76.0517,
+      "brightness": 311.9,
+      "frp": 24.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1636",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 15.9,
-      "distance_km": 15.9,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0239",
-      "latitude": 14.3883,
-      "longitude": 77.0199,
-      "brightness": 317.0,
-      "frp": 7.4,
-      "confidence": 54,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1524",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 12.2,
-      "distance_km": 12.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "latitude": 28.539,
+      "longitude": 76.0805,
+      "brightness": 327.7,
+      "frp": 19.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1528",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0240",
-      "latitude": 15.6652,
-      "longitude": 82.7828,
-      "brightness": 332.8,
-      "frp": 3.6,
+      "latitude": 31.2696,
+      "longitude": 74.9835,
+      "brightness": 307.7,
+      "frp": 16.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1220",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.3873,
+      "longitude": 74.5764,
+      "brightness": 333.4,
+      "frp": 27.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1402",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.2318,
+      "longitude": 75.5451,
+      "brightness": 330.9,
+      "frp": 27.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1042",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.7236,
+      "longitude": 75.5129,
+      "brightness": 323.8,
+      "frp": 26.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1117",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.3965,
+      "longitude": 74.2429,
+      "brightness": 334.2,
+      "frp": 22.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1145",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.816,
+      "longitude": 74.4494,
+      "brightness": 330.2,
+      "frp": 10.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1041",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.0177,
+      "longitude": 76.5468,
+      "brightness": 330.0,
+      "frp": 31.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1129",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.0165,
+      "longitude": 77.7587,
+      "brightness": 330.9,
+      "frp": 14.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1654",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.5343,
+      "longitude": 76.0051,
+      "brightness": 326.8,
+      "frp": 28.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1442",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.9687,
+      "longitude": 74.6649,
+      "brightness": 327.9,
+      "frp": 17.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1255",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.7659,
+      "longitude": 75.712,
+      "brightness": 317.3,
+      "frp": 15.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1345",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.6415,
+      "longitude": 77.9616,
+      "brightness": 319.9,
+      "frp": 8.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1437",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "FARMLAND",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.8806,
+      "longitude": 77.0519,
+      "brightness": 318.7,
+      "frp": 25.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1355",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.53,
+      "longitude": 77.2465,
+      "brightness": 316.9,
+      "frp": 9.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1254",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "FARMLAND",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 31.7749,
+      "longitude": 74.9759,
+      "brightness": 321.2,
+      "frp": 22.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1140",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.8679,
+      "longitude": 76.1969,
+      "brightness": 324.0,
+      "frp": 28.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1310",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.5923,
+      "longitude": 74.5867,
+      "brightness": 316.2,
+      "frp": 11.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1426",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.7417,
+      "longitude": 75.2394,
+      "brightness": 312.2,
+      "frp": 29.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1114",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.3337,
+      "longitude": 75.7978,
+      "brightness": 319.0,
+      "frp": 14.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1410",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.1751,
+      "longitude": 75.2779,
+      "brightness": 317.7,
+      "frp": 14.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1619",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.2133,
+      "longitude": 76.7627,
+      "brightness": 315.8,
+      "frp": 15.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1518",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 28.549,
+      "longitude": 77.1319,
+      "brightness": 325.6,
+      "frp": 25.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1058",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.5515,
+      "longitude": 76.4602,
+      "brightness": 329.1,
+      "frp": 13.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1139",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.3184,
+      "longitude": 77.6767,
+      "brightness": 323.8,
+      "frp": 29.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1502",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.7297,
+      "longitude": 74.2628,
+      "brightness": 332.3,
+      "frp": 15.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1311",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.943,
+      "longitude": 75.0617,
+      "brightness": 332.4,
+      "frp": 27.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1258",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.7408,
+      "longitude": 75.6085,
+      "brightness": 319.0,
+      "frp": 9.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1614",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "FARMLAND",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.7316,
+      "longitude": 77.5814,
+      "brightness": 305.4,
+      "frp": 20.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1323",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.8806,
+      "longitude": 76.2167,
+      "brightness": 312.0,
+      "frp": 8.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1420",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "FARMLAND",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 30.9285,
+      "longitude": 75.4022,
+      "brightness": 324.5,
+      "frp": 10.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1002",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.4696,
+      "longitude": 75.0751,
+      "brightness": 316.7,
+      "frp": 16.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1544",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.7708,
+      "longitude": 77.3098,
+      "brightness": 330.0,
+      "frp": 22.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1202",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.4722,
+      "longitude": 74.7254,
+      "brightness": 334.4,
+      "frp": 16.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1522",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FARMLAND",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.3746,
+      "longitude": 79.3592,
+      "brightness": 348.8,
+      "frp": 21.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1141",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.6405,
+      "longitude": 78.8668,
+      "brightness": 354.6,
+      "frp": 66.4,
       "confidence": 55,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1844",
-      "daynight": "N",
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1104",
+      "daynight": "D",
       "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 19.5,
-      "distance_km": 19.5,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (66.4MW). Proximity to industry: 186.8km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-UNK-0241",
-      "latitude": 10.8153,
-      "longitude": 75.7963,
-      "brightness": 320.0,
-      "frp": 6.7,
-      "confidence": 53,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0516",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 20.5,
-      "distance_km": 20.5,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "latitude": 20.2657,
+      "longitude": 83.7728,
+      "brightness": 350.4,
+      "frp": 37.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1050",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
     },
     {
-      "id": "IGNIS-UNK-0242",
-      "latitude": 10.447,
-      "longitude": 76.6433,
-      "brightness": 323.3,
+      "latitude": 29.8218,
+      "longitude": 79.3872,
+      "brightness": 354.6,
+      "frp": 50.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1007",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.7054,
+      "longitude": 78.8866,
+      "brightness": 347.6,
+      "frp": 53.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0811",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 30.1934,
+      "longitude": 79.0209,
+      "brightness": 346.1,
+      "frp": 46.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1332",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 32.0031,
+      "longitude": 77.3563,
+      "brightness": 321.5,
+      "frp": 66.1,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1833",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (66.1MW). Proximity to industry: 291.1km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 20.8712,
+      "longitude": 83.6487,
+      "brightness": 336.8,
+      "frp": 41.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1806",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.6588,
+      "longitude": 76.6646,
+      "brightness": 341.3,
+      "frp": 20.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1239",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 20.6697,
+      "longitude": 83.9047,
+      "brightness": 340.9,
+      "frp": 34.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1638",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 20.1915,
+      "longitude": 84.1238,
+      "brightness": 350.7,
+      "frp": 51.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1127",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.9311,
+      "longitude": 79.2619,
+      "brightness": 334.0,
+      "frp": 62.7,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1327",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (62.7MW). Proximity to industry: 230.5km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 31.8994,
+      "longitude": 76.7221,
+      "brightness": 352.3,
+      "frp": 20.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0905",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 20.691,
+      "longitude": 84.2494,
+      "brightness": 339.5,
+      "frp": 53.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1635",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.9286,
+      "longitude": 79.2989,
+      "brightness": 352.9,
+      "frp": 43.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0818",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.6829,
+      "longitude": 77.0059,
+      "brightness": 325.4,
+      "frp": 46.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0922",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.6919,
+      "longitude": 76.8229,
+      "brightness": 327.9,
+      "frp": 43.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1649",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 20.64,
+      "longitude": 84.0454,
+      "brightness": 341.3,
+      "frp": 58.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1201",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 20.7099,
+      "longitude": 84.3372,
+      "brightness": 332.3,
+      "frp": 27.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1036",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 29.7135,
+      "longitude": 79.1065,
+      "brightness": 321.1,
+      "frp": 63.8,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1124",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (63.8MW). Proximity to industry: 210.9km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 31.7259,
+      "longitude": 76.8493,
+      "brightness": 331.4,
+      "frp": 76.3,
+      "confidence": 55,
+      "confidence_score": 0.55,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1705",
+      "daynight": "D",
+      "category": "UNKNOWN",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "gray",
+      "reason": "Uncorrelated thermal anomaly (76.3MW). Proximity to industry: 258.1km. Persistence: 0%.",
+      "action": "Manual verification recommended. Cross-check with local authorities.",
+      "classification": "UNKNOWN",
+      "response_protocol": {
+        "fire_class": "Unknown - requires verification",
+        "typical_materials": [
+          "Unknown"
+        ],
+        "use_agents": {
+          "primary": [
+            "Verify before action"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Approach without verification"
+        ],
+        "equipment_required": [
+          "Reconnaissance drone",
+          "Fire officer for assessment"
+        ],
+        "safety_distance_m": 500,
+        "response_time_target_min": 20,
+        "personnel_required": 3,
+        "coordination": [
+          "Local authorities for ground truth"
+        ],
+        "special_notes": "Send ground team for visual confirmation before dispatching resources. Use satellite imagery cross-reference.",
+        "evacuation_radius_m": 500,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 29.7259,
+      "longitude": 79.0943,
+      "brightness": 343.6,
+      "frp": 33.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1827",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 31.9313,
+      "longitude": 76.7725,
+      "brightness": 337.9,
+      "frp": 38.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0918",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 20.4893,
+      "longitude": 84.1337,
+      "brightness": 321.6,
+      "frp": 41.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1703",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "latitude": 32.3563,
+      "longitude": 77.2139,
+      "brightness": 346.7,
+      "frp": 34.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0900",
+      "daynight": "D",
+      "category": "AGRICULTURAL_BURNING",
+      "location_type": "FOREST",
+      "risk_level": "MODERATE",
+      "color": "orange",
+      "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
+      "action": "Log in state pollution registry. Monitor for potential spread.",
+      "classification": "AGRICULTURAL_BURNING",
+      "response_protocol": {
+        "fire_class": "Class A",
+        "typical_materials": [
+          "Crop residue",
+          "Biomass",
+          "Stubble"
+        ],
+        "use_agents": {
+          "primary": [
+            "Water",
+            "Containment (fire breaks)"
+          ],
+          "secondary": [
+            "Controlled backburn"
+          ]
+        },
+        "avoid": [
+          "Overreaction (often planned)",
+          "Chemical suppressants (contaminates soil)"
+        ],
+        "equipment_required": [
+          "Water bowsers",
+          "Tractors with plows",
+          "Basic firefighting gear"
+        ],
+        "safety_distance_m": 100,
+        "response_time_target_min": 30,
+        "personnel_required": 4,
+        "coordination": [
+          "Local Panchayat",
+          "Agriculture Department",
+          "Pollution Control Board"
+        ],
+        "special_notes": "Verify if planned burn. Monitor spread to non-agricultural areas. Track for AQI impact on nearby cities.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false,
+        "aqi_alert": true
+      }
+    },
+    {
+      "id": "IGNIS-DM-0001",
+      "latitude": 18.52,
+      "longitude": 73.85,
+      "brightness": 308.2,
+      "frp": 6.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2030",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "facility_name": "Residential Colony Deccan Pune",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 18.7518,
+      "longitude": 74.6794,
+      "brightness": 309.6,
+      "frp": 5.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1753",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.375,
+      "longitude": 78.1619,
+      "brightness": 313.4,
+      "frp": 6.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1458",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.6351,
+      "longitude": 78.5807,
+      "brightness": 307.3,
+      "frp": 7.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0907",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.3916,
+      "longitude": 75.2344,
+      "brightness": 317.1,
+      "frp": 6.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2258",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 18.8608,
+      "longitude": 74.3762,
+      "brightness": 307.8,
+      "frp": 6.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0225",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 24.4245,
+      "longitude": 75.8804,
+      "brightness": 314.0,
+      "frp": 4.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2007",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 14.4903,
+      "longitude": 83.091,
+      "brightness": 306.3,
+      "frp": 9.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2052",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 12.8505,
+      "longitude": 76.3276,
+      "brightness": 303.1,
+      "frp": 4.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2004",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 24.9113,
+      "longitude": 79.4235,
+      "brightness": 313.6,
+      "frp": 8.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1443",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.1609,
+      "longitude": 81.2589,
+      "brightness": 311.2,
+      "frp": 8.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2020",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 12.2292,
+      "longitude": 78.7487,
+      "brightness": 305.5,
       "frp": 5.5,
-      "confidence": 65,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0638",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 8.4,
-      "distance_km": 8.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0122",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-UNK-0243",
-      "latitude": 24.8458,
-      "longitude": 81.2012,
-      "brightness": 331.1,
+      "latitude": 16.5873,
+      "longitude": 78.8749,
+      "brightness": 301.0,
+      "frp": 8.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0241",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 26.3953,
+      "longitude": 80.9951,
+      "brightness": 309.1,
+      "frp": 6.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1750",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 11.7384,
+      "longitude": 84.8176,
+      "brightness": 310.3,
+      "frp": 5.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1930",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.239,
+      "longitude": 78.8568,
+      "brightness": 314.6,
+      "frp": 8.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2205",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 14.1061,
+      "longitude": 76.2207,
+      "brightness": 307.9,
+      "frp": 6.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1639",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.7113,
+      "longitude": 76.6776,
+      "brightness": 307.4,
+      "frp": 5.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1903",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.6515,
+      "longitude": 73.8569,
+      "brightness": 301.7,
+      "frp": 7.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0916",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.8182,
+      "longitude": 84.7825,
+      "brightness": 315.7,
+      "frp": 5.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1842",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.2968,
+      "longitude": 85.5801,
+      "brightness": 312.6,
+      "frp": 6.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1945",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.5725,
+      "longitude": 77.8968,
+      "brightness": 314.2,
+      "frp": 8.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2144",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 24.2979,
+      "longitude": 81.9104,
+      "brightness": 309.5,
+      "frp": 7.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1332",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.5268,
+      "longitude": 75.3434,
+      "brightness": 303.9,
+      "frp": 9.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1512",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 13.4762,
+      "longitude": 74.0031,
+      "brightness": 315.2,
+      "frp": 4.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1753",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 20.4776,
+      "longitude": 81.6051,
+      "brightness": 315.8,
+      "frp": 7.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1924",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 14.2552,
+      "longitude": 82.007,
+      "brightness": 311.2,
+      "frp": 9.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2328",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.5574,
+      "longitude": 82.3546,
+      "brightness": 317.5,
+      "frp": 7.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2350",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 20.6122,
+      "longitude": 77.0231,
+      "brightness": 314.6,
+      "frp": 6.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0623",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.2675,
+      "longitude": 78.7278,
+      "brightness": 313.8,
+      "frp": 8.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1633",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 13.917,
+      "longitude": 75.5961,
+      "brightness": 310.9,
+      "frp": 8.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0141",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.6818,
+      "longitude": 85.1458,
+      "brightness": 312.8,
+      "frp": 6.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0318",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 13.8856,
+      "longitude": 78.8411,
+      "brightness": 309.2,
+      "frp": 8.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0258",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 19.1203,
+      "longitude": 77.5446,
+      "brightness": 300.5,
+      "frp": 4.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1623",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.9015,
+      "longitude": 77.8739,
+      "brightness": 300.5,
+      "frp": 9.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2241",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 13.6289,
+      "longitude": 73.4979,
+      "brightness": 316.5,
+      "frp": 6.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0448",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 19.0748,
+      "longitude": 73.0683,
+      "brightness": 301.4,
+      "frp": 5.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0435",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.9598,
+      "longitude": 78.5023,
+      "brightness": 314.0,
+      "frp": 5.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0303",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.5011,
+      "longitude": 81.0965,
+      "brightness": 301.1,
+      "frp": 8.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1538",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.3752,
+      "longitude": 80.4756,
+      "brightness": 312.9,
+      "frp": 5.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0039",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.2719,
+      "longitude": 75.4351,
+      "brightness": 312.0,
+      "frp": 6.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1104",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 20.7935,
+      "longitude": 83.2234,
+      "brightness": 309.1,
+      "frp": 4.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1502",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.6587,
+      "longitude": 76.2975,
+      "brightness": 300.3,
+      "frp": 8.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1115",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.3086,
+      "longitude": 83.0295,
+      "brightness": 313.2,
+      "frp": 5.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0122",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 25.6432,
+      "longitude": 75.2762,
+      "brightness": 314.0,
+      "frp": 6.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2230",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 25.607,
+      "longitude": 73.8203,
+      "brightness": 314.0,
+      "frp": 6.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0912",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 14.5905,
+      "longitude": 73.5448,
+      "brightness": 316.8,
+      "frp": 6.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1730",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 24.5592,
+      "longitude": 75.4843,
+      "brightness": 306.4,
+      "frp": 8.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2021",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 25.3882,
+      "longitude": 78.6804,
+      "brightness": 307.2,
+      "frp": 6.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1221",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 19.9317,
+      "longitude": 79.4678,
+      "brightness": 316.6,
+      "frp": 6.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0246",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 18.7509,
+      "longitude": 85.9363,
+      "brightness": 303.2,
+      "frp": 5.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0305",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.3215,
+      "longitude": 78.7969,
+      "brightness": 312.9,
+      "frp": 4.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1422",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 24.0827,
+      "longitude": 84.8509,
+      "brightness": 311.1,
+      "frp": 6.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2050",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 12.3507,
+      "longitude": 81.2877,
+      "brightness": 306.5,
+      "frp": 8.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2110",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 13.57,
+      "longitude": 80.8984,
+      "brightness": 314.1,
+      "frp": 4.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0215",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.5939,
+      "longitude": 77.9771,
+      "brightness": 310.2,
+      "frp": 7.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2128",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.6962,
+      "longitude": 82.9201,
+      "brightness": 310.3,
+      "frp": 6.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1220",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 15.493,
+      "longitude": 74.4748,
+      "brightness": 313.2,
+      "frp": 6.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1258",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 15.712,
+      "longitude": 76.3838,
+      "brightness": 308.0,
+      "frp": 9.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0944",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 19.8416,
+      "longitude": 74.5943,
+      "brightness": 315.4,
+      "frp": 6.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2228",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 25.5892,
+      "longitude": 85.5783,
+      "brightness": 317.8,
+      "frp": 7.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2204",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.2265,
+      "longitude": 76.8994,
+      "brightness": 302.8,
+      "frp": 7.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2240",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.5069,
+      "longitude": 75.9151,
+      "brightness": 317.7,
+      "frp": 8.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0750",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 17.4961,
+      "longitude": 80.4396,
+      "brightness": 308.4,
+      "frp": 9.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0439",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 12.1835,
+      "longitude": 78.1761,
+      "brightness": 312.9,
+      "frp": 6.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1349",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.3482,
+      "longitude": 74.6292,
+      "brightness": 305.7,
+      "frp": 4.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1443",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 13.31,
+      "longitude": 83.7777,
+      "brightness": 309.9,
+      "frp": 7.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0427",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 26.6278,
+      "longitude": 83.8081,
+      "brightness": 309.3,
+      "frp": 5.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0520",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 15.0585,
+      "longitude": 85.3173,
+      "brightness": 309.3,
+      "frp": 5.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0216",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.2143,
+      "longitude": 76.5679,
+      "brightness": 311.3,
+      "frp": 7.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0232",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.6526,
+      "longitude": 80.5484,
+      "brightness": 303.1,
+      "frp": 7.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1921",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.1451,
+      "longitude": 83.7281,
+      "brightness": 300.5,
+      "frp": 4.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2049",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 22.7203,
+      "longitude": 82.9705,
+      "brightness": 307.5,
+      "frp": 7.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1556",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.2141,
+      "longitude": 85.4365,
+      "brightness": 308.7,
+      "frp": 8.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2125",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 12.3135,
+      "longitude": 73.7789,
+      "brightness": 307.9,
+      "frp": 6.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0621",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.6265,
+      "longitude": 82.3387,
+      "brightness": 313.2,
+      "frp": 8.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1208",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 20.2696,
+      "longitude": 74.3804,
+      "brightness": 304.4,
       "frp": 4.7,
-      "confidence": 74,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0718",
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1415",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.2,
-      "distance_km": 11.2,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-UNK-0244",
-      "latitude": 26.5863,
-      "longitude": 74.6339,
-      "brightness": 327.6,
-      "frp": 2.0,
-      "confidence": 71,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
+      "latitude": 11.9109,
+      "longitude": 85.29,
+      "brightness": 315.6,
+      "frp": 6.3,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0552",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.3984,
+      "longitude": 77.0653,
+      "brightness": 313.7,
+      "frp": 6.7,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1629",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 16.5537,
+      "longitude": 73.3013,
+      "brightness": 317.0,
+      "frp": 6.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0713",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 11.8758,
+      "longitude": 76.6576,
+      "brightness": 310.8,
+      "frp": 8.6,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2130",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 11.1472,
+      "longitude": 74.3975,
+      "brightness": 302.4,
+      "frp": 5.5,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
       "acq_time": "1148",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 24.4,
-      "distance_km": 24.4,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-UNK-0245",
-      "latitude": 17.1725,
-      "longitude": 76.2668,
-      "brightness": 321.9,
+      "latitude": 11.8144,
+      "longitude": 73.665,
+      "brightness": 310.1,
+      "frp": 6.0,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0904",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 19.1064,
+      "longitude": 80.1481,
+      "brightness": 314.9,
+      "frp": 7.4,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1907",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 12.7403,
+      "longitude": 77.8516,
+      "brightness": 317.8,
+      "frp": 7.1,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1148",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.8443,
+      "longitude": 78.218,
+      "brightness": 300.7,
+      "frp": 4.2,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "2221",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 20.348,
+      "longitude": 74.9362,
+      "brightness": 316.1,
+      "frp": 4.8,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1920",
+      "daynight": "N",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 28.8311,
+      "longitude": 82.6112,
+      "brightness": 305.4,
+      "frp": 5.9,
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1634",
+      "daynight": "D",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
+    },
+    {
+      "latitude": 21.1326,
+      "longitude": 79.1736,
+      "brightness": 300.3,
       "frp": 5.8,
-      "confidence": 63,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1823",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 6.7,
-      "distance_km": 6.7,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0246",
-      "latitude": 26.4312,
-      "longitude": 80.1603,
-      "brightness": 329.3,
-      "frp": 3.2,
-      "confidence": 65,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0702",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 9.7,
-      "distance_km": 9.7,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0247",
-      "latitude": 16.3345,
-      "longitude": 79.4663,
-      "brightness": 320.4,
-      "frp": 1.8,
-      "confidence": 52,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0955",
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "0326",
       "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 7.1,
-      "distance_km": 7.1,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
     },
     {
-      "id": "IGNIS-UNK-0248",
-      "latitude": 21.2109,
-      "longitude": 74.1246,
-      "brightness": 333.2,
-      "frp": 1.8,
-      "confidence": 51,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1459",
-      "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.0,
-      "distance_km": 11.0,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0249",
-      "latitude": 23.5793,
-      "longitude": 80.4195,
-      "brightness": 320.3,
-      "frp": 1.5,
-      "confidence": 63,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "1307",
-      "daynight": "N",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 11.7,
-      "distance_km": 11.7,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
-    },
-    {
-      "id": "IGNIS-UNK-0250",
-      "latitude": 15.5425,
-      "longitude": 76.7157,
-      "brightness": 323.8,
+      "latitude": 25.3416,
+      "longitude": 82.4292,
+      "brightness": 312.4,
       "frp": 4.1,
-      "confidence": 73,
-      "satellite": "VIIRS-SNPP",
-      "acq_date": "2026-09-07",
-      "acq_time": "0515",
+      "confidence": 88,
+      "confidence_score": 0.88,
+      "satellite": "VIIRS_SNPP_NRT",
+      "acq_date": "2026-09-09",
+      "acq_time": "1516",
       "daynight": "D",
-      "category": "UNKNOWN",
-      "risk_level": "LOW",
-      "color": "#4a5563",
-      "facility_name": "Unsurveyed Location",
-      "nearest_facility": "Nearest Rural Cluster",
-      "facility_type": "RURAL",
-      "facility_dist": 22.3,
-      "distance_km": 22.3,
-      "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-      "action": "No emergency action required. Routine municipal monitoring."
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "location_type": "RESIDENTIAL",
+      "risk_level": "VERY_LOW",
+      "color": "slate",
+      "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+      "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+      "classification": "DOMESTIC_LOW_INTENSITY_BURN",
+      "response_protocol": {
+        "fire_class": "Low-Risk Controlled/Domestic Heat",
+        "typical_materials": [
+          "Yard Waste",
+          "Domestic Biomass",
+          "Garbage",
+          "Cooking Fuel"
+        ],
+        "use_agents": {
+          "primary": [
+            "Local bucket water if necessary",
+            "Natural burnout monitoring"
+          ],
+          "secondary": []
+        },
+        "avoid": [
+          "Emergency Tender Dispatch (Unnecessary)",
+          "Panic public broadcasting"
+        ],
+        "equipment_required": [
+          "None - Automated Satellite Tracking"
+        ],
+        "safety_distance_m": 10,
+        "response_time_target_min": 60,
+        "personnel_required": 0,
+        "coordination": [
+          "Municipal Sanitation Inspector (routine logging)"
+        ],
+        "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+        "evacuation_radius_m": 0,
+        "hospital_notification": false
+      }
     }
-  ],
-  "total": 250,
-  "summary": {
-    "total": 250,
-    "emergency": 5,
-    "persistent": 50,
-    "agricultural": 100,
-    "forest": 30,
-    "unknown": 65
-  },
-  "days": 1,
-  "source": "all",
-  "ignis_status": "demo",
-  "mode": "demo",
-  "message": "Active IGNIS Demo Simulation (250 synthetic pre-classified anomalies)",
-  "generated_at": "2026-09-07T18:15:28.794345Z"
+  ]
 };

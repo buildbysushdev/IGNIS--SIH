@@ -53,11 +53,30 @@ export interface ScenarioOverlayState {
 
 // Strict Ground Station Color Coding (High Contrast, Phosphor & Modern Mission Accents)
 export const TERMINAL_COLORS: Record<string, string> = {
-  EMERGENCY_INDUSTRIAL: "#EF4444", // Crimson Red
-  PERSISTENT_INDUSTRIAL: "#F59E0B", // Gold / Amber
-  AGRICULTURAL_BURNING: "#F97316", // Warm Orange
-  FOREST_FIRE: "#22C55E", // Emerald Green
-  UNKNOWN: "#9CA3AF", // Slate Gray
+  // 🔴 Critical Emergency (Hospital / Petrol Pump / Factory Fire)
+  EMERGENCY_INDUSTRIAL: "#EF4444",
+  HOSPITAL_FIRE: "#EF4444",
+  FUEL_STATION_FIRE: "#EF4444",
+  SCHOOL_FIRE: "#EF4444",
+  SLUM_DENSE_URBAN_FIRE: "#EF4444",
+
+  // 🟠 High Risk (Restaurant / Market / Residential Structure)
+  RESTAURANT_KITCHEN_FIRE: "#F97316",
+  COMMERCIAL_MARKET_FIRE: "#F97316",
+  RESIDENTIAL_STRUCTURE_FIRE: "#F97316",
+
+  // 🟡 Persistent Industrial (Steel Plant / Refinery - Routine)
+  PERSISTENT_INDUSTRIAL: "#F59E0B",
+
+  // 🟢 Forest / Wildland
+  FOREST_FIRE: "#22C55E",
+
+  // 🔵 Agricultural Burning (Stubble)
+  AGRICULTURAL_BURNING: "#3B82F6",
+
+  // ⚪ Low-Intensity Domestic (Garbage / Bonfire - Suppressed)
+  DOMESTIC_LOW_INTENSITY_BURN: "#94A3B8",
+  UNKNOWN: "#9CA3AF",
 };
 
 export function getMarkerColor(category: string): string {
@@ -867,36 +886,40 @@ export default function FireMap({
         <WeatherWidget lat={currentCenter.lat} lon={currentCenter.lon} />
 
         {/* Bottom-Left Compact Legend */}
-        <div className="absolute bottom-3 left-3 z-[1000] pointer-events-auto bg-[#111827]/90 backdrop-blur-sm border border-[#1F2937] rounded-xl p-2.5 shadow-lg text-xs space-y-1.5 max-w-[210px]">
+        <div className="absolute bottom-3 left-3 z-[1000] pointer-events-auto bg-[#111827]/90 backdrop-blur-sm border border-[#1F2937] rounded-xl p-2.5 shadow-lg text-xs space-y-1.5 max-w-[245px]">
           <div className="flex items-center justify-between border-b border-[#1F2937] pb-1">
             <span className="text-[10px] text-[#9CA3AF] font-semibold uppercase tracking-wider">
               Map Legend
             </span>
             <InfoTooltip
               title="Tactical Map Legend"
-              text="Color-coded thermal anomaly categories based on IGNIS spatial reasoning engine: Red (Emergency), Yellow (Persistent), Orange (Agri), Green (Forest), Gray (Unclassified)."
+              text="Color-coded thermal anomaly categories based on IGNIS all-hazard reasoning: 🔴 Critical Emergency, 🟠 High Risk, 🟡 Persistent Industrial, 🟢 Forest, 🔵 Agricultural, ⚪ Low-Intensity Domestic."
               position="top"
             />
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-[#EF4444] flex-shrink-0" />
-            <span className="text-[#E5E7EB]">Emergency Industrial</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🔴 Critical Emergency <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Hospital / Fuel / Factory)</span></span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-[#A855F7] flex-shrink-0" />
-            <span className="text-[#E5E7EB]">Persistent Industrial</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#F97316] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🟠 High Risk <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Kitchen / Market / Res)</span></span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-[#F59E0B] flex-shrink-0" />
-            <span className="text-[#E5E7EB]">Agricultural Burning</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🟡 Persistent Industrial <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Steel / Plant)</span></span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-[#22C55E] flex-shrink-0" />
-            <span className="text-[#E5E7EB]">Forest Biomass</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🟢 Forest / Wildland</span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-[#9CA3AF] flex-shrink-0" />
-            <span className="text-[#9CA3AF]">Unclassified</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🔵 Agricultural Burning <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Stubble)</span></span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#94A3B8] flex-shrink-0" />
+            <span className="text-[#94A3B8]">⚪ Low-Intensity Domestic <span className="text-[10px] text-[#6B7280] block sm:inline">(Suppressed)</span></span>
           </div>
         </div>
 

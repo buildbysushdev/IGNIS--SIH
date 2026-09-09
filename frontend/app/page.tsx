@@ -57,11 +57,23 @@ const computeSummary = (fireList: Fire[]): FireStats => {
   };
   for (const f of fireList) {
     const cat = (f.category || (f as any).classification || "UNKNOWN").toUpperCase();
-    if (cat === "EMERGENCY_INDUSTRIAL") sum.emergency += 1;
-    else if (cat === "PERSISTENT_INDUSTRIAL") sum.persistent += 1;
-    else if (cat === "AGRICULTURAL_BURNING") sum.agricultural += 1;
-    else if (cat === "FOREST_FIRE") sum.forest += 1;
-    else sum.unknown += 1;
+    if (
+      cat === "EMERGENCY_INDUSTRIAL" ||
+      cat === "HOSPITAL_FIRE" ||
+      cat === "FUEL_STATION_FIRE" ||
+      cat === "SCHOOL_FIRE" ||
+      cat === "SLUM_DENSE_URBAN_FIRE"
+    ) {
+      sum.emergency += 1;
+    } else if (cat === "PERSISTENT_INDUSTRIAL") {
+      sum.persistent += 1;
+    } else if (cat === "AGRICULTURAL_BURNING") {
+      sum.agricultural += 1;
+    } else if (cat === "FOREST_FIRE") {
+      sum.forest += 1;
+    } else {
+      sum.unknown += 1;
+    }
   }
   return sum;
 };
@@ -78,9 +90,29 @@ export default function DashboardPage() {
   const filteredFires = useMemo(() => {
     if (!Array.isArray(fires)) return [];
     if (!category || category === "all") return fires;
+    const upperCat = category.toUpperCase();
     return fires.filter((f) => {
       const cat = (f.category || (f as any).classification || "UNKNOWN").toUpperCase();
-      return cat === category.toUpperCase();
+      if (upperCat === "CRITICAL") {
+        return [
+          "EMERGENCY_INDUSTRIAL",
+          "HOSPITAL_FIRE",
+          "FUEL_STATION_FIRE",
+          "SCHOOL_FIRE",
+          "SLUM_DENSE_URBAN_FIRE",
+        ].includes(cat);
+      }
+      if (upperCat === "HIGH_RISK") {
+        return [
+          "RESTAURANT_KITCHEN_FIRE",
+          "COMMERCIAL_MARKET_FIRE",
+          "RESIDENTIAL_STRUCTURE_FIRE",
+        ].includes(cat);
+      }
+      if (upperCat === "DOMESTIC_LOW_INTENSITY_BURN" || upperCat === "UNKNOWN") {
+        return cat === "DOMESTIC_LOW_INTENSITY_BURN" || cat === "UNKNOWN";
+      }
+      return cat === upperCat;
     });
   }, [fires, category]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -383,7 +415,7 @@ export default function DashboardPage() {
 
     const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
     setFires(demoFires);
-    setStats(DEMO_TELEMETRY_DATA.summary);
+    setStats(computeSummary(demoFires));
     setStatusMessage("DEMO MODE — PRESENTATION DATASET (250 VERIFIED FIRES)");
     setLastRefreshedUtc(getUtcTimestamp());
 

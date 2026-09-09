@@ -15,14 +15,30 @@ class FireClassifier:
         self.ml_model = ml_model
 
     def _check_context(self, fire: dict[str, Any]) -> dict[str, Any]:
-        """Extract contextual spatial, temporal, and radiometric features from a fire point."""
+        """Extract contextual spatial, temporal, radiometric, and urban amenity features from a fire point."""
         lat = float(fire["latitude"])
         lon = float(fire["longitude"])
 
-        # Nearest industrial zone
-        from osm_data import find_nearest_industry
+        # Nearest industrial zone & urban amenities
+        from osm_data import find_nearest_industry, get_location_context
 
         nearest = find_nearest_industry(lat, lon, self.zones)
+        urban_ctx = get_location_context(lat, lon)
+
+        # Explicit overrides from incoming payload if provided
+        explicit_loc_type = fire.get("location_type") or fire.get("urban_type")
+        location_type = str(explicit_loc_type or urban_ctx.get("location_type", "GENERAL")).upper()
+        location_name = str(
+            fire.get("facility_name")
+            or fire.get("nearest_facility")
+            or fire.get("name")
+            or urban_ctx.get("name")
+            or nearest.get("name", "Unknown")
+        )
+        population_density = str(
+            fire.get("population_density")
+            or ("HIGH" if location_type in ["SLUM", "MARKET", "HOSPITAL"] else "NORMAL")
+        ).upper()
 
         # Persistence percentage lookup
         from ml_model import get_persistence
@@ -50,18 +66,18 @@ class FireClassifier:
             29.90 < lat < 30.05 and 78.10 < lon < 78.25
         )
 
-        # Check explicit distance or find nearest from zones
         explicit_dist = fire.get("distance_km") if fire.get("distance_km") is not None else fire.get("facility_dist")
         if explicit_dist is not None:
             distance_km = float(explicit_dist)
-            nearest_name = str(fire.get("facility_name") or fire.get("nearest_facility") or nearest.get("name", "Industrial Facility"))
         else:
             distance_km = float(nearest.get("distance_km", 999.0))
-            nearest_name = str(nearest.get("name", "Unknown"))
 
         return {
             "distance_km": distance_km,
-            "nearest_name": nearest_name,
+            "nearest_name": location_name,
+            "location_type": location_type,
+            "population_density": population_density,
+            "urban_ctx": urban_ctx,
             "persistence": persistence,
             "is_agri": is_agri,
             "is_burning_season": is_burning_season,
@@ -78,6 +94,23 @@ class FireClassifier:
         frp = ctx["frp"]
         lat = float(fire["latitude"])
         lon = float(fire["longitude"])
+        location_type = ctx["location_type"]
+        nearest_name = ctx["nearest_name"]
+        pop_density = ctx["population_density"]
+
+        # =========================================================================
+        # FILTER RULE 1: BONFIRE / GARBAGE BURN SUPPRESSION (NO FALSE ALERTS)
+        # Low-intensity thermal signals (< 10 MW) in residential/farmland/general areas
+        # =========================================================================
+        if frp < 10.0 and location_type in ["RESIDENTIAL", "GENERAL", "FARMLAND"]:
+            return {
+                "category": "DOMESTIC_LOW_INTENSITY_BURN",
+                "confidence": 88,
+                "risk_level": "VERY_LOW",
+                "color": "slate",
+                "reason": "Low-intensity thermal signal (FRP < 10MW). Likely household bonfire, waste clearing, or cooking burn.",
+                "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
+            }
 
         # EDGE CASE 1: Cremation grounds with persistent thermal signatures
         if ctx["is_cremation"] and (persistence > 30.0 or frp < 20.0):
@@ -90,22 +123,103 @@ class FireClassifier:
                 "action": "No emergency action needed. Cultural/religious thermal source.",
             }
 
-        # RULE 1: Persistent Industrial (known facility with regular thermal baseline)
+        # =========================================================================
+        # PRIORITY URBAN EMERGENCY & HIGH-RISK RULES
+        # =========================================================================
+
+        # 1. HOSPITAL FIRE (CRITICAL):
+        if location_type == "HOSPITAL" and frp >= 10.0:
+            return {
+                "category": "HOSPITAL_FIRE",
+                "confidence": 96,
+                "risk_level": "CRITICAL",
+                "color": "red",
+                "reason": f"CRITICAL: Active thermal anomaly inside/adjacent to Hospital facility ({nearest_name}). High patient casualty risk.",
+                "action": "🚨 IMMEDIATE DISPATCH! Notify ICU Triage, Medical Evacuation, and District Collector.",
+            }
+
+        # 2. PETROL PUMP / FUEL DEPOT (CRITICAL):
+        if (location_type == "PETROL_PUMP" or "refinery" in nearest_name.lower() or "fuel" in nearest_name.lower()) and frp >= 12.0:
+            return {
+                "category": "FUEL_STATION_FIRE",
+                "confidence": 95,
+                "risk_level": "CRITICAL",
+                "color": "red",
+                "reason": f"CRITICAL: Fire near fuel storage / petrol pump ({nearest_name}). BLEVE & Explosion hazard.",
+                "action": "🚨 FOAM TENDERS ONLY! DO NOT USE WATER. Evacuate 500m perimeter immediately.",
+            }
+
+        # 3. SCHOOL / COLLEGE FIRE (CRITICAL):
+        if location_type == "SCHOOL" and frp >= 10.0:
+            return {
+                "category": "SCHOOL_FIRE",
+                "confidence": 93,
+                "risk_level": "CRITICAL",
+                "color": "red",
+                "reason": f"CRITICAL: Thermal anomaly at educational institution ({nearest_name}) during operational/occupancy window.",
+                "action": "🚨 DISPATCH FIRE TENDERS & AMBULANCES. Coordinate student assembly point evacuation.",
+            }
+
+        # 4. SLUM / DENSE URBAN FIRE (CRITICAL):
+        if location_type == "SLUM" or (pop_density == "HIGH" and frp >= 15.0):
+            return {
+                "category": "SLUM_DENSE_URBAN_FIRE",
+                "confidence": 94,
+                "risk_level": "CRITICAL",
+                "color": "red",
+                "reason": f"CRITICAL: High-density urban settlement fire ({nearest_name}). Extreme risk of rapid lateral spread.",
+                "action": "🚨 MASS DISPATCH! Narrow-lane access units required. Broadcast SMS evacuation alert.",
+            }
+
+        # 5. RESTAURANT / KITCHEN FIRE (HIGH):
+        if location_type == "RESTAURANT" and frp >= 10.0:
+            return {
+                "category": "RESTAURANT_KITCHEN_FIRE",
+                "confidence": 90,
+                "risk_level": "HIGH",
+                "color": "orange",
+                "reason": f"HIGH RISK: Commercial kitchen fire ({nearest_name}). High probability of LPG cylinder involvement.",
+                "action": "DISPATCH FOAM & CO2 UNITS. Isolate commercial LPG valves immediately.",
+            }
+
+        # 6. COMMERCIAL MARKET FIRE (HIGH):
+        if location_type == "MARKET" and frp >= 12.0:
+            return {
+                "category": "COMMERCIAL_MARKET_FIRE",
+                "confidence": 91,
+                "risk_level": "HIGH",
+                "color": "orange",
+                "reason": f"HIGH RISK: Fire in commercial marketplace ({nearest_name}). High combustible fuel load (textiles/plastics).",
+                "action": "DISPATCH WATER TENDERS & CROWD CONTROL. Isolate power grid sector.",
+            }
+
+        # 7. RESIDENTIAL STRUCTURE FIRE (HIGH):
+        if location_type == "RESIDENTIAL" and frp >= 15.0:
+            return {
+                "category": "RESIDENTIAL_STRUCTURE_FIRE",
+                "confidence": 89,
+                "risk_level": "HIGH",
+                "color": "orange",
+                "reason": f"HIGH RISK: Expanding structure fire in residential building/apartments ({nearest_name}).",
+                "action": "DISPATCH FIRE SERVICES. Search & rescue team for smoke inhalation.",
+            }
+
+        # =========================================================================
+        # INDUSTRIAL, AGRICULTURAL & WILDLAND RULES
+        # =========================================================================
+
+        # 8. PERSISTENT INDUSTRIAL (EXISTING RULE):
         if (dist < 6.0 and persistence >= 25.0) or (dist < 8.0 and persistence >= 40.0):
             return {
                 "category": "PERSISTENT_INDUSTRIAL",
                 "confidence": 94,
                 "risk_level": "LOW",
                 "color": "yellow",
-                "reason": f"Persistent plant heat signature ({ctx['nearest_name']}); operational flare / furnace; not emergency",
+                "reason": f"Persistent plant heat signature ({nearest_name}); operational flare / furnace; not emergency",
                 "action": "No emergency action needed. Normal industrial operational thermal source.",
             }
 
-        # RULE 2: Emergency Industrial Fire (requires high FRP, close proximity, AND low historical persistence)
-        # Emergency only if all conditions match:
-        # - FRP >= 25.0 MW
-        # - Distance <= 3.5 km to facility
-        # - Historical persistence < 20.0% (unscheduled/sudden flare)
+        # 9. EMERGENCY INDUSTRIAL (EXISTING RULE):
         if dist <= 3.5 and persistence < 20.0 and frp >= 25.0:
             return {
                 "category": "EMERGENCY_INDUSTRIAL",
@@ -113,36 +227,14 @@ class FireClassifier:
                 "risk_level": "CRITICAL",
                 "color": "red",
                 "reason": (
-                    f"Unscheduled thermal surge ({frp:.1f}MW) within {dist:.1f}km of {ctx['nearest_name']} "
+                    f"Unscheduled thermal surge ({frp:.1f}MW) within {dist:.1f}km of {nearest_name} "
                     f"with no historical baseline. High emergency risk."
                 ),
                 "action": "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
             }
 
-        # RULE 3: Low-Intensity Domestic / Garbage / Bonfire Suppression (Prevents false alarms)
-        if frp < 18.0 and dist > 2.0:
-            # Check if it is seasonal agricultural burning
-            if ctx["is_agri"] and ctx["is_burning_season"] and frp >= 12.0:
-                return {
-                    "category": "AGRICULTURAL_BURNING",
-                    "confidence": 84,
-                    "risk_level": "MODERATE",
-                    "color": "orange",
-                    "reason": "Seasonal agricultural burning pattern (stubble/crop residue)",
-                    "action": "Log in state pollution registry. Monitor for potential spread.",
-                }
-            # Otherwise, classify as low-intensity localized burn
-            return {
-                "category": "UNKNOWN",
-                "confidence": 85,
-                "risk_level": "LOW",
-                "color": "gray",
-                "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-                "action": "No emergency action required. Routine municipal monitoring.",
-            }
-
-        # RULE 4: Agricultural Burning (seasonal crop residue / open biomass)
-        if (ctx["is_agri"] or ctx["is_burning_season"]) and frp < 60.0 and dist > 4.0:
+        # 10. AGRICULTURAL BURNING (EXISTING RULE):
+        if (ctx["is_agri"] or ctx["is_burning_season"] or location_type == "FARMLAND") and frp < 60.0 and dist > 4.0:
             return {
                 "category": "AGRICULTURAL_BURNING",
                 "confidence": 88,
@@ -152,8 +244,8 @@ class FireClassifier:
                 "action": "Log in state pollution registry. Monitor for potential spread.",
             }
 
-        # RULE 5: Forest Fire (remote wilderness canopy / non-agricultural)
-        if dist > 12.0 and frp >= 15.0 and not ctx["is_agri"]:
+        # 11. FOREST FIRE (EXISTING RULE):
+        if dist > 12.0 and frp >= 15.0 and not ctx["is_agri"] and location_type != "FARMLAND":
             return {
                 "category": "FOREST_FIRE",
                 "confidence": 86,
@@ -163,24 +255,20 @@ class FireClassifier:
                 "action": "🚨 Notify Forest Department & NDRF regional response unit.",
             }
 
-        # Optional ML Fallback Enhancement
+        # ML Model Assist (if available)
         if self.ml_model is not None:
             try:
                 from ml_model import predict_ml
-
                 feat = {
                     "frp": frp,
                     "brightness": ctx["brightness"],
-                    "confidence": fire.get("confidence", "nominal"),
-                    "nearest_industry_km": dist,
-                    "persistence_pct": persistence,
-                    "is_agri_region": 1 if ctx["is_agri"] else 0,
-                    "is_burning_season": 1 if ctx["is_burning_season"] else 0,
+                    "distance_to_industry": dist,
+                    "persistence_ratio": persistence,
+                    "day_of_year": 180,
                     "hour_of_day": 12,
                 }
                 cat, ml_conf = predict_ml(self.ml_model, feat)
                 if cat != "UNKNOWN" and ml_conf >= 65.0:
-                    # Prevent ML from declaring emergency if FRP is low or far from industry
                     if cat == "EMERGENCY_INDUSTRIAL" and (frp < 25.0 or dist > 3.5):
                         cat = "UNKNOWN"
                     
@@ -188,12 +276,12 @@ class FireClassifier:
                         "EMERGENCY_INDUSTRIAL": (
                             "CRITICAL",
                             "red",
-                            "🚨 DISPATCH FIRE SERVICES! ML anomaly detected near facility.",
+                            "🚨 DISPATCH FIRE SERVICES IMMEDIATELY! Coordinate with facility safety officer.",
                         ),
                         "PERSISTENT_INDUSTRIAL": (
                             "LOW",
                             "yellow",
-                            "No emergency action needed. ML detected persistent source.",
+                            "Maintain monitoring. Normal plant operations.",
                         ),
                         "AGRICULTURAL_BURNING": (
                             "MODERATE",
@@ -219,15 +307,15 @@ class FireClassifier:
             except Exception:
                 pass
 
-        # RULE 6: Unknown Fallback (Low risk if low FRP)
-        if frp < 25.0:
+        # Low-intensity fallback (< 15 MW)
+        if frp < 15.0:
             return {
-                "category": "UNKNOWN",
-                "confidence": 80,
-                "risk_level": "LOW",
-                "color": "gray",
+                "category": "DOMESTIC_LOW_INTENSITY_BURN",
+                "confidence": 82,
+                "risk_level": "VERY_LOW",
+                "color": "slate",
                 "reason": "Low-intensity localized burn likely domestic/garbage; monitoring only",
-                "action": "No emergency action required. Routine municipal monitoring.",
+                "action": "ALERT SUPPRESSED. Automatic monitoring active. No emergency dispatch.",
             }
 
         return {
@@ -267,19 +355,51 @@ class FireClassifier:
             "agricultural": 0,
             "forest": 0,
             "unknown": 0,
+            # Granular breakdown for urban engine
+            "hospital": 0,
+            "fuel_station": 0,
+            "school": 0,
+            "slum": 0,
+            "restaurant": 0,
+            "market": 0,
+            "residential": 0,
+            "domestic_suppressed": 0,
         }
         for f in classified_fires:
             cat = f.get("category", f.get("classification", "UNKNOWN"))
-            if cat == "EMERGENCY_INDUSTRIAL":
+            if cat in [
+                "EMERGENCY_INDUSTRIAL",
+                "HOSPITAL_FIRE",
+                "FUEL_STATION_FIRE",
+                "SCHOOL_FIRE",
+                "SLUM_DENSE_URBAN_FIRE",
+            ]:
                 summary["emergency"] += 1
+                if cat == "HOSPITAL_FIRE":
+                    summary["hospital"] += 1
+                elif cat == "FUEL_STATION_FIRE":
+                    summary["fuel_station"] += 1
+                elif cat == "SCHOOL_FIRE":
+                    summary["school"] += 1
+                elif cat == "SLUM_DENSE_URBAN_FIRE":
+                    summary["slum"] += 1
             elif cat == "PERSISTENT_INDUSTRIAL":
                 summary["persistent"] += 1
             elif cat == "AGRICULTURAL_BURNING":
                 summary["agricultural"] += 1
             elif cat == "FOREST_FIRE":
                 summary["forest"] += 1
+            elif cat == "DOMESTIC_LOW_INTENSITY_BURN":
+                summary["unknown"] += 1
+                summary["domestic_suppressed"] += 1
             else:
                 summary["unknown"] += 1
+                if cat == "RESTAURANT_KITCHEN_FIRE":
+                    summary["restaurant"] += 1
+                elif cat == "COMMERCIAL_MARKET_FIRE":
+                    summary["market"] += 1
+                elif cat == "RESIDENTIAL_STRUCTURE_FIRE":
+                    summary["residential"] += 1
         return summary
 
 

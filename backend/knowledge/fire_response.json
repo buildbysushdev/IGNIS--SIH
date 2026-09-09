@@ -1,4 +1,236 @@
 {
+  "HOSPITAL_FIRE": {
+    "fire_class": "Class A/C Life-Critical",
+    "typical_materials": ["Medical Equipment", "Linens", "Oxygen Pipelines", "Plastics"],
+    "use_agents": {
+      "primary": ["Water Spray (non-electrical)", "CO2", "Wet Chemical"],
+      "secondary": ["Clean Agent FE-36"]
+    },
+    "avoid": [
+      "Cutting main power without ICU backup generator check",
+      "Direct water jets on energized diagnostic equipment"
+    ],
+    "equipment_required": [
+      "Fire Tenders (3+)",
+      "Ambulances (5+)",
+      "ICU Stretchers",
+      "Smoke Ejectors",
+      "Portable Oxygen Resuscitators"
+    ],
+    "safety_distance_m": 200,
+    "response_time_target_min": 3,
+    "personnel_required": 16,
+    "coordination": [
+      "Hospital Medical Superintendent",
+      "District Collector",
+      "Chief Medical Officer",
+      "Disaster Management Cell"
+    ],
+    "special_notes": "Coordinate with Hospital Administrator for ICU patient triage and oxygen manifold shutoff. Prioritize non-ambulatory patient evacuation.",
+    "evacuation_radius_m": 200,
+    "hospital_notification": true
+  },
+  "FUEL_STATION_FIRE": {
+    "fire_class": "Class B Flammable Liquid / BLEVE Hazard",
+    "typical_materials": ["Motor Spirit (Petrol)", "High Speed Diesel", "LPG/CNG Dispenser Lines"],
+    "use_agents": {
+      "primary": ["AFFF Foam", "Dry Chemical Powder (DCP)", "CO2"],
+      "secondary": ["Alcohol-Resistant Foam"]
+    },
+    "avoid": [
+      "DO NOT USE WATER / DIRECT WATER STREAMS (Spreads fuel and causes steam explosion)",
+      "Approaching downwind of fuel storage"
+    ],
+    "equipment_required": [
+      "Foam Tenders (3+)",
+      "DCP Extinguishers (50kg trolleys)",
+      "Hazmat Protective Gear",
+      "Water Bowser for boundary cooling"
+    ],
+    "safety_distance_m": 500,
+    "response_time_target_min": 3,
+    "personnel_required": 14,
+    "coordination": [
+      "Oil Marketing Company Safety Cell (IOCL/HPCL/BPCL)",
+      "District Emergency Operations Centre",
+      "Police Traffic Control"
+    ],
+    "special_notes": "STRICT 500m Evacuation. Cool underground/overhead fuel storage tanks with water mist from distance. Activate emergency shut-off valves.",
+    "evacuation_radius_m": 500,
+    "hospital_notification": true
+  },
+  "RESTAURANT_KITCHEN_FIRE": {
+    "fire_class": "Class F / Class B (Cooking Oils & Commercial Gas)",
+    "typical_materials": ["Cooking Oils", "Animal Fats", "Commercial LPG", "Ductwork Grease"],
+    "use_agents": {
+      "primary": ["Wet Chemical (Class F)", "CO2", "Fire Blankets"],
+      "secondary": ["AFFF Foam"]
+    },
+    "avoid": [
+      "Water on hot cooking oil (causes explosive oil flare)",
+      "Using ventilation fans before fire suppression"
+    ],
+    "equipment_required": [
+      "CO2 Extinguishers",
+      "Wet Chemical Extinguishers",
+      "Foam Units",
+      "Gas Detector & Thermal Camera"
+    ],
+    "safety_distance_m": 100,
+    "response_time_target_min": 5,
+    "personnel_required": 6,
+    "coordination": [
+      "Commercial Complex Safety Officer",
+      "Local Fire Station",
+      "Gas Pipeline Authority"
+    ],
+    "special_notes": "Isolate commercial LPG manifold supply immediately. Evacuate adjacent commercial units. Check exhaust ducting for hidden spread.",
+    "evacuation_radius_m": 100,
+    "hospital_notification": false
+  },
+  "DOMESTIC_LOW_INTENSITY_BURN": {
+    "fire_class": "Low-Risk Controlled/Domestic Heat",
+    "typical_materials": ["Yard Waste", "Domestic Biomass", "Garbage", "Cooking Fuel"],
+    "use_agents": {
+      "primary": ["Local bucket water if necessary", "Natural burnout monitoring"],
+      "secondary": []
+    },
+    "avoid": [
+      "Emergency Tender Dispatch (Unnecessary)",
+      "Panic public broadcasting"
+    ],
+    "equipment_required": [
+      "None - Automated Satellite Tracking"
+    ],
+    "safety_distance_m": 10,
+    "response_time_target_min": 60,
+    "personnel_required": 0,
+    "coordination": [
+      "Municipal Sanitation Inspector (routine logging)"
+    ],
+    "special_notes": "Low-intensity burn. Suppressed from emergency alert system to avoid false alarms. Monitored for anomalous thermal spread.",
+    "evacuation_radius_m": 0,
+    "hospital_notification": false
+  },
+  "SCHOOL_FIRE": {
+    "fire_class": "Class A/C Life-Safety Critical",
+    "typical_materials": ["Desks", "Paper", "Lab Chemicals", "Electrical Wiring"],
+    "use_agents": {
+      "primary": ["Water Mist", "CO2", "Dry Chemical Powder"],
+      "secondary": ["Foam"]
+    },
+    "avoid": [
+      "Re-entry into building prior to all-clear",
+      "Blocking emergency school stairwells"
+    ],
+    "equipment_required": [
+      "Fire Tenders (2+)",
+      "Ambulances (3+)",
+      "Hydraulic Rescue Platform",
+      "Breathing Apparatus"
+    ],
+    "safety_distance_m": 200,
+    "response_time_target_min": 4,
+    "personnel_required": 12,
+    "coordination": [
+      "School Administration & Principal",
+      "City Police & Traffic Division",
+      "District Education Officer"
+    ],
+    "special_notes": "Immediate roll-call at external open assembly grounds. Verify student counts class-by-class. Restrict parent vehicle congestion.",
+    "evacuation_radius_m": 200,
+    "hospital_notification": true
+  },
+  "SLUM_DENSE_URBAN_FIRE": {
+    "fire_class": "Class A Rapid Lateral Conflagration",
+    "typical_materials": ["Timber", "Plastic Tarpaulins", "Tin Sheds", "Domestic LPG Cylinders"],
+    "use_agents": {
+      "primary": ["High-Volume Water Sprays", "Foam Blanket", "Fire Breaks"],
+      "secondary": ["DCP for cylinder clusters"]
+    },
+    "avoid": [
+      "Large engine entry in lanes < 2.5m wide",
+      "Delaying power grid disconnection"
+    ],
+    "equipment_required": [
+      "Narrow-Lane Quick Response Vehicles (QRV)",
+      "Long-distance Hose Lays (500m+)",
+      "Portable High-Pressure Pumps",
+      "Ambulances (4+)"
+    ],
+    "safety_distance_m": 300,
+    "response_time_target_min": 4,
+    "personnel_required": 20,
+    "coordination": [
+      "Disaster Management Authority",
+      "Municipal Ward Officer",
+      "Community Volunteers / Civil Defence",
+      "Electricity Distribution Board"
+    ],
+    "special_notes": "Extreme risk of rapid lateral spread and cylinder BLEVEs. Immediate electric power grid cut-off for the sector. Broadcast SMS alert.",
+    "evacuation_radius_m": 300,
+    "hospital_notification": true
+  },
+  "COMMERCIAL_MARKET_FIRE": {
+    "fire_class": "Class A/B Commercial Hazard",
+    "typical_materials": ["Textiles", "Plastics", "Cardboard Packaging", "Electrical Kiosks"],
+    "use_agents": {
+      "primary": ["Water Tenders", "AFFF Foam", "Dry Chemical Powder"],
+      "secondary": ["Water Mist"]
+    },
+    "avoid": [
+      "Operating without crowd control cordons",
+      "Water on live sub-station transformers"
+    ],
+    "equipment_required": [
+      "Fire Tenders (4+)",
+      "Water Bowsers (2+)",
+      "Turntable Ladders / Snorkels",
+      "Crowd Control Barricades"
+    ],
+    "safety_distance_m": 250,
+    "response_time_target_min": 5,
+    "personnel_required": 18,
+    "coordination": [
+      "Market Traders Association",
+      "City Traffic Police",
+      "Power Utility",
+      "Municipal Corporation"
+    ],
+    "special_notes": "High combustible fuel load. Establish perimeter to manage pedestrian crowds and store owner re-entry. Isolate local power grid sector.",
+    "evacuation_radius_m": 250,
+    "hospital_notification": true
+  },
+  "RESIDENTIAL_STRUCTURE_FIRE": {
+    "fire_class": "Class A/C Multi-Story Structure",
+    "typical_materials": ["Furniture", "Electronics", "Domestic LPG", "Curtains"],
+    "use_agents": {
+      "primary": ["Water Fog & Spray", "CO2 for electrical panels", "Foam"],
+      "secondary": ["Thermal Imaging Camera Search"]
+    },
+    "avoid": [
+      "Using elevators during structural fire",
+      "Ventilation before charged line placement"
+    ],
+    "equipment_required": [
+      "Fire Tenders (2+)",
+      "Aerial Ladder Platform",
+      "Thermal Imaging Cameras",
+      "SCBA Breathing Sets",
+      "Ambulances (2+)"
+    ],
+    "safety_distance_m": 150,
+    "response_time_target_min": 5,
+    "personnel_required": 10,
+    "coordination": [
+      "Resident Welfare Association (RWA)",
+      "Local Police",
+      "Gas and Power Utilities"
+    ],
+    "special_notes": "Immediate search and rescue on fire floor and floor above for smoke inhalation. Check stairwells for occupant evacuation.",
+    "evacuation_radius_m": 150,
+    "hospital_notification": true
+  },
   "PERSISTENT_INDUSTRIAL": {
     "fire_class": "Class A/B mixed",
     "typical_materials": ["Steel", "Coal", "Coke", "Iron"],

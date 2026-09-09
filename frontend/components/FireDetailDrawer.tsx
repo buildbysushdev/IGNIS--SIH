@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import type { Fire } from "@/components/FireMap";
 import { findLocalNearestStation } from "@/components/FireMap";
 import InfoTooltip from "@/components/InfoTooltip";
+import { getResponseProtocol } from "@/data/fireResponse";
 
 interface FireDetailDrawerProps {
   fire: Fire | null;
@@ -20,34 +21,82 @@ const CATEGORY_STYLES: Record<
   string,
   { label: string; badge: string; border: string; text: string }
 > = {
+  HOSPITAL_FIRE: {
+    label: "Hospital Life-Critical Fire",
+    badge: "bg-red-950/90 text-red-200 border-red-500",
+    border: "border-red-500",
+    text: "text-red-400",
+  },
+  FUEL_STATION_FIRE: {
+    label: "Petrol Pump / Fuel Depot Fire",
+    badge: "bg-red-950/90 text-red-200 border-red-500",
+    border: "border-red-500",
+    text: "text-red-400",
+  },
+  SCHOOL_FIRE: {
+    label: "School / College Campus Fire",
+    badge: "bg-red-950/90 text-red-200 border-red-500",
+    border: "border-red-500",
+    text: "text-red-400",
+  },
+  SLUM_DENSE_URBAN_FIRE: {
+    label: "Slum / High-Density Settlement Fire",
+    badge: "bg-red-950/90 text-red-200 border-red-500",
+    border: "border-red-500",
+    text: "text-red-400",
+  },
   EMERGENCY_INDUSTRIAL: {
-    label: "Emergency Industrial Fire",
+    label: "Emergency Industrial Factory Fire",
     badge: "bg-red-950/80 text-red-300 border-red-500",
     border: "border-red-500",
     text: "text-red-400",
   },
+  RESTAURANT_KITCHEN_FIRE: {
+    label: "Restaurant / Commercial Kitchen Fire",
+    badge: "bg-orange-950/80 text-orange-200 border-orange-500",
+    border: "border-orange-500",
+    text: "text-orange-400",
+  },
+  COMMERCIAL_MARKET_FIRE: {
+    label: "Commercial Marketplace Fire",
+    badge: "bg-orange-950/80 text-orange-200 border-orange-500",
+    border: "border-orange-500",
+    text: "text-orange-400",
+  },
+  RESIDENTIAL_STRUCTURE_FIRE: {
+    label: "Residential Structure Fire",
+    badge: "bg-orange-950/80 text-orange-200 border-orange-500",
+    border: "border-orange-500",
+    text: "text-orange-400",
+  },
   PERSISTENT_INDUSTRIAL: {
-    label: "Persistent Industrial Source",
+    label: "Persistent Industrial Source (Routine)",
     badge: "bg-purple-950/80 text-purple-300 border-purple-500",
     border: "border-purple-500",
     text: "text-purple-400",
   },
   AGRICULTURAL_BURNING: {
-    label: "Agricultural Burning / Stubble",
+    label: "Agricultural Stubble Burning",
     badge: "bg-amber-950/80 text-amber-300 border-amber-500",
     border: "border-amber-500",
     text: "text-amber-400",
   },
   FOREST_FIRE: {
-    label: "Forest / Wildland Fire",
+    label: "Forest Reserve / Wildland Fire",
     badge: "bg-emerald-950/80 text-emerald-300 border-emerald-500",
     border: "border-emerald-500",
     text: "text-emerald-400",
   },
+  DOMESTIC_LOW_INTENSITY_BURN: {
+    label: "Low-Intensity Domestic Burn (Suppressed)",
+    badge: "bg-slate-900/80 text-slate-300 border-slate-600",
+    border: "border-slate-600",
+    text: "text-slate-400",
+  },
   UNKNOWN: {
-    label: "Unclassified / Small Burn",
-    badge: "bg-gray-800 text-gray-300 border-gray-600",
-    border: "border-gray-500",
+    label: "Under Review / Unclassified",
+    badge: "bg-gray-800/80 text-gray-300 border-gray-600",
+    border: "border-gray-600",
     text: "text-gray-400",
   },
 };
@@ -190,44 +239,72 @@ export default function FireDetailDrawer({
           <span className="text-[#9CA3AF]">{protocolOpen ? "▲" : "▼"}</span>
         </button>
 
-        {protocolOpen && (
-          <div className="p-3 border-t border-[#1F2937] text-xs space-y-2 bg-[#0B1220]/80">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div>
-                <span className="text-[10px] text-[#9CA3AF] block font-semibold">
-                  Primary Extinguishing Agents:
+        {protocolOpen && (() => {
+          const proto = (fire as any)?.response_protocol || getResponseProtocol(fire.category || "UNKNOWN");
+          const agents = proto.use_agents?.primary?.join(", ") || (proto as any).USE?.join(", ") || "Water Spray, CO2";
+          const avoidList = proto.avoid?.join("; ") || (proto as any).AVOID?.join("; ") || "Avoid unverified direct entry";
+          const evacDist = proto.evacuation_radius_m !== undefined 
+            ? (proto.evacuation_radius_m === 0 ? "0m (No evacuation needed - Suppressed)" : `${proto.evacuation_radius_m}m Cordon`)
+            : ((proto as any).evacuation_radius || "200m Cordon");
+          const equip = proto.equipment_required?.join(", ") || (proto as any).equipment?.join(", ") || "Standard Fire Tender Units";
+          const specialNote = proto.special_notes || (proto as any).special_instruction || "";
+
+          return (
+            <div className="p-3 border-t border-[#1F2937] text-xs space-y-2.5 bg-[#0B1220]/90">
+              <div className="flex items-center justify-between pb-1.5 border-b border-[#1F2937]/60">
+                <span className="text-[11px] font-bold text-[#E5E7EB]">
+                  Classification: <span className="text-[#22D3EE] font-mono">{proto.fire_class || "Standard Class"}</span>
                 </span>
-                <span className="text-[#22D3EE] font-medium">
-                  {fire.category === "EMERGENCY_INDUSTRIAL"
-                    ? "AFFF High-Expansion Foam, Class D Dry Chemical"
-                    : fire.category === "FOREST_FIRE"
-                    ? "Water Spray, Retardant Slurry, Soil Beaters"
-                    : "Water Mist, CO2 for electrical hazards"}
-                </span>
+                {proto.response_time_target_min && proto.response_time_target_min !== "N/A" && (
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-red-950/60 border border-red-500/40 text-red-300 font-semibold font-mono">
+                    Target Turnout: {proto.response_time_target_min} min
+                  </span>
+                )}
               </div>
-              <div>
-                <span className="text-[10px] text-[#9CA3AF] block font-semibold">
-                  Hazards & Prohibitions:
-                </span>
-                <span className="text-red-400 font-medium">
-                  {fire.category === "EMERGENCY_INDUSTRIAL"
-                    ? "Avoid direct water jets on molten metal or hydrocarbon tanks"
-                    : "Beware of downwind toxic particulates and canopy flare-ups"}
-                </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div>
+                  <span className="text-[10px] text-[#9CA3AF] block font-semibold mb-0.5">
+                    Primary Extinguishing Agents:
+                  </span>
+                  <span className="text-[#22D3EE] font-medium leading-tight block">
+                    {agents}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-[#9CA3AF] block font-semibold mb-0.5">
+                    Hazards & Prohibitions:
+                  </span>
+                  <span className={`font-medium leading-tight block ${avoidList.includes("DO NOT USE WATER") || avoidList.includes("water on hot cooking oil") ? "text-red-400 font-bold" : "text-amber-300"}`}>
+                    {avoidList}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-[#9CA3AF] block font-semibold mb-0.5">
+                    Containment Perimeter:
+                  </span>
+                  <span className="text-amber-400 font-medium leading-tight block">
+                    {evacDist}
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="text-[10px] text-[#9CA3AF] block font-semibold">
-                  Containment Perimeter:
-                </span>
-                <span className="text-amber-400 font-medium">
-                  {fire.category === "EMERGENCY_INDUSTRIAL"
-                    ? "500m Cordon + Hazmat Evacuation"
-                    : "200m Cordon with Windward Access"}
-                </span>
-              </div>
+
+              {specialNote && (
+                <div className="p-2 rounded bg-[#111827] border border-[#1F2937] text-[11px] text-[#E5E7EB] leading-relaxed">
+                  <span className="text-cyan-400 font-semibold">Special Directives: </span>
+                  {specialNote}
+                </div>
+              )}
+
+              {equip && (
+                <div className="text-[10px] text-[#9CA3AF] pt-0.5 flex flex-wrap items-center gap-1">
+                  <span className="font-semibold text-[#D1D5DB]">Mandated Equipment:</span>
+                  <span>{equip}</span>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
 
       {/* Action Buttons Row */}
