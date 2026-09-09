@@ -661,15 +661,26 @@ def _detect_state(lat: float, lon: float) -> str:
 @limiter.limit("60/minute")
 def get_stats(
     request: Request,
-    days: int = Query(default=7, ge=1, le=30),
+    days: int = Query(default=1, ge=1, le=30),
+    mode: Optional[str] = Query(default=None),
 ) -> dict[str, Any]:
-    classifier = get_classifier()
-    try:
-        raw_fires = fetch_all_sources(days=days)
-    except Exception:
-        raw_fires = get_fires_by_date(days)
+    active_mode = (mode or mode_manager.current_mode).upper().strip()
+    if active_mode == "DEMO":
+        classified = load_demo_fires()
+    else:
+        classifier = get_classifier()
+        try:
+            raw_fires = fetch_all_sources(days=days)
+            if not raw_fires:
+                raw_fires = get_fires_by_date(days)
+        except Exception:
+            raw_fires = get_fires_by_date(days)
 
-    classified = classifier.classify_batch(raw_fires)
+        if raw_fires:
+            classified = classifier.classify_batch(raw_fires)
+        else:
+            classified = load_demo_fires()
+
     by_category: dict[str, int] = {}
     by_state: dict[str, int] = {}
 
@@ -687,6 +698,7 @@ def get_stats(
         "by_category": by_category,
         "by_state": by_state,
         "days_analyzed": days,
+        "mode": active_mode,
     }
 
 
