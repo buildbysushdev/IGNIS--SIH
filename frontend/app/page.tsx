@@ -856,7 +856,9 @@ export default function DashboardPage() {
           </span>
           <span className="text-[#1F2937] hidden sm:inline">|</span>
           <span className="hidden sm:inline text-[#9CA3AF]">
-            Accuracy Rate: 95.8% (Active Learning Loop)
+            {mode === "DEMO"
+              ? "Accuracy Rate: 95.8% (Simulation Benchmark)"
+              : "Active Telemetry Verification Loop"}
           </span>
         </div>
 

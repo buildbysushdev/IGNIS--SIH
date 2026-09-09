@@ -94,32 +94,17 @@ class AgniAI:
         self.groq_api_key = os.getenv("GROQ_API_KEY")
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.gemini_api_key = os.getenv("GEMINI_API_KEY", "").strip()
-        self.gemini_model_name = os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
+        self.gemini_model_name = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest").strip()
         self._genai_client = None
         self._genai_model = None  # legacy compat flag
 
         if self.gemini_api_key:
-            try:
-                # Try new google.genai SDK first (recommended)
-                from google import genai as google_genai
-                self._genai_client = google_genai.Client(api_key=self.gemini_api_key)
-                self._genai_model = self.gemini_model_name  # store model name as string
-                print(f"[AGNI-AI] Gemini (google.genai) model '{self.gemini_model_name}' initialized successfully")
-            except ImportError:
-                try:
-                    # Fallback to legacy google.generativeai
-                    import google.generativeai as genai  # type: ignore
-                    genai.configure(api_key=self.gemini_api_key)
-                    self._genai_model = genai.GenerativeModel(
-                        model_name=self.gemini_model_name,
-                        system_instruction=SYSTEM_PROMPT,
-                    )
-                    self._genai_client = None
-                    print(f"[AGNI-AI] Gemini (legacy genai) model '{self.gemini_model_name}' initialized")
-                except Exception as e:
-                    print(f"[AGNI-AI] Gemini initialization notice: {e}")
-            except Exception as e:
-                print(f"[AGNI-AI] Gemini initialization notice: {e}")
+            # Use direct REST API — no SDK overhead, no key conflicts, fastest path
+            self._genai_client = "rest"  # sentinel to indicate REST mode is ready
+            self._genai_model = self.gemini_model_name
+            print(f"[AGNI-AI] Gemini REST API initialized | default_model='{self.gemini_model_name}'")
+        else:
+            print("[AGNI-AI] WARNING: GEMINI_API_KEY not set. AGNI-AI will use fallback responses.")
 
     def _extract_coordinates(self, text: str, context: Optional[dict[str, Any]] = None) -> tuple[float, float]:
         """Extract latitude and longitude from user text or dashboard context."""
@@ -152,65 +137,80 @@ class AgniAI:
         return 21.1702, 72.8311
 
     def _call_gemini_llm(self, prompt: str, history: Optional[list[dict[str, str]]] = None) -> Optional[str]:
-        """Call Gemini LLM with strict system prompt and refusal guardrails."""
-        if not self._genai_model:
+        """Call Gemini LLM via direct REST API with auto-fallback between valid models."""
+        if not self.gemini_api_key:
             return None
 
-        full_prompt = f"{SYSTEM_PROMPT}\n\n{prompt}"
+        import urllib.request
+        import urllib.error
 
-        # Path 1: New google.genai SDK (preferred)
-        if self._genai_client is not None:
+        # Model candidates list in priority order
+        candidates = [
+            self.gemini_model_name,
+            "gemini-flash-lite-latest",
+            "gemini-flash-latest",
+        ]
+        models_to_try: list[str] = []
+        for c in candidates:
+            if c:
+                clean = c.replace("models/", "").strip()
+                if clean and clean not in models_to_try:
+                    models_to_try.append(clean)
+
+        # Build conversation contents
+        contents = []
+        if history:
+            for turn in history[-4:]:  # last 4 turns for context
+                role = turn.get("role", "user")
+                if role == "assistant":
+                    role = "model"
+                content = turn.get("content", "")
+                if role in ("user", "model") and content:
+                    contents.append({"role": role, "parts": [{"text": content}]})
+        contents.append({"role": "user", "parts": [{"text": prompt[:3000]}]})
+
+        payload = json.dumps({
+            "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+            "contents": contents,
+            "generationConfig": {
+                "temperature": 0.3,
+                "maxOutputTokens": 1024,
+                "topP": 0.8,
+            },
+        }).encode("utf-8")
+
+        for model_id in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:generateContent?key={self.gemini_api_key}"
             try:
-                from google.genai import types as genai_types
-                config = genai_types.GenerateContentConfig(
-                    system_instruction=SYSTEM_PROMPT,
-                    temperature=0.3,
-                    max_output_tokens=1200,
+                req = urllib.request.Request(
+                    url,
+                    data=payload,
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
                 )
-                contents = []
-                if history:
-                    for turn in history[-6:]:
-                        role = turn.get("role", "user")
-                        if role == "assistant":
-                            role = "model"
-                        content = turn.get("content", "")
-                        if role in ("user", "model") and content:
-                            contents.append({"role": role, "parts": [{"text": content}]})
-                contents.append({"role": "user", "parts": [{"text": prompt[:4000]}]})
-                resp = self._genai_client.models.generate_content(
-                    model=f"models/{self._genai_model}" if not str(self._genai_model).startswith("models/") else self._genai_model,
-                    contents=contents,
-                    config=config,
-                )
-                text = (resp.text or "").strip()
-                return text if text else None
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+
+                resp_candidates = data.get("candidates", [])
+                if not resp_candidates:
+                    continue
+
+                parts = resp_candidates[0].get("content", {}).get("parts", [])
+                texts = [p.get("text", "") for p in parts if p.get("text") and not p.get("thought")]
+                text = " ".join(texts).strip()
+                if text:
+                    return text
+
+            except urllib.error.HTTPError as e:
+                body = e.read().decode("utf-8", errors="ignore")[:200]
+                print(f"[AGNI-AI] Gemini REST HTTP {e.code} for '{model_id}': {body}")
+                continue
             except Exception as err:
-                print(f"[AGNI-AI] Gemini (new SDK) call notice: {err}")
-                return None
+                print(f"[AGNI-AI] Gemini REST error on '{model_id}': {err}")
+                continue
 
-        # Path 2: Legacy google.generativeai SDK fallback
-        try:
-            chat_history = []
-            if history:
-                for turn in history[-6:]:
-                    role = turn.get("role", "user")
-                    if role == "assistant":
-                        role = "model"
-                    content = turn.get("content", "")
-                    if role in ("user", "model") and content:
-                        chat_history.append({"role": role, "parts": [content]})
+        return None
 
-            if chat_history:
-                chat = self._genai_model.start_chat(history=chat_history)
-                resp = chat.send_message(prompt[:4000])
-            else:
-                resp = self._genai_model.generate_content(prompt[:4000])
-
-            text = (resp.text or "").strip()
-            return text if text else None
-        except Exception as err:
-            print(f"[AGNI-AI] Gemini call notice: {err}")
-            return None
 
     def _call_groq_llm(self, prompt: str, system_prompt: str) -> Optional[str]:
         """Optionally call Groq LLM API if key is available."""
