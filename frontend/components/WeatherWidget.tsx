@@ -14,16 +14,28 @@ export interface WeatherTelemetry {
   is_cached?: boolean;
 }
 
+// Static demo-mode telemetry (Surat baseline, October)
+const DEMO_WEATHER: WeatherTelemetry = {
+  source: "Demo Baseline (Surat)",
+  temperature: 31.5,
+  wind_speed: 12.0,
+  wind_direction: 255.0,
+  wind_compass: "WSW",
+  humidity: 54.0,
+};
+
 interface WeatherWidgetProps {
   lat?: number;
   lon?: number;
   onWeatherLoaded?: (weather: WeatherTelemetry) => void;
+  demoMode?: boolean;
 }
 
 export default function WeatherWidget({
   lat = 21.1702,
   lon = 72.8311,
   onWeatherLoaded,
+  demoMode = false,
 }: WeatherWidgetProps) {
   const [weather, setWeather] = useState<WeatherTelemetry | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -62,12 +74,20 @@ export default function WeatherWidget({
 
   // Initial fetch and 30-minute interval refresh
   useEffect(() => {
+    if (demoMode) {
+      // DEMO MODE: use static baseline, skip live API
+      setWeather(DEMO_WEATHER);
+      if (onWeatherLoaded) onWeatherLoaded(DEMO_WEATHER);
+      setLastUpdated("DEMO");
+      setLoading(false);
+      return;
+    }
     fetchWeather(lat, lon);
     const interval = setInterval(() => {
       fetchWeather(lat, lon);
     }, 30 * 60 * 1000); // 30 mins
     return () => clearInterval(interval);
-  }, [lat, lon]);
+  }, [lat, lon, demoMode]);
 
   if (!weather) return null;
 
@@ -166,8 +186,10 @@ export default function WeatherWidget({
 
             {/* Sub-footer metadata */}
             <div className="flex items-center justify-between text-[8px] text-[#4a5563] pt-0.5">
-              <span>SRC: {weather.source?.split(" ")[0] || "OPEN-METEO"}</span>
-              <span>{lastUpdated ? `SYNC: ${lastUpdated}` : "LIVE SYNC"}</span>
+              <span>SRC: {demoMode ? "DEMO-BASELINE" : (weather.source?.split(" ")[0] || "OPEN-METEO")}</span>
+              <span className={demoMode ? "text-[#ffb800]" : ""}>
+                {demoMode ? "DEMO DATA" : (lastUpdated ? `SYNC: ${lastUpdated}` : "LIVE SYNC")}
+              </span>
             </div>
           </div>
         )}

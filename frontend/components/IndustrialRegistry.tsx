@@ -70,11 +70,13 @@ export let ALL_FACILITIES: IndustrialFacility[] = [...STATIC_FALLBACK];
 interface IndustrialRegistryProps {
   onSelectFacility?: (facility: IndustrialFacility) => void;
   selectedFacilityId?: string | null;
+  demoMode?: boolean;
 }
 
 export default function IndustrialRegistry({
   onSelectFacility,
   selectedFacilityId,
+  demoMode = false,
 }: IndustrialRegistryProps) {
   const [facilities, setFacilities] = useState<IndustrialFacility[]>(STATIC_FALLBACK);
   const [loading, setLoading] = useState<boolean>(true);
@@ -83,8 +85,16 @@ export default function IndustrialRegistry({
   const [page, setPage] = useState(0);
   const pageSize = 25;
 
-  // Fetch from live API on mount
+  // Fetch from live API on mount — only in LIVE mode
   useEffect(() => {
+    if (demoMode) {
+      // DEMO MODE: use static list immediately, no API call
+      setFacilities(STATIC_FALLBACK);
+      ALL_FACILITIES = [...STATIC_FALLBACK];
+      setIsLive(false);
+      setLoading(false);
+      return;
+    }
     const fetchFacilities = async () => {
       try {
         setLoading(true);
@@ -108,22 +118,19 @@ export default function IndustrialRegistry({
             zone_type: z.zone_type || z.type || "industrial",
           }));
           setFacilities(mapped);
-          ALL_FACILITIES = mapped; // update shared export
+          ALL_FACILITIES = mapped;
           setIsLive(true);
         } else {
-          // API returned empty - keep fallback
           setIsLive(false);
         }
       } catch {
-        // Silently fall back to static list
         setIsLive(false);
       } finally {
         setLoading(false);
       }
     };
-
     fetchFacilities();
-  }, []);
+  }, [demoMode]);
 
   const filtered = useMemo(() => {
     if (!searchTerm.trim()) return facilities;
@@ -162,7 +169,7 @@ export default function IndustrialRegistry({
             isLive ? "text-[#00ff9c]" : "text-[#ffb800]"
           }`}
         >
-          {loading ? "[SYNCING]" : isLive ? "[LIVE-OSM]" : "[FALLBACK]"}
+          {loading ? "[SYNCING]" : demoMode ? "[DEMO]" : isLive ? "[LIVE-OSM]" : "[FALLBACK]"}
         </span>
       </div>
 

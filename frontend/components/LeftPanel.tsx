@@ -2,6 +2,24 @@
 
 import React, { useState, useMemo } from "react";
 import { ALL_FACILITIES, IndustrialFacility } from "@/components/IndustrialRegistry";
+// STATIC_FALLBACK is the 15-site demo-mode list from IndustrialRegistry
+const DEMO_FACILITIES: IndustrialFacility[] = [
+  { id: "A001", name: "BHILAI STEEL PLANT", type: "WORKS", latitude: 21.2000, longitude: 81.3800, sector: "CT-01" },
+  { id: "A002", name: "BOKARO STEEL PLANT", type: "WORKS", latitude: 23.7900, longitude: 86.1400, sector: "JH-02" },
+  { id: "A003", name: "JAMSHEDPUR TATA STEEL", type: "WORKS", latitude: 22.8000, longitude: 86.2000, sector: "JH-01" },
+  { id: "A004", name: "ROURKELA STEEL PLANT", type: "WORKS", latitude: 22.2500, longitude: 84.8500, sector: "OR-03" },
+  { id: "A005", name: "DURGAPUR STEEL PLANT", type: "WORKS", latitude: 23.5500, longitude: 87.2900, sector: "WB-01" },
+  { id: "A006", name: "JAMNAGAR REFINERY", type: "REFINERY", latitude: 22.3800, longitude: 69.8300, sector: "GJ-01" },
+  { id: "A007", name: "MANGALORE REFINERY MRPL", type: "REFINERY", latitude: 12.9800, longitude: 74.8300, sector: "KA-02" },
+  { id: "A008", name: "KOCHI REFINERY BPCL", type: "REFINERY", latitude: 9.9600, longitude: 76.3600, sector: "KL-01" },
+  { id: "A009", name: "PARADIP IOCL REFINERY", type: "REFINERY", latitude: 20.2700, longitude: 86.6700, sector: "OR-04" },
+  { id: "A010", name: "DAHEJ PETROCHEM SEZ", type: "CHEM", latitude: 21.7100, longitude: 72.5800, sector: "GJ-03" },
+  { id: "A011", name: "HAZIRA L&T / ONGC HUB", type: "WORKS", latitude: 21.1400, longitude: 72.6500, sector: "GJ-04" },
+  { id: "A012", name: "SINGRAULI NTPC SUPER", type: "POWER", latitude: 24.1000, longitude: 82.6800, sector: "UP-02" },
+  { id: "A013", name: "RAMAGUNDAM NTPC", type: "POWER", latitude: 18.7600, longitude: 79.5200, sector: "TS-01" },
+  { id: "A014", name: "MUNDRA THERMAL ADANI", type: "POWER", latitude: 22.8200, longitude: 69.5200, sector: "GJ-02" },
+  { id: "A015", name: "VAPI INDUSTRIAL ESTATE", type: "CHEM", latitude: 20.3700, longitude: 72.9100, sector: "GJ-05" },
+];
 import type { AlertItem } from "@/components/AlertPanel";
 import InfoTooltip from "@/components/InfoTooltip";
 
@@ -14,6 +32,7 @@ interface LeftPanelProps {
   onSelectCoordinates: (lat: number, lon: number) => void;
   onOpenDispatchModal?: (fireCoords?: [number, number]) => void;
   onOpenEmergencyPanel?: () => void;
+  demoMode?: boolean;
 }
 
 export default function LeftPanel({
@@ -25,20 +44,23 @@ export default function LeftPanel({
   onSelectCoordinates,
   onOpenDispatchModal,
   onOpenEmergencyPanel,
+  demoMode = false,
 }: LeftPanelProps) {
   const [activeTab, setActiveTab] = useState<"industries" | "alerts">("industries");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const facilitySource = demoMode ? DEMO_FACILITIES : ALL_FACILITIES;
+
   const filteredFacilities = useMemo(() => {
-    if (!searchQuery.trim()) return ALL_FACILITIES;
+    if (!searchQuery.trim()) return facilitySource;
     const q = searchQuery.toLowerCase();
-    return ALL_FACILITIES.filter(
+    return facilitySource.filter(
       (f) =>
         f.name.toLowerCase().includes(q) ||
         f.type.toLowerCase().includes(q) ||
         (f.sector && f.sector.toLowerCase().includes(q))
     );
-  }, [searchQuery]);
+  }, [searchQuery, facilitySource]);
 
   const criticalAlerts = useMemo(() => {
     return alerts.filter(
@@ -109,6 +131,13 @@ export default function LeftPanel({
       {/* TAB 1: INDUSTRIES */}
       {activeTab === "industries" && (
         <div className="flex-1 flex flex-col overflow-hidden p-3 space-y-2.5">
+          {/* DEMO MODE Banner */}
+          {demoMode && (
+            <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-yellow-900/30 border border-yellow-600/40 text-yellow-400 text-[10px] font-mono font-semibold tracking-wider">
+              <span className="animate-pulse">◈</span>
+              DEMO MODE — Showing 15 Reference Facilities
+            </div>
+          )}
           {/* Search Box */}
           <div className="relative">
             <input

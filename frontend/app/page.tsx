@@ -765,6 +765,7 @@ export default function DashboardPage() {
             }
           }}
           onOpenEmergencyPanel={() => setIsEmergencyPanelOpen(true)}
+          demoMode={mode === "DEMO"}
         />
 
         {/* COLUMN 2: CENTER MAP STAGE (MAP IS THE HERO) */}
@@ -792,6 +793,7 @@ export default function DashboardPage() {
             onTryLast3Days={() => setDays(3)}
             onRetryLive={() => fetchData(true)}
             onSwitchToDemo={() => handleSelectMode("DEMO")}
+            demoMode={mode === "DEMO"}
           />
 
           {/* Clean Bottom Detail Drawer when a fire is clicked */}

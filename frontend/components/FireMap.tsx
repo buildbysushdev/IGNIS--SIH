@@ -170,6 +170,7 @@ interface FireMapProps {
   onTryLast3Days?: () => void;
   onRetryLive?: () => void;
   onSwitchToDemo?: () => void;
+  demoMode?: boolean;
 }
 
 export default function FireMap({
@@ -192,6 +193,7 @@ export default function FireMap({
   onTryLast3Days,
   onRetryLive,
   onSwitchToDemo,
+  demoMode = false,
 }: FireMapProps) {
   const { t } = useI18n();
   const safeFires = Array.isArray(fires) ? fires : [];
@@ -883,7 +885,7 @@ export default function FireMap({
         </MapContainer>
 
         {/* Live Weather & Atmospheric Telemetry Widget */}
-        <WeatherWidget lat={currentCenter.lat} lon={currentCenter.lon} />
+        <WeatherWidget lat={currentCenter.lat} lon={currentCenter.lon} demoMode={demoMode} />
 
         {/* Bottom-Left Compact Legend */}
         <div className="absolute bottom-3 left-3 z-[1000] pointer-events-auto bg-[#111827]/90 backdrop-blur-sm border border-[#1F2937] rounded-xl p-2.5 shadow-lg text-xs space-y-1.5 max-w-[245px]">
