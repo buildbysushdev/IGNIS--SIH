@@ -27,7 +27,7 @@ Google Gemini REST API             ──> AGNI-AI RAG Knowledge Engine  ──>
 
 ### Backend (`backend/.env`):
 ```env
-FIRMS_MAP_KEY=f966b20f1e9b5cba7ee8226366a7f48d
+FIRMS_MAP_KEY=<YOUR_FIRMS_MAP_KEY>
 OVERPASS_URL=https://overpass-api.de/api/interpreter
 DATABASE_PATH=ignis.db
 HOST=0.0.0.0

@@ -298,62 +298,6 @@ def get_mode_health() -> dict[str, Any]:
     return mode_manager.get_health()
 
 
-# ==============================================================================
-# SCENARIO SIMULATION ENGINE ENDPOINTS
-# ==============================================================================
-
-@app.get("/api/scenarios")
-def list_scenarios() -> list[dict[str, Any]]:
-    """Returns list of available simulation scenarios."""
-    return scenario_engine.list_scenarios()
-
-
-@app.get("/api/scenarios/state")
-def get_scenario_state() -> dict[str, Any]:
-    """Returns current scenario playback state."""
-    return scenario_engine.get_state()
-
-
-@app.get("/api/scenarios/{scenario_id}")
-def get_scenario(scenario_id: str) -> dict[str, Any]:
-    """Returns full scenario data by ID."""
-    scen = scenario_engine.get_scenario(scenario_id)
-    if not scen:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Scenario '{scenario_id}' not found",
-        )
-    return scen
-
-
-@app.post("/api/scenarios/{scenario_id}/play")
-def play_scenario(scenario_id: str) -> dict[str, Any]:
-    """Marks scenario as active and starts playback timer."""
-    res = scenario_engine.start_scenario(scenario_id)
-    if not res.get("success"):
-        raise HTTPException(
-            status_code=404,
-            detail=res.get("error", "Failed to start scenario"),
-        )
-    return res
-
-
-@app.post("/api/scenarios/stop")
-def stop_scenario() -> dict[str, Any]:
-    """Halts active scenario playback."""
-    return scenario_engine.stop_scenario()
-
-
-@app.get("/api/fire-stations/nearest")
-@limiter.limit("60/minute")
-def get_nearest_station(
-    request: Request,
-    lat: float = Query(..., ge=-90.0, le=90.0),
-    lon: float = Query(..., ge=-180.0, le=180.0),
-) -> dict[str, Any]:
-    """Identify nearest fire station with Haversine distance, ETA, and emergency contact."""
-    station = dispatch.find_nearest_fire_station(lat, lon)
-    return {"station": station}
 
 
 @app.post("/api/dispatch")
@@ -532,10 +476,16 @@ def get_fires(
         if not fallback:
             fallback = get_fires_by_date(30, limit=1000)
         if not fallback:
-            fallback = load_demo_fires()
-            ignis_status = "demo"
-            ds = "Simulated Telemetry (Offline Demonstration)"
-            msg = "Serving simulated demo fires"
+            if mode_manager.current_mode == "DEMO" or source == "demo":
+                fallback = load_demo_fires()
+                ignis_status = "demo"
+                ds = "Simulated Telemetry (Offline Demonstration)"
+                msg = "Serving simulated demo fires"
+            else:
+                fallback = []
+                ignis_status = "unavailable"
+                ds = "No Upstream/Cache Telemetry Available"
+                msg = f"NASA FIRMS API unavailable ({exc}) and local cache is empty"
         else:
             ignis_status = "cached_fallback"
             c_status = get_cache_status()
@@ -1191,6 +1141,42 @@ def get_notable_incidents_endpoint(
     from incident_reports import get_notable_incidents
 
     return get_notable_incidents(limit=limit)
+
+
+# ==============================================================================
+# 11) FIELD OFFICER GROUND TRUTH VERIFICATION & ACCURACY STATS
+# ==============================================================================
+@app.post("/api/field-report")
+@limiter.limit("30/minute")
+def submit_field_report_endpoint(request: Request, report: dict[str, Any]) -> dict[str, Any]:
+    """Store ground-truth incident report submitted by field officers."""
+    import field_reports
+    return field_reports.submit_report(report)
+
+
+@app.get("/api/field-report/stats")
+@app.get("/api/field-reports/stats")
+@limiter.limit("60/minute")
+def get_field_report_stats_endpoint(request: Request) -> dict[str, Any]:
+    """Return verified classification accuracy metrics and discrepancy counts."""
+    import field_reports
+    return field_reports.get_accuracy_stats()
+
+
+@app.get("/api/field-report/officer/{officer_id}")
+@limiter.limit("60/minute")
+def get_officer_reports_endpoint(request: Request, officer_id: str) -> list[dict[str, Any]]:
+    """Retrieve verified reports submitted by specific field officer."""
+    import field_reports
+    return field_reports.get_officer_history(officer_id)
+
+
+@app.get("/api/field-report/fire/{fire_id}")
+@limiter.limit("60/minute")
+def get_fire_reports_endpoint(request: Request, fire_id: int) -> list[dict[str, Any]]:
+    """Retrieve field reports associated with specific thermal anomaly."""
+    import field_reports
+    return field_reports.get_reports_for_fire(fire_id)
 
 
 # ==============================================================================

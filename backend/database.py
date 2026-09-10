@@ -65,6 +65,13 @@ CREATE TABLE IF NOT EXISTS industrial_zones (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(latitude, longitude, name)
 );
+CREATE INDEX IF NOT EXISTS idx_detections_acq_date ON detections(acq_date);
+CREATE INDEX IF NOT EXISTS idx_detections_classification ON detections(classification);
+CREATE INDEX IF NOT EXISTS idx_alerts_detection_id ON alerts(detection_id);
+CREATE INDEX IF NOT EXISTS idx_alerts_status ON alerts(status);
+CREATE INDEX IF NOT EXISTS idx_alerts_created_at ON alerts(created_at);
+CREATE INDEX IF NOT EXISTS idx_field_reports_fire_id ON field_reports(fire_id);
+CREATE INDEX IF NOT EXISTS idx_industrial_zones_coords ON industrial_zones(latitude, longitude);
 """
 
 INSERT_SQL = """
@@ -552,52 +559,23 @@ def get_field_report_stats() -> dict[str, Any]:
 
             if total_verifications == 0:
                 return {
-                    "total_classifications": max(total_classifications, 1420),
-                    "officer_verifications": 18,
-                    "accuracy_percentage": 94.4,
-                    "confirmed_count": 17,
-                    "discrepancy_count": 1,
+                    "total_classifications": total_classifications,
+                    "officer_verifications": 0,
+                    "accuracy_percentage": 0.0,
+                    "confirmed_count": 0,
+                    "discrepancy_count": 0,
                     "category_accuracy": {
-                        "EMERGENCY_INDUSTRIAL": 96.2,
-                        "PERSISTENT_INDUSTRIAL": 98.1,
-                        "AGRICULTURAL_BURNING": 91.5,
-                        "FOREST_FIRE": 93.8,
-                        "UNKNOWN": 82.0,
+                        "EMERGENCY_INDUSTRIAL": 0.0,
+                        "PERSISTENT_INDUSTRIAL": 0.0,
+                        "AGRICULTURAL_BURNING": 0.0,
+                        "FOREST_FIRE": 0.0,
+                        "UNKNOWN": 0.0,
                     },
-                    "recent_reports": [
-                        {
-                            "id": 101,
-                            "fire_id": 4,
-                            "officer_name": "Insp. Vikram Rathore",
-                            "officer_id": "MH-SDRF-402",
-                            "timestamp": "2026-09-08T09:30:00Z",
-                            "status": "CONFIRMED",
-                            "ground_observation": "Chemical unit reactor breach. Hazmat response deployed.",
-                            "location_verified": 1,
-                            "classification_correct": 1,
-                            "classification_actual": "EMERGENCY_INDUSTRIAL",
-                            "damage_assessment": "SEVERE",
-                            "resources_needed": "Foam Units, Hazmat Suits, Fire Tenders",
-                        },
-                        {
-                            "id": 102,
-                            "fire_id": 12,
-                            "officer_name": "Capt. Anita Sharma",
-                            "officer_id": "PB-FIRE-108",
-                            "timestamp": "2026-09-08T08:15:00Z",
-                            "status": "CONFIRMED",
-                            "ground_observation": "Stubble burning verified across 40 acres. Controlled perimeter.",
-                            "location_verified": 1,
-                            "classification_correct": 1,
-                            "classification_actual": "AGRICULTURAL_BURNING",
-                            "damage_assessment": "MINOR",
-                            "resources_needed": "Water Bowsers",
-                        }
-                    ],
+                    "recent_reports": [],
                     "improvements": {
-                        "retrained_samples": 42,
-                        "accuracy_gain": "+3.4%",
-                        "false_alarm_reduction": "-18.2%",
+                        "retrained_samples": 0,
+                        "accuracy_gain": "0.0%",
+                        "false_alarm_reduction": "0.0%",
                     },
                 }
 

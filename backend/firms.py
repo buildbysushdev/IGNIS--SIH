@@ -77,9 +77,15 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
     if response is None:
         return []
 
-    text = response.text.strip()
-    if not text or text.lower().startswith("no data"):
-        print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires=0")
+    records = parse_firms_csv(response.text, source)
+    print(f"[IGNIS] FIRMS API call SUCCESS | source={source} | days={days} | fires={len(records)}")
+    return records
+
+
+def parse_firms_csv(text: str, source: str = "VIIRS_SNPP_NRT") -> list[dict[str, Any]]:
+    """Parse raw NASA FIRMS CSV text into normalized hotspot records inside India bounding box."""
+    text = (text or "").strip()
+    if not text or text.lower().startswith("no data") or "invalid" in text.lower():
         return []
 
     try:
@@ -89,7 +95,6 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
         return []
 
     if df.empty:
-        print(f"[IGNIS] FIRMS API call | source={source} | days={days} | fires=0")
         return []
 
     # Column normalization: VIIRS bright_ti4 -> brightness; MODIS stays brightness
@@ -103,7 +108,8 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
         try:
             lat = float(row.get("latitude", 0.0))
             lon = float(row.get("longitude", 0.0))
-            if not (-90.0 <= lat <= 90.0 and -180.0 <= lon <= 180.0):
+            # India national bounding box coordinates filter
+            if not (6.0 <= lat <= 38.0 and 65.0 <= lon <= 100.0):
                 continue
             brightness = float(row.get("brightness", 0.0))
             frp = float(row.get("frp", 0.0))
@@ -124,10 +130,18 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
         acq_date = "" if pd.isna(raw_date) else str(raw_date).strip()
 
         raw_conf = row.get("confidence", "")
-        confidence = "" if pd.isna(raw_conf) else str(raw_conf).strip()
+        confidence = "" if pd.isna(raw_conf) else str(raw_conf).strip().lower()
+        if confidence == "nominal":
+            confidence = "n"
+        elif confidence == "high":
+            confidence = "h"
+        elif confidence == "low":
+            confidence = "l"
 
         raw_sat = row.get("satellite", "")
         satellite = "" if pd.isna(raw_sat) else str(raw_sat).strip()
+        if not satellite or satellite == "N" or satellite == "1":
+            satellite = "SNPP" if "SNPP" in source or satellite == "N" else "NOAA-20"
 
         raw_dn = row.get("daynight", "")
         daynight = "" if pd.isna(raw_dn) else str(raw_dn).strip()
@@ -144,8 +158,11 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
             "daynight": daynight,
         })
 
-    print(f"[IGNIS] FIRMS API call SUCCESS | source={source} | days={days} | fires={len(records)}")
     return records
+
+
+# Backward compatibility alias
+_parse_firms_csv = parse_firms_csv
 
 
 def _get_cache_path(days: int, source: str) -> str:
@@ -235,11 +252,9 @@ def fetch_fires(
             _update_status("cached_fallback", len(db_fires), f"Operating on local repository ({len(db_fires)} verified detections)")
             return db_fires
 
-        # If SQLite also has 0 detections, engage realistic demo data
-        from demo_data import load_demo_fires
-        demo = load_demo_fires()
-        _update_status("demo", len(demo), f"Simulated surveillance telemetry ({len(demo)} hotspots)")
-        return demo
+        # If SQLite also has 0 detections, return empty list with clear operational status (strict LIVE/DEMO isolation)
+        _update_status("cached_fallback", 0, "No active satellite detections in selected orbital window and local cache is empty")
+        return []
     except Exception as e:
         print(f"[IGNIS] NASA FIRMS API Notice: {e}")
         _data_status["last_error"] = str(e)
@@ -263,11 +278,41 @@ def fetch_fires(
         except Exception as db_err:
             print(f"[IGNIS] SQLite fallback notice: {db_err}")
 
-        # 3. Fallback to demo fires
-        from demo_data import load_demo_fires
-        demo = load_demo_fires()
-        _update_status("demo", len(demo), f"Simulated surveillance telemetry ({len(demo)} hotspots)")
-        return demo
+        # 3. No fallback to synthetic demo data in LIVE query mode; return empty list with clear failure status
+        _update_status("cached_fallback", 0, f"Satellite telemetry unavailable: {e}")
+        return []
+
+
+def deduplicate_fires(fires: list[dict[str, Any]], radius_km: float = 1.0) -> list[dict[str, Any]]:
+    """Deduplicate overlapping fire detections within radius_km (default 1km). Sums FRP and keeps max brightness."""
+    if not fires:
+        return []
+
+    sorted_fires = sorted(fires, key=lambda f: float(f.get("frp", 0.0)), reverse=True)
+    deduped: list[dict[str, Any]] = []
+
+    for fire in sorted_fires:
+        lat1, lon1 = float(fire["latitude"]), float(fire["longitude"])
+        is_dup = False
+        for kept in deduped:
+            lat2, lon2 = float(kept["latitude"]), float(kept["longitude"])
+            if abs(lat1 - lat2) < 0.02 and abs(lon1 - lon2) < 0.02:
+                if geodesic((lat1, lon1), (lat2, lon2)).km <= radius_km:
+                    is_dup = True
+                    kept["frp"] = round(float(kept.get("frp", 0.0)) + float(fire.get("frp", 0.0)), 1)
+                    kept["brightness"] = round(max(float(kept.get("brightness", 0.0)), float(fire.get("brightness", 0.0))), 1)
+                    kept["merged_count"] = kept.get("merged_count", 1) + 1
+                    break
+        if not is_dup:
+            item = dict(fire)
+            item["merged_count"] = 1
+            deduped.append(item)
+
+    return deduped
+
+
+# Backward compatibility alias
+_deduplicate_fires = deduplicate_fires
 
 
 def fetch_all_sources(days: int = 1, force: bool = False) -> list[dict[str, Any]]:
@@ -284,25 +329,9 @@ def fetch_all_sources(days: int = 1, force: bool = False) -> list[dict[str, Any]
         if db_fires:
             combined = db_fires
         else:
-            from demo_data import load_demo_fires
-            combined = load_demo_fires()
+            return []
 
-    # Sort descending by FRP to ensure points with higher FRP are preserved
-    sorted_fires = sorted(combined, key=lambda f: float(f.get("frp", 0.0)), reverse=True)
-    deduped: list[dict[str, Any]] = []
-
-    for fire in sorted_fires:
-        lat1, lon1 = float(fire["latitude"]), float(fire["longitude"])
-        is_dup = False
-        for kept in deduped:
-            lat2, lon2 = float(kept["latitude"]), float(kept["longitude"])
-            if abs(lat1 - lat2) < 0.02 and abs(lon1 - lon2) < 0.02:
-                if geodesic((lat1, lon1), (lat2, lon2)).km <= 1.0:
-                    is_dup = True
-                    break
-        if not is_dup:
-            deduped.append(fire)
-
+    deduped = deduplicate_fires(combined, radius_km=1.0)
     print(
         f"[IGNIS] Merged {len(combined)} fires from all sources -> "
         f"{len(deduped)} fires after 1km deduplication"

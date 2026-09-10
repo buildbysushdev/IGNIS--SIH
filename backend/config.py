@@ -31,7 +31,7 @@ CORS_ORIGINS: list[str] = [
 
 # Gemini AI Assistant (AGNI-AI) Configuration
 GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "").strip()
-GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
+GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest").strip()
 
 
 def get_db_path() -> str:

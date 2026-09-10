@@ -6,13 +6,26 @@ class FireClassifier:
 
     def __init__(
         self,
-        industrial_zones: list[dict[str, Any]],
-        persistence_cache: dict[Any, float],
+        industrial_zones: Optional[list[dict[str, Any]]] = None,
+        persistence_cache: Optional[dict[Any, float]] = None,
         ml_model: Optional[Any] = None,
     ) -> None:
-        self.zones = industrial_zones
-        self.persistence_cache = persistence_cache
-        self.ml_model = ml_model
+        if industrial_zones is not None:
+            self.zones = industrial_zones
+        else:
+            from osm_data import load_or_cache_zones
+            self.zones = load_or_cache_zones()
+
+        self.persistence_cache = persistence_cache if persistence_cache is not None else {}
+        
+        if ml_model is not None:
+            self.ml_model = ml_model
+        else:
+            try:
+                from ml_model import load_model
+                self.ml_model = load_model()
+            except Exception:
+                self.ml_model = None
 
     def _check_context(self, fire: dict[str, Any]) -> dict[str, Any]:
         """Extract contextual spatial, temporal, radiometric, and urban amenity features from a fire point."""
@@ -41,9 +54,12 @@ class FireClassifier:
         ).upper()
 
         # Persistence percentage lookup
-        from ml_model import get_persistence
-
-        persistence = get_persistence(lat, lon, self.persistence_cache)
+        explicit_persistence = fire.get("persistence") if fire.get("persistence") is not None else fire.get("persistence_pct")
+        if explicit_persistence is not None:
+            persistence = float(explicit_persistence)
+        else:
+            from ml_model import get_persistence
+            persistence = get_persistence(lat, lon, self.persistence_cache)
 
         # Agricultural belt check (Punjab, Haryana, Indo-Gangetic, Deccan & Kaveri delta plains)
         is_agri = (
@@ -259,11 +275,18 @@ class FireClassifier:
         if self.ml_model is not None:
             try:
                 from ml_model import predict_ml
+                raw_conf = fire.get("confidence", "n")
+                conf_num = 3.0 if raw_conf == "h" else (2.0 if raw_conf == "n" else 1.0)
                 feat = {
                     "frp": frp,
                     "brightness": ctx["brightness"],
+                    "confidence_num": conf_num,
+                    "nearest_industry_km": dist,
                     "distance_to_industry": dist,
+                    "persistence_pct": persistence,
                     "persistence_ratio": persistence,
+                    "is_agri_region": 1.0 if ctx.get("is_agri") else 0.0,
+                    "is_burning_season": 1.0 if ctx.get("is_burning_season") else 0.0,
                     "day_of_year": 180,
                     "hour_of_day": 12,
                 }
@@ -303,6 +326,16 @@ class FireClassifier:
                             "color": r_color,
                             "reason": f"ML model classified as {cat} with {ml_conf:.1f}% probability based on feature signature.",
                             "action": r_act,
+                            "explainability": {
+                                "frp": frp,
+                                "distance_to_industry_km": dist,
+                                "nearest_facility": nearest_name,
+                                "persistence_pct": persistence,
+                                "location_type": location_type,
+                                "rule_triggered": "ML_RANDOM_FOREST_FUSION",
+                                "ml_category": cat,
+                                "ml_confidence": ml_conf,
+                            },
                         }
             except Exception:
                 pass
