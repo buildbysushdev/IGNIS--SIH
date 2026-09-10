@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import time
 from datetime import datetime, timedelta
@@ -230,14 +231,38 @@ def fetch_industrial_zones_from_osm() -> list[dict[str, Any]]:
     return deduped
 
 
+_MEMORY_ZONES_CACHE: list[dict[str, Any]] = []
+_MEMORY_AMENITIES_CACHE: list[dict[str, Any]] = []
+
+
+def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Fast, accurate Haversine distance in kilometers (~1,000x faster than iterative geodesic)."""
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2.0) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2.0) ** 2
+    c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(max(0.0, 1.0 - a)))
+    return R * c
+
+
+def haversine_meters(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Fast Haversine distance in meters."""
+    return haversine_km(lat1, lon1, lat2, lon2) * 1000.0
+
+
 def load_or_cache_zones() -> list[dict[str, Any]]:
-    """Load zones from SQLite database (<24h) or query Overpass API."""
+    """Load zones from in-memory cache, SQLite database (<24h) or query Overpass API."""
+    global _MEMORY_ZONES_CACHE
+    if _MEMORY_ZONES_CACHE:
+        return _MEMORY_ZONES_CACHE
+
     import database
 
     # 1. Try SQLite database
     db_zones = database.get_cached_industrial_zones(limit=1000)
     if db_zones and len(db_zones) >= 30:
-        return db_zones
+        _MEMORY_ZONES_CACHE = db_zones
+        return _MEMORY_ZONES_CACHE
 
     # 2. Try JSON cache
     cache_path = Path(CACHE_DIR) / "industrial_zones.json"
@@ -249,24 +274,26 @@ def load_or_cache_zones() -> list[dict[str, Any]]:
                     database.insert_industrial_zones(zones)
                 except Exception:
                     pass
-                return zones
+                _MEMORY_ZONES_CACHE = zones
+                return _MEMORY_ZONES_CACHE
         except Exception:
             pass
 
     # 3. Fetch live from OSM Overpass & populate DB
-    return fetch_industrial_zones_from_osm()
+    _MEMORY_ZONES_CACHE = fetch_industrial_zones_from_osm()
+    return _MEMORY_ZONES_CACHE
 
 
 def find_nearest_industry(lat: float, lon: float, zones: list[dict[str, Any]]) -> dict[str, Any]:
-    """Find nearest industrial facility using geodesic GPS distance calculation."""
+    """Find nearest industrial facility using fast Haversine distance calculation."""
     if not zones:
         return {"distance_km": 999.0, "name": "Unknown", "zone_type": "none", "zone_lat": 0.0, "zone_lon": 0.0}
-    origin = (lat, lon)
+
     nearest = min(
         zones,
-        key=lambda z: geodesic(origin, (float(z["latitude"]), float(z["longitude"]))).km,
+        key=lambda z: haversine_km(lat, lon, float(z["latitude"]), float(z["longitude"])),
     )
-    dist_km = geodesic(origin, (float(nearest["latitude"]), float(nearest["longitude"]))).km
+    dist_km = haversine_km(lat, lon, float(nearest["latitude"]), float(nearest["longitude"]))
     return {
         "distance_km": round(dist_km, 2),
         "name": str(nearest.get("name", "Unnamed")),
@@ -285,13 +312,18 @@ def check_industrial_proximity(lat: float, lon: float, radius: int = 5000) -> tu
 
 
 def load_or_cache_amenities() -> list[dict[str, Any]]:
-    """Load urban amenities and critical infrastructure from cache (<7d) or preconfigured database."""
+    """Load urban amenities and critical infrastructure from in-memory cache, JSON cache (<7d) or preconfigured database."""
+    global _MEMORY_AMENITIES_CACHE
+    if _MEMORY_AMENITIES_CACHE:
+        return _MEMORY_AMENITIES_CACHE
+
     cache_path = Path(CACHE_DIR) / "urban_amenities.json"
     if cache_path.exists():
         try:
             amenities = json.loads(cache_path.read_text(encoding="utf-8"))
             if amenities and len(amenities) > 0:
-                return amenities
+                _MEMORY_AMENITIES_CACHE = amenities
+                return _MEMORY_AMENITIES_CACHE
         except Exception:
             pass
 
@@ -308,7 +340,8 @@ def load_or_cache_amenities() -> list[dict[str, Any]]:
             except OSError:
                 pass
 
-    return list(FALLBACK_AMENITIES)
+    _MEMORY_AMENITIES_CACHE = list(FALLBACK_AMENITIES)
+    return _MEMORY_AMENITIES_CACHE
 
 
 def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dict[str, Any]:
@@ -318,15 +351,14 @@ def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dic
     'HOSPITAL' | 'SCHOOL' | 'PETROL_PUMP' | 'RESTAURANT' | 'MARKET' | 'RESIDENTIAL' | 'SLUM' | 'INDUSTRIAL' | 'FARMLAND' | 'FOREST' | 'GENERAL'
     """
     amenities = load_or_cache_amenities()
-    origin = (lat, lon)
 
     # 1. Check nearest urban amenity (hospital, fuel station, school)
     if amenities:
         nearest_amenity = min(
             amenities,
-            key=lambda a: geodesic(origin, (float(a["latitude"]), float(a["longitude"]))).meters,
+            key=lambda a: haversine_meters(lat, lon, float(a["latitude"]), float(a["longitude"])),
         )
-        dist_m = geodesic(origin, (float(nearest_amenity["latitude"]), float(nearest_amenity["longitude"]))).meters
+        dist_m = haversine_meters(lat, lon, float(nearest_amenity["latitude"]), float(nearest_amenity["longitude"]))
         if dist_m <= radius_m:
             return {
                 "location_type": nearest_amenity.get("location_type", "GENERAL"),
@@ -342,9 +374,9 @@ def get_location_context(lat: float, lon: float, radius_m: float = 250.0) -> dic
     if zones:
         nearest_ind = min(
             zones,
-            key=lambda z: geodesic(origin, (float(z["latitude"]), float(z["longitude"]))).km,
+            key=lambda z: haversine_km(lat, lon, float(z["latitude"]), float(z["longitude"])),
         )
-        ind_dist_km = geodesic(origin, (float(nearest_ind["latitude"]), float(nearest_ind["longitude"]))).km
+        ind_dist_km = haversine_km(lat, lon, float(nearest_ind["latitude"]), float(nearest_ind["longitude"]))
         if ind_dist_km <= 3.5:
             return {
                 "location_type": "INDUSTRIAL",
