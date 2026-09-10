@@ -8,7 +8,7 @@ const CANDIDATE_URLS = [
   process.env.BACKEND_INTERNAL_URL,
   process.env.NEXT_PUBLIC_API_URL,
   "http://127.0.0.1:8000",
-  "http://127.0.0.1:8000",
+  "http://localhost:8000",
 ].filter(Boolean) as string[];
 
 export async function GET(request: Request) {
@@ -34,34 +34,42 @@ export async function GET(request: Request) {
 
   const days = searchParams.get("days") || "1";
   const source = searchParams.get("source") || "all";
-  const force = searchParams.get("force") === "true";
+  const force = searchParams.get("force") !== "false"; // Default true on edge proxy
 
   for (const baseUrl of CANDIDATE_URLS) {
     try {
-      let targetUrl = `${baseUrl.replace(/\/$/, "")}/api/fires?days=${encodeURIComponent(days)}&source=${encodeURIComponent(source)}${
-        force ? "&force=true" : ""
-      }`;
+      let targetUrl = `${baseUrl.replace(/\/$/, "")}/api/fires?days=${encodeURIComponent(
+        days
+      )}&source=${encodeURIComponent(source)}&force=${force}&t=${Date.now()}`;
       if (mode) {
         targetUrl += `&mode=${encodeURIComponent(mode)}`;
       }
 
+      // 45-second timeout for Railway cold-start tolerance
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
 
       const res = await fetch(targetUrl, {
         signal: controller.signal,
         headers: {
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
-        next: { revalidate: 30 },
+        cache: "no-store",
       });
       clearTimeout(timeoutId);
 
       if (res.ok) {
         const data = await res.json();
-        const fires = Array.isArray(data.fires) ? data.fires : [];
+        const fires = Array.isArray(data.fires)
+          ? data.fires
+          : Array.isArray(data.data)
+          ? data.data
+          : Array.isArray(data)
+          ? data
+          : [];
+
         if (fires.length > 0 || days !== "1") {
-          // Guarantee complete summary
           const summary = data.summary || {
             total: fires.length,
             emergency: 0,
@@ -77,34 +85,37 @@ export async function GET(request: Request) {
               total: fires.length,
               summary,
               ignis_status: data.ignis_status || "live",
+              mode: data.mode || (data.ignis_status === "live" ? "LIVE" : "CACHED"),
             },
             {
               headers: {
-                "Cache-Control": "public, s-maxage=30, stale-while-revalidate=60",
+                "Cache-Control": "no-store, no-cache, must-revalidate",
                 "X-Ignis-Status": data.ignis_status || "live",
               },
             }
           );
         }
       }
-    } catch (err: any) {
+    } catch {
       // Try next candidate URL
       continue;
     }
   }
 
-  // Graceful fallback to verified satellite telemetry snapshot
+  // Graceful fallback to verified satellite telemetry snapshot with clear reason
   return NextResponse.json(
     {
       ...FALLBACK_TELEMETRY_DATA,
-      mode: mode === "CACHED" ? "CACHED" : "CACHED",
+      mode: "CACHED",
+      reason: "firms_timeout",
       ignis_status: "cached_fallback",
-      data_source: "Local Cache Repository (verified telemetry snapshot)",
+      data_source: "Local Cache Repository (live upstream timeout)",
+      message: "Showing cached telemetry (live upstream timeout)",
     },
     {
       headers: {
         "X-Ignis-Fallback": "true",
-        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
+        "Cache-Control": "no-store, no-cache, must-revalidate",
       },
     }
   );

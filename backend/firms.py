@@ -50,10 +50,10 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
 
     last_err: Exception | None = None
     response = None
-    for attempt in range(3):
+    for attempt in range(2):
         try:
-            print(f"[IGNIS] Requesting NASA URL (attempt {attempt + 1}/3): {FIRMS_BASE_URL}/{masked_key}/{source}/{INDIA_BBOX}/{days}")
-            response = requests.get(url, timeout=30)
+            print(f"[IGNIS] Requesting NASA URL (attempt {attempt + 1}/2): {FIRMS_BASE_URL}/{masked_key}/{source}/{INDIA_BBOX}/{days}")
+            response = requests.get(url, timeout=10)
             print(f"[IGNIS] NASA FIRMS response status: {response.status_code}")
 
             if response.status_code == 429:
@@ -69,8 +69,8 @@ def _call_firms_api(days: int, source: str) -> list[dict[str, Any]]:
             break
         except Exception as exc:
             last_err = exc
-            if attempt < 2:
-                time.sleep(1.0 * (2 ** attempt))
+            if attempt < 1:
+                time.sleep(1.0)
             else:
                 raise last_err
 

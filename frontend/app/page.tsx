@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import {
   apiClient,
   checkBackendHealth,
+  fetchFires,
   fetchFiresTelemetry,
   fetchAlertsTelemetry,
   API_URL,
@@ -248,126 +249,160 @@ export default function DashboardPage() {
     return new Date().toISOString().replace(/\.\d{3}/, "");
   };
 
-  // Fetch fires and active surveillance alerts with multi-tier failover
+  // Single Source of Truth Fetch with Cold-Start Protection & Auto-Retry Backoff
+  const requestIdRef = useRef<number>(0);
+
   const fetchData = useCallback(
-    async (forceRefresh = false, modeOverride?: "LIVE" | "CACHED" | "DEMO") => {
-      const activeQueryMode = modeOverride || mode;
-      try {
-        if (forceRefresh) {
-          setIsRefreshing(true);
-        } else {
-          setLoading(true);
-        }
-        setError(null);
+    async (
+      forceRefresh = false,
+      modeOverride?: "LIVE" | "CACHED" | "DEMO",
+      daysOverride?: number,
+      sourceOverride?: string
+    ) => {
+      const currentReqId = ++requestIdRef.current;
+      const targetDays = daysOverride ?? days;
+      const targetSource = sourceOverride ?? source;
+      const targetMode = modeOverride || mode;
+      const maxRetries = 3;
 
-        // Immediate DEMO mode short-circuit
-        if (activeQueryMode === "DEMO") {
-          const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
-          setFires(demoFires);
-          setStats(DEMO_TELEMETRY_DATA.summary);
-          setIgnisStatus("demo");
-          setMode("DEMO");
-          setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
-          setLastRefreshedUtc(getUtcTimestamp());
-          setLoading(false);
-          setIsRefreshing(false);
-          return;
-        }
+      if (forceRefresh) {
+        setIsRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+      setError(null);
 
-        // 1) Health-First Check: verify backend is reachable before loading fires
-        const healthRes = await checkBackendHealth();
-        if (!healthRes.ok) {
-          const warn = healthRes.error || "Backend unreachable: check NEXT_PUBLIC_API_URL";
-          console.warn("[IGNIS] Health check failed:", warn);
-          setBackendHealthError("Backend unreachable: check NEXT_PUBLIC_API_URL");
-          setIgnisStatus("offline");
-        } else {
-          setBackendHealthError(null);
-        }
-
-        // 2) Fetch Fires Telemetry and Alerts via unified helper
-        const [firesRes, alertsRes] = await Promise.all([
-          fetchFiresTelemetry(days, source, activeQueryMode, forceRefresh),
-          fetchAlertsTelemetry(24),
-        ]);
-
-        let firesData: any = firesRes.ok ? firesRes.data : null;
-        let alertsData: any = alertsRes.ok ? alertsRes.data : { alerts: [] };
-
-        if (!firesRes.ok) {
-          console.warn("[IGNIS] Fires telemetry fetch failed:", firesRes.error);
-          setIgnisStatus("offline");
-          setError(firesRes.error || "Backend unreachable: check NEXT_PUBLIC_API_URL");
-          firesData = FALLBACK_TELEMETRY_DATA;
-          alertsData = FALLBACK_ALERTS_DATA;
-        }
-
-        // 3) Parse response safely
-        let fetchedFires: Fire[] = Array.isArray(firesData?.fires)
-          ? firesData.fires
-          : Array.isArray(firesData?.data)
-          ? firesData.data
-          : [];
-
-        // If returned 0 fires in live mode, auto-call fallback with days=3
-        if (fetchedFires.length === 0 && days === 1 && firesRes.ok) {
-          console.warn("[IGNIS] 0 hotspots returned for 24h. Trying 3-day window fallback...");
-          const res3d = await fetchFiresTelemetry(3, source, activeQueryMode);
-          if (res3d.ok && Array.isArray(res3d.data?.fires) && res3d.data.fires.length > 0) {
-            firesData = res3d.data;
-            fetchedFires = res3d.data.fires;
-          }
-        }
-
-        // If still 0 fires, engage verified fallback data
-        if (fetchedFires.length === 0) {
-          setNotification("No hotspots in window. Serving verified surveillance cache...");
-          firesData = FALLBACK_TELEMETRY_DATA;
-          fetchedFires = FALLBACK_TELEMETRY_DATA.fires as Fire[];
-        }
-
-        setFires(fetchedFires);
-
-        // Calculate non-zero summary from fires if API returned zeroes
-        let finalSummary: FireStats = firesData?.summary;
-        if (!finalSummary || (finalSummary.total === 0 && fetchedFires.length > 0)) {
-          finalSummary = computeSummary(fetchedFires);
-        }
-        setStats(finalSummary);
-
-        const fetchedAlerts = Array.isArray(alertsData?.alerts) ? alertsData.alerts : [];
-        setAlerts(fetchedAlerts);
-
-        if (firesRes.ok && healthRes.ok) {
-          const isServerLive = firesData?.ignis_status === "live";
-          setIgnisStatus(isServerLive ? "live" : "cached");
-          setMode(isServerLive ? "LIVE" : "CACHED");
-          setStatusMessage(firesData?.message || (isServerLive ? "NASA-FIRMS LINK NOMINAL" : "SERVING LOCAL CACHE REPOSITORY"));
-          setError(null);
-        } else {
-          setIgnisStatus("cached");
-          setMode("CACHED");
-          setStatusMessage("OFFLINE FALLBACK MODE");
-        }
-
+      // 1) DEMO mode immediate bypass
+      if (targetMode === "DEMO") {
+        const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
+        setFires(demoFires);
+        setStats(DEMO_TELEMETRY_DATA.summary);
+        setIgnisStatus("demo");
+        setMode("DEMO");
+        setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
         setLastRefreshedUtc(getUtcTimestamp());
-        setSeqCounter((c) => c + 1);
+        setLoading(false);
+        setIsRefreshing(false);
+        return;
+      }
 
-        if (forceRefresh) {
-          setNotification(`[SYNC COMPLETE] INGESTED ${fetchedFires.length} THERMAL ANOMALIES`);
-          setTimeout(() => setNotification(null), 3000);
+      // 2) Auto-Retry Sequence: Attempt 1 (0ms), Attempt 2 (1500ms), Attempt 3 (3000ms)
+      let lastErrorMessage = "";
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        if (currentReqId !== requestIdRef.current) return;
+
+        if (attempt > 1) {
+          const delay = (attempt - 1) * 1500;
+          setStatusMessage(`Backend warming up • auto-retry ${attempt}/${maxRetries} (${delay / 1000}s backoff)…`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          if (currentReqId !== requestIdRef.current) return;
+        } else {
+          setStatusMessage("Connecting to NASA FIRMS (VIIRS)…");
         }
-      } catch (err: any) {
-        console.error("TELEMETRY FETCH ERROR:", err);
+
+        try {
+          const [firesNorm, alertsRes] = await Promise.all([
+            fetchFires({
+              days: targetDays,
+              source: targetSource,
+              mode: targetMode,
+              force: true, // Default true on both mount & retry for freshness
+              timeoutMs: 45000,
+            }),
+            fetchAlertsTelemetry(24),
+          ]);
+
+          if (currentReqId !== requestIdRef.current) return;
+
+          if (firesNorm.fires && firesNorm.fires.length > 0) {
+            setFires(firesNorm.fires);
+            setStats(firesNorm.summary || computeSummary(firesNorm.fires));
+            setAlerts(Array.isArray(alertsRes?.data?.alerts) ? alertsRes.data.alerts : []);
+            setIgnisStatus(firesNorm.ignis_status === "live" ? "live" : "cached");
+            setMode(firesNorm.mode);
+            setStatusMessage(firesNorm.message || "NASA-FIRMS LINK NOMINAL");
+            setLastRefreshedUtc(getUtcTimestamp());
+            setSeqCounter((c) => c + 1);
+            setBackendHealthError(null);
+            setError(null);
+            setLoading(false);
+            setIsRefreshing(false);
+
+            if (forceRefresh) {
+              setNotification(`[SYNC COMPLETE] INGESTED ${firesNorm.fires.length} THERMAL ANOMALIES`);
+              setTimeout(() => setNotification(null), 3000);
+            }
+            return;
+          }
+        } catch (err: any) {
+          lastErrorMessage = err?.message || "Failed to connect to satellite telemetry";
+          console.warn(`[IGNIS] Satellite fetch attempt ${attempt}/${maxRetries} failed:`, lastErrorMessage);
+        }
+      }
+
+      // 3) Automatic Window Widening: If 0 fires on 1-day query, try 3 days
+      if (targetDays === 1 && currentReqId === requestIdRef.current) {
+        try {
+          setStatusMessage("Widening satellite window (3-day telemetry)…");
+          const fires3d = await fetchFires({
+            days: 3,
+            source: targetSource,
+            mode: targetMode,
+            force: true,
+            timeoutMs: 45000,
+          });
+
+          if (currentReqId === requestIdRef.current && fires3d.fires.length > 0) {
+            setFires(fires3d.fires);
+            setDays(3);
+            setStats(fires3d.summary || computeSummary(fires3d.fires));
+            setIgnisStatus(fires3d.ignis_status === "live" ? "live" : "cached");
+            setMode(fires3d.mode);
+            setStatusMessage("Auto-expanded to 3-day satellite window");
+            setLastRefreshedUtc(getUtcTimestamp());
+            setLoading(false);
+            setIsRefreshing(false);
+            return;
+          }
+        } catch {}
+      }
+
+      // 4) Automatic Cached Fallback
+      if (targetMode !== "CACHED" && currentReqId === requestIdRef.current) {
+        try {
+          setStatusMessage("Falling back to local cached repository…");
+          const cachedNorm = await fetchFires({
+            days: targetDays,
+            source: targetSource,
+            mode: "CACHED",
+            force: false,
+            timeoutMs: 15000,
+          });
+
+          if (currentReqId === requestIdRef.current && cachedNorm.fires.length > 0) {
+            setFires(cachedNorm.fires);
+            setStats(cachedNorm.summary || computeSummary(cachedNorm.fires));
+            setIgnisStatus("cached");
+            setMode("CACHED");
+            setStatusMessage("Operating on local satellite cache repository");
+            setLastRefreshedUtc(getUtcTimestamp());
+            setLoading(false);
+            setIsRefreshing(false);
+            return;
+          }
+        } catch {}
+      }
+
+      // 5) Final Fallback: Verified Telemetry Snapshot (Zero-Crash UI)
+      if (currentReqId === requestIdRef.current) {
         const fallbackList = FALLBACK_TELEMETRY_DATA.fires as Fire[];
         setFires(fallbackList);
         setStats(FALLBACK_TELEMETRY_DATA.summary || computeSummary(fallbackList));
-        setError("NODE UNREACHABLE :: OPERATING IN LOCAL CACHED VERIFICATION MODE");
-        setIgnisStatus("offline");
+        setIgnisStatus("cached");
         setMode("CACHED");
-        setStatusMessage("OFFLINE FALLBACK MODE");
+        setStatusMessage("Operating on verified fallback telemetry");
         setLastRefreshedUtc(getUtcTimestamp());
-      } finally {
+        setError(lastErrorMessage || "Upstream timeout: serving verified telemetry snapshot");
         setLoading(false);
         setIsRefreshing(false);
       }
@@ -552,13 +587,32 @@ export default function DashboardPage() {
     setIsScenarioPlaying((prev) => !prev);
   }, [selectedScenarioId]);
 
-  // Initial load and parameter changes
+  // Initial Mount Bootstrapper (Auto-Runs with force=true and 45s cold start tolerance)
+  const isMountedRef = useRef<boolean>(false);
+  const filterDebounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    isMountedRef.current = true;
+    fetchData(true, "LIVE", 1, "all");
+    return () => {
+      isMountedRef.current = false;
+      if (filterDebounceTimerRef.current) clearTimeout(filterDebounceTimerRef.current);
+    };
+  }, []);
 
+  // Debounced Filter Changes (250ms)
+  useEffect(() => {
+    if (!isMountedRef.current) return;
+    if (filterDebounceTimerRef.current) clearTimeout(filterDebounceTimerRef.current);
+    filterDebounceTimerRef.current = setTimeout(() => {
+      fetchData(true, mode, days, source);
+    }, 250);
+    return () => {
+      if (filterDebounceTimerRef.current) clearTimeout(filterDebounceTimerRef.current);
+    };
+  }, [days, source]);
 
-  // Auto-refresh every 3 minutes (180s)
+  // Auto-refresh telemetry every 3 minutes (180s)
   useEffect(() => {
     const interval = setInterval(() => {
       fetchData(false);
@@ -777,7 +831,7 @@ export default function DashboardPage() {
           </span>
           <span className="text-[#374151]">•</span>
           <span className="font-mono text-[10px]">
-            Last Sync: {lastRefreshedUtc ? lastRefreshedUtc.slice(11, 19) + " UTC" : "NOMINAL"}
+            Last Sync: {loading ? "SYNCING…" : (lastRefreshedUtc ? lastRefreshedUtc.slice(11, 19) + " UTC" : "NOMINAL")}
           </span>
         </div>
 
@@ -872,6 +926,8 @@ export default function DashboardPage() {
             onRetryLive={() => fetchData(true)}
             onSwitchToDemo={() => handleSelectMode("DEMO")}
             demoMode={mode === "DEMO"}
+            isLoading={loading}
+            syncStatusMessage={statusMessage}
           />
 
           {/* Clean Bottom Detail Drawer when a fire is clicked */}

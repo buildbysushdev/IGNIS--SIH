@@ -225,11 +225,26 @@ def _start_port_bridge():
     threading.Thread(target=bridge, daemon=True).start()
 
 
+def _warm_cache_bootstrap():
+    """Warm FIRMS cache asynchronously on startup to guarantee instant first-load response."""
+    try:
+        import time
+        time.sleep(1.0)
+        from firms import fetch_all_sources
+        logger.info("[IGNIS] Background cache bootstrap warming active fires...", extra={"event": "cache_bootstrap_start"})
+        fetch_all_sources(days=1, force=False)
+        logger.info("[IGNIS] Background cache bootstrap warm complete", extra={"event": "cache_bootstrap_done"})
+    except Exception as exc:
+        logger.warning(f"[IGNIS] Background cache bootstrap notice: {exc}")
+
+
 @app.on_event("startup")
 def startup():
     _start_port_bridge()
     init_db()
     get_classifier()
+    import threading
+    threading.Thread(target=_warm_cache_bootstrap, daemon=True).start()
     logger.info("IGNIS Telemetry Node initialized successfully", extra={"event": "node_startup"})
 
 

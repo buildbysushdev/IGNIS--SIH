@@ -198,6 +198,8 @@ interface FireMapProps {
   onRetryLive?: () => void;
   onSwitchToDemo?: () => void;
   demoMode?: boolean;
+  isLoading?: boolean;
+  syncStatusMessage?: string;
 }
 
 export default function FireMap({
@@ -221,6 +223,8 @@ export default function FireMap({
   onRetryLive,
   onSwitchToDemo,
   demoMode = false,
+  isLoading = false,
+  syncStatusMessage = "",
 }: FireMapProps) {
   const { t } = useI18n();
   const safeFires = Array.isArray(fires) ? fires : [];
@@ -989,10 +993,35 @@ export default function FireMap({
           </div>
         </div>
 
-        {/* Empty-State Card Overlay when 0 Hotspots */}
-        {renderedFires.length === 0 && (
+        {/* LOADING SPINNER OVERLAY: Shown while isLoading === true (NOT empty modal) */}
+        {isLoading && (
+          <div className="absolute inset-0 z-[1002] flex items-center justify-center bg-[#070c14]/80 backdrop-blur-sm pointer-events-auto p-4 animate-in fade-in duration-200">
+            <div className="bg-[#0f172a]/95 border border-[#334155] text-white p-6 rounded-2xl shadow-2xl max-w-sm text-center space-y-3 font-mono">
+              <div className="relative w-12 h-12 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full border-2 border-slate-700 border-t-red-500 animate-spin" />
+                <span className="absolute text-lg">🛰️</span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white tracking-wide">
+                  {syncStatusMessage?.includes("retry") || syncStatusMessage?.includes("warming")
+                    ? "Waking Backend Telemetry Node"
+                    : "Connecting to NASA FIRMS (VIIRS)…"}
+                </h3>
+                <p className="text-xs text-[#94a3b8] mt-1 leading-relaxed">
+                  {syncStatusMessage || "Ingesting satellite active fire telemetry across India…"}
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 bg-slate-900/80 px-3 py-1 rounded border border-slate-800">
+                TIMEOUT: 45s COLD-START TOLERANT • AUTO-RETRY
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Empty-State Card Overlay: ONLY shown when NOT loading and truly 0 hotspots */}
+        {!isLoading && renderedFires.length === 0 && (
           <div className="absolute inset-0 z-[1001] flex items-center justify-center pointer-events-none p-4">
-            <div className="bg-[#111827]/95 border border-[#1F2937] text-white p-6 rounded-2xl shadow-2xl backdrop-blur-md max-w-sm text-center pointer-events-auto space-y-3.5 animate-in fade-in zoom-in-95">
+            <div className="bg-[#111827]/95 border border-[#1F2937] text-white p-6 rounded-2xl shadow-2xl backdrop-blur-md max-w-sm text-center pointer-events-auto space-y-3.5 animate-in fade-in zoom-in-95 font-mono">
               <div className="w-12 h-12 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl">
                 🛰️
               </div>
