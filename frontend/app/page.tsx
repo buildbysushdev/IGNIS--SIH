@@ -11,8 +11,8 @@ import {
   API_URL,
   isApiConfigured,
 } from "@/lib/api";
-import type { Fire, ScenarioOverlayState } from "@/components/FireMap";
-import { TILE_PRESETS } from "@/components/FireMap";
+import type { Fire, ScenarioOverlayState } from "@/lib/mapConfig";
+import { TILE_PRESETS } from "@/lib/mapConfig";
 import StatsPanel, { FireStats } from "@/components/StatsPanel";
 import AlertPanel, { AlertItem } from "@/components/AlertPanel";
 import FilterBar from "@/components/FilterBar";

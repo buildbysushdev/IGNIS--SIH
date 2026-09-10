@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Fire } from "@/components/FireMap";
+import type { Fire } from "@/lib/mapConfig";
 import type { FireStats } from "@/components/StatsPanel";
 
 // ==============================================================================

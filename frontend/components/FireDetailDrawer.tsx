@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import type { Fire } from "@/components/FireMap";
-import { findLocalNearestStation } from "@/components/FireMap";
+import type { Fire } from "@/lib/mapConfig";
+import { findLocalNearestStation } from "@/lib/mapConfig";
 import InfoTooltip from "@/components/InfoTooltip";
 import { getResponseProtocol } from "@/data/fireResponse";
 
