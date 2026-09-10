@@ -34,7 +34,7 @@ export async function GET(request: Request) {
 
   const days = searchParams.get("days") || "1";
   const source = searchParams.get("source") || "all";
-  const force = searchParams.get("force") !== "false"; // Default true on edge proxy
+  const force = searchParams.get("force") === "true";
 
   for (const baseUrl of CANDIDATE_URLS) {
     try {
