@@ -126,8 +126,35 @@ function MapTelemetryController({
   });
 
   useEffect(() => {
+    // Invalidate map size on initial load and window resize
+    const timer = setTimeout(() => {
+      try {
+        map.invalidateSize();
+      } catch {}
+    }, 200);
+
+    const handleResize = () => {
+      try {
+        map.invalidateSize();
+      } catch {}
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [map]);
+
+  useEffect(() => {
     if (targetCoords) {
       map.flyTo(targetCoords, targetZoom || 10, { duration: 1.4 });
+      const timer = setTimeout(() => {
+        try {
+          map.invalidateSize();
+        } catch {}
+      }, 500);
+      return () => clearTimeout(timer);
     }
   }, [targetCoords, targetZoom, map]);
 
@@ -544,19 +571,56 @@ export default function FireMap({
                       </div>
                     </div>
 
-                    {/* Classification Section */}
-                    <div className="border-t border-[#1f2933] pt-1.5">
-                      <div className="text-[9px] uppercase tracking-wider text-[#6b7785] font-bold">
-                        // CLASSIFICATION
+                    {/* Classification & Explainability Section */}
+                    <div className="border-t border-[#1f2933] pt-1.5 space-y-1">
+                      <div className="text-[9px] uppercase tracking-wider text-[#6b7785] font-bold flex justify-between">
+                        <span>// AI CLASSIFICATION & EXPLAINABILITY</span>
+                        <span className="text-amber-400 font-bold">{fire.risk_level || "NOMINAL"}</span>
                       </div>
-                      <div className="flex justify-between text-[11px] mt-0.5">
+                      <div className="flex justify-between text-[11px]">
                         <span className="text-[#6b7785]">CATEGORY :</span>
                         <span className="font-bold" style={{ color: markerColor }}>
                           {fire.category || "UNKNOWN"}
                         </span>
                       </div>
-                      <div className="text-[10px] text-[#6b7785] mt-1 leading-snug">
-                        {cleanReason}
+
+                      {/* Nearest Asset Proximity */}
+                      {(fire.facility_name || fire.nearest_facility || isCritical) && (
+                        <div className="flex justify-between text-[10px] bg-[#111827] px-1.5 py-0.5 rounded border border-[#1F2937]">
+                          <span className="text-[#6b7785]">CRITICAL ASSET :</span>
+                          <span className="text-[#00d4ff] font-medium truncate max-w-[140px]">
+                            {fire.facility_name || fire.nearest_facility || "Industrial Complex"}
+                            {fire.distance_km != null ? ` (${fire.distance_km}km)` : ""}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Explainability Reason Badge */}
+                      <div className="text-[10px] text-amber-200/90 bg-amber-950/30 border border-amber-500/30 px-1.5 py-1 rounded leading-snug">
+                        <span className="font-semibold text-amber-400">WHY: </span>
+                        {cleanReason || `Thermal anomaly of ${Number(fire.frp || 0).toFixed(1)}MW detected at this coordinate.`}
+                      </div>
+
+                      {/* Recommended Agent & Isolation Distance */}
+                      <div className="grid grid-cols-2 gap-1 text-[9px] pt-0.5">
+                        <div className="bg-[#0B1220] border border-[#1F2937] p-1 rounded">
+                          <span className="text-[#6b7785] block">SUPPRESSANT:</span>
+                          <span className="text-emerald-400 font-bold">
+                            {fire.category?.includes("INDUSTRIAL") || fire.category?.includes("FUEL")
+                              ? "AFFF Foam / Dry Chem"
+                              : fire.category?.includes("FOREST")
+                              ? "Water Bowsers / Firebreaks"
+                              : "Standard Class A Water"}
+                          </span>
+                        </div>
+                        <div className="bg-[#0B1220] border border-[#1F2937] p-1 rounded">
+                          <span className="text-[#6b7785] block">SAFETY CORDON:</span>
+                          <span className="text-red-400 font-bold">
+                            {fire.category?.includes("INDUSTRIAL") || fire.category?.includes("FUEL")
+                              ? "800m Perimeter"
+                              : "100m Perimeter"}
+                          </span>
+                        </div>
                       </div>
                     </div>
 

@@ -204,7 +204,7 @@ export default function StatsPanel({
 
         {/* Stacked Proportional Bar */}
         <div className="w-full h-3 rounded-full bg-[#0B1220] overflow-hidden flex border border-[#1F2937]">
-          {total > 0 ? (
+          {total > 0 && items.some((it) => it.val > 0) ? (
             items.map((it) => {
               const pct = (it.val / total) * 100;
               if (pct <= 0) return null;
@@ -217,29 +217,37 @@ export default function StatsPanel({
                 />
               );
             })
+          ) : total > 0 ? (
+            <div className="w-full h-full bg-gradient-to-r from-[#22D3EE]/30 via-amber-500/30 to-[#22D3EE]/30 animate-pulse" />
           ) : (
             <div className="w-full h-full bg-gray-700" />
           )}
         </div>
 
         {/* Mini Percentage Badges */}
-        <div className="grid grid-cols-2 gap-1 text-[11px] text-[#9CA3AF] pt-1">
-          {items.slice(0, 4).map((it) => {
-            const pct = total > 0 ? ((it.val / total) * 100).toFixed(0) : "0";
-            return (
-              <div key={it.key} className="flex items-center justify-between pr-1">
-                <span className="flex items-center gap-1.5 truncate">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ backgroundColor: it.dot }}
-                  />
-                  <span className="truncate text-gray-300">{it.label.split(" ")[0]}</span>
-                </span>
-                <span className="font-mono text-white">{pct}%</span>
-              </div>
-            );
-          })}
-        </div>
+        {total > 0 && items.every((it) => it.val === 0) ? (
+          <div className="text-[11px] text-amber-400/90 italic py-1 text-center animate-pulse">
+            ⚡ Classifying active thermal telemetry...
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[10px] text-[#9CA3AF] pt-1">
+            {items.map((it) => {
+              const pct = total > 0 ? ((it.val / total) * 100).toFixed(0) : "0";
+              return (
+                <div key={it.key} className="flex items-center justify-between pr-1 bg-[#0B1220]/60 px-1.5 py-0.5 rounded border border-[#1F2937]/50">
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: it.dot }}
+                    />
+                    <span className="truncate text-gray-300 font-medium">{it.label.split(" ")[0]}</span>
+                  </span>
+                  <span className="font-mono text-white font-bold ml-1">{pct}%</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* BLOCK 3: QUICK ACTIONS */}

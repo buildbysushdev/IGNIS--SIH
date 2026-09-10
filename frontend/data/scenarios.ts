@@ -133,6 +133,60 @@ export const SIMULATION_SCENARIOS: SimulationScenario[] = [
     ]
   },
   {
+    "id": "bhilai_persistent",
+    "title": "Bhilai Persistent Industrial (False-Alarm Suppression)",
+    "target_center": [
+      21.1895,
+      81.3980
+    ],
+    "target_zoom": 13,
+    "description": "Continuous 45.2MW blast furnace thermal emission verified against OSM industrial cache and suppressed from dispatch.",
+    "total_duration_sec": 30,
+    "steps": [
+      {
+        "time_sec": 0,
+        "narration": "[T+00s] SATELLITE PASS DETECTS 45.2MW THERMAL ANOMALY at SAIL Bhilai Steel Plant corridor.",
+        "alert_level": "NOMINAL",
+        "active_fires": [
+          {
+            "id": "BHILAI-STEEL-01",
+            "latitude": 21.1895,
+            "longitude": 81.3980,
+            "frp": 45.2,
+            "brightness": 358.4,
+            "category": "PERSISTENT_INDUSTRIAL",
+            "risk_level": "LOW",
+            "acq_date": "2026-09-10",
+            "acq_time": "0830",
+            "reason": "SAIL Bhilai Blast Furnace No. 7 operational thermal signature (45.2MW). High temporal recurrence verified over 5 years.",
+            "action": "AUTOMATED SUPPRESSION ENGAGED: Routine smelting process heat. Municipal fire tender dispatch suppressed.",
+            "nearest_facility": "SAIL Bhilai Steel Plant Complex",
+            "facility_dist": 0.12,
+            "facility_name": "SAIL Blast Furnace #7",
+            "suppressed": true,
+            "suppression_reason": "Baseline industrial metallurgical process within 150m of registered facility"
+          }
+        ]
+      },
+      {
+        "time_sec": 10,
+        "narration": "[T+10s] 🛡️ OSM INFRASTRUCTURE CORRELATION: Hotspot center is 120m from registered industrial blast furnace polygon.",
+        "alert_level": "NOMINAL"
+      },
+      {
+        "time_sec": 20,
+        "narration": "[T+20s] 📊 5-YEAR RECURRENCE CHECK: 99.4% spatial match with historical operational baseline heat.",
+        "alert_level": "NOMINAL"
+      },
+      {
+        "time_sec": 30,
+        "narration": "[T+30s] 🟢 FALSE-ALARM SUPPRESSION CONFIRMED: Municipal turnout prevented. Preserved emergency service readiness.",
+        "alert_level": "NOMINAL",
+        "dispatch_complete": false
+      }
+    ]
+  },
+  {
     "id": "punjab_stubble",
     "title": "Scenario 2: Punjab Stubble Burning Peak",
     "target_center": [
@@ -431,6 +485,60 @@ export const SIMULATION_SCENARIOS: SimulationScenario[] = [
         "narration": "[T+30s] \ud83d\udfe2 CONTAINMENT COORDINATION COMPLETE. Satellite cluster log forwarded to State Pollution Control Board.",
         "alert_level": "DISPATCHED",
         "dispatch_complete": true
+      }
+    ]
+  },
+  {
+    "id": "domestic_bonfire",
+    "title": "Domestic Bonfire Suppressed (Low-Intensity Burn)",
+    "target_center": [
+      28.6139,
+      77.2090
+    ],
+    "target_zoom": 14,
+    "description": "Low-intensity domestic waste/heating fire (6.2MW) in Delhi urban zone automatically suppressed to avoid wasteful turnout.",
+    "total_duration_sec": 30,
+    "steps": [
+      {
+        "time_sec": 0,
+        "narration": "[T+00s] WEAK SATELLITE DETECTION: 6.2MW thermal anomaly observed in Central Delhi residential periphery.",
+        "alert_level": "NOMINAL",
+        "active_fires": [
+          {
+            "id": "DELHI-BON-01",
+            "latitude": 28.6139,
+            "longitude": 77.2090,
+            "frp": 6.2,
+            "brightness": 312.4,
+            "category": "DOMESTIC_LOW_INTENSITY_BURN",
+            "risk_level": "LOW",
+            "acq_date": "2026-09-10",
+            "acq_time": "0830",
+            "reason": "Low-intensity domestic burn or municipal leaf warming fire (< 10MW). Non-structural open burn.",
+            "action": "AUTO-SUPPRESSED: Logged to Municipal Pollution Registry. Fire tender mobilization withheld.",
+            "nearest_facility": "Central Delhi Open Ground",
+            "facility_dist": 0.45,
+            "facility_name": "Residential Open Ground",
+            "suppressed": true,
+            "suppression_reason": "Low FRP (6.2MW < 15MW emergency threshold) in non-industrial open zone"
+          }
+        ]
+      },
+      {
+        "time_sec": 10,
+        "narration": "[T+10s] 📊 ENERGY THRESHOLD FILTER: FRP 6.2MW is below the 15MW critical dispatch threshold.",
+        "alert_level": "NOMINAL"
+      },
+      {
+        "time_sec": 20,
+        "narration": "[T+20s] 🛡️ CLASSIFICATION ACTION: Flagged as DOMESTIC_LOW_INTENSITY_BURN. Evacuation & siren suppressed.",
+        "alert_level": "NOMINAL"
+      },
+      {
+        "time_sec": 30,
+        "narration": "[T+30s] 🟢 AIR QUALITY LOG CREATED: Transmitted to State Pollution Control Board without sounding fire alarms.",
+        "alert_level": "NOMINAL",
+        "dispatch_complete": false
       }
     ]
   },

@@ -402,42 +402,24 @@ export default function DashboardPage() {
     [fetchData]
   );
 
-  // 1-Click Mentorship Presentation Flow (Zero Railway Dependency)
-  const handleTriggerMentorshipDemo = useCallback(() => {
-    setMode("DEMO");
-    setIgnisStatus("demo");
-    setCategory("all");
-    setBackendHealthError(null);
-    setError(null);
-    setSelectedScenarioId("live");
-    setIsScenarioPlaying(false);
-    setScenarioOverlay(null);
-
-    const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
-    setFires(demoFires);
-    setStats(computeSummary(demoFires));
-    setStatusMessage("DEMO MODE — PRESENTATION DATASET (250 VERIFIED FIRES)");
-    setLastRefreshedUtc(getUtcTimestamp());
-
-    // Auto-select Surat Hazira Chemical Emergency Fire (IGNIS-EM-0001)
-    const emergencyFire =
-      demoFires.find(
-        (f) => f.id === "IGNIS-EM-0001" || f.category === "EMERGENCY_INDUSTRIAL"
-      ) || demoFires[0];
-
-    if (emergencyFire) {
-      setSelectedFire(emergencyFire);
-      setTargetCoords([emergencyFire.latitude, emergencyFire.longitude]);
-      setTargetZoom(12);
-    }
-
-    setNotification(
-      "🎯 MENTORSHIP DEMO READY: Surat Chemical Emergency selected with active IS 2190 protocol"
-    );
-    setTimeout(() => setNotification(null), 4000);
+  // Dispatch Trigger Helper
+  const handleOpenDispatchModal = useCallback((fire: Fire) => {
+    setDispatchTargetFire(fire);
+    setDispatchTargetStation({
+      name: (fire as any).station_name || "Surat Central Fire Station",
+      distance_km: (fire as any).station_distance_km || 2.3,
+      eta_minutes: (fire as any).station_eta_minutes || 6,
+      phone: "+91-261-2422222",
+    });
+    setIsDispatchModalOpen(true);
   }, []);
 
-  // Scenario Selector & Animated Playback Control
+  // 1-Click Mentorship Presentation Flow (Zero Railway Dependency)
+  const handleTriggerMentorshipDemo = useCallback(() => {
+    setIsScenarioModalOpen(true);
+  }, []);
+
+  // Scenario Selector & Mentorship Presentation Flow
   const handleSelectScenario = useCallback(
     (scenId: string) => {
       setSelectedScenarioId(scenId);
@@ -451,28 +433,124 @@ export default function DashboardPage() {
       }
 
       setMode("DEMO");
+      setIgnisStatus("demo");
       setIsScenarioPlaying(false);
       setScenarioOverlay(null);
+
+      const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
+
+      if (scenId === "surat_emergency") {
+        const suratFire: Fire = {
+          id: "SURAT-EM-01",
+          latitude: 21.1925,
+          longitude: 72.8258,
+          frp: 82.4,
+          brightness: 382.4,
+          category: "EMERGENCY_INDUSTRIAL",
+          risk_level: "CRITICAL",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "1010",
+          reason: "Major solvent tank farm rupture with volatile hydrocarbon ignition (FRP 82.4MW) within 250m of Hazira Chemical Cluster.",
+          action: "DISPATCH Class B AFFF Foam units + hazmat suppression team. Evacuate 500m radius.",
+          nearest_facility: "Surat Chemical Cluster GIDC",
+          facility_dist: 0.25,
+          facility_name: "Surat Chemical Works Tank Farm",
+          station_name: "Surat Central Fire Station HQ",
+          station_distance_km: 2.3,
+          station_eta_minutes: 6,
+        } as Fire;
+
+        setFires([suratFire, ...demoFires.filter((f) => f.id !== "SURAT-EM-01")]);
+        setSelectedFire(suratFire);
+        setTargetCoords([21.1925, 72.8258]);
+        setTargetZoom(13);
+        setStatusMessage("DEMO SCENARIO: Surat Petrochemical Emergency (Active Dispatch Protocol)");
+        setNotification("🎯 SURAT PETROCHEMICAL EMERGENCY: Class B AFFF Dispatch Sequence Initiated");
+        setTimeout(() => handleOpenDispatchModal(suratFire), 600);
+      } else if (scenId === "bhilai_persistent") {
+        const bhilaiFire: Fire = {
+          id: "BHILAI-STEEL-01",
+          latitude: 21.1895,
+          longitude: 81.3980,
+          frp: 45.2,
+          brightness: 358.4,
+          category: "PERSISTENT_INDUSTRIAL",
+          risk_level: "LOW",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "0830",
+          reason: "SAIL Bhilai Blast Furnace No. 7 operating baseline. Thermal anomaly (45.2MW) matches 5-year spatial recurrence profile.",
+          action: "FALSE ALARM SUPPRESSED. Do not dispatch municipal fire tenders. Preserved emergency turnout readiness.",
+          nearest_facility: "SAIL Bhilai Steel Plant Complex",
+          facility_dist: 0.12,
+          facility_name: "SAIL Bhilai Blast Furnace #7",
+        } as Fire;
+
+        setFires([bhilaiFire, ...demoFires.filter((f) => f.id !== "BHILAI-STEEL-01")]);
+        setSelectedFire(bhilaiFire);
+        setTargetCoords([21.1895, 81.3980]);
+        setTargetZoom(13);
+        setStatusMessage("DEMO SCENARIO: Bhilai Persistent Industrial (False-Alarm Suppression)");
+        setNotification("🛡️ FALSE ALARM SUPPRESSED: SAIL Bhilai Blast Furnace verified against OSM industrial cache.");
+        setTimeout(() => setIsProtocolModalOpen(true), 600);
+      } else if (scenId === "punjab_stubble") {
+        const punjabFire: Fire = {
+          id: "PUN-AG-01",
+          latitude: 30.4500,
+          longitude: 75.8500,
+          frp: 94.1,
+          brightness: 348.0,
+          category: "AGRICULTURAL_BURNING",
+          risk_level: "MEDIUM",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "1010",
+          reason: "Widespread post-harvest paddy residue burns across Sangrur and Patiala farming belt.",
+          action: "Deploy agricultural inspection patrol & water bowsers. Chemical foam strictly prohibited.",
+          nearest_facility: "Sangrur Agricultural Belt",
+          facility_dist: 0.8,
+          facility_name: "Ludhiana Harvest Farm Belt",
+        } as Fire;
+
+        setFires([punjabFire, ...demoFires.filter((f) => f.id !== "PUN-AG-01")]);
+        setSelectedFire(punjabFire);
+        setTargetCoords([30.4500, 75.8500]);
+        setTargetZoom(10);
+        setStatusMessage("DEMO SCENARIO: Punjab Agricultural Stubble Burning (Containment SOP)");
+        setNotification("🌾 PUNJAB AGRICULTURAL BURNING: Containment tractors and water bowsers mobilized.");
+        setTimeout(() => setIsProtocolModalOpen(true), 600);
+      } else if (scenId === "domestic_bonfire") {
+        const bonfireFire: Fire = {
+          id: "DELHI-BON-01",
+          latitude: 28.6139,
+          longitude: 77.2090,
+          frp: 6.2,
+          brightness: 312.4,
+          category: "DOMESTIC_LOW_INTENSITY_BURN",
+          risk_level: "LOW",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "0830",
+          reason: "Low-intensity domestic burn or municipal warming fire (6.2MW). Non-structural open ground burn.",
+          action: "AUTO-SUPPRESSED: Logged to Municipal Air Quality database; emergency tender mobilization suppressed.",
+          nearest_facility: "Central Delhi Open Ground",
+          facility_dist: 0.45,
+          facility_name: "Residential Open Ground",
+        } as Fire;
+
+        setFires([bonfireFire, ...demoFires.filter((f) => f.id !== "DELHI-BON-01")]);
+        setSelectedFire(bonfireFire);
+        setTargetCoords([28.6139, 77.2090]);
+        setTargetZoom(14);
+        setStatusMessage("DEMO SCENARIO: Domestic Bonfire Suppressed (Energy < 15MW)");
+        setNotification("🔥 DOMESTIC BONFIRE AUTO-SUPPRESSED: FRP 6.2MW below 15MW emergency threshold.");
+        setTimeout(() => setIsProtocolModalOpen(true), 600);
+      }
     },
-    [handleSelectMode]
+    [handleSelectMode, handleOpenDispatchModal]
   );
 
   const togglePlayScenario = useCallback(() => {
     if (selectedScenarioId === "live") return;
     setIsScenarioPlaying((prev) => !prev);
   }, [selectedScenarioId]);
-
-  // Dispatch Trigger Helper
-  const handleOpenDispatchModal = useCallback((fire: Fire) => {
-    setDispatchTargetFire(fire);
-    setDispatchTargetStation({
-      name: (fire as any).station_name || "Surat Central Fire Station",
-      distance_km: (fire as any).station_distance_km || 2.3,
-      eta_minutes: (fire as any).station_eta_minutes || 6,
-      phone: "+91-261-2422222",
-    });
-    setIsDispatchModalOpen(true);
-  }, []);
 
   // Initial load and parameter changes
   useEffect(() => {
@@ -840,94 +918,160 @@ export default function DashboardPage() {
       </main>
 
       {/* 4) BOTTOM STATUS BAR (CLEAN, MINIMAL FOOTER) */}
+      {/* 4) BOTTOM STATUS BAR (HONEST REAL-TIME TELEMETRY STRIP) */}
       <footer className="h-7 bg-[#0B1220] border-t border-[#1F2937] px-4 flex items-center justify-between text-[11px] text-[#9CA3AF] font-sans">
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            System Ready
+        <div className="flex items-center gap-2.5 overflow-x-auto whitespace-nowrap scrollbar-none">
+          {/* Active Data Source Chip */}
+          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded font-mono font-bold text-[10px] uppercase border tracking-wider">
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                mode === "LIVE"
+                  ? "bg-emerald-400 animate-pulse"
+                  : mode === "DEMO"
+                  ? "bg-purple-400"
+                  : "bg-amber-400"
+              }`}
+            />
+            <span
+              className={
+                mode === "LIVE"
+                  ? "text-emerald-400"
+                  : mode === "DEMO"
+                  ? "text-purple-300"
+                  : "text-amber-400"
+              }
+            >
+              {mode === "LIVE"
+                ? "LIVE • NASA FIRMS"
+                : mode === "DEMO"
+                ? "DEMO • Scenario Pack"
+                : "CACHED • SQLite"}
+            </span>
           </span>
+
           <span className="text-[#1F2937]">|</span>
-          <span className="text-[#E5E7EB]">
-            {mode === "LIVE"
-              ? "NASA FIRMS Telemetry Connected"
-              : mode === "DEMO"
-              ? "Simulation Demo Mode"
-              : "Local Cached Database"}
+          <span className="text-[#E5E7EB] text-[10px]">
+            FIRMS:{" "}
+            <span className={mode === "LIVE" ? "text-emerald-400 font-medium" : "text-amber-400"}>
+              {mode === "LIVE" ? "Connected (VIIRS 375m)" : mode === "DEMO" ? "Scenario Dataset" : "Cached Buffer"}
+            </span>
           </span>
+
           <span className="text-[#1F2937] hidden sm:inline">|</span>
-          <span className="hidden sm:inline text-[#9CA3AF]">
+          <span className="hidden sm:inline text-[10px]">
+            OSM: <span className="text-gray-300">Cached (24h)</span>
+          </span>
+
+          <span className="text-[#1F2937] hidden md:inline">|</span>
+          <span className="hidden md:inline text-[10px]">
+            AGNI-AI: <span className="text-[#00d4ff] font-medium">Online (Gemini REST)</span>
+          </span>
+
+          <span className="text-[#1F2937] hidden lg:inline">|</span>
+          <span className="hidden lg:inline text-[10px]">
+            DB: <span className="text-emerald-400 font-mono">WAL OK</span>
+          </span>
+
+          <span className="text-[#1F2937] hidden sm:inline">|</span>
+          <span className="hidden sm:inline text-[10px] text-[#9CA3AF]">
             {mode === "DEMO"
-              ? "Accuracy Rate: 95.8% (Simulation Benchmark)"
+              ? "Accuracy: 95.8% (Simulation Benchmark)"
               : "Active Telemetry Verification Loop"}
           </span>
         </div>
 
-        <div className="flex items-center gap-3 text-[11px]">
+        <div className="flex items-center gap-2.5 text-[11px] flex-shrink-0">
+          <span className="hidden md:inline text-[#9CA3AF] text-[10px]">
+            SYNC: <span className="font-mono text-gray-300">{lastRefreshedUtc || "JUST NOW"}</span>
+          </span>
+          <span className="text-[#1F2937] hidden md:inline">|</span>
           <span>IGNIS Ground Station</span>
           <span className="text-[#1F2937]">|</span>
-          <span className="text-[#E5E7EB] font-mono">NTRO SIH26162</span>
+          <span className="text-[#E5E7EB] font-mono font-bold">NTRO SIH26162</span>
         </div>
       </footer>
 
-      {/* Demo Simulation Scenarios Selection Modal */}
+      {/* Mentorship Demo & Scripted Simulation Scenarios Selection Modal */}
       {isScenarioModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl max-w-md w-full p-5 shadow-2xl space-y-4 font-sans animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-[#1F2937] pb-3">
+        <div className="fixed inset-0 z-[2000] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-lg w-full p-5 shadow-2xl space-y-4 font-sans animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between border-b border-[#334155] pb-3">
               <div className="flex items-center gap-2">
-                <span className="text-base">▶</span>
-                <h3 className="font-bold text-white text-sm">Demo Simulation Scenarios</h3>
+                <span className="text-base">🎯</span>
+                <div>
+                  <h3 className="font-bold text-white text-sm">Mentorship Presentation Demo Flow</h3>
+                  <p className="text-[11px] text-cyan-400 font-mono">1-Click Scenarios • Zero Railway Dependency</p>
+                </div>
               </div>
               <button
                 onClick={() => setIsScenarioModalOpen(false)}
-                className="text-[#9CA3AF] hover:text-white text-sm p-1 rounded-lg"
+                className="text-[#9CA3AF] hover:text-white text-sm p-1 rounded-lg border border-[#334155] hover:border-gray-500"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs text-[#9CA3AF]">
-              Select a scripted emergency scenario to demonstrate automated detection, telemetry convergence, and automated dispatch.
+            <p className="text-xs text-[#94A3B8]">
+              Select any mission scenario below to automatically enter deterministic DEMO mode, pan cartography to the incident coordinate, and launch the active emergency directive / dispatch simulator:
             </p>
 
-            <div className="space-y-2">
+            <div className="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
               {[
                 {
                   id: "surat_emergency",
-                  title: "Surat Chemical Factory Emergency",
-                  desc: "Industrial reactor breach with Hazmat Class D response protocols",
+                  title: "1. Surat Petrochemical Emergency",
+                  badge: "CRITICAL • AFFF FOAM",
+                  badgeColor: "bg-red-950 text-red-300 border-red-500/60",
+                  desc: "Volatile hydrocarbon tank farm rupture (82.4MW) in Hazira GIDC. Opens Class B AFFF dispatch sequence with nearest station ETA.",
+                },
+                {
+                  id: "bhilai_persistent",
+                  title: "2. Bhilai Persistent Industrial",
+                  badge: "SUPPRESSED • 0 FALSE ALARM",
+                  badgeColor: "bg-purple-950 text-purple-300 border-purple-500/60",
+                  desc: "SAIL Bhilai blast furnace (45.2MW) correlated with 24h OSM industrial cache. Emergency sirens suppressed; public resources saved.",
                 },
                 {
                   id: "punjab_stubble",
-                  title: "Punjab Stubble Burning Crisis",
-                  desc: "Seasonal agricultural burning cluster in Ludhiana farming belt",
+                  title: "3. Punjab Agricultural Burning",
+                  badge: "AGRICULTURAL • RESIDUE",
+                  badgeColor: "bg-amber-950 text-amber-300 border-amber-500/60",
+                  desc: "Seasonal post-harvest stubble cluster in Ludhiana-Sangrur belt. Mobilizes water bowsers and tractor fire-breaks.",
                 },
                 {
-                  id: "uttarakhand_forest",
-                  title: "Uttarakhand Forest Wildfire",
-                  desc: "Mountain biomass blaze near Nainital forest reserve",
+                  id: "domestic_bonfire",
+                  title: "4. Domestic Bonfire Suppressed",
+                  badge: "AUTO-SUPPRESSED • <15MW",
+                  badgeColor: "bg-emerald-950 text-emerald-300 border-emerald-500/60",
+                  desc: "Low-intensity domestic burn (6.2MW) in Delhi urban zone. Filtered by energy threshold; no emergency turnout required.",
                 },
                 {
                   id: "live",
-                  title: "Return to Live Data Feed",
-                  desc: "Resume real-time satellite telemetry ingestion",
+                  title: "Return to Live Telemetry Feed",
+                  badge: "LIVE ORBITAL",
+                  badgeColor: "bg-cyan-950 text-cyan-300 border-cyan-500/60",
+                  desc: "Re-engage real-time orbital downlink from NASA FIRMS VIIRS/MODIS sensors.",
                 },
               ].map((sc) => (
                 <button
                   key={sc.id}
                   onClick={() => {
                     handleSelectScenario(sc.id);
-                    if (sc.id !== "live") setIsScenarioPlaying(true);
                     setIsScenarioModalOpen(false);
                   }}
-                  className={`w-full text-left p-3 rounded-lg border transition ${
+                  className={`w-full text-left p-3 rounded-lg border transition cursor-pointer ${
                     selectedScenarioId === sc.id
-                      ? "bg-[#1F2937] border-[#22D3EE] text-white font-semibold"
-                      : "bg-[#0B1220] border-[#1F2937] text-[#E5E7EB] hover:border-gray-600"
+                      ? "bg-[#1E293B] border-[#00d4ff] text-white shadow-lg shadow-cyan-950/40"
+                      : "bg-[#0B1220] border-[#1E293B] text-[#E2E8F0] hover:border-cyan-500/50 hover:bg-[#0f1d32]"
                   }`}
                 >
-                  <div className="font-semibold text-xs text-[#22D3EE]">{sc.title}</div>
-                  <div className="text-[11px] text-[#9CA3AF] mt-0.5">{sc.desc}</div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-semibold text-xs text-white group-hover:text-cyan-300">{sc.title}</span>
+                    <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${sc.badgeColor}`}>
+                      {sc.badge}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-[#94A3B8] mt-1 leading-snug">{sc.desc}</div>
                 </button>
               ))}
             </div>

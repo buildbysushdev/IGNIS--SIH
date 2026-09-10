@@ -51,7 +51,7 @@ ${fire ? `LOCATION: ${fire.latitude.toFixed(4)}N, ${fire.longitude.toFixed(4)}E 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in duration-200">
       <div className="bg-[#0c1017] border border-[#1f2933] w-full max-w-3xl max-h-[92vh] flex flex-col font-mono text-xs text-[#d0d8e0] shadow-[0_0_40px_rgba(0,0,0,0.8)] relative print:max-w-none print:max-h-none print:bg-white print:text-black">
         {/* Top Operational Header */}
         <div className="px-4 py-3 bg-[#131a22] border-b border-[#1f2933] flex items-center justify-between shrink-0 print:border-black">

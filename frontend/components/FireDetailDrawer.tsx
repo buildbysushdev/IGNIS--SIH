@@ -122,7 +122,7 @@ export default function FireDetailDrawer({
   const station = findLocalNearestStation(fire.latitude, fire.longitude);
 
   return (
-    <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 md:left-8 md:right-8 lg:left-12 lg:right-12 z-30 max-w-4xl mx-auto bg-[#111827]/95 backdrop-blur-md border border-[#1F2937] shadow-2xl rounded-xl p-4 text-[#E5E7EB] transition-all animate-in fade-in slide-in-from-bottom-6 duration-200 font-sans">
+    <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 md:left-8 md:right-8 lg:left-12 lg:right-12 z-[500] max-w-4xl mx-auto bg-[#111827]/95 backdrop-blur-md border border-[#1F2937] shadow-2xl rounded-xl p-4 text-[#E5E7EB] transition-all animate-in fade-in slide-in-from-bottom-6 duration-200 font-sans">
       {/* Top Bar / Header */}
       <div className="flex items-center justify-between border-b border-[#1F2937] pb-3 mb-3">
         <div className="flex items-center gap-2.5 flex-wrap">

@@ -187,6 +187,14 @@ html, body {
   overflow: hidden;
 }
 
+/* Force Leaflet map layers underneath all UI modals, sidebars, and chat drawers */
+.leaflet-container,
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1 !important;
+}
+
 .leaflet-popup-tip {
   background: #0f141b !important;
   border: 1px solid #2d3a4a !important;
