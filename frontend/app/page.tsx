@@ -87,13 +87,22 @@ export default function DashboardPage() {
   const [category, setCategory] = useState<string>("all");
   const [source, setSource] = useState<string>("all");
 
-  // Dynamic category filtering bound directly to live fire telemetry
+  // Dynamic multi-hazard category filtering bound directly to live telemetry
   const filteredFires = useMemo(() => {
     if (!Array.isArray(fires)) return [];
     if (!category || category === "all") return fires;
     const upperCat = category.toUpperCase();
     return fires.filter((f) => {
       const cat = (f.category || (f as any).classification || "UNKNOWN").toUpperCase();
+      if (upperCat === "FIRE_ALL" || upperCat === "FIRE") {
+        return !cat.includes("FLOOD") && !cat.includes("CYCLONE");
+      }
+      if (upperCat === "FLOOD_ALL" || upperCat === "FLOOD") {
+        return cat.includes("FLOOD");
+      }
+      if (upperCat === "CYCLONE_ALL" || upperCat === "CYCLONE") {
+        return cat.includes("CYCLONE");
+      }
       if (upperCat === "CRITICAL") {
         return [
           "EMERGENCY_INDUSTRIAL",
@@ -113,9 +122,18 @@ export default function DashboardPage() {
       if (upperCat === "DOMESTIC_LOW_INTENSITY_BURN" || upperCat === "UNKNOWN") {
         return cat === "DOMESTIC_LOW_INTENSITY_BURN" || cat === "UNKNOWN";
       }
+      // Flood granular filter
+      if (upperCat.includes("FLOOD")) {
+        return cat.includes("FLOOD") && (cat === upperCat || cat.includes(upperCat.replace("FLOOD_", "")));
+      }
+      // Cyclone granular filter
+      if (upperCat.includes("CYCLONE")) {
+        return cat.includes("CYCLONE") && (cat === upperCat || cat.includes(upperCat.replace("CYCLONE_", "")));
+      }
       return cat === upperCat;
     });
   }, [fires, category]);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -129,6 +147,18 @@ export default function DashboardPage() {
   const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(null);
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
   const [notification, setNotification] = useState<string | null>(null);
+  const notificationTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showNotification = useCallback((msg: string, durationMs: number = 4000) => {
+    if (notificationTimerRef.current) {
+      clearTimeout(notificationTimerRef.current);
+    }
+    setNotification(msg);
+    notificationTimerRef.current = setTimeout(() => {
+      setNotification(null);
+    }, durationMs);
+  }, []);
+
   const [verifyFire, setVerifyFire] = useState<Fire | null>(null);
   const [activeBasemap, setActiveBasemap] = useState<keyof typeof TILE_PRESETS>("ops_dark");
 
@@ -151,6 +181,76 @@ export default function DashboardPage() {
   const [isScenarioPlaying, setIsScenarioPlaying] = useState<boolean>(false);
   const [scenarioOverlay, setScenarioOverlay] = useState<ScenarioOverlayState | null>(null);
   const [targetZoom, setTargetZoom] = useState<number>(5);
+
+  // Dynamic disaster animation & tactical camera focusing triggered by filter selection
+  useEffect(() => {
+    if (isScenarioPlaying) return; // Never disrupt actively playing scenarios
+
+    if (!category || category === "all") {
+      setScenarioOverlay(null);
+      return;
+    }
+
+    const upperCat = category.toUpperCase();
+
+    if (upperCat === "FLOOD_ALL" || upperCat.includes("FLOOD")) {
+      // 🌊 Activate animated concentric flood water rise rings & NDRF command
+      setScenarioOverlay({
+        disasterType: "FLOOD",
+        floodCircles: [
+          { center: [9.5916, 76.5222], radius_km: 2.2, flood_level: "WARNING" },
+          { center: [9.5916, 76.5222], radius_km: 4.8, flood_level: "CRITICAL" },
+          { center: [9.5916, 76.5222], radius_km: 7.5, flood_level: "SEVERE" },
+          { center: [26.5775, 93.1711], radius_km: 4.0, flood_level: "CRITICAL" },
+        ],
+        pulseMarker: [9.5916, 76.5222],
+      });
+      setTargetCoords([9.5916, 76.5222]);
+      setTargetZoom(10);
+      setStatusMessage("🌊 FLOOD RADAR ACTIVE: SAR Satellite RISAT-2B Inundation & Meenachil Basin Surge");
+      showNotification("🌊 FLOOD RADAR ENGAGED: Inundation zones & NDRF deployment coordinates active.", 3500);
+    } else if (upperCat === "CYCLONE_ALL" || upperCat.includes("CYCLONE")) {
+      // 🌀 Activate animated cyclone eye & storm surge vortex & ODRAF command
+      setScenarioOverlay({
+        disasterType: "CYCLONE",
+        cycloneOverlay: {
+          center: [20.7217, 86.9122],
+          eye_radius_km: 25,
+          surge_radius_km: 80,
+          wind_speed: 185,
+          category: 4,
+        },
+        pulseMarker: [20.7217, 86.9122],
+      });
+      setTargetCoords([20.7217, 86.9122]);
+      setTargetZoom(9);
+      setStatusMessage("🌀 CYCLONE RADAR ACTIVE: INSAT-3D Doppler Eye-Wall & 185 km/h Wind Vector");
+      showNotification("🌀 CYCLONE RADAR ENGAGED: VSCS Category 4 eye-wall & storm surge perimeter active.", 3500);
+    } else if (upperCat === "FIRE_ALL" || upperCat === "CRITICAL" || upperCat.includes("FIRE") || upperCat.includes("BURNING")) {
+      // 🔥 Activate Fire tactical focus
+      if (upperCat === "FOREST_FIRE") {
+        setTargetCoords([30.0868, 79.0193]);
+        setTargetZoom(11);
+        setStatusMessage("🌲 FOREST SURVEILLANCE ACTIVE: Garhwal / Chamoli Wildland Corridor");
+        showNotification("🌲 FOREST FIRE SURVEILLANCE: Wildland spread & MI-17 aerial response active.", 3500);
+      } else if (upperCat === "CRITICAL" || upperCat === "EMERGENCY_INDUSTRIAL" || upperCat === "HOSPITAL_FIRE" || upperCat === "FUEL_STATION_FIRE") {
+        setTargetCoords([21.1925, 72.8258]);
+        setTargetZoom(13);
+        setScenarioOverlay({
+          disasterType: "FIRE",
+          evacuationCircle: { center: [21.1925, 72.8258], radius_km: 0.8 },
+          pulseMarker: [21.1925, 72.8258],
+        });
+        setStatusMessage("🔴 CRITICAL FIRE SURVEILLANCE: High-Hazard Industrial & Petrol Depots");
+        showNotification("🔴 CRITICAL FIRE PROTOCOL: 800m Safety cordon & AFFF foam units mobilized.", 3500);
+      } else {
+        setScenarioOverlay(null);
+        setStatusMessage("🔥 THERMAL SURVEILLANCE ACTIVE: VIIRS 375m Satellite Ground Station");
+      }
+    } else {
+      setScenarioOverlay(null);
+    }
+  }, [category, isScenarioPlaying, showNotification]);
 
   // Emergency Panel & Dispatch Simulator State
   const [isEmergencyPanelOpen, setIsEmergencyPanelOpen] = useState<boolean>(false);
@@ -276,7 +376,7 @@ export default function DashboardPage() {
       if (targetMode === "DEMO") {
         const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
         setFires(demoFires);
-        setStats(DEMO_TELEMETRY_DATA.summary);
+        setStats((DEMO_TELEMETRY_DATA as any).summary || computeSummary(demoFires));
         setIgnisStatus("demo");
         setMode("DEMO");
         setStatusMessage("DEMO SIMULATION ACTIVE (250 PRE-CLASSIFIED FIRES)");
@@ -315,8 +415,15 @@ export default function DashboardPage() {
           if (currentReqId !== requestIdRef.current) return;
 
           if (firesNorm.fires && firesNorm.fires.length > 0) {
-            setFires(firesNorm.fires);
-            setStats(firesNorm.summary || computeSummary(firesNorm.fires));
+            const multiHazardExtras = (DEMO_TELEMETRY_DATA.fires as Fire[]).filter(
+              (f) => f.category?.includes("FLOOD") || f.category?.includes("CYCLONE")
+            );
+            const combinedFires = [
+              ...firesNorm.fires,
+              ...multiHazardExtras.filter((ex) => !firesNorm.fires.some((nf: Fire) => nf.id === ex.id))
+            ];
+            setFires(combinedFires);
+            setStats(firesNorm.summary || computeSummary(combinedFires));
             setAlerts(Array.isArray(alertsRes?.data?.alerts) ? alertsRes.data.alerts : []);
             setIgnisStatus(firesNorm.ignis_status === "live" ? "live" : "cached");
             setMode(firesNorm.mode);
@@ -329,8 +436,7 @@ export default function DashboardPage() {
             setIsRefreshing(false);
 
             if (forceRefresh) {
-              setNotification(`[SYNC COMPLETE] INGESTED ${firesNorm.fires.length} THERMAL ANOMALIES`);
-              setTimeout(() => setNotification(null), 3000);
+              showNotification(`[SYNC COMPLETE] INGESTED ${combinedFires.length} MULTI-HAZARD ANOMALIES`, 3000);
             }
             return;
           }
@@ -353,9 +459,16 @@ export default function DashboardPage() {
           });
 
           if (currentReqId === requestIdRef.current && fires3d.fires.length > 0) {
-            setFires(fires3d.fires);
+            const multiHazardExtras = (DEMO_TELEMETRY_DATA.fires as Fire[]).filter(
+              (f) => f.category?.includes("FLOOD") || f.category?.includes("CYCLONE")
+            );
+            const combinedFires = [
+              ...fires3d.fires,
+              ...multiHazardExtras.filter((ex) => !fires3d.fires.some((nf: Fire) => nf.id === ex.id))
+            ];
+            setFires(combinedFires);
             setDays(3);
-            setStats(fires3d.summary || computeSummary(fires3d.fires));
+            setStats(fires3d.summary || computeSummary(combinedFires));
             setIgnisStatus(fires3d.ignis_status === "live" ? "live" : "cached");
             setMode(fires3d.mode);
             setStatusMessage("Auto-expanded to 3-day satellite window");
@@ -380,8 +493,15 @@ export default function DashboardPage() {
           });
 
           if (currentReqId === requestIdRef.current && cachedNorm.fires.length > 0) {
-            setFires(cachedNorm.fires);
-            setStats(cachedNorm.summary || computeSummary(cachedNorm.fires));
+            const multiHazardExtras = (DEMO_TELEMETRY_DATA.fires as Fire[]).filter(
+              (f) => f.category?.includes("FLOOD") || f.category?.includes("CYCLONE")
+            );
+            const combinedFires = [
+              ...cachedNorm.fires,
+              ...multiHazardExtras.filter((ex) => !cachedNorm.fires.some((nf: Fire) => nf.id === ex.id))
+            ];
+            setFires(combinedFires);
+            setStats(cachedNorm.summary || computeSummary(combinedFires));
             setIgnisStatus("cached");
             setMode("CACHED");
             setStatusMessage("Operating on local satellite cache repository");
@@ -395,7 +515,13 @@ export default function DashboardPage() {
 
       // 5) Final Fallback: Verified Telemetry Snapshot (Zero-Crash UI)
       if (currentReqId === requestIdRef.current) {
-        const fallbackList = FALLBACK_TELEMETRY_DATA.fires as Fire[];
+        const multiHazardExtras = (DEMO_TELEMETRY_DATA.fires as Fire[]).filter(
+          (f) => f.category?.includes("FLOOD") || f.category?.includes("CYCLONE")
+        );
+        const fallbackList = [
+          ...(FALLBACK_TELEMETRY_DATA.fires as Fire[]),
+          ...multiHazardExtras
+        ];
         setFires(fallbackList);
         setStats(FALLBACK_TELEMETRY_DATA.summary || computeSummary(fallbackList));
         setIgnisStatus("cached");
@@ -417,8 +543,7 @@ export default function DashboardPage() {
         const res = await apiClient.post(`/api/mode/set?mode=${targetMode}`, { mode: targetMode });
         const newMode = (res.data?.new_mode || (targetMode === "AUTO" ? "LIVE" : targetMode)).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
         setMode(newMode);
-        setNotification(`Mode switched to ${newMode}`);
-        setTimeout(() => setNotification(null), 3500);
+        showNotification(`Mode switched to ${newMode}`, 3500);
 
         apiClient
           .get("/api/mode")
@@ -429,8 +554,7 @@ export default function DashboardPage() {
       } catch {
         const fallbackMode = (targetMode === "AUTO" ? "LIVE" : targetMode).toUpperCase() as "LIVE" | "CACHED" | "DEMO";
         setMode(fallbackMode);
-        setNotification(`Mode switched to ${fallbackMode}`);
-        setTimeout(() => setNotification(null), 3500);
+        showNotification(`Mode switched to ${fallbackMode}`, 3500);
         fetchData(true, fallbackMode);
       }
     },
@@ -461,16 +585,18 @@ export default function DashboardPage() {
       if (scenId === "live") {
         setIsScenarioPlaying(false);
         setScenarioOverlay(null);
+        setSelectedFire(null);
         setTargetCoords([22.5432, 78.9012]);
         setTargetZoom(5);
         handleSelectMode("LIVE");
+        showNotification("Returned to LIVE NASA FIRMS orbital downlink");
         return;
       }
 
       setMode("DEMO");
       setIgnisStatus("demo");
-      setIsScenarioPlaying(false);
       setScenarioOverlay(null);
+      setSelectedFire(null);
 
       const demoFires = DEMO_TELEMETRY_DATA.fires as Fire[];
 
@@ -496,12 +622,11 @@ export default function DashboardPage() {
         } as Fire;
 
         setFires([suratFire, ...demoFires.filter((f) => f.id !== "SURAT-EM-01")]);
-        setSelectedFire(suratFire);
         setTargetCoords([21.1925, 72.8258]);
         setTargetZoom(13);
-        setStatusMessage("DEMO SCENARIO: Surat Petrochemical Emergency (Active Dispatch Protocol)");
-        setNotification("🎯 SURAT PETROCHEMICAL EMERGENCY: Class B AFFF Dispatch Sequence Initiated");
-        setTimeout(() => handleOpenDispatchModal(suratFire), 600);
+        setStatusMessage("DEMO SCENARIO: Surat Petrochemical Emergency (Active Playback)");
+        showNotification("🎯 SURAT PETROCHEMICAL EMERGENCY: Autonomous Playback & Telemetry Engaged");
+        setIsScenarioPlaying(true);
       } else if (scenId === "bhilai_persistent") {
         const bhilaiFire: Fire = {
           id: "BHILAI-STEEL-01",
@@ -521,12 +646,11 @@ export default function DashboardPage() {
         } as Fire;
 
         setFires([bhilaiFire, ...demoFires.filter((f) => f.id !== "BHILAI-STEEL-01")]);
-        setSelectedFire(bhilaiFire);
         setTargetCoords([21.1895, 81.3980]);
         setTargetZoom(13);
         setStatusMessage("DEMO SCENARIO: Bhilai Persistent Industrial (False-Alarm Suppression)");
-        setNotification("🛡️ FALSE ALARM SUPPRESSED: SAIL Bhilai Blast Furnace verified against OSM industrial cache.");
-        setTimeout(() => setIsProtocolModalOpen(true), 600);
+        showNotification("🛡️ FALSE ALARM SUPPRESSED: SAIL Bhilai verified against OSM industrial cache.");
+        setIsScenarioPlaying(true);
       } else if (scenId === "punjab_stubble") {
         const punjabFire: Fire = {
           id: "PUN-AG-01",
@@ -546,12 +670,11 @@ export default function DashboardPage() {
         } as Fire;
 
         setFires([punjabFire, ...demoFires.filter((f) => f.id !== "PUN-AG-01")]);
-        setSelectedFire(punjabFire);
         setTargetCoords([30.4500, 75.8500]);
         setTargetZoom(10);
         setStatusMessage("DEMO SCENARIO: Punjab Agricultural Stubble Burning (Containment SOP)");
-        setNotification("🌾 PUNJAB AGRICULTURAL BURNING: Containment tractors and water bowsers mobilized.");
-        setTimeout(() => setIsProtocolModalOpen(true), 600);
+        showNotification("🌾 PUNJAB AGRICULTURAL BURNING: Containment tractors and water bowsers mobilized.");
+        setIsScenarioPlaying(true);
       } else if (scenId === "domestic_bonfire") {
         const bonfireFire: Fire = {
           id: "DELHI-BON-01",
@@ -571,15 +694,84 @@ export default function DashboardPage() {
         } as Fire;
 
         setFires([bonfireFire, ...demoFires.filter((f) => f.id !== "DELHI-BON-01")]);
-        setSelectedFire(bonfireFire);
         setTargetCoords([28.6139, 77.2090]);
         setTargetZoom(14);
         setStatusMessage("DEMO SCENARIO: Domestic Bonfire Suppressed (Energy < 15MW)");
-        setNotification("🔥 DOMESTIC BONFIRE AUTO-SUPPRESSED: FRP 6.2MW below 15MW emergency threshold.");
-        setTimeout(() => setIsProtocolModalOpen(true), 600);
+        showNotification("🔥 DOMESTIC BONFIRE AUTO-SUPPRESSED: FRP 6.2MW below 15MW threshold.");
+        setIsScenarioPlaying(true);
+
+      } else if (scenId === "uttarakhand_forest") {
+        const forestFire: Fire = {
+          id: "UK-FOREST-01",
+          latitude: 30.0868,
+          longitude: 79.0193,
+          frp: 52.8,
+          brightness: 356.2,
+          category: "FOREST_FIRE",
+          risk_level: "HIGH",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "1330",
+          reason: "Active wildland fire in Garhwal forest zone — Chamoli district. Wind-driven spread to villages.",
+          action: "Deploy SDRF teams. Aerial water bombing from MI-17 helicopter.",
+          nearest_facility: "Garhwal Forest Division",
+          facility_dist: 4.2,
+          facility_name: "Chamoli Forest Zone",
+        } as Fire;
+        setFires([forestFire, ...demoFires.filter((f) => f.id !== "UK-FOREST-01")]);
+        setTargetCoords([30.0868, 79.0193]);
+        setTargetZoom(11);
+        setStatusMessage("DEMO SCENARIO: Uttarakhand Wildland Forest Fire (Aerial Response)");
+        showNotification("🌲 UTTARAKHAND FOREST FIRE: Wind-driven spread detected. MI-17 aerial dispatch ordered.");
+        setIsScenarioPlaying(true);
+
+      } else if (scenId === "kerala_flood") {
+        // Kerala Flood — start with empty fires, ScenarioPlayer injects flood markers dynamically
+        const floodSeedFire: Fire = {
+          id: "KL-FLOOD-SEED",
+          latitude: 10.0504,
+          longitude: 76.3516,
+          frp: 0,
+          brightness: 280,
+          confidence: "satellite",
+          category: "FLOOD_MONITORING",
+          risk_level: "HIGH",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "0600",
+          reason: "Periyar River basin flood monitoring — Ernakulam district, Kerala. IMD Red Alert active.",
+          action: "NDRF COLUMN 14 ON STANDBY — MONITORING WATER LEVELS",
+        } as Fire;
+        setFires([floodSeedFire]);
+        setTargetCoords([9.5916, 76.5222]);
+        setTargetZoom(11);
+        setStatusMessage("DEMO SCENARIO: Kerala Flash Flood — Kottayam (NDRF Multi-Agency Response)");
+        showNotification("🌊 KERALA FLOOD EMERGENCY: Meenachil River breach at Kottayam — NDRF & rescue active.");
+        setIsScenarioPlaying(true);
+
+      } else if (scenId === "odisha_cyclone") {
+        // Odisha Cyclone — start with cyclone warning seed marker
+        const cycloneSeedFire: Fire = {
+          id: "OD-CYCLONE-SEED",
+          latitude: 19.8135,
+          longitude: 85.8312,
+          frp: 0,
+          brightness: 310,
+          confidence: "satellite",
+          category: "CYCLONE_WARNING",
+          risk_level: "CRITICAL",
+          acq_date: new Date().toISOString().slice(0, 10),
+          acq_time: "0300",
+          reason: "Super Cyclone VAYU — CAT 5, 215km/h. Bay of Bengal origin. Puri coast direct landfall in 6 hours.",
+          action: "MASS EVACUATION ORDERED — ALL COASTAL DISTRICTS ODISHA",
+        } as Fire;
+        setFires([cycloneSeedFire]);
+        setTargetCoords([20.7217, 86.9122]);
+        setTargetZoom(9);
+        setStatusMessage("DEMO SCENARIO: Cyclone Dana — Odisha (VSCS Category 4 Landfall)");
+        showNotification("🌀 CYCLONE DANA: VSCS CAT 4 — Bhitarkanika landfall imminent. 3.2L evacuated, ODRAF deployed.");
+        setIsScenarioPlaying(true);
       }
     },
-    [handleSelectMode, handleOpenDispatchModal]
+    [handleSelectMode, showNotification]
   );
 
   const togglePlayScenario = useCallback(() => {
@@ -786,8 +978,7 @@ export default function DashboardPage() {
         criticalAlertCount={criticalAlertCount}
         onOpenDispatchHistory={() => setIsDispatchHistoryOpen(true)}
         onTrainModel={() => {
-          setNotification("ML MODEL RETRAINING INITIATED");
-          setTimeout(() => setNotification(null), 3000);
+          showNotification("ML MODEL RETRAINING INITIATED", 3000);
         }}
         onToggleHistoricalHeatmap={() => setShowHistoricalHeatmap((prev) => !prev)}
         showHistoricalHeatmap={showHistoricalHeatmap}
@@ -864,8 +1055,15 @@ export default function DashboardPage() {
 
         {/* Transient Notification Toast */}
         {notification && (
-          <div className="absolute top-3 right-4 z-40 bg-emerald-950/90 border border-emerald-500 text-emerald-300 text-xs px-3.5 py-1.5 rounded-lg shadow-xl animate-in fade-in slide-in-from-top-2">
-            ✓ {notification}
+          <div className="absolute top-3 right-4 z-50 bg-emerald-950/95 border border-emerald-500 text-emerald-200 text-xs px-3.5 py-2 rounded-lg shadow-2xl flex items-center gap-3 backdrop-blur-md animate-in fade-in slide-in-from-top-2">
+            <span className="font-medium">✓ {notification}</span>
+            <button
+              onClick={() => setNotification(null)}
+              className="text-emerald-400 hover:text-white font-bold ml-1 text-sm leading-none p-0.5 cursor-pointer"
+              title="Dismiss notification"
+            >
+              ✕
+            </button>
           </div>
         )}
 
@@ -878,8 +1076,7 @@ export default function DashboardPage() {
             setSelectedFacilityId(fac.id);
             setTargetCoords([fac.latitude, fac.longitude]);
             setTargetZoom(12);
-            setNotification(`Focused on ${fac.name}`);
-            setTimeout(() => setNotification(null), 3000);
+            showNotification(`Focused on ${fac.name}`, 3000);
           }}
           alerts={alerts}
           onSelectCoordinates={(lat, lon) => {
@@ -1050,13 +1247,13 @@ export default function DashboardPage() {
       {/* Mentorship Demo & Scripted Simulation Scenarios Selection Modal */}
       {isScenarioModalOpen && (
         <div className="fixed inset-0 z-[2000] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-lg w-full p-5 shadow-2xl space-y-4 font-sans animate-in fade-in zoom-in-95">
+          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-xl w-full p-5 shadow-2xl space-y-4 font-sans animate-in fade-in zoom-in-95">
             <div className="flex items-center justify-between border-b border-[#334155] pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-base">🎯</span>
                 <div>
-                  <h3 className="font-bold text-white text-sm">Mentorship Presentation Demo Flow</h3>
-                  <p className="text-[11px] text-cyan-400 font-mono">1-Click Scenarios • Zero Railway Dependency</p>
+                  <h3 className="font-bold text-white text-sm">Multi-Disaster Simulation Scenarios</h3>
+                  <p className="text-[11px] text-cyan-400 font-mono">Fire • Flood • Cyclone — Live Map Animations</p>
                 </div>
               </div>
               <button
@@ -1068,10 +1265,14 @@ export default function DashboardPage() {
             </div>
 
             <p className="text-xs text-[#94A3B8]">
-              Select any mission scenario below to automatically enter deterministic DEMO mode, pan cartography to the incident coordinate, and launch the active emergency directive / dispatch simulator:
+              Select a scenario to auto-pan map, deploy overlays, and launch mission-specific animated playback:
             </p>
 
-            <div className="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
+            <div className="space-y-2.5 max-h-[65vh] overflow-y-auto pr-1">
+              {/* Fire Scenarios */}
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#EF4444]/80 mb-1 px-1 flex items-center gap-2">
+                <span>🔥</span> Fire Scenarios
+              </div>
               {[
                 {
                   id: "surat_emergency",
@@ -1083,9 +1284,9 @@ export default function DashboardPage() {
                 {
                   id: "bhilai_persistent",
                   title: "2. Bhilai Persistent Industrial",
-                  badge: "SUPPRESSED • 0 FALSE ALARM",
+                  badge: "SUPPRESSED • FALSE ALARM",
                   badgeColor: "bg-purple-950 text-purple-300 border-purple-500/60",
-                  desc: "SAIL Bhilai blast furnace (45.2MW) correlated with 24h OSM industrial cache. Emergency sirens suppressed; public resources saved.",
+                  desc: "SAIL Bhilai blast furnace (45.2MW) correlated with OSM industrial cache. Emergency sirens suppressed; public resources saved.",
                 },
                 {
                   id: "punjab_stubble",
@@ -1102,11 +1303,11 @@ export default function DashboardPage() {
                   desc: "Low-intensity domestic burn (6.2MW) in Delhi urban zone. Filtered by energy threshold; no emergency turnout required.",
                 },
                 {
-                  id: "live",
-                  title: "Return to Live Telemetry Feed",
-                  badge: "LIVE ORBITAL",
-                  badgeColor: "bg-cyan-950 text-cyan-300 border-cyan-500/60",
-                  desc: "Re-engage real-time orbital downlink from NASA FIRMS VIIRS/MODIS sensors.",
+                  id: "uttarakhand_forest",
+                  title: "5. Uttarakhand Wildland Forest Fire",
+                  badge: "FOREST • MI-17 AERIAL",
+                  badgeColor: "bg-emerald-950 text-emerald-300 border-emerald-500/60",
+                  desc: "Active wildland fire in Garhwal forest zone (52.8MW). Wind-driven propagation toward villages; MI-17 aerial water bombing ordered.",
                 },
               ].map((sc) => (
                 <button
@@ -1122,7 +1323,7 @@ export default function DashboardPage() {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-semibold text-xs text-white group-hover:text-cyan-300">{sc.title}</span>
+                    <span className="font-semibold text-xs text-white">{sc.title}</span>
                     <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${sc.badgeColor}`}>
                       {sc.badge}
                     </span>
@@ -1130,6 +1331,95 @@ export default function DashboardPage() {
                   <div className="text-[11px] text-[#94A3B8] mt-1 leading-snug">{sc.desc}</div>
                 </button>
               ))}
+
+              {/* Flood Scenarios */}
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#0EA5E9]/80 mt-3 mb-1 px-1 flex items-center gap-2">
+                <span>🌊</span> Flood Scenarios
+              </div>
+              {[
+                {
+                  id: "kerala_flood",
+                  title: "6. Kerala Flash Flood — Kottayam",
+                  badge: "FLOOD • NDRF BOATS",
+                  badgeColor: "bg-blue-950 text-blue-300 border-blue-500/60",
+                  desc: "Meenachil River breach at Kottayam Collectorate gauge (+3.2m). Concentric water inundation rings with SAR satellite telemetry. 85,000 evacuated — NDRF 9th Bn boat rescue active.",
+                },
+              ].map((sc) => (
+                <button
+                  key={sc.id}
+                  onClick={() => {
+                    handleSelectScenario(sc.id);
+                    setIsScenarioModalOpen(false);
+                  }}
+                  className={`w-full text-left p-3 rounded-lg border transition cursor-pointer ${
+                    selectedScenarioId === sc.id
+                      ? "bg-[#0c1e3a] border-[#0EA5E9] text-white shadow-lg shadow-blue-950/40"
+                      : "bg-[#080f1a] border-[#1E293B] text-[#E2E8F0] hover:border-blue-500/50 hover:bg-[#0a1428]"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-semibold text-xs text-white">{sc.title}</span>
+                    <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${sc.badgeColor}`}>
+                      {sc.badge}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-[#94A3B8] mt-1 leading-snug">{sc.desc}</div>
+                </button>
+              ))}
+
+              {/* Cyclone Scenarios */}
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#A855F7]/80 mt-3 mb-1 px-1 flex items-center gap-2">
+                <span>🌀</span> Cyclone Scenarios
+              </div>
+              {[
+                {
+                  id: "odisha_cyclone",
+                  title: "7. Cyclone Dana — Odisha Coastal Emergency",
+                  badge: "CAT-4 • MASS EVACUATION",
+                  badgeColor: "bg-purple-950 text-purple-300 border-purple-500/60",
+                  desc: "VSCS Category 4 tropical cyclone Dana (185+ km/h) making landfall near Bhitarkanika Mangrove coast. Animated eye-wall + storm surge overlay. 3.2L evacuated — ODRAF + NDRF pre-positioned.",
+                },
+              ].map((sc) => (
+                <button
+                  key={sc.id}
+                  onClick={() => {
+                    handleSelectScenario(sc.id);
+                    setIsScenarioModalOpen(false);
+                  }}
+                  className={`w-full text-left p-3 rounded-lg border transition cursor-pointer ${
+                    selectedScenarioId === sc.id
+                      ? "bg-[#1a0c3a] border-[#A855F7] text-white shadow-lg shadow-purple-950/40"
+                      : "bg-[#0d0818] border-[#1E293B] text-[#E2E8F0] hover:border-purple-500/50 hover:bg-[#130a25]"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-semibold text-xs text-white">{sc.title}</span>
+                    <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${sc.badgeColor}`}>
+                      {sc.badge}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-[#94A3B8] mt-1 leading-snug">{sc.desc}</div>
+                </button>
+              ))}
+
+              {/* Return to Live */}
+              <div className="pt-2 border-t border-[#1E293B] mt-2">
+                <button
+                  onClick={() => {
+                    handleSelectScenario("live");
+                    setIsScenarioModalOpen(false);
+                  }}
+                  className="w-full text-left p-3 rounded-lg border border-cyan-500/30 bg-cyan-950/20 text-[#E2E8F0] hover:border-cyan-400/70 hover:bg-cyan-950/40 transition cursor-pointer"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-semibold text-xs text-cyan-300">↩ Return to Live Telemetry Feed</span>
+                    <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded border bg-cyan-950 text-cyan-300 border-cyan-500/60">
+                      LIVE ORBITAL
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-[#94A3B8] mt-1">Re-engage real-time orbital downlink from NASA FIRMS VIIRS/MODIS sensors.</div>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1170,8 +1460,7 @@ export default function DashboardPage() {
         station={dispatchTargetStation}
         onOpenHistory={() => setIsDispatchHistoryOpen(true)}
         onDispatchComplete={(rec) => {
-          setNotification(`[DISPATCH RECORDED] REF #${rec.dispatch_id}`);
-          setTimeout(() => setNotification(null), 4000);
+          showNotification(`[DISPATCH RECORDED] REF #${rec.dispatch_id}`, 4000);
         }}
       />
 

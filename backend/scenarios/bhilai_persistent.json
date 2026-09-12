@@ -1,0 +1,59 @@
+{
+  "id": "bhilai_persistent",
+  "name": "Bhilai Persistent Industrial (False-Alarm Suppression)",
+  "duration_seconds": 35,
+  "description": "Continuous 45.2MW blast furnace thermal emission verified against OSM industrial cache and suppressed from dispatch",
+  "location": {
+    "lat": 21.1895,
+    "lon": 81.3980,
+    "zoom": 13
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "[T+00s] SATELLITE PASS: 45.2MW thermal anomaly detected at SAIL Bhilai Steel Plant corridor."
+    },
+    {
+      "time": 5,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 21.1895,
+        "longitude": 81.3980,
+        "frp": 45.2,
+        "brightness": 358.4,
+        "category": "PERSISTENT_INDUSTRIAL",
+        "risk_level": "LOW",
+        "confidence": "high",
+        "acq_time": "current",
+        "reason": "SAIL Bhilai Blast Furnace No. 7 operational thermal signature (45.2MW). 5-year spatial recurrence profile confirmed.",
+        "action": "AUTOMATED SUPPRESSION ENGAGED: Routine smelting process heat. Municipal fire tender dispatch suppressed."
+      },
+      "narration": "[T+05s] NEW EVENT: Thermal anomaly (45.2MW) detected at SAIL Bhilai Blast Furnace #7."
+    },
+    {
+      "time": 12,
+      "action": "CLASSIFY",
+      "category": "PERSISTENT_INDUSTRIAL",
+      "confidence": "high",
+      "narration": "[T+12s] 🛡️ OSM INFRASTRUCTURE CORRELATION: Hotspot center is 120m from registered industrial blast furnace polygon."
+    },
+    {
+      "time": 20,
+      "action": "SHOW_PROTOCOL",
+      "protocol": {
+        "class": "Routine Industrial Process",
+        "use": ["Internal plant safety monitor"],
+        "avoid": ["Municipal turnout", "Sirens"],
+        "safety_distance_m": 0,
+        "target_response_min": 0
+      },
+      "narration": "[T+20s] 📊 5-YEAR RECURRENCE CHECK: 99.4% spatial match with historical operational baseline heat."
+    },
+    {
+      "time": 28,
+      "action": "COMPLETE",
+      "narration": "[T+28s] 🟢 FALSE-ALARM SUPPRESSION CONFIRMED: Municipal turnout prevented. Preserved emergency service readiness."
+    }
+  ]
+}

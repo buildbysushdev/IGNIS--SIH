@@ -125,6 +125,54 @@ html, body {
   animation: pulse-crimson 1s infinite ease-in-out;
 }
 
+/* Multi-Hazard Radar & Wave Animations */
+@keyframes flood-inundation-wave {
+  0% {
+    stroke-dashoffset: 48;
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.95;
+  }
+}
+
+.flood-water-ring {
+  stroke-dasharray: 8 6;
+  animation: flood-inundation-wave 2.8s linear infinite;
+}
+
+@keyframes cyclone-swirl {
+  0% {
+    stroke-dashoffset: 64;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.cyclone-vortex-ring {
+  stroke-dasharray: 10 6;
+  animation: cyclone-swirl 2.4s linear infinite;
+}
+
+@keyframes thermal-heat-bloom {
+  0% {
+    stroke-dashoffset: 32;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fire-heat-ring {
+  stroke-dasharray: 6 4;
+  animation: thermal-heat-bloom 2s linear infinite;
+}
+
 /* Data Values & Labels */
 .data-value {
   font-variant-numeric: tabular-nums;

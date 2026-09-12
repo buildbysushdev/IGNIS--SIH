@@ -3,8 +3,12 @@ import fs from "fs";
 import path from "path";
 
 import suratScen from "@/data/scenarios/surat_emergency.json";
+import bhilaiScen from "@/data/scenarios/bhilai_persistent.json";
 import punjabScen from "@/data/scenarios/punjab_stubble.json";
+import bonfireScen from "@/data/scenarios/domestic_bonfire.json";
 import uttarakhandScen from "@/data/scenarios/uttarakhand_forest.json";
+import keralaFloodScen from "@/data/scenarios/kerala_flood.json";
+import odishaCycloneScen from "@/data/scenarios/odisha_cyclone.json";
 
 export const dynamic = "force-dynamic";
 
@@ -13,8 +17,12 @@ const BACKEND_URL =
 
 const BUNDLED_SCENARIOS: Record<string, any> = {
   surat_emergency: suratScen,
+  bhilai_persistent: bhilaiScen,
   punjab_stubble: punjabScen,
+  domestic_bonfire: bonfireScen,
   uttarakhand_forest: uttarakhandScen,
+  kerala_flood: keralaFloodScen,
+  odisha_cyclone: odishaCycloneScen,
 };
 
 export async function GET(

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { MapContainer, TileLayer, CircleMarker, Rectangle, Popup, Circle, Polygon, useMapEvents } from "react-leaflet";
 import ResponseProtocol from "./ResponseProtocol";
 import ProtocolModal from "./ProtocolModal";
@@ -24,7 +24,7 @@ import {
 export type { Fire, FacilityMarker, ScenarioOverlayState };
 export { TERMINAL_COLORS, getMarkerColor, TILE_PRESETS, findLocalNearestStation };
 
-// Map telemetry listener & pan controller
+// Map telemetry listener & smooth pan controller
 function MapTelemetryController({
   targetCoords,
   targetZoom = 10,
@@ -35,7 +35,7 @@ function MapTelemetryController({
   onCoordsChange: (lat: number, lon: number, zoom: number) => void;
 }) {
   const map = useMapEvents({
-    move: () => {
+    moveend: () => {
       const center = map.getCenter();
       onCoordsChange(center.lat, center.lng, map.getZoom());
     },
@@ -46,12 +46,12 @@ function MapTelemetryController({
   });
 
   useEffect(() => {
-    // Invalidate map size on initial load and window resize
+    // Invalidate map size once on initial load and window resize
     const timer = setTimeout(() => {
       try {
         map.invalidateSize();
       } catch {}
-    }, 200);
+    }, 250);
 
     const handleResize = () => {
       try {
@@ -68,13 +68,10 @@ function MapTelemetryController({
 
   useEffect(() => {
     if (targetCoords) {
-      map.flyTo(targetCoords, targetZoom || 10, { duration: 1.4 });
-      const timer = setTimeout(() => {
-        try {
-          map.invalidateSize();
-        } catch {}
-      }, 500);
-      return () => clearTimeout(timer);
+      map.flyTo(targetCoords, targetZoom || 10, {
+        duration: 1.8,
+        easeLinearity: 0.25,
+      });
     }
   }, [targetCoords, targetZoom, map]);
 
@@ -248,6 +245,8 @@ export default function FireMap({
           zoom={5}
           style={{ height: "100%", width: "100%", background: "#0a0e14" }}
           scrollWheelZoom={true}
+          wheelDebounceTime={40}
+          wheelPxPerZoomLevel={120}
         >
           <MapTelemetryController
             targetCoords={targetCoords}
@@ -383,10 +382,17 @@ export default function FireMap({
               );
             })}
 
-          {/* Render Live Fire Hotspots (Rendered AFTER heatmap so markers are always visible on top) */}
+          {/* Render Live Hotspots (Fire, Flood, Cyclone) with custom radar animations */}
           {renderedFires.map((fire, idx) => {
+            const catUpper = (fire.category || "").toUpperCase();
+            const isFlood = catUpper.includes("FLOOD");
+            const isCyclone = catUpper.includes("CYCLONE");
             const markerColor = getMarkerColor(fire.category);
-            const isCritical = fire.risk_level === "CRITICAL" || fire.category === "EMERGENCY_INDUSTRIAL";
+            const isCritical =
+              fire.risk_level === "CRITICAL" ||
+              fire.category === "EMERGENCY_INDUSTRIAL" ||
+              isFlood ||
+              isCyclone;
             const frpVal = Number(fire.frp || 0);
             let radius = 6;
             if (frpVal > 50) {
@@ -399,10 +405,14 @@ export default function FireMap({
             if (isCritical) {
               radius = Math.max(radius + 2, 11);
             }
-            const seqId = `ANOM-${String(idx + 1).padStart(4, "0")}`;
+            const seqId = isFlood
+              ? `FLD-${String(idx + 1).padStart(4, "0")}`
+              : isCyclone
+              ? `CYC-${String(idx + 1).padStart(4, "0")}`
+              : `ANOM-${String(idx + 1).padStart(4, "0")}`;
 
             // Clean reason and action to ensure strict ASCII
-            const cleanReason = (fire.reason || "Satellite active thermal detection.")
+            const cleanReason = (fire.reason || "Satellite active telemetry detection.")
               .replace(/[^\x20-\x7E]/g, "")
               .trim();
             const cleanAction = (fire.action || "Active continuous tracking.")
@@ -410,42 +420,111 @@ export default function FireMap({
               .trim();
 
             return (
-              <CircleMarker
-                key={`${fire.latitude}-${fire.longitude}-${idx}`}
-                center={[fire.latitude, fire.longitude]}
-                radius={radius}
-                fillColor={markerColor}
-                fillOpacity={0.92}
-                color={isCritical ? "#ffffff" : "#0B1220"}
-                weight={isCritical ? 2 : 1}
-                className={isCritical ? "status-dot-red animate-pulse" : undefined}
-                eventHandlers={{
-                  click: () => {
-                    if (onSelectFire) {
-                      onSelectFire(fire);
-                    } else if (onOpenVerify) {
-                      onOpenVerify(fire);
-                    }
-                  },
-                }}
-              >
-                <Popup>
-                  <div className="font-mono text-xs text-[#d0d8e0] p-1.5 space-y-2 min-w-[260px]">
-                    {/* Header */}
-                    <div className="border-b border-[#1f2933] pb-1.5 flex items-center justify-between">
-                      <span className="font-bold text-[11px] text-[#00d4ff]">
-                        // THERMAL ANOMALY :: {seqId}
-                      </span>
-                      <span
-                        className={`text-[9px] px-1 py-0.5 border font-bold uppercase ${
-                          isCritical
-                            ? "bg-[#ff3b3b]/20 border-[#ff3b3b] text-[#ff3b3b]"
-                            : "bg-[#131a22] border-[#1f2933] text-[#6b7785]"
-                        }`}
-                      >
-                        [{fire.risk_level || "NOMINAL"}]
-                      </span>
-                    </div>
+              <Fragment key={`${fire.latitude}-${fire.longitude}-${idx}`}>
+                {/* 🌊 Flood Marker Pulsing Water Ripple Ring */}
+                {isFlood && (
+                  <CircleMarker
+                    center={[fire.latitude, fire.longitude]}
+                    radius={radius + 10}
+                    fillColor="#0EA5E9"
+                    fillOpacity={0.15}
+                    color="#0EA5E9"
+                    weight={1.5}
+                    className="flood-water-ring animate-pulse"
+                  />
+                )}
+
+                {/* 🌀 Cyclone Marker Rotating Storm Swirl Ring */}
+                {isCyclone && (
+                  <CircleMarker
+                    center={[fire.latitude, fire.longitude]}
+                    radius={radius + 12}
+                    fillColor="#A855F7"
+                    fillOpacity={0.18}
+                    color="#A855F7"
+                    weight={2}
+                    className="cyclone-vortex-ring"
+                  />
+                )}
+
+                {/* 🔥 Critical Fire Heat Bloom Ring */}
+                {isCritical && !isFlood && !isCyclone && (
+                  <CircleMarker
+                    center={[fire.latitude, fire.longitude]}
+                    radius={radius + 8}
+                    fillColor="#EF4444"
+                    fillOpacity={0.18}
+                    color="#EF4444"
+                    weight={1.5}
+                    className="fire-heat-ring"
+                  />
+                )}
+
+                <CircleMarker
+                  center={[fire.latitude, fire.longitude]}
+                  radius={radius}
+                  fillColor={markerColor}
+                  fillOpacity={0.94}
+                  color={isCritical ? "#ffffff" : "#0B1220"}
+                  weight={isCritical ? 2 : 1}
+                  className={
+                    isFlood
+                      ? "animate-pulse"
+                      : isCyclone
+                      ? "animate-pulse"
+                      : isCritical
+                      ? "status-dot-red animate-pulse"
+                      : undefined
+                  }
+                  eventHandlers={{
+                    click: (e: any) => {
+                      try {
+                        e.target?._map?.panTo([fire.latitude, fire.longitude], {
+                          animate: true,
+                          duration: 0.8,
+                        });
+                      } catch {}
+                      if (onSelectFire) {
+                        onSelectFire(fire);
+                      } else if (onOpenVerify) {
+                        onOpenVerify(fire);
+                      }
+                    },
+                  }}
+                >
+                  <Popup>
+                    <div className="font-mono text-xs text-[#d0d8e0] p-1.5 space-y-2 min-w-[260px]">
+                      {/* Header */}
+                      <div className="border-b border-[#1f2933] pb-1.5 flex items-center justify-between">
+                        <span
+                          className={`font-bold text-[11px] ${
+                            isFlood
+                              ? "text-sky-400"
+                              : isCyclone
+                              ? "text-purple-400"
+                              : "text-[#00d4ff]"
+                          }`}
+                        >
+                          {isFlood
+                            ? `🌊 FLOOD INUNDATION :: ${seqId}`
+                            : isCyclone
+                            ? `🌀 CYCLONE RADAR :: ${seqId}`
+                            : `// THERMAL ANOMALY :: ${seqId}`}
+                        </span>
+                        <span
+                          className={`text-[9px] px-1 py-0.5 border font-bold uppercase ${
+                            isFlood
+                              ? "bg-sky-500/20 border-sky-400 text-sky-300"
+                              : isCyclone
+                              ? "bg-purple-500/20 border-purple-400 text-purple-300"
+                              : isCritical
+                              ? "bg-[#ff3b3b]/20 border-[#ff3b3b] text-[#ff3b3b]"
+                              : "bg-[#131a22] border-[#1f2933] text-[#6b7785]"
+                          }`}
+                        >
+                          [{fire.risk_level || "NOMINAL"}]
+                        </span>
+                      </div>
 
                     {/* Telemetry Data Table */}
                     <div className="space-y-0.5 text-[11px] tabular-nums">
@@ -471,7 +550,9 @@ export default function FireMap({
                       </div>
                       <div className="flex justify-between">
                         <span className="text-[#6b7785]">SAT      :</span>
-                        <span className="text-[#d0d8e0]">VIIRS-SNPP</span>
+                        <span className="text-[#d0d8e0]">
+                          {fire.satellite || (isFlood ? "SAR RISAT-2B" : isCyclone ? "INSAT-3D DOPPLER" : "VIIRS-SNPP")}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-[#6b7785]">ACQ      :</span>
@@ -497,7 +578,7 @@ export default function FireMap({
                         <div className="flex justify-between text-[10px] bg-[#111827] px-1.5 py-0.5 rounded border border-[#1F2937]">
                           <span className="text-[#6b7785]">CRITICAL ASSET :</span>
                           <span className="text-[#00d4ff] font-medium truncate max-w-[140px]">
-                            {fire.facility_name || fire.nearest_facility || "Industrial Complex"}
+                            {fire.facility_name || fire.nearest_facility || (isFlood ? "River Basin Inundation" : isCyclone ? "Coastal Defense Sector" : "Industrial Complex")}
                             {fire.distance_km != null ? ` (${fire.distance_km}km)` : ""}
                           </span>
                         </div>
@@ -506,15 +587,21 @@ export default function FireMap({
                       {/* Explainability Reason Badge */}
                       <div className="text-[10px] text-amber-200/90 bg-amber-950/30 border border-amber-500/30 px-1.5 py-1 rounded leading-snug">
                         <span className="font-semibold text-amber-400">WHY: </span>
-                        {cleanReason || `Thermal anomaly of ${Number(fire.frp || 0).toFixed(1)}MW detected at this coordinate.`}
+                        {cleanReason || `Anomaly detected at this coordinate.`}
                       </div>
 
                       {/* Recommended Agent & Isolation Distance */}
                       <div className="grid grid-cols-2 gap-1 text-[9px] pt-0.5">
                         <div className="bg-[#0B1220] border border-[#1F2937] p-1 rounded">
-                          <span className="text-[#6b7785] block">SUPPRESSANT:</span>
-                          <span className="text-emerald-400 font-bold">
-                            {fire.category?.includes("INDUSTRIAL") || fire.category?.includes("FUEL")
+                          <span className="text-[#6b7785] block">
+                            {isFlood ? "RESCUE ASSET:" : isCyclone ? "STORM RESPONSE:" : "SUPPRESSANT:"}
+                          </span>
+                          <span className={`${isFlood ? "text-sky-400" : isCyclone ? "text-purple-400" : "text-emerald-400"} font-bold`}>
+                            {isFlood
+                              ? "Inflatable Boats / Winch"
+                              : isCyclone
+                              ? "ODRAF Crafts / VSAT"
+                              : fire.category?.includes("INDUSTRIAL") || fire.category?.includes("FUEL")
                               ? "AFFF Foam / Dry Chem"
                               : fire.category?.includes("FOREST")
                               ? "Water Bowsers / Firebreaks"
@@ -522,9 +609,15 @@ export default function FireMap({
                           </span>
                         </div>
                         <div className="bg-[#0B1220] border border-[#1F2937] p-1 rounded">
-                          <span className="text-[#6b7785] block">SAFETY CORDON:</span>
+                          <span className="text-[#6b7785] block">
+                            {isFlood ? "INUNDATION PERIMETER:" : isCyclone ? "SURGE CORDON:" : "SAFETY CORDON:"}
+                          </span>
                           <span className="text-red-400 font-bold">
-                            {fire.category?.includes("INDUSTRIAL") || fire.category?.includes("FUEL")
+                            {isFlood
+                              ? "2.5km Evacuation"
+                              : isCyclone
+                              ? "10km Coastal Strip"
+                              : fire.category?.includes("INDUSTRIAL") || fire.category?.includes("FUEL")
                               ? "800m Perimeter"
                               : "100m Perimeter"}
                           </span>
@@ -538,7 +631,7 @@ export default function FireMap({
                       return (
                         <div className="border border-[#1f2933] bg-[#0c1017] p-1.5 text-[10px] space-y-0.5">
                           <div className="text-[#00d4ff] font-bold text-[9px] flex justify-between">
-                            <span>// NEAREST RESPONSE UNIT</span>
+                            <span>{isFlood || isCyclone ? "// NEAREST RESCUE COMMAND" : "// NEAREST RESPONSE UNIT"}</span>
                             <span className="text-[#00ff9c] font-bold">ETA: {nearestSt.eta_minutes} MIN</span>
                           </div>
                           <div className="text-white font-bold text-[10px] truncate">
@@ -568,7 +661,7 @@ export default function FireMap({
                           >
                             <span className="flex items-center gap-1.5">
                               <span>{isExpanded ? "▲" : "▼"}</span>
-                              <span>RESPONSE PROTOCOL</span>
+                              <span>{isFlood ? "FLOOD EVACUATION SOP" : isCyclone ? "CYCLONE ACTION PLAN" : "RESPONSE PROTOCOL"}</span>
                             </span>
                             <span className="text-[9px] text-[#ffb800]">
                               {isExpanded ? "[COLLAPSE]" : "[EXPAND]"}
@@ -603,12 +696,22 @@ export default function FireMap({
                           if (onOpenDispatch) onOpenDispatch(fireWithStation);
                         }}
                         className={`w-full text-[10px] border py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5 ${
-                          fire.risk_level === "CRITICAL" || fire.category === "EMERGENCY_INDUSTRIAL"
+                          isFlood
+                            ? "border-sky-500 bg-sky-500/20 text-sky-300 hover:bg-sky-500/30"
+                            : isCyclone
+                            ? "border-purple-500 bg-purple-500/20 text-purple-300 hover:bg-purple-500/30"
+                            : fire.risk_level === "CRITICAL" || fire.category === "EMERGENCY_INDUSTRIAL"
                             ? "border-[#ff3b3b] bg-[#ff3b3b] text-black font-black hover:bg-[#ff5252] shadow-[0_0_12px_rgba(255,59,59,0.4)]"
                             : "border-[#ff3b3b] bg-[#ff3b3b]/15 hover:bg-[#ff3b3b]/25 text-[#ff8080] hover:text-white"
                         }`}
                       >
-                        <span>{t("actions.simulate_dispatch", "🚒 SIMULATE DISPATCH")}</span>
+                        <span>
+                          {isFlood
+                            ? "🚤 DISPATCH NDRF RESCUE BOATS"
+                            : isCyclone
+                            ? "🚨 DISPATCH ODRAF / COAST GUARD"
+                            : t("actions.simulate_dispatch", "🚒 SIMULATE DISPATCH")}
+                        </span>
                       </button>
 
                       {/* Prominent Historical Analysis Trigger Button */}
@@ -630,9 +733,8 @@ export default function FireMap({
                         }}
                         className="w-full text-[10px] border border-[#ff9500] bg-[#ff9500]/15 hover:bg-[#ff9500]/30 text-[#ff9500] hover:text-white py-1.5 uppercase font-bold text-center cursor-pointer tracking-wider transition flex items-center justify-center gap-1.5 shadow-[0_0_8px_rgba(255,149,0,0.2)]"
                       >
-                        <span>{t("actions.predict_spread", "💨 PREDICT SPREAD")}</span>
+                        <span>{isFlood ? "🌊 PREDICT FLOOD INUNDATION" : isCyclone ? "🌪️ PREDICT CYCLONE TRACK" : t("actions.predict_spread", "💨 PREDICT SPREAD")}</span>
                       </button>
-
 
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] text-[#6b7785] uppercase truncate max-w-[140px]">
@@ -658,8 +760,9 @@ export default function FireMap({
                   </div>
                 </Popup>
               </CircleMarker>
-            );
-          })}
+            </Fragment>
+          );
+        })}
 
           {/* Scenario Simulation Overlays */}
           {scenarioOverlay?.evacuationCircle && (
@@ -733,14 +836,112 @@ export default function FireMap({
               center={scenarioOverlay.pulseMarker}
               radius={16}
               pathOptions={{
-                color: "#ff3b3b",
-                fillColor: "#ff3b3b",
+                color: scenarioOverlay.disasterType === "FLOOD" ? "#0EA5E9" :
+                       scenarioOverlay.disasterType === "CYCLONE" ? "#A855F7" : "#ff3b3b",
+                fillColor: scenarioOverlay.disasterType === "FLOOD" ? "#0EA5E9" :
+                           scenarioOverlay.disasterType === "CYCLONE" ? "#A855F7" : "#ff3b3b",
                 fillOpacity: 0.25,
                 weight: 2,
               }}
               className="status-dot-red animate-ping"
             />
           )}
+
+          {/* 🌊 Flood Inundation Rings — animated concentric water-rise overlay */}
+          {scenarioOverlay?.floodCircles?.map((fc, fIdx) => {
+            const floodColors: Record<string, string> = {
+              WARNING: "#0EA5E9",
+              CRITICAL: "#2563EB",
+              SEVERE: "#1D4ED8",
+            };
+            const fc_color = floodColors[fc.flood_level || "CRITICAL"] || "#2563EB";
+            const opacities = [0.35, 0.25, 0.15];
+            const weights = [3, 2, 1.5];
+            return (
+              <Circle
+                key={`flood-ring-${fIdx}`}
+                center={fc.center}
+                radius={fc.radius_km * 1000}
+                pathOptions={{
+                  color: fc_color,
+                  fillColor: fc_color,
+                  fillOpacity: opacities[fIdx] ?? 0.15,
+                  dashArray: fIdx === 0 ? undefined : "8 4",
+                  weight: weights[fIdx] ?? 1.5,
+                  opacity: 0.85,
+                }}
+                className={fIdx === 0 ? "animate-pulse" : undefined}
+              >
+                <Popup>
+                  <div className="font-mono text-xs text-[#d0d8e0] p-1 space-y-1">
+                    <div className="text-[#0EA5E9] font-bold">
+                      🌊 FLOOD INUNDATION ZONE — {fc.flood_level || "CRITICAL"}
+                    </div>
+                    <div>Inundation Radius: {fc.radius_km.toFixed(1)} km</div>
+                    <div className="text-[10px] text-[#6b7785]">SAR Satellite | ISRO RISAT-2B</div>
+                  </div>
+                </Popup>
+              </Circle>
+            );
+          })}
+
+          {/* 🌀 Cyclone Eye + Storm Surge Overlay */}
+          {scenarioOverlay?.cycloneOverlay && (() => {
+            const co = scenarioOverlay.cycloneOverlay;
+            const catColors: Record<number, string> = {
+              1: "#FCD34D", 2: "#FB923C", 3: "#EF4444", 4: "#A855F7", 5: "#7C3AED",
+            };
+            const co_color = catColors[co.category ?? 5] || "#7C3AED";
+            return (
+              <>
+                {/* Storm Surge Ring */}
+                <Circle
+                  center={co.center}
+                  radius={co.surge_radius_km * 1000}
+                  pathOptions={{
+                    color: co_color,
+                    fillColor: co_color,
+                    fillOpacity: 0.12,
+                    dashArray: "6 4",
+                    weight: 2,
+                    opacity: 0.75,
+                  }}
+                >
+                  <Popup>
+                    <div className="font-mono text-xs text-[#d0d8e0] p-1 space-y-1">
+                      <div style={{ color: co_color }} className="font-bold">
+                        🌀 SUPER CYCLONE VAYU — CAT {co.category ?? 5}
+                      </div>
+                      <div>Storm Surge Radius: {co.surge_radius_km} km</div>
+                      <div>Max Wind Speed: {co.wind_speed ?? 215} km/h</div>
+                      <div className="text-[10px] text-[#6b7785]">IMD Cyclone Warning Centre</div>
+                    </div>
+                  </Popup>
+                </Circle>
+                {/* Cyclone Eye (innermost intense ring) */}
+                <Circle
+                  center={co.center}
+                  radius={co.eye_radius_km * 1000}
+                  pathOptions={{
+                    color: co_color,
+                    fillColor: co_color,
+                    fillOpacity: 0.45,
+                    weight: 3,
+                    opacity: 0.9,
+                  }}
+                  className="animate-pulse"
+                >
+                  <Popup>
+                    <div className="font-mono text-xs text-[#d0d8e0] p-1 space-y-1">
+                      <div style={{ color: co_color }} className="font-bold">👁 CYCLONE EYE</div>
+                      <div>Eye Diameter: {co.eye_radius_km * 2} km</div>
+                      <div className="text-[10px] text-[#6b7785]">Calm zone within intense circulation</div>
+                    </div>
+                  </Popup>
+                </Circle>
+              </>
+            );
+          })()}
 
           {/* Dynamic Rothermel Fire Spread Prediction Cone & At-Risk Overlay */}
           {spreadPredictionData && spreadPredictionData.cones_by_hour && (
@@ -867,13 +1068,13 @@ export default function FireMap({
             </span>
             <InfoTooltip
               title="Tactical Map Legend"
-              text="Color-coded thermal anomaly categories based on IGNIS all-hazard reasoning: 🔴 Critical Emergency, 🟠 High Risk, 🟡 Persistent Industrial, 🟢 Forest, 🔵 Agricultural, ⚪ Low-Intensity Domestic."
+              text="Color-coded multi-hazard anomaly categories based on IGNIS all-disaster reasoning: 🔴 Critical Emergency, 🟠 High Risk, 🟡 Persistent Industrial, 🟢 Forest, 🔵 Agricultural, ⚪ Low-Intensity Domestic, 🌊 Flood Inundation (SAR Radar), 🌀 Tropical Cyclone (Doppler)."
               position="top"
             />
           </div>
           <div className="flex items-center gap-2 text-[11px]">
             <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444] flex-shrink-0" />
-            <span className="text-[#E5E7EB]">🔴 Critical Emergency <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Hospital / Fuel / Factory)</span></span>
+            <span className="text-[#E5E7EB]">🔴 Critical Fire <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Hospital / Fuel / Factory)</span></span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
             <span className="w-2.5 h-2.5 rounded-full bg-[#F97316] flex-shrink-0" />
@@ -889,7 +1090,15 @@ export default function FireMap({
           </div>
           <div className="flex items-center gap-2 text-[11px]">
             <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] flex-shrink-0" />
-            <span className="text-[#E5E7EB]">🔵 Agricultural Burning <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Stubble)</span></span>
+            <span className="text-[#E5E7EB]">🔵 Agricultural Stubble</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#0EA5E9] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🌊 Flood Inundation <span className="text-[10px] text-[#9CA3AF] block sm:inline">(SAR Radar)</span></span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#A855F7] flex-shrink-0" />
+            <span className="text-[#E5E7EB]">🌀 Cyclone Surge <span className="text-[10px] text-[#9CA3AF] block sm:inline">(Doppler Eye)</span></span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
             <span className="w-2.5 h-2.5 rounded-full bg-[#94A3B8] flex-shrink-0" />

@@ -1,0 +1,133 @@
+{
+  "id": "odisha_cyclone",
+  "name": "Cyclone Dana — Odisha Coastal Emergency",
+  "duration_seconds": 50,
+  "description": "Category 4 tropical cyclone Dana making landfall at Odisha coast near Bhitarkanika. 180+ km/h winds.",
+  "disasterType": "CYCLONE",
+  "location": {
+    "lat": 20.7217,
+    "lon": 86.9122,
+    "zoom": 9
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "IMD Bhubaneswar: VSCS Cyclone Dana — last position 20.7°N 86.9°E. Landfall in 6 hours. All districts on RED ALERT."
+    },
+    {
+      "time": 5,
+      "action": "CYCLONE_EYE",
+      "center": [20.7217, 86.9122],
+      "radius_km": 25,
+      "wind_speed": 185,
+      "narration": "CYCLONE EYE WALL detected on INSAT-3D imagery. Eye diameter 50km. Storm surge 4-6m expected at coast."
+    },
+    {
+      "time": 10,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 20.7217,
+        "longitude": 86.9122,
+        "frp": 8,
+        "brightness": 298,
+        "category": "CYCLONE_HOTSPOT",
+        "risk_level": "CRITICAL",
+        "confidence": "high",
+        "reason": "INSAT-3D thermal: Cyclone eye-wall convection detected. Intense pressure gradient.",
+        "action": "Mass coastal evacuation — NDRF pre-positioning required"
+      },
+      "narration": "CYCLONE EYE: Dana making landfall near Bhitarkanika Mangrove coast. Extreme structural damage risk."
+    },
+    {
+      "time": 15,
+      "action": "CYCLONE_SPIRAL",
+      "center": [20.7217, 86.9122],
+      "radius_km": 80,
+      "narration": "Rain bands spiral detected. Heavy rainfall (200+ mm/6hr) extending 80km from eye. 12 districts impacted."
+    },
+    {
+      "time": 18,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 20.4500,
+        "longitude": 86.7000,
+        "frp": 6,
+        "brightness": 293,
+        "category": "CYCLONE_HOTSPOT",
+        "risk_level": "HIGH",
+        "confidence": "high",
+        "reason": "Kendrapara coast — sea surge inundation 2-3m above mean tide level",
+        "action": "Coastal village evacuation — 0 to 10km strip"
+      },
+      "narration": "Storm surge hitting Kendrapara coast. 34 fishing villages in direct surge path. ODRAF teams moving."
+    },
+    {
+      "time": 22,
+      "action": "SHOW_EVACUATION",
+      "radius_km": 10.0,
+      "center": [20.5000, 86.7500],
+      "affected_population": 320000,
+      "narration": "10km coastal evacuation strip activated. 3.2 lakh people evacuated to 854 cyclone shelters."
+    },
+    {
+      "time": 27,
+      "action": "PREDICT_SPREAD",
+      "cone": [
+        [20.7217, 86.9122],
+        [21.4000, 86.2000],
+        [21.8000, 86.8000],
+        [22.1000, 87.5000],
+        [22.4000, 87.1000]
+      ],
+      "narration": "Track forecast: Dana to cross coast near Dhamra Port and move NNW. Jharkhand & WB on alert."
+    },
+    {
+      "time": 33,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 21.1000,
+        "longitude": 86.6000,
+        "frp": 5,
+        "brightness": 291,
+        "category": "CYCLONE_HOTSPOT",
+        "risk_level": "HIGH",
+        "confidence": "nominal",
+        "reason": "Bhadrak district — power infrastructure failure. Substation flooded.",
+        "action": "State emergency operations — restore critical infrastructure"
+      },
+      "narration": "Bhadrak — power grid failure. 4 substations flooded. Inland flooding along Baitarani River."
+    },
+    {
+      "time": 38,
+      "action": "FIND_STATION",
+      "station": {
+        "name": "NDRF 2nd Battalion — Mundali, Odisha",
+        "distance_km": 45,
+        "eta_minutes": 20,
+        "phone": "0674-2387000",
+        "lat": 20.9000,
+        "lon": 86.8000
+      },
+      "narration": "NDRF 2nd Bn pre-positioned at Mundali. 12 teams. Navy + Coast Guard vessels on standby."
+    },
+    {
+      "time": 43,
+      "action": "SHOW_EQUIPMENT",
+      "equipment": [
+        "NDRF inflatable boats + outboard motors",
+        "Chainsaw teams for debris clearance",
+        "Emergency satellite comms (VSAT)",
+        "Coast Guard advanced offshore vessels",
+        "Army engineering corps — bridge assessment"
+      ],
+      "warning": "Do NOT enter damaged structures. Aftershock surge possible 3-6hrs post-landfall.",
+      "narration": "Multi-agency assets mobilised. State EOC Bhubaneswar fully activated."
+    },
+    {
+      "time": 49,
+      "action": "COMPLETE",
+      "narration": "IGNIS cyclone response complete. INSAT-3D track updates every 15 min. All agencies coordinated via NCMC."
+    }
+  ]
+}

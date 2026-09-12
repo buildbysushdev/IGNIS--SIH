@@ -1,0 +1,59 @@
+{
+  "id": "domestic_bonfire",
+  "name": "Domestic Bonfire Auto-Suppressed (<15MW)",
+  "duration_seconds": 30,
+  "description": "Low-intensity domestic burn (<15MW) in Delhi urban zone automatically filtered without emergency turnout",
+  "location": {
+    "lat": 28.6139,
+    "lon": 77.2090,
+    "zoom": 14
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "[T+00s] ORBITAL SCAN: High-resolution thermal sensor pass over Delhi NCR urban grid."
+    },
+    {
+      "time": 5,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 28.6139,
+        "longitude": 77.2090,
+        "frp": 6.2,
+        "brightness": 312.4,
+        "category": "DOMESTIC_LOW_INTENSITY_BURN",
+        "risk_level": "LOW",
+        "confidence": "nominal",
+        "acq_time": "current",
+        "reason": "Low-intensity domestic burn or municipal warming fire (6.2MW). Non-structural open burn.",
+        "action": "AUTO-SUPPRESSED: Logged to Municipal Pollution Registry. Fire tender mobilization withheld."
+      },
+      "narration": "[T+05s] WEAK SATELLITE DETECTION: 6.2MW thermal anomaly observed in Central Delhi residential periphery."
+    },
+    {
+      "time": 12,
+      "action": "CLASSIFY",
+      "category": "DOMESTIC_LOW_INTENSITY_BURN",
+      "confidence": "nominal",
+      "narration": "[T+12s] 📊 ENERGY THRESHOLD FILTER: FRP 6.2MW is below the 15.0MW critical emergency dispatch threshold."
+    },
+    {
+      "time": 20,
+      "action": "SHOW_PROTOCOL",
+      "protocol": {
+        "class": "Domestic Open Burn",
+        "use": ["Logged to State Pollution Control Board"],
+        "avoid": ["Emergency mobilization"],
+        "safety_distance_m": 10,
+        "target_response_min": 0
+      },
+      "narration": "[T+20s] 🛡️ CLASSIFICATION ACTION: Flagged as DOMESTIC_LOW_INTENSITY_BURN. Evacuation & siren suppressed."
+    },
+    {
+      "time": 26,
+      "action": "COMPLETE",
+      "narration": "[T+26s] 🟢 AIR QUALITY LOG CREATED: Transmitted to State Pollution Control Board without sounding fire alarms."
+    }
+  ]
+}

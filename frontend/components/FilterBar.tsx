@@ -71,10 +71,14 @@ export default function FilterBar({
   }, []);
 
   const categories = [
-    { value: "all", label: "All Fire Categories" },
+    { value: "all", label: "🌐 All Disasters (Fire, Flood, Cyclone)" },
+    { value: "FIRE_ALL", label: "🔥 All Fire Hazards" },
+    { value: "FLOOD_ALL", label: "🌊 All Flood Surges & Inundation" },
+    { value: "CYCLONE_ALL", label: "🌀 All Cyclones & Storm Surges" },
+    // ─── FIRE ───
     {
       value: "CRITICAL",
-      label: "🔴 Critical Emergency (Hospital / Fuel / Factory)",
+      label: "🔴 Critical Fire (Hospital / Fuel / Factory)",
     },
     {
       value: "HOSPITAL_FIRE",
@@ -90,11 +94,7 @@ export default function FilterBar({
     },
     {
       value: "HIGH_RISK",
-      label: "🟠 High Risk (Kitchen / Market / Res)",
-    },
-    {
-      value: "RESTAURANT_KITCHEN_FIRE",
-      label: "🍳 Restaurant Commercial Kitchen",
+      label: "🟠 High Risk Fire (Kitchen / Market / Res)",
     },
     {
       value: "PERSISTENT_INDUSTRIAL",
@@ -102,22 +102,104 @@ export default function FilterBar({
     },
     {
       value: "FOREST_FIRE",
-      label: "🟢 Forest Wildland",
+      label: "🌲 Forest Wildland Fire",
     },
     {
       value: "AGRICULTURAL_BURNING",
-      label: "🔵 Agricultural Stubble",
+      label: "🌾 Agricultural Stubble Burning",
     },
     {
       value: "DOMESTIC_LOW_INTENSITY_BURN",
       label: "⚪ Low-Intensity Domestic (Suppressed)",
     },
+    // ─── FLOOD ───
+    {
+      value: "FLOOD_HOTSPOT",
+      label: "🌊 Flood Hotspot (SAR Inundation Active)",
+    },
+    {
+      value: "FLOOD_CRITICAL",
+      label: "🔵 Flood Critical (Meenachil / River Breach)",
+    },
+    {
+      value: "FLOOD_WARNING",
+      label: "💧 Flood Warning (River Level Advisory)",
+    },
+    // ─── CYCLONE ───
+    {
+      value: "CYCLONE_HOTSPOT",
+      label: "🌀 Cyclone Eye-Wall (Landfall Core)",
+    },
+    {
+      value: "CYCLONE_CRITICAL",
+      label: "🌪️ Cyclone Surge (Coastal Inundation)",
+    },
+    {
+      value: "CYCLONE_WARNING",
+      label: "🌧️ Cyclone Warning (Gale Rain Bands)",
+    },
   ];
 
   return (
     <div className="bg-[#0B1220] border-b border-[#1F2937] px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs font-sans">
-      {/* Left Controls: Days, Category, Source */}
+      {/* Left Controls: Disaster Pills, Days, Category, Source */}
       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        {/* Quick Disaster Mode Pills */}
+        <div className="flex items-center bg-[#111827] p-0.5 rounded-lg border border-[#1F2937] gap-0.5 shadow-sm">
+          <button
+            type="button"
+            onClick={() => onCategoryChange("all")}
+            className={`px-2.5 py-1 rounded text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer ${
+              category === "all"
+                ? "bg-[#22D3EE]/25 text-[#22D3EE] border border-[#22D3EE]/50 shadow-[0_0_8px_rgba(34,211,238,0.25)]"
+                : "text-[#9CA3AF] hover:text-white hover:bg-gray-800/60"
+            }`}
+            title="Show All Disasters Simultaneously"
+          >
+            <span>🌐</span>
+            <span className="hidden sm:inline">All</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onCategoryChange("FIRE_ALL")}
+            className={`px-2.5 py-1 rounded text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer ${
+              category === "FIRE_ALL" || category === "CRITICAL" || category.includes("FIRE") || category.includes("BURNING")
+                ? "bg-red-500/25 text-red-300 border border-red-500/50 shadow-[0_0_8px_rgba(239,68,68,0.25)]"
+                : "text-[#9CA3AF] hover:text-white hover:bg-gray-800/60"
+            }`}
+            title="Filter Fire & Thermal Telemetry"
+          >
+            <span>🔥</span>
+            <span>Fire</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onCategoryChange("FLOOD_ALL")}
+            className={`px-2.5 py-1 rounded text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer ${
+              category === "FLOOD_ALL" || category.includes("FLOOD")
+                ? "bg-sky-500/25 text-sky-300 border border-sky-500/50 shadow-[0_0_8px_rgba(14,165,233,0.25)]"
+                : "text-[#9CA3AF] hover:text-white hover:bg-gray-800/60"
+            }`}
+            title="Filter Flood & Inundation Radar"
+          >
+            <span>🌊</span>
+            <span>Flood</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onCategoryChange("CYCLONE_ALL")}
+            className={`px-2.5 py-1 rounded text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer ${
+              category === "CYCLONE_ALL" || category.includes("CYCLONE")
+                ? "bg-purple-500/25 text-purple-300 border border-purple-500/50 shadow-[0_0_8px_rgba(168,85,247,0.25)]"
+                : "text-[#9CA3AF] hover:text-white hover:bg-gray-800/60"
+            }`}
+            title="Filter Tropical Cyclone Radar"
+          >
+            <span>🌀</span>
+            <span>Cyclone</span>
+          </button>
+        </div>
+
         {/* Days Filter */}
         <div className="flex items-center gap-1.5">
           <select
@@ -143,7 +225,7 @@ export default function FilterBar({
           <select
             value={category}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="bg-[#111827] border border-[#1F2937] text-[#22D3EE] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#22D3EE] cursor-pointer max-w-[190px] truncate"
+            className="bg-[#111827] border border-[#1F2937] text-[#22D3EE] hover:border-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#22D3EE] cursor-pointer max-w-[210px] truncate"
           >
             {categories.map((c) => (
               <option key={c.value} value={c.value} className="bg-[#111827] text-[#E5E7EB]">
@@ -153,7 +235,7 @@ export default function FilterBar({
           </select>
           <InfoTooltip
             title="Classification Filter"
-            text="Filter map display by fire risk tier (e.g. Critical Emergency, Forest, Agricultural, or All)."
+            text="Filter map display by hazard type (Fire, Flood Inundation, Cyclone Storm Surge, or All)."
             position="bottom"
           />
         </div>

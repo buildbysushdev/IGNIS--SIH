@@ -145,16 +145,14 @@ export default function EmergencyPanel({
         }
 
         setQueue(items);
-        if (items.length > 0 && expandedAlertId === null) {
-          setExpandedAlertId(items[0].id);
-        }
+        setExpandedAlertId((prev) => (prev === null && items.length > 0 ? items[0].id : prev));
       }
     } catch (err) {
       console.warn("[IGNIS] Could not fetch notifications queue:", err);
     } finally {
       setLoading(false);
     }
-  }, [expandedAlertId, sendDesktopNotification]);
+  }, [sendDesktopNotification]);
 
   // Initial fetch and 15s interval sync
   useEffect(() => {
@@ -500,9 +498,14 @@ export default function EmergencyPanel({
                           : "border-[#1f2933] bg-[#080b0f] opacity-60 hover:opacity-100"
                       }`}
                     >
-                      {/* Alert Card Header: Clickable to expand */}
+                      {/* Alert Card Header: Clickable to expand & pan */}
                       <div
-                        onClick={() => setExpandedAlertId(isExpanded ? null : item.id)}
+                        onClick={() => {
+                          setExpandedAlertId(isExpanded ? null : item.id);
+                          if (onPanToFire && lat && lon) {
+                            onPanToFire([lat, lon]);
+                          }
+                        }}
                         className="p-2.5 cursor-pointer hover:bg-white/[0.02] transition space-y-1.5"
                       >
                         <div className="flex items-center justify-between text-[10px]">

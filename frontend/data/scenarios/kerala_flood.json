@@ -1,0 +1,123 @@
+{
+  "id": "kerala_flood",
+  "name": "Kerala Flash Flood — Kottayam District",
+  "duration_seconds": 50,
+  "description": "Catastrophic riverine flooding triggered by IMD Red Alert rainfall in Kottayam district, Kerala.",
+  "disasterType": "FLOOD",
+  "location": {
+    "lat": 9.5916,
+    "lon": 76.5222,
+    "zoom": 11
+  },
+  "timeline": [
+    {
+      "time": 0,
+      "action": "SHOW_MAP",
+      "narration": "IMD Red Alert issued for Kottayam. Monitoring Meenachil River basin water levels. All sensors NOMINAL."
+    },
+    {
+      "time": 5,
+      "action": "FLOOD_WAVE",
+      "center": [9.5916, 76.5222],
+      "radius_km": 1.5,
+      "narration": "SURGE DETECTED: Meenachil River breach at Kottayam Collectorate upstream gauge. Water level +3.2m above danger mark."
+    },
+    {
+      "time": 10,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 9.5916,
+        "longitude": 76.5222,
+        "frp": 5,
+        "brightness": 295,
+        "category": "FLOOD_HOTSPOT",
+        "risk_level": "CRITICAL",
+        "confidence": "high",
+        "reason": "IMD satellite thermal confirms flood inundation plume — Kottayam urban core submerged",
+        "action": "NDRF team deployment required immediately"
+      },
+      "narration": "FLOOD HOTSPOT confirmed at Kottayam city centre. 3 wards submerged. NDRF team activation initiated."
+    },
+    {
+      "time": 15,
+      "action": "FLOOD_WAVE",
+      "center": [9.5850, 76.5100],
+      "radius_km": 3.2,
+      "narration": "Flood spread expanding. Secondary inundation reaching Pala Road and Changanacherry Highway corridor."
+    },
+    {
+      "time": 18,
+      "action": "ADD_FIRE",
+      "fire": {
+        "latitude": 9.5720,
+        "longitude": 76.5050,
+        "frp": 4,
+        "brightness": 290,
+        "category": "FLOOD_HOTSPOT",
+        "risk_level": "HIGH",
+        "confidence": "high",
+        "reason": "Residential colony inundated — Puthuppally area. Access roads cut off.",
+        "action": "Helicopter evacuation recommended"
+      },
+      "narration": "Secondary flood cell at Puthuppally. 2,400 residents stranded. Roads blocked."
+    },
+    {
+      "time": 22,
+      "action": "SHOW_EVACUATION",
+      "radius_km": 4.0,
+      "center": [9.5916, 76.5222],
+      "affected_population": 85000,
+      "narration": "4km evacuation corridor activated. 85,000 civilians in flood risk zone. 12 relief camps operational."
+    },
+    {
+      "time": 28,
+      "action": "FIND_STATION",
+      "station": {
+        "name": "NDRF 9th Battalion — Trivandrum",
+        "distance_km": 148,
+        "eta_minutes": 45,
+        "phone": "0471-2475011",
+        "lat": 9.6200,
+        "lon": 76.5400
+      },
+      "narration": "NDRF 9th Bn Trivandrum alerted. 3 rescue boats + 1 helicopter en route. ETA 45 minutes."
+    },
+    {
+      "time": 33,
+      "action": "FLOOD_WAVE",
+      "center": [9.6100, 76.5300],
+      "radius_km": 5.5,
+      "narration": "Peak flood surge — river water now at Kottayam Medical College. Hospital evacuation in progress."
+    },
+    {
+      "time": 38,
+      "action": "SHOW_EQUIPMENT",
+      "equipment": [
+        "NDRF inflatable rescue boats",
+        "Life jackets & throw bags",
+        "Rope rescue systems",
+        "Helicopter with rescue winch",
+        "Portable pumps for dewatering"
+      ],
+      "warning": "Do NOT enter fast-moving flood water on foot. Use boat or rope systems only.",
+      "narration": "Relief equipment catalogue issued. Dewatering operations begin at Medical College compound."
+    },
+    {
+      "time": 44,
+      "action": "PREDICT_SPREAD",
+      "cone": [
+        [9.5916, 76.5222],
+        [9.5600, 76.4800],
+        [9.5400, 76.5100],
+        [9.5700, 76.5500],
+        [9.5916, 76.5222]
+      ],
+      "narration": "Hydrological model: Flood front projected to reach Vaikom by 1800 hrs if rainfall continues at current intensity."
+    },
+    {
+      "time": 49,
+      "action": "COMPLETE",
+      "narration": "IGNIS flood response coordinated. Real-time satellite water extent mapped. NDRF + State teams deployed."
+    }
+  ]
+}

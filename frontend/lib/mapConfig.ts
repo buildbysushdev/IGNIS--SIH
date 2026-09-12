@@ -38,6 +38,22 @@ export interface ScenarioOverlayState {
   windCone?: [number, number][] | null;
   stationMarker?: { name: string; lat: number; lon: number; distance_km?: number } | null;
   pulseMarker?: [number, number] | null;
+  // Flood overlays – animated concentric water-rise rings
+  floodCircles?: {
+    center: [number, number];
+    radius_km: number;
+    flood_level?: "WARNING" | "CRITICAL" | "SEVERE";
+  }[] | null;
+  // Cyclone overlay – spiral approach track + storm surge circle
+  cycloneOverlay?: {
+    center: [number, number];
+    eye_radius_km: number;
+    surge_radius_km: number;
+    wind_speed?: number;
+    category?: number;
+  } | null;
+  // Disaster type for conditional rendering
+  disasterType?: "FIRE" | "FLOOD" | "CYCLONE" | null;
 }
 
 // Strict Ground Station Color Coding (High Contrast, Phosphor & Modern Mission Accents)
@@ -66,10 +82,35 @@ export const TERMINAL_COLORS: Record<string, string> = {
   // ⚪ Low-Intensity Domestic (Garbage / Bonfire - Suppressed)
   DOMESTIC_LOW_INTENSITY_BURN: "#94A3B8",
   UNKNOWN: "#9CA3AF",
+
+  // 🌊 Flood categories
+  FLOOD_HOTSPOT: "#0EA5E9",
+  FLOOD_MONITORING: "#06B6D4",
+  FLOOD_WARNING: "#0EA5E9",
+  FLOOD_CRITICAL: "#2563EB",
+  FLOOD_SEVERE: "#1D4ED8",
+  FLOOD_EVACUATION: "#6366F1",
+  FLOOD_ASSESSMENT: "#818CF8",
+
+  // 🌀 Cyclone categories
+  CYCLONE_HOTSPOT: "#A855F7",
+  CYCLONE_WARNING: "#A855F7",
+  CYCLONE_CRITICAL: "#7C3AED",
+  CYCLONE_APPROACH: "#9333EA",
+  CYCLONE_LANDFALL: "#6D28D9",
+  CYCLONE_RAIN_BAND: "#8B5CF6",
 };
 
 export function getMarkerColor(category: string): string {
-  return TERMINAL_COLORS[category] || "#9CA3AF";
+  if (!category) return "#9CA3AF";
+  if (TERMINAL_COLORS[category]) return TERMINAL_COLORS[category];
+  const catUpper = category.toUpperCase();
+  if (catUpper.includes("FLOOD")) return "#0EA5E9";
+  if (catUpper.includes("CYCLONE")) return "#A855F7";
+  if (catUpper.includes("FOREST")) return "#22C55E";
+  if (catUpper.includes("AGRICULTURAL") || catUpper.includes("STUBBLE")) return "#3B82F6";
+  if (catUpper.includes("EMERGENCY") || catUpper.includes("CRITICAL") || catUpper.includes("HOSPITAL") || catUpper.includes("FUEL")) return "#EF4444";
+  return "#9CA3AF";
 }
 
 export const TILE_PRESETS = {
